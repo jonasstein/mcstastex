@@ -115,12 +115,47 @@ from identifiers and C language keywords. In contrast, \MCS\
 identifiers (names), like C identifiers and keywords, \emph{are} case
 sensitive, another good reason to use a consistent case convention for
 keywords. All \MCS\ keywords are reserved, and thus should not be used 
-as C variable names. The list of these reserved keywords is:
-\begin{verbatim}
-    DEFINE INSTRUMENT DECLARE INITIALIZE TRACE SAVE FINALLY MCDISPLAY
-    COMPONENT AT ROTATED RELATIVE ABSOLUTE GROUP EXTEND %include
-    SETTING DEFINITION OUTPUT POLARISATION STATE PARAMETERS
-\end{verbatim}
+as C variable names. The list of these reserved keywords is shown in table~\ref{t:keywords}. \index{Keyword|textbf}
+
+\begin{table}
+  \begin{center} 
+    {\let\my=\\
+    \begin{tabular}{|l|c|p{0.7\textwidth}|}
+      \hline
+      \texttt{Keyword} & Scope & Meaning \\
+      \hline
+      \texttt{ABSOLUTE} & I & Indicates that the AT and ROTATED keywords are in the absolute coordinate system. \\
+      \texttt{AT} & I & Indicates the position of a component in an instrument definition. \\
+      \texttt{DECLARE} & I,C & Declare C internal instrument or component variables. \\
+      \texttt{DEFINE} & I,C & Start an instrument or component definition. \\
+      \texttt{- INSTRUMENT} & & \\
+      \texttt{- COMPONENT} & & \\
+      \texttt{DEFINITION} & C & Defines component parameters that are constants (like C \#define). \\
+      \texttt{END} & I,C & Ends the instrument or component definition. \\
+      \texttt{EXTEND} & I & Extends the TRACE section of a component in an instrument definition. \\
+      \texttt{FINALLY} & I,C & Embedded C code to execute when simulation ends (also executes the SAVE section). \\
+      \texttt{GROUP} & I & Defines an exclusive group of components. \\
+      \texttt{\%include} & I,C & Import an instrument part, a component or a piece of C code (when within embedded C). \\
+      \texttt{INITIALIZE} & I,C & Embedded C code to be executed when starting. \\
+      \texttt{MCDISPLAY} & C & Embedded C code to display a geometric  representation of a component. \\
+      \texttt{OUTPUT} & C & Defines internal variables to be public and protected symbols (usually all those of DECLARE).\\
+      \texttt{PARAMETERS} & C & Defines a class of component parameter. \\
+      \texttt{POLARISATION} & C & Defines neutron polarisation coordinates. \\
+      \texttt{RELATIVE} & I & Indicates that the AT and ROTATED keywords are relative to an other component. \\
+      \texttt{ROTATED} & I & Indicates the orientation of a component in an instrument definition. \\
+      \texttt{SAVE} & I,C & Embedded C code to execute when saving data. \\
+      \texttt{SETTING} & C & Defines component parameters that are variables(double, int, char*). \\
+      \texttt{SHARE} & C & Declare global functions and variables to be used by all components. \\
+      \texttt{STATE} & C & Defines neutron state coordinates. \\
+      \texttt{TRACE} & I,C & List of component or embedded C code to execute during simulation. \\
+      \hline
+    \end{tabular}
+    \caption{Reserved \MCS\ keywords. 
+    Scope is 'I' for instrument and 'C' for component definitions.}
+    \label{t:keywords}
+    }
+  \end{center}
+\end{table}
 
 It is possible, and usual, to split the input instrument definition
 across several different files. For example, if a component is not
@@ -129,7 +164,7 @@ explicitly defined in the instrument,
 standard component library (as well as in the current directory and any
 user-specified search directories, see section~\ref{s:files}). It is
 also possible to explicitly include another file using a line of the
-form \index{Keyword!%include}
+form \index{Keyword!\%include}
 \begin{verbatim}
     %include "file"
 \end{verbatim}
@@ -154,6 +189,8 @@ The ``\verb|%{|'' and ``\verb|%}|'' must appear on a line by themselves (do not 
 Additionally, if a ``\verb+%include+'' statement is found \emph{within} an embedded C code block, the specified file will be included from the 'share' directory of the standard component library \index{Library!Components!share} (or from the
 current directory and any user-specified search directories) as a C library, just like the usual ``\verb+#include+'' \emph{but only once}. For instance, if many components require to read data from a file, they may all ask for ``\verb+%include "read_table"+'' \index{Library!Components!share!read_table} without duplicating the code of this library. If the file has no extension, both \verb+.h+ and \verb+.c+ files will be searched and included, otherwise, only the specified file will be imported. The \MCS\ 'run-time' shared 
 library is included by default (equivalent to ``\verb+%include "mcstas-r"+'' in the \texttt{DECLARE} section). \index{Library!Run-time}
+For an
+example of \texttt{\%include}, see the monitors/Monitor\_nD component.
 
 
 \section{Writing instrument definitions}
@@ -204,7 +241,8 @@ type \verb+char *+.
 
 
 \subsection{The \texttt{DECLARE} section}
-\index{Keyword!DECLARE!in instruments}
+\index{Keyword!DECLARE}
+\label{s:declare}
 
 \begin{quote}
   \texttt{DECLARE} \\
@@ -218,7 +256,8 @@ small functions that are used elsewhere in the instrument. This section
 is optional.
 
 \subsection{The \texttt{INITIALIZE} section}
-\index{Keyword!INITIALIZE!in instruments}
+\index{Keyword!INITIALIZE}
+\label{s:initialize}
 
 \begin{quote}
   \texttt{INITIALIZE} \\
@@ -231,7 +270,8 @@ optional.
 
 
 \subsection{The \texttt{TRACE} section}
-\index{Keyword!TRACE!in instruments}
+\index{Keyword!TRACE}
+\label{s:trace}
 
 The \texttt{TRACE} keyword starts a section giving the list of
 components that constitute the instrument.
@@ -241,7 +281,7 @@ Components are declared like this:
     \textit{comp}(p_1 = e_1, p_2 = e_2, \ldots)$
 \end{quote}
 \index{Components}
-\index{Keyword!COMPONENT!in instruments} \index{Parameters!Setting}
+\index{Keyword!COMPONENT} \index{Parameters!Setting}
 \index{Parameters!Definition}
 This declares a component named \textit{name} that is an instance of the
 component definition named \textit{comp}. The parameter list gives the
@@ -314,7 +354,7 @@ arrangements, groups are defined by appending the \texttt{GROUP} modifier
   \texttt{GROUP} \textit{name}
 \end{quote}
 to all involved component declarations. \index{Keyword!GROUP}
-All components of the same named group are tested one after the other, until one of them interacts (SCATTERs \index{Library!Run-time!SCATTER} the neutron). The selected component acts on the neutron, and the rest of the group is skipped. Such groups are thus exclusive (only one of the elements is active).
+All components of the same named group are tested one after the other, until one of them interacts (uses the SCATTER macro \index{Library!Run-time!SCATTER}). The selected component acts on the neutron, and the rest of the group is skipped. Such groups are thus exclusive (only one of the elements is active).
 If no component of the group could intercept the neutron, it is ABSORBed.
 
 It is sometimes desirable to slighlty modify an existing component of the \MCS\ library. One would usually make a copy of the component, and extend the code of its \texttt{TRACE} section. \MCS\ provides an easy way to change the behaviour of existing components in an instrument definition without duplicating files, using the \texttt{EXTEND} modifier \index{Keyword!EXTEND}
@@ -349,6 +389,7 @@ Components \emph{name1} and \emph{name2} are at the same position. If the first 
 
 \subsection{The \texttt{SAVE} section}
 \index{Keyword!SAVE}
+\label{s:save}
 
 \begin{quote}
   \texttt{SAVE} \\
@@ -360,6 +401,7 @@ This gives code that will be executed when the simulation is requested to save d
 
 \subsection{The \texttt{FINALLY} section}
 \index{Keyword!FINALLY}
+\label{s:finally}
 
 \begin{quote}
   \texttt{FINALLY} \\
@@ -374,11 +416,14 @@ A simulation may be requested to end before all neutrons have been traced when r
 
 
 \subsection{The end of the instrument definition}
+\label{s:end}
+\index{Keyword!END}
 
 The end of the instrument definition is marked using the keyword
 \begin{quote}
   \texttt{END}
 \end{quote}
+\index{Keyword!END}
 
 \subsection{Code for the instrument \texttt{vanadium\_example.instr}}
 \label{s:vanadium_example.instr}
@@ -519,9 +564,11 @@ user forgetting to set an important parameter.
 \begin{quote}
   \texttt{DECLARE} \\
   \verb|%{| \\
-  \hbox to 3em{}\ldots C code declarations \ldots \\
+  \hbox to 3em{}\ldots C code declarations (variables, definitions, functions)\ldots \\
+  \hbox to 3em{}\ldots These are usually OUTPUT parameters to avoid name conflicts \ldots \\
   \verb|%}|
 \end{quote}
+\index{Keyword!DECLARE}
 This gives C declarations of global variables etc. that are used by the
 component code. This may for instance be used to declare a neutron
 counter for a detector component. This section is optional.
@@ -529,7 +576,7 @@ counter for a detector component. This section is optional.
 Note that any variables declared in a \verb+DECLARE+ section are
 \emph{global}. Thus a name conflict may occur if two instances of a
 component are used in the same instrument. To avoid this, variables
-declared in the \texttt{DECLARE} section should be output parameters of
+declared in the \texttt{DECLARE} section should be \texttt{OUTPUT} parameters of
 the component because \MCS\ will then rename variables to avoid conflicts. 
 For example, a simple detector might be defined as follows:
 \begin{quote}
@@ -543,6 +590,8 @@ DECLARE
 ...
 \end{verbatim}
 \end{quote}
+\index{Keyword!OUTPUT PARAMETERS}
+\index{Library!Run-time!MC\_GETPAR}
 The idea is that the \texttt{counts} variable counts the number of
 neutrons detected. In the instrument definition, the \texttt{counts}
 parameter may be referenced using the \verb+MC_GETPAR+ C macro, as in
@@ -561,8 +610,24 @@ FINALLY
 \end{verbatim}
 \end{quote}
 
+\subsection{The \texttt{SHARE} section}
+\label{s:comp-share}
+\begin{quote}
+  \texttt{SHARE} \\
+  \verb|%{| \\
+  \hbox to 3em{}\ldots C code \emph{shared} declarations (variables, definitions, functions)\ldots \\
+  \hbox to 3em{}\ldots These should not be OUTPUT parameters \ldots \\
+  \verb|%}|
+\end{quote}
+\index{Keyword!SHARE}
+
+The \texttt{SHARE} section has the same role as \texttt{DECLARE} except that when using more than one instance of the component, it is inserted \emph{only once} in the simulation code. No occurence of the items to be shared should be in the \texttt{OUTPUT} parameter list (not to have \MCS\ rename the identifiers). 
+This is particularly useful when using many instances of the same component (for instance guide elements). If the declarations were in the \texttt{DECLARE} section, \MCS\ would duplicates it for each instance (making the simulation code bigger).
+A typical example is to have shared variables, functions, type and structure definitions that may be used from the component \texttt{TRACE} section. For an
+example of \texttt{SHARE}, see the samples/Single\_crystal component. This section is optional.
 
 \subsection{The \texttt{INITIALIZE} section}
+\label{s:comp-initialize}
 
 \begin{quote}
   \texttt{INITIALIZE} \\
@@ -570,13 +635,14 @@ FINALLY
   \hbox to 3em{}\ldots C code initialization \ldots \\
   \verb|%}|
 \end{quote}
+\index{Keyword!INITIALIZE}
 This gives C code that will be executed once at the start of the
 simulation, usually to initialize any variables declared in the
 \texttt{DECLARE} section. This section is optional.
 
 
 \subsection{The \texttt{TRACE} section}
-\label{s:TRACE}
+\label{s:comp-trace}
 
 \begin{quote}
   \texttt{TRACE} \\
@@ -585,36 +651,39 @@ simulation, usually to initialize any variables declared in the
     component \ldots \\
   \verb|%}|
 \end{quote}
+\index{Keyword!TRACE}
 This performs the actual computation of the interaction between the neutron
 and the component. The C code should perform the appropriate
 calculations and assign the resulting new neutron state to the state
 parameters.
 
-The C code may also execute the special macro \texttt{ABSORB} to
-indicate that the neutron has been absorbed in the component and the
-simulation of that neutron will be aborted. If the component
-simulates multiple events (for example multiple reflections in a guide,
-or multiple scattering in a powder sample), the special macro
-\texttt{SCATTER} should be called. This does not affect the results of
-the simulation in any way, but it allows the front-end programs to
-visualize the scattering events properly. The \texttt{SCATTER} macro
-should be called with the state parameters set to the proper values for
-the scattering event. For an example of \texttt{SCATTER}, see the
-Channeled\_guide component.
+\index{Library!Run-time!ABSORB}
+The C code may also execute the special macro \texttt{ABSORB} to indicate
+that the neutron has been absorbed in the component and the simulation of
+that neutron will be aborted. When the neutron state is changed, for
+instance if the component simulates multiple events (for example multiple
+reflections in a guide, or multiple scattering in a powder sample), the
+special macro \texttt{SCATTER} should be called. This does not affect the
+results of the simulation in any way, but it allows the front-end
+programs to visualize the scattering events properly, and to handle
+component \texttt{GROUP}s in an instrument definition (see
+section~\ref{s:trace}). The \texttt{SCATTER} macro should be called with
+the state parameters set to the proper values for the scattering event.
+For an example of \texttt{SCATTER}, see the optics/Channeled\_guide
+component. \index{Library!Run-time!SCATTER}
 
 
-\subsection{The \texttt{FINALLY} section}
-\label{s:comp-finally}
+\subsection{The \texttt{SAVE} section}
+\label{s:comp-save}
 
 \begin{quote}
-  \texttt{FINALLY} \\
+  \texttt{SAVE} \\
   \verb|%{| \\
-  \hbox to 3em{}\ldots C code to execute at end of simulation \ldots \\
+  \hbox to 3em{}\ldots C code to execute in order to save data \ldots \\
   \verb|%}|
 \end{quote}
-This gives code that will be executed when the simulation has
-ended. This might be used to print out results from components, \textit{e.g}.\ the
-simulated intensity in a detector.
+This gives code that will be executed when the simulation is requested to save data, for instance when receiving a USR2 signal (on Unix systems).
+This might be used by monitors and detectors in order to write results.
 
 In order to work properly with the common output file format used in
 \MCS, all monitor/detector components should use standard macros for
@@ -715,6 +784,19 @@ Note that for a two-dimensional detector array, the first dimension is
 along the X axis and the second dimension is along the Y axis. This
 means that element $(i_x,i_y)$ can be obtained as $p[i_x*n+i_y]$ if $p$
 is a pointer to the first element.
+
+\subsection{The \texttt{FINALLY} section}
+\label{s:comp-finally}
+
+\begin{quote}
+  \texttt{FINALLY} \\
+  \verb|%{| \\
+  \hbox to 3em{}\ldots C code to execute at end of simulation \ldots \\
+  \verb|%}|
+\end{quote}
+This gives code that will be executed when the simulation has
+ended. This might be used to free memory and print out final results from components, \textit{e.g}.\ the
+simulated intensity in a detector.
 
 \subsection{The \texttt{MCDISPLAY} section}
 \label{s:comp-mcdisplay}

@@ -14,6 +14,8 @@
 latex manual
 # Bibtex:
 bibtex manual
+# Index
+makeindex manual
 # Repeat latex runs:
 latex manual
 latex manual
