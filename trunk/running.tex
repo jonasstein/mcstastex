@@ -752,7 +752,21 @@ The meaning of the different fields is as follows:
   by the next simulation.
 \item[Neutron count] sets the number of neutron histories to
   simulate (the \verb+--ncount+ option).
-\item[Distribute mcrun scans (grid)] is an experimental option to distribute scan steps on a set of machines using \emph{ssh} connexions. 
+\item[Distribute mcrun scans (grid)] is an experimental option to
+  distribute scan steps on a set of machines using \emph{ssh}
+  connexions. To use this option you will need
+  \begin{itemize}
+  \item{A set of unix machines of the same architecture (binary compatible).}
+  \item{ \texttt{ssh} access from the master node (where McStas is
+      installed) to the slaves through e.g. dsa keys \emph{without} a
+      password.}
+  \item{The machine names listed in the file \texttt{.mcstas-hosts} in
+      your home directory on the master node, one node pr. line.}
+  \end{itemize}
+  {\bf Warning:} This option is considered \emph{experimental} - i.e.,
+  you are welcome to use it, but be ready for trouble. Note also that
+  this is a unix only option in \texttt{mcgui}, it {\bf does not} work
+  on windows.
 \item[Plot results] -- if checked, the \verb+mcplot+ front-end will be run
   after the simulation has finished, and the plot dialog will pop up
   (see below).
