@@ -602,7 +602,22 @@ Be cautious and wise when interpreting the optimal guess.
 functionality of the simulations. The front-end programs is an interface
 between the user and the simulations, running the simulations and
 presenting the output in various ways to the user.
-The list of available \MCS\ front-end programs may be obtained from the \verb+mcdoc --tools+ command.
+
+The list of available \MCS\ front-end programs may be obtained from the \verb+mcdoc --tools+ command:
+\begin{verbatim}
+    McStas Tools
+       mcstas        Main instrument compiler
+       mcrun         Instrument maker and execution utility
+       mcgui         Graphical User Interface instrument builder
+       mcdoc         Component library documentation generator/viewer
+       mcplot        Simulation result viewer
+       mcdisplay     Instrument geometry viewer
+       mcresplot     Instrument resolution function viewer
+       mcstas2vitess McStas to Vitess component translation utility
+    When used with the -h flag, all tools display a specific help.
+    SEE ALSO: mcstas, mcdoc, mcplot, mcrun, mcgui, mcresplot, mcstas2vitess
+    DOC:      Please visit http://neutron.risoe.dk/mcstas/
+\end{verbatim}
 An extended set of front-end programs is planned for future versions of
 \MCS, including a NeXus data format option~\cite{nexus_webpage}.
 
