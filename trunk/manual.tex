@@ -12,6 +12,8 @@
 \usepackage[only,egtrm]{rawfonts}
 % Handle sorting in reference list
 \usepackage{citesort}
+% Create an index table
+\usepackage{makeidx}
 
 \newcommand{\smallverbatimfile}[1]{{\footnotesize\verbatimfile{#1}}}
 
@@ -41,11 +43,14 @@
 \renewcommand{\footrulewidth}{0pt}}
 
 \newcommand{\MCS}{{McStas}}
-\newcommand{\version}{{1.5}}
+\newcommand{\version}{{1.7}}
 \newcommand{\Ombold}{\mbox{\boldmath $\Omega$}}
 
+% enable index generation
+\makeindex
+
 %\title{User and programmers guide\\ to the neutron ray-tracing package
-% \MCS ,\\ version 1.5}
+% \MCS ,\\ version 1.7}
 %\author{Per-Olof \AA strand, Emmanuel Farhi, Kristian Nielsen, Kim Lefmann \\
 % Materials Research Department, \\
 % Ris\o\ National Laboratory, 4000 Roskilde, Denmark}
@@ -72,6 +77,7 @@
 \include{preface}
 
 \include{intro}
+\include{changes}
 \include{running}
 \include{kernel}
 \include{techniq}
@@ -132,6 +138,9 @@
 %\bibitem{importance} Some MC book on importance sampling
 %\bibitem{TAS1paper} Our paper on the TAS1 test results
 %\end{thebibliography}
+
+\printindex
 \include{datablad}
+
 
 \end{document}

@@ -4,20 +4,19 @@
 
 Efficient design and optimization of neutron spectrometers are
 formidable challenges. Monte Carlo techniques are well matched to meet
-these challenges. When \MCS\ version 1.0 was released in October 1998, 
-no existing package offered a general framework for the neutron scattering
-community
-to tackle the problems currently faced at reactor and spallation
-sources. The \MCS\ project was designed to provide such a framework.
+these challenges. When \MCS\ version 1.0 was released in October
+1998, except for the NISP/MCLib program~\cite{nisp_webpage}, no existing package offered a general framework for the neutron
+scattering community to tackle the problems currently faced at reactor and
+spallation sources. The \MCS\ project was designed to provide such a framework.
 
 \MCS\ %({\em Monte Carlo Simulations of Triple Axis Spectrometers\/}) 
 is a fast and versatile software tool for neutron ray-tracing simulations.
 It is based on a meta-language specially designed for neutron
 simulation. Specifications are written in this language by users and
 automatically translated into efficient simulation codes in ANSI-C.
-The present version supports both continuous and pulsed source
-instruments as well as polarised neutrons, and includes a library 
-of standard components with in total around 60 components.
+The present version supports both continuous and pulsed source instru-
+ments as well as polarised neutrons, and includes a library of standard
+components with in total around 90 components. These enable to simulate all kinds of neutron scattering instruments (diffractometers, triple-axis, reflectometers, time-of-flight, small-angle, back-scattering, spin-echo,...).
 
 The \MCS\ package is written in ANSI-C and is freely available for down-load
 from the \MCS\ web-page~\cite{mcstas_webpage}. The package is actively
@@ -33,7 +32,7 @@ for neutron scattering at Ris\o\ National Laboratory. Simulation tools were urge
 not only to better utilize existing instruments
 ({\em e.g.} RITA-1 and RITA-2~\cite{cjp_73_697,pb_241_50,pb_283_343}), 
 but also to plan completely new instruments for new sources 
-({\em e.g.} European
+({\em e.g.} the Spallation Neutron Source, SNS~\cite{sns_webpage} and the European
 Spallation Source, ESS~\cite{ess_webpage}). Writing programs in C or Fortran for
 each of the different cases involves a huge effort, with debugging presenting
 particularly difficult problems. A higher level tool specially designed
@@ -178,8 +177,9 @@ power of the C language is available if needed.
 The \MCS\ system consists of the following major
 parts:
 \begin{itemize}
-\item A brief introduction to using \MCS\ is given in Section~\ref{s:brief}.
-\item How to obtain the \MCS\ software is described in Section~\ref{s:obtain}.
+\item A short list of new features introduced in this \MCS\ release appears in chapter ~\ref{c:changes}
+\item A brief introduction to using \MCS\ is given in section~\ref{s:brief}.
+\item How to obtain the \MCS\ software is described in section~\ref{s:obtain}.
 \item Section~\ref{s:install} explains how to compile
   and install the \MCS\ compiler and associated files, while
   section~\ref{s:running} explains how to run the compiler to produce
@@ -191,7 +191,8 @@ parts:
 \item The \MCS\ component library contains a collection of
   well-tested beam components that can be used in simulations.
   The \MCS\ component library is documented in a separate manual
-  and on the \MCS\ web-page~\cite{mcstas_webpage}. 
+  and on the \MCS\ web-page~\cite{mcstas_webpage}. A short overview of these
+  components is given in chapter~\ref{s:comp-overview}.
   %This
   %library is documented in detail in chapter~\ref{s:components}. Code
   %for the components can be found in appendix~\ref{compcode}.
@@ -207,7 +208,7 @@ parts:
 %appendix~\ref{testresults}. 
 An explanation of \MCS\ terminology can be
 found in appendix~\ref{s:terminology}, and a list of library calls that may be used in
-component definitions appears in appendix~\ref{kernelcalls}.
+component definitions appears in appendix~\ref{c:kernelcalls}.
 Plans for future extensions are presented on the \MCS\ web-page~\cite{mcstas_webpage}.
 
 
