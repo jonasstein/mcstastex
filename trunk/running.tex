@@ -2,30 +2,37 @@
 
 \chapter{Running \MCS}
 
-This chapter describes the installation and usage of the McStas software.
-The software should compile without problems on most Unix-like
-systems with an ANSI-compliant C compiler. It has also been successfully
-compiled on Windows and MacIntosh systems, but these platforms are
-not actively supported. In case of problems, the McStas
-mailing list~\cite{mcstas_webpage} or the authors should be contacted.
+This chapter describes usage of the McStas simulation package. Refer
+to Chapter \ref{s:install} for installation instructions. In case of
+problems regarding installation or usage, the McStas mailing
+list~\cite{mcstas_webpage} or the authors should be contacted.
 
 To use \MCS\ , an instrument
-definition file is written which describes the instrument to be simulated (or
-an instrument file is obtained from the \verb+examples/+ directory in the
-distribution or from another source). 
-The structure of \MCS\ may be illustrated by Figure~\ref{fig:structure}.
-The input files (instrument and component files) are written in the \MCS\
-meta-language and are edited either by a standard editor or by using a 
-graphical user interface. These files are 
-then compiled with
-the \MCS\ compiler using the FLEX and Bison facilities to produce a C program. 
-The C program can then be
-compiled with a C compiler and run in combination with various front-end programs to for
-example present the intensity at the detector as a motor position is varied.
-The output data may be analyzed in the same way as regular experiments are analyzed
-by using Matlab, Scilab~\ref{scilab_webpage} or IDL or by using the Perl routines included in \MCS .\index{Tools}
+definition file describing the instrument to be simulated must be
+written. Alternatively, an example instrument file can be obtained
+from the \verb+examples/+ directory in the distribution or from
+another source. 
 
-\begin{figure}[th]
+The structure of \MCS\ is illustrated in Figure~\ref{fig:structure}.
+The input files (instrument and component files) are written in the \MCS\
+meta-language and are edited either by a using your favourite editor
+or by using the built in editor of the graphical user interface
+(\texttt{mcgui}). 
+
+Next, the instrument and component files are compiled using the \MCS\ compiler
+using the FLEX and Bison facilities to produce a C program\footnote{Note that
+since release \version\ of \MCS, FLEX and Bison need not be installed
+on your computer.}. 
+
+The resulting C program can then be
+compiled with a C compiler and run in combination with various
+front-end programs for example to present the intensity at the
+detector as a motor position is varied.
+
+The output data may be analyzed in the same way as regular experiments
+are analyzed by using Matlab, Scilab~\cite{scilab_webpage} or IDL or by using the Perl routines included in \MCS .\index{Tools}
+
+\begin{figure}[htb!]
 \begin{center}
 \input{figures/mcstas_software}
 \end{center}
@@ -44,9 +51,9 @@ the following sections. This section uses the
 directory of the \MCS\ distribution. %, see appendix~\ref{a:vanadium_example.instr}.
 
 To start the graphical user interface of McStas, run the command
-\verb+mcgui+. This will open a window with some menus etc.,
+\verb+mcgui+ (\verb+mcgui.pl+ on Windows). This will open a window with some menus etc.,
 see figure~\ref{fig:mcgui}. \index{Tools!mcgui}
-\begin{figure}[th]
+\begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=0.55\textwidth]{figures/mcgui.eps}
   \end{center}
@@ -56,43 +63,75 @@ see figure~\ref{fig:mcgui}. \index{Tools!mcgui}
 
 To load an instrument, select ``Open instrument'' from the ``File''
 menu. Open the file \verb+vanadium_example.instr+ in the McStas
-distribution. Select ``Run simulation'' from the ``Simulation'' menu.
+distribution. Next, check that the current plotting backend setting
+(select ``Choose backend'' from the ``Simulation'' menu) corresponds
+to your system setup. The default setting can be adjusted as explained in Chapter \ref{installing}
+\begin{itemize} 
+\item{by editing
+the \verb+tools/perl/mcstas_config.perl+ setup file of your
+installation}
+\item{by setting the \verb+MCSTAS_FORMAT+ environment
+variable.}
+\end{itemize}
+Next, select ``Run simulation'' from the ``Simulation'' menu.
 McStas will translate the definition into an executable program and pop
 up a dialog window. Type a value for the ``ROT'' parameter ({\em e.g.}
 90), check the ``Plot results'' option, and select ``Start''. The
 simulation will run, and when it finishes after a while the results will
-be plotted in a window.
+be plotted in a window. Depending on your chosen plotting backend, the
+presented graphics will resemble one of those shown in figure \ref{fig:mcplot_figs}.
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[angle=-90,width=0.49\textwidth]{figures/mcplot_PGPLOT.ps}
+    \includegraphics[angle=-90,width=0.49\textwidth]{figures/mcplot_Scilab.eps}
+    \includegraphics[width=0.49\textwidth]{figures/mcplot_Matlab.eps}
+  \end{center}
+\caption{Output from \texttt{mcplot} with PGPLOT, Scilab and Matlab backends}
+\label{fig:mcplot_figs}
+\end{figure}
+When using the Scilab or Matlab backends, full 3D view of plots and
+different display possibilities are available. Use the attached \MCS\
+window menus to control these. Features are quite self
+explanatory. For other options, execute \verb+mcplot --help+
+(\verb+mcplot.pl --help+ on windows) to get help. 
+
 
 To debug the simulation graphically, repeat the
 steps but check the ``Trace'' option instead of the ``Simulate'' option.
-A window will pop up showing a sketch of the instrument.
-The left mouse button starts a new neutron, the middle button zooms, and
-the right button resets the zoom. The Q key quits the program.
+A window will pop up showing a sketch of the instrument. 
+Depending on your
+chosen plotting backend, the presented graphics will resemble one of
+those shown in figures \ref{fig:mcdisp_PGPLOT}-\ref{fig:mcdisp_Matlab}.
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{figures/mcdisplay_PGPLOT.ps}
+  \end{center}
+\caption{Output from \texttt{mcdisplay} with PGPLOT backend. 
+  The left mouse button starts a new neutron, the middle button zooms, and
+  the right button resets the zoom. The Q key quits the program.}
+\label{fig:mcdisp_PGPLOT}
+\end{figure}
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{figures/mcdisplay_Scilab.ps}
+    \includegraphics[width=0.25\textwidth]{figures/mcdisplay_Scilab_dialog.ps}
+  \end{center}
+\caption{Output from \texttt{mcdisplay} with Scilab backend. Display
+  can be adjusted using the dialogbox (right).}
+\label{fig:mcdisp_Scilab}
+\end{figure}
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{figures/mcdisplay_Matlab.eps}
+  \end{center}
+\caption{Output from \texttt{mcdisplay} with Matlab backend. Display
+  can be adjusted using the window buttons.}
+\label{fig:mcdisp_Matlab}
+\end{figure}
 
 For a slightly longer gentle introduction to McStas, see the McStas
-tutorial (available from~\cite{mcstas_webpage}).
-
-\section{Obtaining \MCS}
-\label{s:obtain}
-\index{Installing}
-
-The source code for \MCS\ 
-%may be obtained from Ris\o{} on a CD-Rom, or it
-may be downloaded from the \MCS\ web-page~\cite{mcstas_webpage}, and 
-should be available in a file named
-\verb+mcstas-+\version\verb+.tar.gz+.
-%(the CD-Rom also contains this file under the name
-%\verb+mcstas.tgz+ for systems that do not understand long filenames, as
-%well as the unpacked sources in the directory \verb+mcstas/+).
-
-The conditions on the use of \MCS\ can be read in the files
-\verb+LICENSE+ and \verb+LICENSE.LIB+ in the distribution. Essentially,
-\MCS\ may be used and modified freely, but copies of the \MCS\ source code 
-may not be distributed to others. 
-%We are considering releasing future versions of \MCS\ under a
-%more liberal license.
-New or modified component and instrument files may, however, be shared by 
-the user community.
+tutorial (available from~\cite{mcstas_webpage}). For more technical
+details, read on from section~\ref{s:running}
 
 \subsection{New releases of \MCS}
 Releases of new versions of a software can today be carried out more or less
@@ -107,78 +146,7 @@ on the web, and new versions may be released quite frequently when it is request
 by the user community.
 \item A version 1.8 will contain an updated manual. It will typically be released
 once or twice a year in connection to for example a \MCS\ workshop.
-\item A version 2.0 will hopefully never be released. It would mean that the
-code has been rewritten and no backward compability can be expected.
 \end{itemize}
-
-\section{Compiling \MCS\ from source}
-\label{s:install}
-\index{Installing}
-
-Compilation and installation of \MCS\ contain three
-steps. Detailed installation instructions may be found in the \verb+install_docs+ directory of the distribution. 
-First, the source files must be unpacked:
-\begin{quote}
-  \verb+gunzip -c mcstas-+\version \verb+.tar.gz | tar xf -+
-  \verb+cd mcstas/+
-\end{quote}
-Next, the \verb+configure+ script is run to configure \MCS\ for the
-particular machine and operating system, and the software is
-compiled:
-\begin{verbatim}
-    ./configure
-    make
-\end{verbatim}
-Finally, \MCS\ is installed:
-\begin{verbatim}
-    make install
-\end{verbatim}
-By default, \MCS\ will be installed in the \verb+/usr/local/+ directory
-(which typically requires superuser privileges). To install in another
-directory, the \verb+--prefix+ option of the \verb+configure+ script can
-be used. For example, to install in \verb+/home/joe+ instead:
-\begin{verbatim}
-    ./configure --prefix=/home/joe
-    make
-    make install
-\end{verbatim}
-Depending on which directory \MCS\ is installed in, it may be necessary
-to add the \verb+bin/+ subdirectory of the installation directory to the
-default path, or to run \MCS\ with the full pathname of the program
-(\verb+/usr/local/bin/mcstas+ by default).
-
-The \verb+configure+ command will guess some reasonable defaults for the
-C compiler to use. These will be used to compile McStas itself as
-well as the simulations produced by McStas. To override\footnote{It may
-  be necessary to remove the file \texttt{config.cache} before
-  re-installing McStas to have the new settings take effect}
-the defaults, the
-environment variables \verb+CC+ and \verb+CFLAGS+ can be set to the file
-name of the compiler to use and any special compiler options needed (for
-example to enable optimization), respectively. After installation, each
-user may override the settings using the environment variables
-\verb+MCSTAS_CC+ and \verb+MCSTAS_CFLAGS+. 
-\index{Environment variable!MCSTAS\_CC}
-\index{Environment variable!MCSTAS\_CFLAGS}
-
-\MCS\ has been tested on x86 Linux, Digital Unix, and HPUX. It should
-run on most other Unix-like systems without problems. The main thing to
-ensure is that an ANSI-C compliant compiler is available (GCC works
-well). If any difficulties arise, the authors should be contacted
-so that the problems may be fixed in a later release of \MCS.
-
-To use the \MCS\ front-end programs (see section~\ref{s:frontends}),
-certain auxiliary packages must be installed, as described in the README
-file in the distribution. These packages are all freely available, and
-%have been included on the \MCS\ CD-Rom and on the WWW home page. 
-some of
-them may be supplied with the operating system (for example,
-all required packages are included in Debian/GNU Linux~\cite{debian_webpage}).
-
-Note that the core parts of \MCS, including the \MCS\ compiler and any
-generated simulations, work with only
-an ANSI-C compiler.
-
 
 \section{Running the instrument compiler}
 \label{s:running}
@@ -644,7 +612,7 @@ obviously requires that Netscape is properly installed on the computer.
 
 \subsubsection{The run dialog}
 
-\begin{figure}[th]
+\begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=0.45\textwidth]{figures/mcgui-run.eps}
   \end{center}

@@ -24,13 +24,13 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
     releases. \index{Keyword!%include}
 \item Component instances in an instrument source file may be \texttt{GROUP}ed into 
     exclusive assembly, i.e. only one component of the group will intercept
-    neutron, the rest will be skipped. This is usefull for multi monochromators
+    neutron, the rest will be skipped. This is useful for multi monochromators
     multi detectors, multiple collimators, etc. This is a kind if splitting. Just add,
     after the \texttt{ROTATED} keyword, the keyword \texttt{GROUP} followed by a group
     name of your own (e.g. \texttt{GROUP} MyGroup). \index{Keyword!GROUP}
 \item In both components and instruments, the \texttt{FINALLY} section, that was
     executed at the end of simulations, has been split into  still the
-    \texttt{FINALLY} (with the same function as bfore), and a new \texttt{SAVE}
+    \texttt{FINALLY} (with the same function as before), and a new \texttt{SAVE}
     section. This latter is executed at simulation end (just before the
     \texttt{FINALLY}), but also each time an intermediate save is required (e.g. a
     'kill -USR2 \$pid' is used under Unix). 
