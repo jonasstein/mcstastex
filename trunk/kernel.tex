@@ -701,6 +701,7 @@ component. \index{Library!Run-time!SCATTER}
 
 \subsection{The \texttt{SAVE} section}
 \label{s:comp-save}
+\index{Data format}
 \index{Keyword!SAVE}
 
 \begin{quote}
@@ -709,8 +710,9 @@ component. \index{Library!Run-time!SCATTER}
   \hbox to 3em{}\ldots C code to execute in order to save data \ldots \\
   \verb|%}|
 \end{quote}
-This gives code that will be executed when the simulation is requested to save data, for instance when receiving a USR2 signal (on Unix systems, see section~\ref{s:run-sim}).
+This gives code that will be executed when the simulation is requested to save data, for instance when receiving a USR2 signal (on Unix systems, see section~\ref{s:run-sim}), or when triggered by the \texttt{Progress\_bar(flag\_save=1)} component.
 This might be used by monitors and detectors in order to write results.
+An extension depending on the selected output format (see~\ref{t:formatoptions} and section~\ref{s:run-sim}) is automatically appended to file names, if these latter do not contain extension.
 
 In order to work properly with the common output file format used in
 \MCS, all monitor/detector components should use standard macros for
