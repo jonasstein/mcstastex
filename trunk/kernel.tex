@@ -365,7 +365,7 @@ It is sometimes desirable to slighlty modify an existing component of the \MCS\ 
   \verb|%}|
 \end{quote} \index{Embedded C code}
 The embeded C code is appended to the component \texttt{TRACE} section, and all its internal variables may be used.
-This component declaration modifier is of course optional. Within a \texttt{GROUP}, \emph{all} \texttt{EXTEND} sections of the group are executed. In order to discriminate components that are active from those that are skipped, one may use the SCATTERED flag which is zero as long as the neutron is not scattered within the group, as in the following example \index{Library!Run-time!SCATTER} \index{Library!Run-time!SCATTERED}
+This component declaration modifier is of course optional. Within a \texttt{GROUP}, \emph{all} \texttt{EXTEND} sections of the group are executed. In order to discriminate components that are active from those that are skipped, one may use the SCATTERED flag, which is set to zero when entering each component or group, and incremented when the neutron is SCATTERed, as in the following example \index{Library!Run-time!SCATTER} \index{Library!Run-time!SCATTERED}
 \begin{quote}
   \texttt{COMPONENT} $\textit{name0} =
     \textit{comp}(p_1 = e_1, p_2 = e_2, \ldots)$ \\
@@ -385,6 +385,7 @@ This component declaration modifier is of course optional. Within a \texttt{GROU
   \hbox to 1em{} \texttt{GROUP} \textit{GroupName}
 \end{quote}
 Components \emph{name1} and \emph{name2} are at the same position. If the first one intercepts the neutron (and has a SCATTER within its \texttt{TRACE} section), the SCATTERED variable becomes true, the code extension will result in printing "I scatter", and the second component will be skipped.
+Thus, we recommand to make use of the SCATTER keyword each time a component 'uses' the neutron (scatters, detects, \ldots).
 
 
 \subsection{The \texttt{SAVE} section}
@@ -423,7 +424,6 @@ The end of the instrument definition is marked using the keyword
 \begin{quote}
   \texttt{END}
 \end{quote}
-\index{Keyword!END}
 
 \subsection{Code for the instrument \texttt{vanadium\_example.instr}}
 \label{s:vanadium_example.instr}
@@ -441,6 +441,8 @@ the component.  The calculation of the effect of the component on the
 neutron is performed by a block of embedded C code. 
 One example of a component definition is given in section~\ref{s:slit}, and all
 component definitions can be found on the McStas web-page~\cite{mcstas_webpage}.
+
+There exists a large number of functions and constants available in order to write efficient components. Look at the chapter~\ref{c:kernelcalls} for neutron propagation functions, geometric intersection time computations, vector operators, random number and vector generation, physical constants, coordinate retrieval and operations, file generation routines (for monitors), data file reading, \ldots
 
 %A component definition looks as follows:
 
@@ -675,6 +677,7 @@ component. \index{Library!Run-time!SCATTER}
 
 \subsection{The \texttt{SAVE} section}
 \label{s:comp-save}
+\index{Keyword!SAVE}
 
 \begin{quote}
   \texttt{SAVE} \\
@@ -786,10 +789,22 @@ along the X axis and the second dimension is along the Y axis. This
 means that element $(i_x,i_y)$ can be obtained as $p[i_x*n+i_y]$ if $p$
 is a pointer to the first element.
 
-Additionally, a \verb+DETECTOR_OUT_3D+ macro also exists for saving 3D data, and its usage is detailed in the appendix~\ref{c:kernelcalls}.
+Additionally, a \verb+DETECTOR_OUT_3D+ macro also exists for saving 3D data, with the following syntax:
+\begin{quote}
+  \texttt{DETECTOR\_OUT\_3D({\it t},
+        {\it xlabel}, {\it ylabel}, {\it zlabel},
+        {\it xvar}, {\it yvar}, {\it zvar},
+        $x_{\rm min}$, $x_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, 
+        $z_{\rm min}$, $z_{\rm max}$, $m$, $n$, $p$\\
+        \phantom{\texttt{DETECTOR\_OUT\_3D(}}% Paren hack ->)
+          $\&N[0][0]$, $\&p[0][0]$, $\&{\it p2}[0][0]$,
+        {\it filename})}
+\end{quote}
+The meaning of parameters is the same as those used in the 1D and 2D versions of DETECTOR\_OUT.
 
 \subsection{The \texttt{FINALLY} section}
 \label{s:comp-finally}
+\index{Keyword!FINALLY}
 
 \begin{quote}
   \texttt{FINALLY} \\
@@ -803,6 +818,7 @@ simulated intensity in a detector.
 
 \subsection{The \texttt{MCDISPLAY} section}
 \label{s:comp-mcdisplay}
+\index{Keyword!MCDISPLAY}
 
 \begin{quote}
   \texttt{MCDISPLAY} \\
@@ -880,6 +896,7 @@ Here {\it plane} should be either \verb+"xy"+, \verb+"xz"+, or
 
 
 \subsection{The end of the component definition}
+\index{Keyword!END}
 
 \begin{quote}
   \texttt{END}
