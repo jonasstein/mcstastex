@@ -1,0 +1,136 @@
+\documentclass[twoside,notitlepage,11pt]{report}
+%\usepackage{a4paper}
+\usepackage{graphicx}
+\usepackage{psfrag}
+\usepackage{amsfonts}
+\usepackage{amsbsy}
+\usepackage{verbatimfile}
+\usepackage{fancyhdr}
+\usepackage{pstricks,pst-node}
+% The next rawfonts package one is used in the ``datablad''.
+\usepackage[only,egtrm]{rawfonts}
+% Handle sorting in reference list
+\usepackage{citesort}
+
+\newcommand{\smallverbatimfile}[1]{{\footnotesize\verbatimfile{#1}}}
+
+\def\reportnum{Ris{\o}--R--1288(EN)}
+
+%\oddsidemargin 0cm
+%\evensidemargin 0cm
+\addtolength{\hoffset}{-1.4cm}
+\topmargin 0cm
+\textwidth 15cm
+\textheight 22cm
+\addtolength{\footskip}{1.6pt}
+\addtolength{\headheight}{1.6pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,RE]{\reportnum}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{%
+\fancyhf{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[RE,LO]{\reportnum}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}}
+
+\newcommand{\MCS}{{McStas}}
+\newcommand{\version}{{1.5}}
+\newcommand{\Ombold}{\mbox{\boldmath $\Omega$}}
+
+%\title{User and programmers guide\\ to the neutron ray-tracing package
+% \MCS ,\\ version 1.5}
+%\author{Per-Olof \AA strand, Emmanuel Farhi, Kristian Nielsen, Kim Lefmann \\
+% Materials Research Department, \\
+% Ris\o\ National Laboratory, 4000 Roskilde, Denmark}
+%\date{September 14, 2001 \\[2\baselineskip]
+%\begin{center}
+%  \includegraphics[width=4.5in]{vanadium-surf-2.eps}
+%\end{center}
+%\includegraphics[width=0.45\myheight]{risoe-logo.eps}%
+%}
+\begin{document}
+
+%\maketitle
+\input{risoe-rep-title}
+
+\thispagestyle{empty}
+\include{abstractpage}
+
+\tableofcontents
+%\pagebreak
+%\listoffigures
+%\pagebreak
+%\listoftables
+
+\include{preface}
+
+\include{intro}
+\include{running}
+\include{kernel}
+\include{techniq}
+\include{comp}
+%\include{comp_removed}
+\include{instrum}
+%\include{future}
+
+\appendix
+\include{kernelcalls}
+%\include{compcode}
+%\include{instcode}
+%\include{test}
+\include{terms}
+
+\addcontentsline{toc}{chapter}{\protect\numberline{}{Bibliography}}
+\bibliography{mcstas}
+\bibliographystyle{jacs}
+
+%\begin{thebibliography}{99}
+%\bibitem{homepage} \MCS\ WWW home page: \\
+%   \indent\verb+http://neutron.risoe.dk/mcstas/+.
+%\bibitem{NNews} K. Lefmann and K. Nielsen, 
+%{\em McStas, a general software package for neutron ray-tracing simulations},
+%Newtron News \textbf{10/3} (1999), 20--24
+%\bibitem{RITA1}
+%  T.E. Mason \textit{et al.}, {\em RITA: The reinvented 
+%triple axis spectrometer}, Can.~J. Phys. \textbf{73}
+%    (1995) 697--702
+%\bibitem{RITA2}
+%  K.N. Clausen \textit{et al.}, {\em The Rita spectrometer at Ris\o{}
+%    --- design considerations and recent results\/}, Physica B 241--243 (1998) 50--55.
+%\bibitem{ESS} ESS WWW home page: \\
+%   \indent\verb+http://www.kfa-juelich.de/ess/ess.html+
+%\bibitem{debian} Debian GNU/Linux WWW home page: \\
+%   \indent\verb+http://www.debian.org/+.
+%\bibitem{NeXus} NeXus WWW home page: \\
+%   \indent\verb+http://www.neutron.anl.gov/nexus/+.
+%\bibitem{mfit} MFit WWW home page: \\
+%   \indent\verb+http://www.risoe.dk/fys/Manuals/Matlab/Mfit/index.html+.
+%\bibitem{mcdoc-docs} Internet address
+%  \verb+http://neutron.risoe.dk/mcstas/mcdoc/index.html+.
+%\bibitem{squires} G.~L.~Squires, \textit{Introduction to the Theory of
+%    Thermal Neutron Scattering}, Dover Publications (1996)
+%\bibitem{crystallographica} Crystallographica v1.50b, Oxford Cryosystems, 1998
+%\bibitem{bacon} G.~E.~Bacon, \textit{Neutron Diffraction},
+%  Oxford University Press (1975)
+%\bibitem{TAS1report} A. Abrahamsen, N. B. Christensen, 
+%  and E. Lauridsen,
+%  {\em \MCS\ simulations of the TAS1 spectrometer},
+%  Students Report, Niels Bohr Institute, University of Copenhagen
+%  (1998)
+%\bibitem{normal-alg} William H.\ Press, Saul A.\ Teukolsky, William T.\
+%  Vetterling, Brian P. Flannery, {\em Numerical Recipes in C},
+%  Cambridge University Press (1996)
+% \bibitem{MCLIB} The FTP site for MCLIB and MC\_RUN is \\
+%   \indent\verb+ftp://azoth.lansce.lanl.gov/pub/mclib/+.
+%\bibitem{importance} Some MC book on importance sampling
+%\bibitem{TAS1paper} Our paper on the TAS1 test results
+%\end{thebibliography}
+\include{datablad}
+
+\end{document}
