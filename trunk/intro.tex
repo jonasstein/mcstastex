@@ -20,7 +20,7 @@ components with in total around 90 components. These enable to simulate all kind
 
 The \MCS\ package is written in ANSI-C and is freely available for down-load
 from the \MCS\ web-page~\cite{mcstas_webpage}. The package is actively
-being developed and supported by Ris\o\ National Laboratory and ILL. 
+being developed and supported by Ris\o\ National Laboratory and the Institut Laue Langevin. 
 The system is well tested and
 is supplied with several examples and with an extensive documentation.
 
@@ -54,7 +54,7 @@ produce bad-looking output or may even crash. This is a nuisance, but at
 least you know that something is wrong. However, if a simulation
 contains bugs it produces wrong results, and unless the results are far
 off, you may not know about it! Complex simulations involve hundreds or
-even thousands of lines of formulae, and ``to err is human''. Thus the
+even thousands of lines of formulae, and ``errare humanun est''. Thus the
 system should be designed from the start to help minimize the potential
 for bugs to be introduced in the first place, and provide good tools for
 testing to maximize the chances of finding existing bugs.
@@ -174,10 +174,10 @@ power of the C language is available if needed.
 
 \section{Overview}
 
-The \MCS\ system consists of the following major
+The \MCS\ system documentation consists of the following major
 parts:
 \begin{itemize}
-\item A short list of new features introduced in this \MCS\ release appears in chapter ~\ref{c:changes}
+\item A short list of new features introduced in this \MCS\ release appears in chapter~\ref{c:changes}
 \item A brief introduction to using \MCS\ is given in section~\ref{s:brief}.
 \item How to obtain the \MCS\ software is described in section~\ref{s:obtain}.
 \item Section~\ref{s:install} explains how to compile
@@ -186,12 +186,12 @@ parts:
   simulations. Section~\ref{s:run-sim} explains how to run the generated
   simulations.
 \item The \MCS\ meta-language is described in chapter~\ref{s:kernel}. This
-  chapter also describes a library of kernel functions and definitions
-  that aid in the writing of simulations.
+  chapter also describes a set of ibrary functions and definitions
+  that aid in the writing of simulations. See appendix~\ref{c:kernelcalls} for more details.
 \item The \MCS\ component library contains a collection of
-  well-tested beam components that can be used in simulations.
+  well-tested, as well as user contributed, beam components that can be used in simulations.
   The \MCS\ component library is documented in a separate manual
-  and on the \MCS\ web-page~\cite{mcstas_webpage}. A short overview of these
+  and on the \MCS\ web-page~\cite{mcstas_webpage}, but a short overview of these
   components is given in chapter~\ref{s:comp-overview}.
   %This
   %library is documented in detail in chapter~\ref{s:components}. Code
