@@ -40,3 +40,5 @@ gzip mcstas-$1-components.ps
 
 # clear LaTeX temporary files but keep ps, dvi, pdf
 rm -f *.aux *.bbl *.blg *.idx *.ilg *.ind *.log *.toc
+
+
