@@ -404,6 +404,10 @@ or more generally (for bash/Bourne shell users)
     ./vanadium_example.out ROT=90
 \end{verbatim}
 
+It is also possible to create \textit{Vitess} and \textit{Tripoli4} neutron event files using the \verb+Vitess_input+/\verb+Vitess_output+ and \verb+Tripoli_input+/\verb+Tripoli_output+ components respectively. \index{Vitess} \index{Tripoli}
+
+Additionally, adding the \texttt{raw} keyword to the FORMAT will produce raw $[N, p, p^2]$ data sets instead of $[N, p, \sigma]$ (see Section \ref{s:staterror}). The former representation is fully additive, and thus enables to add results from separate simulations (e.g. when using a computer Grid).
+
 \subsection{Basic import and plot of results}
 \label{s:run-format}
 The previous example will result in a \verb+mcstas.m+ file, that may be read directly from Matlab (using the {\it sim file} function)
@@ -493,10 +497,14 @@ See section~\ref{s:mcplot} for an other way of plotting simulation results using
       \texttt{Scilab\_binary} & & Scilab format with external binary files (may be used with -d option). Also toggles -a option. \\
       \texttt{Matlab} & .m & Matlab format (may be used with -f and -d options) \\
       \texttt{Matlab\_binary} & & Matlab format with external binary files (may be used with -d option). Also toggles -a option. \\
+      \texttt{Octave} & .m & Octave format (may be used with -f and -d options) \\
+      \texttt{Octave\_binary} & & Octave format with external binary files (may be used with -d option). Also toggles -a option. \\
       \texttt{IDL} & .pro & IDL format. {\em Must} be used with -f option. \\
       \texttt{IDL\_binary} & & IDL format with external binary files (may be used with -d option). Also toggles -a option. \\
       \texttt{XML} & .xml & XML/NeXus format (may be used with -f and -d options). \\
       \texttt{HTML} & .html & HTML format (generates a web page, may be used with -f and -d options).  \\
+      \texttt{Tripoli} &  & Tripoli 4 neutron events file format. Use \verb+Tripoli_input+/\verb+Tripoli_output+ components. \\
+      \texttt{Vitess} &  & Vitess neutron events file format. Use \verb+Vitess_input+/\verb+Vitess_output+ components. \\
       \hline
     \end{tabular}
     \caption{Available formats supported by \MCS\ simulations.}
@@ -556,10 +564,11 @@ Additionally, any system error will result in similar messages, giving indicatio
 \end{table}
 
 \subsection{Optimizing a simulation}
-\index{Simulation optimization}
+\index{Optimization|textbf}
 There are various other ways to speed-up a simulation
 \begin{itemize}
 \item Optimize the compilation of the instrument, as explained in section~\ref{s:compile}.
+\item Execute the simulation in parallel on a computer grid or a cluster (with MPI) as explained in section~\ref{s:run-mpi}.
 \item Divide simulation into parts using a file for saving or generating neutron
       events. This way, a guide may be simulated only once, saving the neutron events 
       getting out from it as a file, which is being read quickly by the second simulation 
@@ -607,6 +616,199 @@ will determine the best value of TT, starting from -25 estimate, in order to min
 The choice of the optimization routine, of the simulation quality value to optimize 
 and the initial parameter guess all may have a large influence on the results. 
 Be cautious and wise when interpreting the optimal guess.
+
+\section{Using computer Grids and Clusters}
+\label{s:run-mpi}
+\index{Parallel computing|textbf}
+\index{MPI|textbf}\index{Grid computing|textbf}
+
+Parallelizing a computation is possible when dependencies between
+  each computation are not too strong. The situation of \MCS\ is
+  ideal since each neutron can be simulated without interfering with
+  other simulated neutrons. Therefore each neutron can be simulated
+  independently on a set of computer.
+
+\MCS\ provides two methods in order to distribute computations on many computers. 
+\begin{itemize}
+\item when scanning instrument parameters (using \texttt{mcrun -N}),
+  it is possible to distribute each scan step on a list of computers.
+\item when using an homogeneous computer cluster, each simulation (including scan
+  steps) may be computed in parallel using MPI (using \texttt{mcrun --mpi=Nb\_Nodes}).
+\end{itemize}
+
+\subsection{Distribute mcrun scans (grid)} 
+  This is an experimental option to
+  distribute scan steps on a set of machines using \emph{ssh}
+  connexions. To use this option you will need
+  \begin{itemize}
+  \item{A set of unix machines of the same architecture (binary compatible).}
+  \item{ \texttt{ssh} access from the master node (where McStas is
+      installed) to the slaves through e.g. DSA keys \emph{without} a
+      password. These keys should be generated using the command \texttt{ssh-keygen}.}
+  \item{The machine names listed in the file \texttt{.mcstas-hosts} in
+      your home directory on the master node, one node per line.}
+  \end{itemize}
+  Each of the scan steps is executed on distant machines, sending the executable with 
+  \emph{scp}, executing single simulations, and then retrieving individual scan steps on
+  the master machine.
+  {\bf Warning:} This option is considered \emph{experimental} - i.e.,
+  you are welcome to use it, but be ready for trouble. Note also that
+  this is a unix only option in \texttt{mcgui} and \texttt{mcrun}, it {\bf does not} work
+  on windows.
+  
+\subsection{Parallel computing (MPI)}
+
+When computing $N$ neutrons with
+$p$ computers, each computer will simulate $\frac{N}{p}$
+neutrons. As a result there will be $p \cdot \frac{N}{p} \leq N$
+neutrons simulated. As a result, \MCS\ generates two kinds of data sets:
+\begin{itemize}
+\item intensity measurements, internally represented by three
+  values $(p_0, p_1, p_2)$ where $p_0$, $p_1$, $p_2$ are
+  additive. Therefore the final value of $p_0$ is the sum of all
+  local value of  $p_0$ computed on each node. The same rule applies
+  for $p_1$ and $p_2$. The evaluation of the intensity errors $\sigma$
+  is performed using the final $p_0$, $p_1$, and $p_2$ arrays (see Section \ref{s:staterror}).
+\item event lists: the merge of events is done by concatenation
+\end{itemize}
+The MPI support requires to have MPICH, or alternatively LAM-MPI, installed on a set of nodes. 
+This usually also requires to setup properly the \texttt{ssh} connections and keys.
+  
+\subsubsection{MPI Basic usage}
+
+To enable parallel computation, compile McStas ouput C-source file
+with \verb'mpicc' with the flag \verb'-DUSE_MPI' and run it using the
+wrapper of your MPI implementation (\verb'mpirun' for mpich or lammpi) :
+\begin{verbatim}
+  # generate a C-source file [sim.c]
+  mcstas sim.instr
+
+  # generate an executable with MPI support [sim.mpi]
+  mpicc -DUSE_MPI -o sim.mpi sim.c
+
+  # execute with parallel processing over <N> computers
+  # here you have to list the computers you want to use
+  # in a file [machines.list] (using mpich implementation)
+  # (refer to MPI documentation for a complete description)
+  mpirun -machinefile machines.list -n <N> \
+         ./sim.mpi <instrument parameters>
+  ...
+\end{verbatim}
+
+If you don't want to spread the simulation, run it as usual :
+\begin{verbatim}
+  ./sim.mpi <instrument parameters>
+\end{verbatim}
+
+If you want to disable MPI support (for example if you do not have MPI
+installed), just compile the C-source file generated by \verb'mcstas'
+  without \verb'mpicc' and without the \verb'-DUSE_MPI' flag :
+\begin{verbatim}
+  # generate a C-source file [sim.c]
+  mcstas sim.instr
+
+  # generate an executable without MPI support [sim.no_mpi]
+  cc -o sim.no_mpi sim.c
+
+  # execute on a single computer
+  ./sim.no_mpi <instrument parameters>
+  ...
+\end{verbatim}
+
+\subsection{McRun script with MPI support}
+
+The \verb'mcrun' script has been adapted to use MPICH implementation
+of MPI. Two new options have been added:
+\begin{itemize}
+\item \verb'--mpi=<number>': tells \verb'mcrun' to use MPI, and to
+  spread the simulation over \verb'<number>' nodes
+\item \verb'--mpi-machines=<file>': defines a text file where the
+  nodes which are to be used for parallel computation are listed; by
+  default, \verb'mcrun' will look at \verb'$HOME/.mcstas-hosts'
+\end{itemize}
+
+Suppose you have four machines named \verb'node1' to \verb'node4'.
+A typical machine list file, \verb'machines.list' looks like :
+\begin{verbatim}
+node1
+node2
+node3
+node4
+\end{verbatim}
+
+You can then spread a simulation \verb'sim.instr' using \verb'mcrun' :
+\begin{verbatim}
+  mcrun -c --mpi=4 --mpi-machines=machines.list \
+        sim.instr <instrument parameters>
+\end{verbatim}
+
+\begin{paragraph}{Warning:} when using \verb'mcrun' with MPI, be sure
+  to recompile your simulation with MPI support (see \verb'-c' flag of
+  \verb'mcrun'): a simulation compiled without MPI support cannot be
+  used with MPI, whereas a simulation compiled with MPI support can be
+  used without MPI.
+\end{paragraph}
+
+\subsection{McStas/MPI Performance}
+
+Theorically, a computation which lasts $T$ seconds on a single computer,
+should lasts at least $\frac{T}{p}$ seconds when it is distributed
+over $p$ computers. There is a eventually overhead due to the split
+and merge operations.
+\begin{itemize}
+\item the split is immediate: constant time cost ${\cal O}(1)$
+\item the merge is at worst linear against the number of computers:
+  \begin{itemize}
+  \item linear time cost~: ${\cal O}(p)$ when saving an event list
+  \item logarithmic time cost: ${\cal O}(\log{p})$ when not saving an
+  event list
+  \end{itemize}
+\end{itemize}
+
+Here is a table showing some comparison between MPI and no-MPI
+simulations. The cluster is built with 2 bi-xeon 2GHz, resulting in 4
+nodes.
+\begin{center}
+  \begin{tabular}{|c|c|l|}
+    \hline
+    \# nodes & duration (seconds) & notes \\
+    \hline
+    1 & 622 & without MPI support \\
+    1 & 630 & with MPI support, run without MPI \\
+    1 & 620 & with MPI support, run with MPI \\
+    \hline
+    2 & 316 & \\
+    3 & 210 & \\
+    4 & 158 & \\
+    \hline
+  \end{tabular}
+\end{center}
+
+These benchmarks are consistent~: there is a really small overhead
+when computing using MPI. This overhead comes from the spread and the
+fusion of the computations. For instance, spreading a computation
+implies either an \verb'rsh' or and \verb'ssh' session to be opened on
+every node.
+
+\subsection{McStas/MPI Bugs and limitations}
+
+\begin{itemize}
+\item when simulating $N$ neutrons with $p$ machines, the effective
+  number of neutrons simulated is $p \cdot \frac{N}{p}$
+\item signals are \emph{not} supported while simulating with MPI (since
+  asynchrone events cannot be easily transmitted to all nodes)
+\item some header of output files might contain minor errors
+\item the computation split doesn't take into account the speed or the
+  load of nodes: the overall time of a distributed computation is
+  forced by the slowest node; the ``cluster'' is supposed to be
+  homogeneous
+\item forcing the random seed while spreading the computation doesn't
+  work since every node will use identical seeds and will then
+  generate identical pseudo-random values
+\item MPI must be correctly configured: if using \verb'ssh', you
+  have to set ssh keys so as not to have to enter any password; if
+  using \verb'rsh', you have to set a \verb'.rhosts' file
+\end{itemize}
 
 \section{Using simulation front-ends}
 \label{s:frontends}
@@ -758,21 +960,10 @@ The meaning of the different fields is as follows:
   by the next simulation.
 \item[Neutron count] sets the number of neutron histories to
   simulate (the \verb+--ncount+ option).
-\item[Distribute mcrun scans (grid)] is an experimental option to
-  distribute scan steps on a set of machines using \emph{ssh}
-  connexions. To use this option you will need
-  \begin{itemize}
-  \item{A set of unix machines of the same architecture (binary compatible).}
-  \item{ \texttt{ssh} access from the master node (where McStas is
-      installed) to the slaves through e.g. dsa keys \emph{without} a
-      password.}
-  \item{The machine names listed in the file \texttt{.mcstas-hosts} in
-      your home directory on the master node, one node pr. line.}
-  \end{itemize}
-  {\bf Warning:} This option is considered \emph{experimental} - i.e.,
-  you are welcome to use it, but be ready for trouble. Note also that
-  this is a unix only option in \texttt{mcgui}, it {\bf does not} work
-  on windows.
+\item[Distribute mcrun scans (grid)] activates the distribution of the scan
+  steps over a computer grid, using an \texttt{ssh} mechanism. 
+  See section~\ref{s:run-mpi} on parallel computing for more informations
+  about how to define and access the grid.
 \item[Plot results] -- if checked, the \verb+mcplot+ front-end will be run
   after the simulation has finished, and the plot dialog will pop up
   (see below).
