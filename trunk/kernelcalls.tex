@@ -242,9 +242,16 @@ resulting Coord structure.
   angle of the sphere as seen from the position of the neutron is returned
   in $d\Omega$. This routine was previously called {\bf randvec\_target\_sphere}
   (which still works).
-\item {\bf randvec\_target\_rect}(\&$v_x$, \&$v_y$, \&$v_z$, \&$d\Omega$,
-  aim$_x$, aim$_y$, aim$_z$,$height, width)$ does the same as       randvec\_target\_circle but targetting at a rectangle with angular dimensions
-  $height$ and $width$ (in {\bf radians}, not in degrees as other angles).
+\item {\bf randvec\_target\_rect\_angular}(\&$v_x$, \&$v_y$, \&$v_z$, 
+  \&$d\Omega$, aim$_x$, aim$_y$, aim$_z$,$height, width, Rot$) does the same as
+  randvec\_target\_circle but targetting at a rectangle with angular dimensions
+  $height$ and $width$ (in {\bf radians}, not in degrees as other angles). The
+  rotation matrix $Rot$ is the coordinate system orientation in the absolute
+  frame, usually ROT\_A\_CURRENT\_COMP.
+\item {\bf randvec\_target\_rect}(\&$v_x$, \&$v_y$, \&$v_z$, 
+  \&$d\Omega$, aim$_x$, aim$_y$, aim$_z$,$height, width, Rot$) is the same as 
+  randvec\_target\_rect\_angular but $height$ and $width$ dimensions are given
+  in meters. This function is useful to target at a guide entry window.
 \end{itemize}
 
 \section{Reading a data file into a vector/matrix (Table input)}

@@ -128,7 +128,7 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{AT} & I & Indicates the position of a component in an instrument definition. \\
       \texttt{DECLARE} & I,C & Declares C internal instrument or component variables. \\
       \texttt{DEFINE} & I,C & Starts an instrument or component definition. \\
-      \texttt{- INSTRUMENT} & & \\
+      \texttt{- INSTRUMENT} & (each associated parameter may have default values)& \\
       \texttt{- COMPONENT} & & \\
       \texttt{DEFINITION} & C & Defines component parameters that are constants (like C \#define). \\
       \texttt{END} & I,C & Ends the instrument or component definition. \\
@@ -243,7 +243,7 @@ type \verb+char *+.
 \index{Parameters!Optional, default value}
 The parameters of an instrument may be given default values. Parameters with default values are called \emph{optional
   parameters}, and need not be given an explicit value when the
-instrument simulation is executed. When executed without any parameter value in the command line (see section~\ref{s:run-sim}), the instrument asks for all parameter values, but pressing the \verb+Return+ key selects the default value (if any). When used with parameter values in the command line, all non specified parameters will have their value set to the default one (if any). A parameter is given a
+instrument simulation is executed. When executed without any parameter value in the command line (see section~\ref{s:run-sim}), the instrument asks for all parameter values, but pressing the \verb+Return+ key selects the default value (if any). When used with at least one parameter value in the command line, all non specified parameters will have their value set to the default one (if any). A parameter is given a
 default value using the syntax ``\textit{param}\texttt{ = }\textit{value}''.
 For example
 \begin{quote}
@@ -353,7 +353,12 @@ $\phi_z$ around the $z$ axis. Rotation may also be specified using
 specified, the default is $(0,0,0)$ using the same relative or absolute
 specification used in the \texttt{AT} modifier.
 
-The \texttt{PREVIOUS} \index{Keyword!PREVIOUS} keyword is a generic name to refer to the previous component in the simulation. Moreover, the \texttt{PREVIOUS(n)} keyword will refer to the $n$-th previous component, starting from the current component, so that \texttt{PREVIOUS} is equivalent to \texttt{PREVIOUS(1)}. This keyword should be used after the \texttt{RELATIVE} keyword, but not for the first component instance of the instrument description. Invalid \texttt{PREVIOUS} references will be assumed to be absolute placement. 
+The \texttt{PREVIOUS} \index{Keyword!PREVIOUS} keyword is a generic name to refer to the previous component in the simulation. Moreover, the \texttt{PREVIOUS(n)} keyword will refer to the $n$-th previous component, starting from the current component, so that \texttt{PREVIOUS} is equivalent to \texttt{PREVIOUS(1)}. This keyword should be used after the \texttt{RELATIVE} keyword, but not for the first component instance of the instrument description.
+\begin{quote}
+  \texttt{AT} $(x,y,z)$ \texttt{RELATIVE} \textit{PREVIOUS}
+  \texttt{ROTATED} $(\phi_x,\phi_y,\phi_z)$ \texttt{RELATIVE} \textit{PREVIOUS(2)}
+\end{quote}
+Invalid \texttt{PREVIOUS} references will be assumed to be absolute placement. 
 
 The order and position of components in the \texttt{TRACE} section does not
 allow components to overlap, except for particular cases.
@@ -936,27 +941,26 @@ A simple example of the component \texttt{Slit} is given.
 \smallverbatimfile{../mcstas/lib/optics/Slit.comp}
 
 
-\subsection{McDoc, the McStas component documentation tool}
+\subsection{McDoc, the McStas library documentation tool}
 \label{s:mcdoc}
 \index{Tools!mcdoc}
 
 %From version 1.3, 
-McStas includes a facility called McDoc to help
-maintain good documentation of components. In the component source code,
-comments may be written that follow a particular format understood by
-McDoc. The McDoc facility will read these comments and automatically
-produce output documentation in various forms. By using the source code
-itself as the source of documentation, the documentation is much more
-likely to be a faithful and up-to-date description of how the component
-actually works.
+McStas includes a facility called McDoc to help maintain good documentation of
+components and instruments. In the component source code, comments may be
+written that follow a particular format understood by McDoc. The McDoc facility
+will read these comments and automatically produce output documentation in
+various forms. By using the source code itself as the source of documentation,
+the documentation is much more likely to be a faithful and up-to-date
+description of how the component/instrument actually works.
 
 %In McStas version 1.4, 
 Two forms of documentation can be generated. One
 is the component entry dialog in the \verb+mcgui+ front-end, see
 section~\ref{s:mcgui}. The other is a collection of web pages documenting
-the component, handled via the \verb+mcdoc+ front-end (see section~\ref{s:mcdoc-run}), and the complete documentation for all available
-McStas components may be found at the \MCS\
-webpage~\cite{mcstas_webpage}, and in the \MCS\ library (see~\ref{s:comp-overview}).
+the components and instruments, handled via the \verb+mcdoc+ front-end (see section~\ref{s:mcdoc-run}), and the complete documentation for all available
+McStas components and instruments may be found at the \MCS\
+webpage~\cite{mcstas_webpage}, and in the \MCS\ library (see~\ref{s:comp-overview}). This latter is accessible from the \verb+mcgui+ 'Help' menu.
 
 Note that McDoc-compliant comments in the source code are no substitute
 for a good reference manual entry. The mathematical equations describing
@@ -966,14 +970,14 @@ useful for describing the general behaviour of the component, the
 meaning and units of the input parameters, etc.
 
 
-\subsubsection{The format of the comments in the component source code}
+\subsubsection{The format of the comments in the library source code}
 
 The format of the comments understood by McDoc is mostly
 straight-forward, and is designed to be easily readable both by humans
 and by automatic tools. McDoc has been written to be quite tolerant in
 terms of how the comments may be formatted and broken across lines. A
 good way to get a feeling for the format is to study some of the examples
-in the existing components. Below, a few
+in the existing components and instruments. Below, a few
 notes are listed on the requirements for the comment headers:
 
 The comment syntax uses \verb+%IDENTIFICATION+, \verb+%DESCRIPTION+,

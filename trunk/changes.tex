@@ -3,15 +3,14 @@
 \chapter{New features in \MCS\ version \version\ }
 \label{c:changes}
 
-Many new features have been implemented in \MCS\ version \version\ 
-as compared to version 1.5 (no version 1.6. manual was written,
-the most important being that \MCS can now compile and run in
-a Windows enviroment. 
-The list of changes given here may be particularly 
-useful to experienced \MCS\ users who do not wish to read the whole 
-manual, searching only for new features. A global upward compatibility 
-exists for all changes, and thus all previous components and 
-instruments should work as before. 
+Many new features have been implemented in \MCS\ version \version\  since
+version 1.5 (no version 1.6. manual was written, the most important being that
+\MCS\ can now compile and run in a Windows enviroment.  The list of changes
+given here may be particularly  useful to experienced \MCS\ users who do not
+wish to read the whole  manual, searching only for new features. A global
+upward compatibility  exists for all changes, and thus all previous components
+and  instruments should work as before. Changes are labelled as 1.7 or 1.8 to 
+indicate in which \MCS\ version they appeared. 
 
 \section{Kernel} 
 \label{s:new-features:kernel}
@@ -21,38 +20,51 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
 
 \begin{itemize}
 \item \MCS\ can now compile for Windows!
-\item An instrument source file may contain \texttt{EXTEND} \%\{ \ldots \}\% C blocks
-    just after   the usual \texttt{AT} \ldots \texttt{ROTATED} \ldots keywords, to
-    extend the behaviour of existing components, without touching their code. All
-    local component variables are  available. This may for instance be used to add a
-    new 'color' to neutrons,  i.e. assign a new characteristic variable to the
-    neutron. \index{Keyword!EXTEND}
+\item Instrument parameters may now have default values, the same way as components do 
+    (appeared in 1.8). \index{Parameters!Optional, default value}
+\item An instrument source file may contain \texttt{EXTEND} \%\{ \ldots \}\% C
+    blocks just after the usual \texttt{AT} \ldots \texttt{ROTATED} \ldots
+    keywords, to extend the behaviour of existing components, without touching
+    their code. All local component variables are  available. This may for
+    instance be used to add a new 'color' to neutrons,  i.e. assign a new
+    characteristic variable to the neutron (appeared in 1.7).
+    \index{Keyword!EXTEND}
 \item Component instances in an instrument file may be \texttt{GROUP}'ed into 
     exclusive assembly, i.e.\ only one component of the group will intercept
-    the neutron ray, the rest will be skipped. This is useful for multi monochromators
-    multi detectors, multiple collimators, etc. 
-    After the \texttt{ROTATED} keyword, the keyword \texttt{GROUP} should be added
-    followed by a group name (e.g. \texttt{GROUP} MyGroup). \index{Keyword!GROUP}    
-\item The instrument and components may have string (\verb+char*+) setting parameters. For
-    components, their length is limited to 1024 characters.
-    \index{Parameters!Instrument} \index{Parameters!Setting}
+    the neutron ray, the rest will be skipped. This is useful for multi
+    monochromators multi detectors, multiple collimators, etc.  After the
+    \texttt{ROTATED} keyword, the keyword \texttt{GROUP} should be added
+    followed by a group name (e.g. \texttt{GROUP} MyGroup)  (appeared in 1.7).
+    \index{Keyword!GROUP}    
+\item The instrument and components may have string (\verb+char*+) setting
+    parameters. For components, their length is limited to 1024 characters
+    (appeared in 1.7). \index{Parameters!Instruments} \index{Parameters!Setting}
 \item In both components and instruments, the \texttt{FINALLY} section, that is
-    executed at the end of simulations, has been supplemented with a new \texttt{SAVE}
-    section. This latter is executed at simulation end (just before the
-    \texttt{FINALLY} section), but also each time an intermediate save is required (e.g.\  
-    when a 'kill -USR2 \$pid' is used under Unix, see section ref{s:new-features:run-time}). 
-    \index{Keyword!SAVE} \index{Keyword!FINALLY} \index{Signal handler!USR2 signal}
-\item Components may have a \texttt{SHARE} section, which is imported only once per
-    type of component. \texttt{SHARE} has the same role as \texttt{DECLARE}, but is
-    useful when several instances of the same component is used in a single simulation.
+    executed at the end of simulations, has been supplemented with a new
+    \texttt{SAVE} section. This latter is executed at simulation end (just
+    before the \texttt{FINALLY} section), but also each time an intermediate
+    save is required (e.g.\   when a 'kill -USR2 \$pid' is used under Unix, see
+    section ref{s:new-features:run-time})  (appeared in 1.7). 
+    \index{Keyword!SAVE} \index{Keyword!FINALLY} \index{Signal handler!USR2
+    signal}
+\item Components may have a \texttt{SHARE} section, which is imported only once
+    per type of component. \texttt{SHARE} has the same role as
+    \texttt{DECLARE}, but is useful when several instances of the same
+    component is used in a single simulation  (appeared in 1.7).
     \index{Keyword!SHARE} \index{Keyword!DECLARE}
 \item The component files may have some \texttt{\%include} inside '\%\{ \}\%'
-    \texttt{DECLARE} or \texttt{SHARE} C blocks. The files to include are searched
-    locally, and then in the library. If an extension is found, only the specified
-    file is included, else both  .h and .c are embedded unless the --no-runtime has
-    been specified. As in previous
-    releases, the instrument files can embed external files, both in C
-    blocks  and in the instrument parts (\texttt{DECLARE}, etc.) . \index{Keyword!%include}
+    \texttt{DECLARE} or \texttt{SHARE} C blocks. The files to include are
+    searched locally, and then in the library. If an extension is found, only
+    the specified file is included, else both  .h and .c are embedded unless
+    the --no-runtime has been specified. As in previous releases, the
+    instrument files can embed external files, both in C blocks  and in the
+    instrument parts (\texttt{DECLARE}, etc.) (appeared in 1.7).
+    \index{Keyword!%include}
+\item The \texttt{PREVIOUS} keyword, to be used after \texttt{RELATIVE} in
+    place of component instance names refers to the preceeding component, and
+    does not require to actually know  its name. Similarly the
+    \texttt{PREVIOUS(n)} keyword refers to the $n$-th preceeding component
+    (appeared in 1.8). \index{Keyword!PREVIOUS}
 \end{itemize}
 
 \section{Run-time} 
@@ -66,23 +78,25 @@ as well as in the appendix~\ref{c:kernelcalls}.
 
 \begin{itemize}
 \item A global gravitation handling is now available, by setting the \verb+-g+ flag.
-\item Many output formats are available for data. Use the \verb+--format="format"+
-    flag, e.g. \verb+--format="Scilab"+. 
-    The default format is McStas/PGPLOT, but may be specified globally using
-    the \verb+MCSTAS_FORMAT+ environment variable. 
-    See section~\ref{s:run-format} for details.
-    \index{Environment variable!MCSTAS\_FORMAT} \index{Data format}
-\item It is possible to save 3D data arrays, by calling the DETECTOR\_OUT\_3D macro.
-    (handled as 2D by \verb+mcplot+ by ignoring the 3rd dimension). 
-    \index{Library!Run-time!DETECTOR\_OUT}
+\item Many output formats are available for data. Use the
+    \verb+--format="format"+ flag, e.g. \verb+--format="Scilab"+.  The default
+    format is McStas/PGPLOT, but may be specified globally using the
+    \verb+MCSTAS_FORMAT+ environment variable.  See section~\ref{s:run-format}
+    for details (appeared in 1.7). \index{Environment variable!MCSTAS\_FORMAT}
+    \index{Data format}
+\item It is possible to save 3D data arrays, by calling the DETECTOR\_OUT\_3D
+    macro. (handled as 2D by \verb+mcplot+ by ignoring the 3rd dimension)
+    (appeared in 1.7).  \index{Library!Run-time!DETECTOR\_OUT}
 \item The C type of the 'number of events' array in monitors (usually named
     \verb+L_N+) was changed from \verb+int+ to \verb+double+, to avoid overflow.
-    All 'home-made' monitors should be updated accordingly.
-\item The \verb+USR2+ signal generates an intermediate save for all monitors, during
-    the simulation (executes the \texttt{SAVE} section). The \verb+USR1+ signal still
-    gives informations. \index{Signal handler!USR1 signal}
-\item A new \verb+randvec_target_rect+ function now focuses on a rectangle (more
-    efficient than the former \verb+randvec_target_sphere+).
+    All 'home-made' monitors should be updated accordingly (appeared in 1.7).
+\item The \verb+USR2+ signal generates an intermediate save for all monitors,
+    during the simulation (executes the \texttt{SAVE} section). The \verb+USR1+
+    signal still gives informations (appeared in 1.7). \index{Signal
+    handler!USR1 signal}
+\item New \verb+randvec_target_rect+ and \verb+randvec_target_rect_angular+
+    functions now focus  on a rectangle (more efficient than the former
+    \verb+randvec_target_sphere+) (appeared in 1.7).
     \index{Library!Run-time!randvec\_target\_rect}
 \end{itemize}
 
@@ -98,99 +112,120 @@ section~\ref{s:comp-overview}.
 \begin{itemize}
 \index{Library!Components!data}
 \item A new \verb+data+ directory contains neutron data tables (transmissions, reflectivities, Laue patterns, \ldots).
+\item A new \verb+example+ directory contains instrument examples, available from the \verb+mcgui+ 'Neutron site' menu Tool.
 \item The documentation is now included in the \verb+doc+ directory.
       \index{Library!Components!doc}
 \item Many dedicated libraries are now available as shared code for reading tables,
     handling data files and monitors. These are C functions to be \texttt{\%include}d
-    into components (see e.g. \verb+MCSTAS/monitors/Monitor_nD.comp+).
+    into components (see e.g. \verb+MCSTAS/monitors/Monitor_nD.comp+) (appeared in 1.7).
     \index{Library!Components!share}
-\item Obsolete directory contains components that were renamed or old.
+\item Obsolete directory contains components that were renamed or old (appeared in 1.7).
       \index{Library!Components!obsolete}
-\item \verb+misc/Progress_bar+ component now exists, and may save data regularly.
+\item \verb+misc/Progress_bar+ component now exists, and may save data regularly 
+      (appeared in 1.7).
       \index{Library!Components!misc}
-\item \verb+optics/Monochromator_curved+ can read reflectivity and transmission tables.
+\item \verb+optics/Monochromator_curved+ can read reflectivity and transmission tables
+      (appeared in 1.7).
 \item \verb+optics+ components were renamed by categories, starting with
    Guide\_\ldots, Monochromator\_\ldots, Filter\_\ldots etc so that sorting is
-   easier. \index{Library!Components!optics}
-\item \verb+optics/Guide_gravity+ can handle a 2D array of channels.
+   easier (appeared in 1.7). \index{Library!Components!optics}
+\item \verb+optics/Guide_gravity+ can handle a 2D array of channels, and
+    has options for subdivisions in length, chamfers and wavyness.
 \item \verb+optics/Filter_gen+ can read a table from a file and affect the neutron
     beam (replaces the obsolete \verb+Flux_adapter+). It may act as a filter or a
-    source.
+    source (appeared in 1.7).
 \item \verb+monitors/Monitor_nD+ can have automatic limits mode for either all or 
     selected monitored variables. It may also plot banana monitors for
     \verb+mcdisplay+ and monitor something else than the intensity, e.g. the mean
-    energy on a XY psd. \index{Library!Components!monitors}
+    energy on a XY psd (appeared in 1.7). \index{Library!Components!monitors}
 \item \verb+sources/Virtual_output+ can save neutron events into a file
-    (beware the size of the generated files !). Format may be text or binary.
-    \index{Library!Components!sources}
+    (beware the size of the generated files !). Format may be text or binary
+    (appeared in 1.7). index{Library!Components!sources}
 \item \verb+sources/Virtual_input+ can read the files generated by \verb+Virtual_output+.
 \item \verb+samples+ can now target towards any component, given its index 
     (no need to compute \verb+target_x|y|z+ vector, use e.g. \verb+target_index=1+). 
     Position an \verb+Arm+ at the focusing position when targetting to 
-    centered components.
+    centered components (appeared in 1.7).
     \index{Library!Components!samples}
 \item \verb+samples/Res_monitor+, \verb+Powder1+ and \verb+V_sample+ may now have a
     sphere or box shape, and may focus to a circular or rectangular area.
-\item Contributed components (\verb+Guide_honeycomb+) have been
-    placed in the \verb+contrib+ directory. \index{Library!Components!contrib}
+\item \verb+samples/Sans_spheres+ is a new sample component for small angle scattering
+    (appeared in 1.8). \index{Library!Components!samples}
+\item Contributed components (\verb+Guide_honeycomb+, \verb+Guide_tapering+, \verb+Guide_curved+) have been
+    placed in the \verb+contrib+ directory (appeared in 1.7 and 1.8). \index{Library!Components!contrib}
 \end{itemize}
 
 \section{Tools, installation}
 \label{s:new-features:tools}
 \index{Tools}
 \index{Installing}
-  A renewal of most \MCS\ Tools, used to edit and display instrument or results, 
-  has been undertaken, aiming at proposing alternatives to the Perl+PerlTk+PGPLOT+PDL 
-  libraries.
-  This has improved significantly the portability of \MCS\ and thus simplified the
-  installation of the package. Details about the installation and the available tools are given in section~\ref{s:frontends}.
+  A renewal of most \MCS\ Tools, used to edit and display instrument or
+  results,  has been undertaken, aiming at proposing alternatives to the
+  Perl+PerlTk+PGPLOT+PDL  libraries.
+  
+  Quite a lot of work was achieved in order to solve the installation problems
+   that have been encoutered so far. A fully working \MCS\ distribution now
+   only requires a C compiler, perl, perl-Tk and one of Matlab, Scilab and
+   (PGPLOT, perl-DL). The Plotlib Scilab library has  been included in the
+   package, and does not need to be installed separately anymore.
+  
+  This has improved significantly the portability of \MCS\ and thus simplified
+  the installation of the package. Details about the installation and the
+  available tools are given in section~\ref{s:frontends}.
 
 \begin{itemize}
 \item The list of required packages for a complete \MCS\ installation is now a C
     compiler, Perl, PerlTk and Scilab or Matlab.
 \item Matlab, Scilab and IDL may read directly McStas results if the simulation
     was executed with the \verb+--format="..."+ option 
-    (see~\ref{s:new-features:run-time} changes). The former PGPLOT interface is still
-    supported. 
-    \index{Tools!Matlab} \index{Tools!Scilab} 
-    \index{Tools!IDL} \index{Tools!Perl libraries}   
+    (see~\ref{s:new-features:run-time} changes). The former PGPLOT interface is
+    still supported (appeared in 1.7).  \index{Tools!Matlab}
+    \index{Tools!Scilab}  \index{Tools!IDL} \index{Tools!Perl libraries}   
+\item\verb+mcgui+ can now perform \verb+mcrun+-like parameter scans
+    directly from the gui (appeared in 1.8).
+\item\verb+mcgui+ has now a 'Neutron site' menu which enables to load directly one of the
+    instrument examples (appeared in 1.8).
+\item \verb+mcrun+ can generate scan results in all formats (appeared in 1.8). 
+   \index{Tools!mcrun}
+\item \verb+mcrun+ has a \MCS\ self test procedure available (appeared in 1.8). 
+   \index{Tools!mcrun}
 \item \verb+mcplot+, \verb+mcdisplay+, \verb+mcgui+ are now less dependent on the
-    \verb+perl/PDL/pgplot+ installed versions. \index{Tools!mcplot}
+    \verb+perl/PDL/pgplot+ installed versions and fully work with Matlab/Scilab (appeared in 1.7). \index{Tools!mcplot}
 \item \verb+mcplot+ can plot a single simulation data file.
 \item \verb+mcplot+, \verb+mcresplot+, \verb+mcdisplay+ can output GIF, PS and color
     PS files. They also have integrated help (-h options), and may generate output
-    files in a non interactive mode (read data, create output file, exit).
+    files in a non interactive mode (read data, create output file, exit) (appeared in 1.7).
 \item \verb+mcplot+ and \verb+mcdisplay+ work with Matlab, PGPLOT and Scilab plotters
    (depends on the \verb+MCSTAS_FORMAT+ environment variable, or -pPLOTTER option, or
-   PGPLOT if not set)
-\item \verb+mcrun+ can not currently generate scan results in other formats than
-   McStas/PGPLOT, but a port for Scilab/Matlab is under way. 
-   \index{Tools!mcrun}
+   PGPLOT if not set) (appeared in 1.7).
+\item \verb+mcplot+ may display parameter scan step results in all formats
+   (appeared in 1.8).  \index{Tools!mcplot}
 \item \verb+mcstas2vitess+ enables to convert a McStas component into a
-   Vitess~\cite{vitess_webpage} one. \index{Tools!mcstas2vitess}
+   Vitess~\cite{vitess_webpage} one (appeared in 1.7). \index{Tools!mcstas2vitess}
 \item \verb+mcresplot+ can plot projections of the 4D resolution function of an 
    instrument obtained from the \verb+Res_sample+ and \verb+Res_monitor+ components.
    In version \version, it only works with the McStas/PGPLOT format, 
-   but a port for Scilab/Matlab is under way. \index{Tools!mcresplot}
+   but a port for Scilab/Matlab is under way (appeared in 1.7). \index{Tools!mcresplot}
 \item \verb+mcdoc+ can now display the pdf version of the manual, an
   HTML catalog of the current library, as well as help for single
   components. \index{Tools!mcdoc} The \verb+mcdoc+ functions have been
-  closely integrated into \verb+mcgui+. 
+  closely integrated into \verb+mcgui+ (appeared in 1.7). 
+\item \verb+mcdoc+ can document automatically instruments in the same way as components
+ (appeared in 1.8).
+\item \verb+mcconvert+ is a new tool to convert \MCS\ result text files from Matlab to Scilab, 
+  and from Scilab to Matlab formats (appeared in 1.8). \index{Tools!mcconvert}
 \end{itemize}
 
 \section{Future extensions}
 \label{s:future}
 The following features are planned for the oncoming releases of \MCS :
 \begin{itemize}
-\item Support for Matlab and Scilab in \verb+mcrun+ and
-  \verb+mcresplot+
-\item Extension of \verb+mcgui+ for performing \verb+mcrun+-like scans
-  directly from the gui. (This functionality is currently possible by
-  use of the contributed \verb+batchmaker+)
-\item Extension of \verb+mcdoc+ for instrument documentation
+\item Support for Matlab and Scilab in \verb+mcresplot+.
 \item Support for MPI (parallel processing library) in the runtime
 \item Language extension 'JUMP' for enabeling loops, 'teleporting'
-  etc. in instrument descriptions
+  etc. in instrument descriptions.
+\item Concentric components.
+\item Polarised components and magnetic field computation components.
 \end{itemize}
 
 
