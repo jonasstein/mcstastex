@@ -332,7 +332,7 @@ command line or shell:
 Note the leading dot, which is needed if the current directory is not in
 the path searched by the shell. When used in this way, the simulation
 will prompt for the values of any instrument parameters such as motor
-positions, and then run the simulation.  
+positions, and then run the simulation. Default instrument parameter values (see section~\ref{s:instrdefs}), if any, will be indicated and entered when hitting the \verb+Return+ key.\index{Parameters!Optional, default value}
 This way of running \MCS\ will only give data for one spectrometer
 setting which is normally sufficient {\em e.g.} for a time-of-flight
 spectrometer, but not for a triple-axis spectrometer where a scan over
@@ -353,6 +353,7 @@ the syntax \textit{name}\verb+=+\textit{val}. For example
 \begin{verbatim}
     ./vanadium_example.out ROT=90
 \end{verbatim}
+\index{Parameters!Instruments}
 The number of neutron histories to simulate may be set using the
 \verb+--ncount+ or \verb+-n+ option, for example
 \verb+--ncount=2e5+. The initial seed for the random number generator is

@@ -141,6 +141,7 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{OUTPUT} & C & Defines internal variables to be public and protected symbols (usually all those of DECLARE).\\
       \texttt{PARAMETERS} & C & Defines a class of component parameter. \\
       \texttt{POLARISATION} & C & Defines neutron polarisation coordinates. \\
+      \texttt{PREVIOUS} & C & Refers to a previous component position/orientation. \\
       \texttt{RELATIVE} & I & Indicates that the AT and ROTATED keywords are relative to an other component. \\
       \texttt{ROTATED} & I & Indicates the orientation of a component in an instrument definition. \\
       \texttt{SAVE} & I,C & Embedded C code to execute when saving data. \\
@@ -239,8 +240,20 @@ Here \verb+d1+ and \verb+d2+ will be floating point parameters of C type
 \verb+double+, \verb+i+ will be an integer parameter of C type
 \verb+int+, and \verb+s1+ and \verb+s2+ will be string parameters of C
 type \verb+char *+. 
+\index{Parameters!Optional, default value}
+The parameters of an instrument may be given default values. Parameters with default values are called \emph{optional
+  parameters}, and need not be given an explicit value when the
+instrument simulation is executed. When executed without any parameter value in the command line (see section~\ref{s:run-sim}), the instrument asks for all parameter values, but pressing the \verb+Return+ key selects the default value (if any). When used with parameter values in the command line, all non specified parameters will have their value set to the default one (if any). A parameter is given a
+default value using the syntax ``\textit{param}\texttt{ = }\textit{value}''.
+For example
+\begin{quote}
+  \texttt{DEFINE INSTRUMENT test(d1 = 1, string s2="hello")}
+\end{quote}
+Here \verb+d1+ is an optional parameter and if no value is given
+explicitly, ``1'' will be used.
 
-
+Optional parameters can greatly increase the convenience for users of
+instruments for which some parameters are seldom changed or of unclear signification to the user. Also, if all instrument parameters have default values, then the simple command \verb+mcdisplay+ \verb+test.instr+ will show the instrument view without requesting any other input, which is usually a good starting point to study the instrument design.
 
 \subsection{The \texttt{DECLARE} section}
 \index{Keyword!DECLARE}
@@ -339,6 +352,8 @@ $\phi_z$ around the $z$ axis. Rotation may also be specified using
 \texttt{ABSOLUTE} rather than \texttt{RELATIVE}. If no rotation is
 specified, the default is $(0,0,0)$ using the same relative or absolute
 specification used in the \texttt{AT} modifier.
+
+The \texttt{PREVIOUS} \index{Keyword!PREVIOUS} keyword is a generic name to refer to the previous component in the simulation. Moreover, the \texttt{PREVIOUS(n)} keyword will refer to the $n$-th previous component, starting from the current component, so that \texttt{PREVIOUS} is equivalent to \texttt{PREVIOUS(1)}. This keyword should be used after the \texttt{RELATIVE} keyword, but not for the first component instance of the instrument description. Invalid \texttt{PREVIOUS} references will be assumed to be absolute placement. 
 
 The order and position of components in the \texttt{TRACE} section does not
 allow components to overlap, except for particular cases.
@@ -534,10 +549,10 @@ line.
 \subsubsection{Optional component parameters}
 \index{Parameters!Optional, default value}
 
-The definition and setting parameters of a component may be given a
-default value. Parameters with default values are called \emph{optional
-  parameters}, and need not be given an explicit value when the
-component is used in an instrument definition. A parameter is given a
+Just as for instrument parameters, the definition and setting parameters of a
+component may be given a default value. Parameters with default values are
+called \emph{optional parameters}, and need not be given an explicit value when
+the component is used in an instrument definition. A parameter is given a
 default value using the syntax ``\textit{param}\texttt{ = }\textit{value}''.
 For example
 \begin{quote}
@@ -546,8 +561,7 @@ For example
 Here \verb+pack+ is an optional parameter and if no value is given
 explicitly, ``1'' will be used\footnote{In contrast, if no value is
   given for \texttt{radius} or \texttt{height}, an error message will
-  result.}. In the present version of McStas, only numbers can be given
-as default values.
+  result.}.
 
 Optional parameters can greatly increase the convenience for users of
 components with many parameters that have natural default values which
