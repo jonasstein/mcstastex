@@ -5,8 +5,7 @@
 \index{Library!Components|textbf}
 
 This chapter has been removed from the manual and will instead be published 
-in a separate manual describing the McStas components. The McStas component manual will be edited by the McStas authors and it will include contributions from users writing components. Until the \MCS\ component manual is published we refer to the McStas web-page~\cite{mcstas_webpage} where all components are documented using the McDoc system or to previous manual for 
-release 1.4.
+in a separate manual describing the McStas components. The McStas component manualis edited by the McStas authors and it will include contributions from users writing components. As a complement to the \MCS\ component manual, you may use the \verb+mcdoc -s+ command to obtain the on-line component documentation and refer to the McStas web-page~\cite{mcstas_webpage} where all components are documented using the McDoc system.
 
 \section{A short overview of the \MCS\ component library}
 \label{s:comp-overview}
@@ -37,7 +36,7 @@ The first line will search for all components matching the {\it name}, and displ
     {\let\my=\\
     \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
       \hline
-       MCSTAS/sources & Description \\
+       {\bf MCSTAS/sources} & Description \\
        \hline
 Adapt\_check & Optimization specifier for the Source\_adapt component. \\
 ESS\_moderator\_long & Parametrised pulsed source for modelling ESS long pulses. \\
@@ -76,13 +75,13 @@ Virtual\_output &  Detector-like component that writes neutron state (for Virtua
     {\let\my=\\
     \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
       \hline
-       MCSTAS/optics & Description \\
+       {\bf MCSTAS/optics} & Description \\
        \hline
 Arm                &  Arm/optical bench \\
  Beamstop          &   Rectangular/circular
                       beam stop. \\
  Bender            &   Models a curved
-                      neutron guide. \\
+                      neutron guide (shown straight). \\
  Chopper           &   Disk chopper. \\
  Chopper\_Fermi     &   Fermi Chopper with
                       curved slits. \\
@@ -138,15 +137,19 @@ Arm                &  Arm/optical bench \\
     {\let\my=\\
     \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
       \hline
-       MCSTAS/samples & Description \\ 
+       {\bf MCSTAS/samples} & Description \\ 
        \hline
-       Powder1      &  General powder sample with a single
+  Powder1      &  General powder sample with a single
                 scattering vector. \\
+  Powder2      &  General powder sample with a two
+                scattering vectors. \\                
 
- Res\_sample   & Sample for resolution function
+  Res\_sample   & Sample for resolution function
                 calculation. \\
+                
+  Sans\_spheres  & Sample for Small Angle Neutron Scattering - hard spheres in thin solution, mono disperse. \\
 
- Single\_crystal & Mosaic single crystal with multiple
+  Single\_crystal & Mosaic single crystal with multiple
                 scattering vectors. \\
 
  V\_sample      & Vanadium sample.\\
@@ -164,7 +167,7 @@ Arm                &  Arm/optical bench \\
     {\let\my=\\
     \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
       \hline
-       MCSTAS/monitors & Description \\ 
+       {\bf MCSTAS/monitors} & Description \\ 
        \hline
 DivLambda\_monitor &  Divergence/wavelength monitor. \\
 DivPos\_monitor  &    Divergence/position
@@ -234,7 +237,7 @@ TOFlog\_mon      &    Rectangular Time-of-flight
     {\let\my=\\
     \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
       \hline
-       MCSTAS/misc & Description \\ 
+       {\bf MCSTAS/misc} & Description \\ 
        \hline
        Progress\_bar  &       A simulation
                       progress bar. May also trigger intermediate SAVE.\\ 
@@ -258,13 +261,16 @@ TOFlog\_mon      &    Rectangular Time-of-flight
     {\let\my=\\
     \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
       \hline
-       MCSTAS/contrib & Description \\ 
+       {\bf MCSTAS/contrib} & Description \\ 
        \hline
        Al\_window     &         Aluminium
                         window in the beam. \\
  Collimator\_ROC   &      Radial
                         Oscillationg
                         Collimator (ROC). \\
+ Guide\_curved     &     Non focusing continuous curved guide (shown curved). \\
+ Guide\_tapering  &     Rectangular tapered guide (parabolic, elliptic, sections ...). \\
+  
  FermiChopper    &       Fermi Chopper with
                         rotating frame. \\
  Filter\_graphite  &      Pyrolytic
@@ -298,7 +304,7 @@ TOFlog\_mon      &    Rectangular Time-of-flight
     {\let\my=\\
     \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
       \hline
-       MCSTAS/share & Description \\ 
+       {\bf MCSTAS/share} & Description \\ 
        \hline
        adapt\_tree-lib  & Handles a simulation optimisation space for
        adatative importance sampling.
@@ -325,19 +331,36 @@ TOFlog\_mon      &    Rectangular Time-of-flight
     {\let\my=\\
     \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
       \hline
-       MCSTAS/data & Description \\ 
+       {\bf MCSTAS/data} & Description \\ 
        \hline
- .lau & Laue pattern file, as issued from Crystallographica or FullProf.
+ *.lau & Laue pattern file, as issued from Crystallographica or FullProf.
        Data: [ h   k   l Mult. d-space 2Theta   F-squared ] \\
- .trm & transmission file, typically for monochromator crystals and filters.
+ *.trm & transmission file, typically for monochromator crystals and filters.
        Data: [ k (Angs-1) , Transmission (0-1) ] \\
- .rfl & reflectivity file, typically for mirrors and monochromator crystals.
+ *.rfl & reflectivity file, typically for mirrors and monochromator crystals.
        Data: [ k (Angs-1) , Reflectivity (0-1) ] \\       
       \hline
     \end{tabular}
     \caption{Data files of the \MCS\ library.}
     \label{t:comp-data}
     \index{Library!Components!data}
+    }
+  \end{center}
+\end{table}
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+      \hline
+       {\bf MCSTAS/examples} & Description \\ 
+      \hline
+      *.instr & This directory contains example instruments, accessible throught the \verb+mcgui+ ``Neutron site'' menu. \\
+      \hline
+    \end{tabular}
+    \caption{Instrument example files of the \MCS\ library.}
+    \label{t:comp-instr}
+    \index{Library!Instruments}
     }
   \end{center}
 \end{table}

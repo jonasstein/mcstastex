@@ -197,14 +197,14 @@ resulting Coord structure.
   in DETECTOR\_OUT\_2D, but with the additional $z$ axis (the signal).
   Resulting data files are treated as 2D data, but the 3rd dimension is
   specified in the $type$ field.
-\item {\bf mcheader\_out}$(FILE *f,char *parent$,
-  $int m, int n, int p$,
-  $char *xlabel, char *ylabel$, $char *zlabel, char *title$,
-  $char *xvar, char *yvar, char *zvar$,
-  $double x1, double x2, double y1$, $ double y2, double z1, double z2$,
-  $char *filename)$ appends a header file using the current data format setting. Signification of parameters may be found in section~\ref{s:comp-finally}. Please contact the authors in case of perplexity.
-\item {\bf mcinfo\_simulation}$(FILE *f, mcformat, 
-  char *pre, char *name)$ is used to append the simulation parameters into file $f$ (see for instance the Res\_monitor component). Internal variable $mcformat$ should be used as specified. Please contact the authors in case of perplexity.
+\item {\bf mcheader\_out}{\it (FILE *f,char *parent,
+  int m, int n, int p,
+  char *xlabel, char *ylabel, char *zlabel, char *title,
+  char *xvar, char *yvar, char *zvar,
+  double x1, double x2, double y1,  double y2, double z1, double z2,
+  char *filename)} appends a header file using the current data format setting. Signification of parameters may be found in section~\ref{s:comp-finally}. Please contact the authors in case of perplexity.
+\item {\bf mcinfo\_simulation}{\it (FILE *f, mcformat, 
+  char *pre, char *name)} is used to append the simulation parameters into file $f$ (see for instance the Res\_monitor component). Internal variable $mcformat$ should be used as specified. Please contact the authors in case of perplexity.
 \end{itemize}
 
 \subsection{Ray-geometry intersections}
@@ -302,8 +302,8 @@ A usage example for this library part may be:
     Table_Read(&rTable, file, 1); % reads the first numerical block
     Table_Info(rTable);   % display table informations
     ...
-    x = Table_Index(rTable, 2,5);  % reads the 3rd row, 5th column element 
-                                   % of the table. Indexes start at zero in C
+    x = Table_Index(rTable, 2,5);  % reads the 3rd row, 6th column element 
+                                   % of the table. Indexes start at zero in C.
     y = Table_Value(rTable, 1.45,1);  % looks for value 1.45 in 1st column (x axis)
                                       % and extract 2nd column value of that row
     Table_Free(&rTable);  % free allocated memory for table

@@ -62,7 +62,7 @@ see figure~\ref{fig:mcgui}. \index{Tools!mcgui}
 \label{fig:mcgui}
 \end{figure}
 
-To load an instrument, select ``Other'' from the ``Neutron site''
+To load an instrument, select ``Tutorial'' from the ``Neutron site''
 menu and open the file \verb+vanadium_example+. Next, check that the current plotting backend setting
 (select ``Choose backend'' from the ``Simulation'' menu) corresponds
 to your system setup. The default setting can be adjusted as explained in Chapter \ref{installing}
@@ -237,7 +237,7 @@ for csh/tcsh users, or
 \end{verbatim}
 for bash/Bourne shell users.
 For Windows Users, you should define the \verb+MCSTAS+ from the menu 'Start/Settings/Control Panel/System/Advanced/Environment
-Variables' by cfreating \verb+MCSTAS+ with the value \verb+C:\mcstas\lib+
+Variables' by creating \verb+MCSTAS+ with the value \verb+C:\mcstas\lib+
 
 To make \MCS\ search additional directories for component definitions
 and include files, use the \verb+-I+ switch for the \MCS\ compiler:
@@ -387,7 +387,7 @@ turned off using the \verb+--data-only+ or \verb+-a+ option.
 
 The format of the output files from \MCS\ simulations is described in
 more detail in section~\ref{s:analyze}. It may be chosen either with \verb+--format=FORMAT+ for each simulation or globally by setting the MCSTAS\_FORMAT environment variable. \index{Environment variable!MCSTAS\_FORMAT}
-The available format list is obtained using the \verb+--help+ option, and shown in table~\ref{t:formatoptions}.
+The available format list is obtained using the \verb+name.out --help+ option, and shown in table~\ref{t:formatoptions}.
 \MCS\ can presently generate many formats, including the original \MCS /PGPLOT and the new Scilab and Matlab formats. All formats, except the \MCS /PGPLOT, may eventually support binary files, which are much smaller and faster to import, but are platform dependent. The simulation data file extensions are appended automatically, depending on the format. For example:
 \begin{verbatim}
     ./vanadium_example.out ROT=90 --format="Scilab_binary"
@@ -437,7 +437,7 @@ See section~\ref{s:mcplot} for an other way of plotting simulation results using
       that directory. \\
       \hline
       \texttt{-f {\it file}} \my \texttt{--file={\it file}}
-        & Write all data into a single file {\it file} \\
+        & Write all data into a single file {\it file}. Avoid when using binary formats. \\
       \hline
       \texttt{-a} \my \texttt{--data-only}
         & Do not put any headers in the data files. \\
@@ -527,7 +527,7 @@ followed by the list of detector outputs (integrated counts and files). Finally,
 
 A typical usage example would be, for instance, to save data during a
 simulation, plot or analyze it, and decide to interupt the simulation
-earlier if the desired statistics has been achieved.
+earlier if the desired statistics has been achieved. This may be done automatically using the \verb+Progress_bar+ component.
 
 Whenever simulation data is generated before end (or the simulation is interupted), the 'ratio' field of the monitored data will provide the level of achievement of the computation (for instance '3.33e+05/1e+06');
 
@@ -642,7 +642,7 @@ simply the command
 \end{verbatim}
 The mcgui (mcgui.pl on Windows) program may optionally be given the name of an instrument file.
 
-When the front-end is started, a main window is opened. This window
+When the front-end is started, a main window is opened (se figure \ref{fig:mcgui}). This window
 displays the output from compiling and running simulations, and also
 contains a few menus and buttons. The main purpose of the front-end is
 to edit and compile instrument definitions, run the simulations, and
@@ -690,6 +690,8 @@ The ``File'' menu has the following features:
   (PGPLOT/Matlab/Scilab). Opens the choose backend dialog shown in
   figure~\ref{fig:mcgui-choose}. All formats are chosen as full text, but a 'Use binary files' option is possible.
 \end{description}
+
+\noindent The ``Neutron Site'' menu contains a list of template/example instruments as found in the \MCS\ library, sorted by neutron site. When selecting one of these, a local copy of the instrument description is transfered to the active directory (so that users have modification rights). One may then view its source (Edit) and use it directly for simulations/trace (3D View).
  \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=0.3\textwidth]{figures/choose_backend.eps}
@@ -706,11 +708,13 @@ Windows.
 \begin{description}
 \item[\MCS\ web page] calls \verb+mcdoc --web+, brings up the \MCS\
   website in a web browser.
-\item[\MCS\ manual] calls \verb+mcdoc --manual+, brings up the local
+\item[\MCS\ User manual] calls \verb+mcdoc --manual+, brings up the local
   pdf version of this manual, using a web browser.
+\item[\MCS\ Component manual] calls \verb+mcdoc --comp+, brings up the local
+  pdf version of the component manual, using a web browser.  
 \item[Component doc index] displays the component documentation using
   the component \verb+index.html+ index file.
-\item[Generate component index] (re-)generates the component \verb+index.html+.
+\item[Generate component index] (re-)generates locally the component \verb+index.html+.
 \item[Test \MCS\ installtion] launches a self test procedure to check that the \MCS\ package is installed properly, generates accurate results, and may use the plotter to display the results.
 \end{description}
  single menu point, ``McStas web-page'', which
@@ -748,6 +752,7 @@ The meaning of the different fields is as follows:
   by the next simulation.
 \item[Neutron count] sets the number of neutron histories to
   simulate (the \verb+--ncount+ option).
+\item[Distribute mcrun scans (grid)] is an experimental option to distribute scan steps on a set of machines using \emph{ssh} connexions. 
 \item[Plot results] -- if checked, the \verb+mcplot+ front-end will be run
   after the simulation has finished, and the plot dialog will pop up
   (see below).
@@ -756,6 +761,9 @@ The meaning of the different fields is as follows:
   seed (to reproduce results for debugging).
 \item[Simulate/Trace] selects between running the simulation
   normally, or using the \verb+mcdisplay+ front-end.
+\item[Inspect component] will trace neutron trajectories that only reach a given component (e.g. sample or detector). 
+\item[First component] seletcs the first component to plot (default is first) in order to define a region of interest.
+\item[Last component] seletcs the last component to plot (default is first) in order to define a region of interest.
 \item[Start] runs the simulation.
 \item[Cancel] aborts the dialog.
 \end{description}
@@ -767,6 +775,7 @@ assumed to have a \verb+.out+ suffix in the filename.
 
 
 \subsubsection{The plot dialog}
+This dialog only shows-up when using the \MCS/PGPLOT plotter. Other plotters have attached menus to control graphics and file exports.
 \begin{description}
 \item[Monitors and detectors] lists all the one- and
   two-dimensional detectors in the instrument. By double-clicking, one plots
@@ -780,6 +789,8 @@ assumed to have a \verb+.out+ suffix in the filename.
   subsequently be printed on a postscript printer.
 \item[Colour postscript] creates a colour postscript file of the
   current plot.
+\item[Colour GIF] creates a colour GIF file of the
+  current plot.  
 \item[Close] ends the dialog.
 \end{description}
 
@@ -879,10 +890,9 @@ After running the simulation, the results will be written to the file
 \verb+mcstas.dat+ by default. This file contains one line for each
 simulation run giving the values of the scanned input variables along
 with the intensity and estimated error in all detectors. Additionally, a
-file \verb+mcstas.sim+ is written that can be read by the \verb+mcplot+
+file \verb+mcstas.sci+ (when using Scialb format) is written that can be read by the \verb+mcplot+
 front-end to plot the results on the screen or in a Postscript file, see
 section~\ref{s:mcplot}. \index{Tools!mcplot}
-Currently, \verb+mcrun+ only supports the \MCS /PGPLOT format \emph{for scans}.
 \item When doing a scan, the \texttt{-f {\it file}} and
   \texttt{--file={\it file}} options make \verb+mcrun+ write the output
   to the files \texttt{{\it file\/}.dat} and \texttt{{\it file\/}.sim}
@@ -996,10 +1006,10 @@ variable!PGPLOT\_DEV} \index{Tools!Perl libraries}
 \paragraph{Matlab and Scilab back-ends}
 
 A 3D view of the instrument, and various operations (zoom, export, print, trace neutrons, \ldots) is available from dedicated Graphical User Interfaces.
-The \verb+--inspect+ option may be used (see previous paragraph).
+The \verb+--inspect+ option may be used (see previous paragraph), as well as the \verb+--first+ and \verb+--last+ options to specify a region of interest.
 
 The \verb+mcdisplay+ front-end will then
-require the Perl, and either Scilab (with the {\em plotlib} toolbox) or Matlab to be installed. \index{Tools!Matlab} \index{Tools!Scilab}
+require the Perl+PGPLOT, and either Scilab or Matlab to be installed. \index{Tools!Matlab} \index{Tools!Scilab}
 
 See section~\ref{s:comp-mcdisplay} for how to make new components work
 with the \verb+mcdisplay+ front-end.
@@ -1026,7 +1036,7 @@ It is also possible to plot one single text (not binary) data file from a given 
 
 The drawing back-end program may be selected among PGPLOT, Matlab and Scilab using either the -p{\it PLOTTER} option (e.g. \verb+mcplot -pScilab file+) or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT} Moreover, the drawing back-end program will also be set depending on the {\it file} extension (see table~\ref{t:formatoptions}).
 
-It should be emphasized that \verb+mcplot+ may \emph{only} display simulation results with the format that was chosen during the computation. Indeed, if you request data in a given format from a simulation, you will only be able to display results using that same drawing back-end.
+It should be emphasized that \verb+mcplot+ may \emph{only} display simulation results with the format that was chosen during the computation. Indeed, if you request data in a given format from a simulation, you will only be able to display results using that same drawing back-end. Anyway, the \verb+mcconvert+ utility may convert a \MCS\ data file between Matlab and Scilab formats (see section \ref{s:mcconvert}).
 
 The \verb+mcplot+ front-end can also be run from the \verb+mcgui+ front-end.
 \index{Tools!mcgui}
@@ -1126,7 +1136,7 @@ Alternatively, if a component or instrument {\it comp} is specified, it will be 
 
 The last example will list the name and action of all \MCS\ tools (same as \verb+--tools+ option).
 
-Additionally, the \verb+--web+ and \verb+--manual+ options will open the \MCS\ web site page and the User Manual (this document), both requiring \verb+BROWSER+ to be defined. Finally, the \verb+--help+ option will display the command help, as usual.
+Additionally, the \verb+--web+, \verb+--manual+ and \verb+--comp+ options will open the \MCS\ web site page, the User Manual (this document) and the Component Manual, all requiring \verb+BROWSER+ to be defined. Finally, the \verb+--help+ option will display the command help, as usual.
 
 See section~\ref{s:mcdoc} for more details about the McDoc usage and header format.
 To use the \verb+mcdoc+ front-end, the program Perl should be available.
@@ -1134,8 +1144,9 @@ To use the \verb+mcdoc+ front-end, the program Perl should be available.
 \subsection{Translating \MCS\ components for Vitess (mcstas2vitess)}
 \label{s:mcstas2vitess}
 \index{Tools!mcstas2vitess|textbf}
+\index{Library!vitess-lib}
 
-Any \MCS\ component may be translated for usage with Vitess. The syntax is simply \index{Library!Components}
+Any \MCS\ component may be translated for usage with Vitess (starting from version 2.3). The syntax is simply \index{Library!Components}
 \begin{quote}
   \texttt{mcstas2vitess {\it file.comp\/}}
 \end{quote}
@@ -1149,9 +1160,9 @@ To use the \verb+mcstas2vitess+ front-end, the program Perl should be available.
 
 If you have been running a \MCS\ simulation with Scilab output, but finally plan to look at the results with Matlab, or the contrary, you may use
 \begin{quote}
-  \texttt{mcstas2vitess {\it file.{m|sci}\/}}
+  \texttt{mcconvert {\it file.{m|sci}\/}}
 \end{quote}
-to simply translate one file format to another. This works only for the text files of course. The binary files need not be translated.
+to simply translate one file format the other. This works only for the text files of course. The binary files need not be translated.
 
 \section{Analyzing and visualizing the simulation results}
 \label{s:analyze}
@@ -1220,7 +1231,7 @@ inside the \verb+mcstas.sim+ file instead of in separate files.
 These formats write automatically scripts containing the data as a structure, as well as in-line import and plot functions for the selected language. Usage examples are given in section~\ref{s:run-sim}. 
 Thus, it is not necessary to write a load routine for each format, as the script is itself a program that knows how to handle the data. Alternatively, using \verb+mcplot+ with Matlab and Scilab plotters provide additional functionalities from menus and dialogs (see section~\ref{s:mcplot}).
 
-When imported through the data generated script (see section~\ref{s:run-sim}), or using \verb+mcplot+ (see section~\ref{s:mcplot}), a single variable may be created into the Matlab, Scilab or IDL base workspace. This variable is a structure constituting a data tree containing many fields, some of them being themselves structures. Field names are the initial names from the instrument (components, files, \ldots), transformed into valid variable names, e.g containing only letters, digits and the '\_' character, except for the first character which may only be a letter, or the 'm' letter\footnote{For instance in most case, the simulation location is './mcstas.m' which turns into field 'm\_mcstas'.}. 
+When imported through the data generated script (see section~\ref{s:run-sim}), or using \verb+mcplot+ (see section~\ref{s:mcplot}), a single variable may be created into the Matlab, Scilab or IDL base workspace. This variable is a \emph{structure} constituting a data tree containing many fields, some of them being themselves structures. Field names are the initial names from the instrument (components, files, \ldots), transformed into valid variable names, e.g containing only letters, digits and the '\_' character, except for the first character which may only be a letter, or the 'm' letter\footnote{For instance in most case, the simulation location is './mcstas.m' which turns into field 'm\_mcstas'.}. 
 In this tree, you will find the monitor names, which fields contain the monitored data. The usual structure is
 \begin{quote}
   \texttt{s.{\it instrument}.{\it simulation}.{\it comp\_name}.{\it file\_name}}
@@ -1251,8 +1262,12 @@ ans =
           signal:     'Min=0; Max=5.54051e-10; Mean= 6.73026e-13;'
           statistics: 'X0=0.438302; dX=0.0201232; Y0=51019.6; dY=20557.1;'
           ...
+matlab> eval(s.test.m_mcstas.monitor1.monitor1_y_kz);
+matlab> dX
+ans =
+          0.0201232
 \end{verbatim}      
-The latter example accesses the data from the 'monitor1.y\_kz' file written by the 'monitor1' component in the 'test' instrument during the './mcstas' simulation.
+The latter example accesses the data from the 'monitor1.y\_kz' file written by the 'monitor1' component in the 'test' instrument during the './mcstas' simulation. You may evaluate directly the 'signal' and 'statistics' fields of the structure to obtain useful informations.
 
 \paragraph{HTML, XML/NeXus and NeXus formats}
 

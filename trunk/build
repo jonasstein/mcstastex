@@ -19,8 +19,14 @@ makeindex manual
 # Repeat latex runs:
 latex manual
 latex manual
+
 # latex the Component_manual
 latex Component_manual
+bibtex Component_manual
+makeindex Component_manual
+latex Component_manual
+latex Component_manual
+
 # Create .ps and .pdf files
 dvips -o mcstas-$1-manual.ps manual.dvi
 dvips -o mcstas-$1-components.ps Component_manual.dvi

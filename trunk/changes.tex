@@ -16,7 +16,7 @@ indicate in which \MCS\ version they appeared.
 \label{s:new-features:kernel}
 \index{Kernel}
 
-The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and program). See the chapter~\ref{s:kernel}, page~\pageref{s:kernel}, for more details.
+The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and program). See the dedicated chapter in the {\it User manual} for more details.
 
 \begin{itemize}
 \item \MCS\ can now compile for Windows!
@@ -44,9 +44,8 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
     \texttt{SAVE} section. This latter is executed at simulation end (just
     before the \texttt{FINALLY} section), but also each time an intermediate
     save is required (e.g.\   when a 'kill -USR2 \$pid' is used under Unix, see
-    section ref{s:new-features:run-time})  (appeared in 1.7). 
-    \index{Keyword!SAVE} \index{Keyword!FINALLY} \index{Signal handler!USR2
-    signal}
+    section \ref{s:new-features:run-time})  (appeared in 1.7). 
+    \index{Keyword!SAVE} \index{Keyword!FINALLY} \index{Signal handler!USR2 signal}
 \item Components may have a \texttt{SHARE} section, which is imported only once
     per type of component. \texttt{SHARE} has the same role as
     \texttt{DECLARE}, but is useful when several instances of the same
@@ -73,7 +72,7 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
 
 Some important modifications were done to the 'Run-time' library 
 (i.e.\ the functions used in the instrument program). 
-Some details may be found in section~\ref{s:comp-save} 
+Some details may be found in {\it Running} chapter of the {\it User manual}
 as well as in the appendix~\ref{c:kernelcalls}.
 
 \begin{itemize}
@@ -92,8 +91,7 @@ as well as in the appendix~\ref{c:kernelcalls}.
     All 'home-made' monitors should be updated accordingly (appeared in 1.7).
 \item The \verb+USR2+ signal generates an intermediate save for all monitors,
     during the simulation (executes the \texttt{SAVE} section). The \verb+USR1+
-    signal still gives informations (appeared in 1.7). \index{Signal
-    handler!USR1 signal}
+    signal still gives informations (appeared in 1.7). \index{Signal handler!USR1 signal}
 \item New \verb+randvec_target_rect+ and \verb+randvec_target_rect_angular+
     functions now focus  on a rectangle (more efficient than the former
     \verb+randvec_target_sphere+) (appeared in 1.7).
@@ -107,52 +105,39 @@ as well as in the appendix~\ref{c:kernelcalls}.
   
   We here list some of the new components (found in the \MCS\ \verb+lib+ directory) 
 which are detailed in the {\it Component manual}, also mentioned in
-section~\ref{s:comp-overview}.
+the {\it Component Overview} of the {\it User Manual}.
   
 \begin{itemize}
-\index{Library!Components!data}
-\item A new \verb+data+ directory contains neutron data tables (transmissions, reflectivities, Laue patterns, \ldots).
-\item A new \verb+example+ directory contains instrument examples, available from the \verb+mcgui+ 'Neutron site' menu Tool.
-\item The documentation is now included in the \verb+doc+ directory.
-      \index{Library!Components!doc}
-\item Many dedicated libraries are now available as shared code for reading tables,
+\item All components now have a valid header for \texttt{mcdoc} automatic documentation, as well as usage example.
+\item \texttt{contrib} This directory now contains contributed components. Those that will be found to be highly stable will then go into the other component categories. Contributed components (\verb+Guide_honeycomb+, \verb+Guide_tapering+, \verb+Guide_curved+) have been
+    placed there (appeared in 1.7 and 1.8). \index{Library!Components!contrib}
+\item \texttt{data} This directory now contains example data files mainly for Laue diffraction, transmission and reflection files. \index{Library!Components!data}
+\item \texttt{doc} The documentation is now included in the \verb+doc+ directory. \index{Library!Components!doc}
+\item \texttt{example} A new \verb+example+ directory contains instrument examples, available from the \verb+mcgui+ 'Neutron site' menu Tool.\index{Library!Instruments}
+\item \texttt{misc} Updated \verb+Vitess_input+ and \verb+Vitess_output+ components according to Vitess >= 2.3 Neutron structure.\index{Library!Components!misc}
+\item \texttt{misc} A \verb+Progress_bar+ component may be positioned anywhere in the simulation and displays the simulation percentage. It may also save temporary data files regularly so that one can have a look \index{Tools!mcplot} (using \verb+mcplot+) at the results on-the-fly before the end of the simulation.
+\item \texttt{monitors} The \verb+Monitor_nD+ component may be used as a replacement for all monitors. It may have automatic limits mode for either all or selected monitored variables. It may also plot banana monitors for \verb+mcdisplay+ and monitor something else than the intensity, e.g. the mean energy on a XY psd (appeared in 1.7). \index{Library!Components!monitors} A bug (atan2) was corrected in \verb+PSD_monitor_4PI+. \index{Library!Components!monitors}
+\item \texttt{obsolete} Some components were renamed by categories for better sorting. Old components are still available, but not maintained anymore. We highly encourage to avoid using these when writing new instrument definitions. \index{Library!Components!obsolete}
+\item \texttt{optics} components were renamed by categories, starting with
+   Guide\_\ldots, Monochromator\_\ldots, Filter\_\ldots etc so that sorting is
+   easier (appeared in 1.7). \index{Library!Components!optics}
+\item \texttt{optics} Monochromator\_curved can read reflectivity and transmission tables (appeared in 1.7).   
+\item \texttt{optics} Guide\_gravity can handle a 2D array of channels, and
+    has options for subdivisions in length, chamfers and wavyness.
+\item \texttt{optics} Filter\_gen can read a table from a file and affect the neutron
+    beam (replaces the obsolete \verb+Flux_adapter+). It may act as a filter or a
+    source (appeared in 1.7).    
+\item \texttt{optics} Bugs were corrected in the following components: Bender, Chopper, Guide\_channeled. Some similar components were gathered. New components were added: Guide\_gravity, Guide\_wavy, Filter\_gen. \index{Library!Components!optics}
+\item \texttt{samples} can now target towards any component, given its index 
+    (no need to compute \verb+target_x|y|z+ vector, use e.g. \verb+target_index=1+). 
+    Position an \verb+Arm+ at the focusing position when targetting to 
+    centered components (appeared in 1.7). \index{Library!Components!samples}
+\item \texttt{samples} Rectangular focusing has been implemented (instead of circular) in most components. More sample shapes are available. A bug has been corrected in Single\_crystal. A Powder2 component (2 rings) has been added. Sans\_spheres is a new sample component for small angle scattering (appeared in 1.8). \index{Library!Components!samples}
+\item \texttt{share} Many dedicated libraries are now available as shared code for reading tables,
     handling data files and monitors. These are C functions to be \texttt{\%include}d
     into components (see e.g. \verb+MCSTAS/monitors/Monitor_nD.comp+) (appeared in 1.7).
     \index{Library!Components!share}
-\item Obsolete directory contains components that were renamed or old (appeared in 1.7).
-      \index{Library!Components!obsolete}
-\item \verb+misc/Progress_bar+ component now exists, and may save data regularly 
-      (appeared in 1.7).
-      \index{Library!Components!misc}
-\item \verb+optics/Monochromator_curved+ can read reflectivity and transmission tables
-      (appeared in 1.7).
-\item \verb+optics+ components were renamed by categories, starting with
-   Guide\_\ldots, Monochromator\_\ldots, Filter\_\ldots etc so that sorting is
-   easier (appeared in 1.7). \index{Library!Components!optics}
-\item \verb+optics/Guide_gravity+ can handle a 2D array of channels, and
-    has options for subdivisions in length, chamfers and wavyness.
-\item \verb+optics/Filter_gen+ can read a table from a file and affect the neutron
-    beam (replaces the obsolete \verb+Flux_adapter+). It may act as a filter or a
-    source (appeared in 1.7).
-\item \verb+monitors/Monitor_nD+ can have automatic limits mode for either all or 
-    selected monitored variables. It may also plot banana monitors for
-    \verb+mcdisplay+ and monitor something else than the intensity, e.g. the mean
-    energy on a XY psd (appeared in 1.7). \index{Library!Components!monitors}
-\item \verb+sources/Virtual_output+ can save neutron events into a file
-    (beware the size of the generated files !). Format may be text or binary
-    (appeared in 1.7). index{Library!Components!sources}
-\item \verb+sources/Virtual_input+ can read the files generated by \verb+Virtual_output+.
-\item \verb+samples+ can now target towards any component, given its index 
-    (no need to compute \verb+target_x|y|z+ vector, use e.g. \verb+target_index=1+). 
-    Position an \verb+Arm+ at the focusing position when targetting to 
-    centered components (appeared in 1.7).
-    \index{Library!Components!samples}
-\item \verb+samples/Res_monitor+, \verb+Powder1+ and \verb+V_sample+ may now have a
-    sphere or box shape, and may focus to a circular or rectangular area.
-\item \verb+samples/Sans_spheres+ is a new sample component for small angle scattering
-    (appeared in 1.8). \index{Library!Components!samples}
-\item Contributed components (\verb+Guide_honeycomb+, \verb+Guide_tapering+, \verb+Guide_curved+) have been
-    placed in the \verb+contrib+ directory (appeared in 1.7 and 1.8). \index{Library!Components!contrib}
+\item \texttt{sources} The \verb+Source_gen+ and \verb+Source_Maxwell_3+ components may now simulate all kinds of continuous neutron sources. Some bugs were corrected in most sources in order to have an isotropic neutron emission. The \verb+Virtual_input+ and \verb+Virtual_output+ may load and save neutron event files (beware the size of the generated files !). Format may be text or binary (appeared in 1.7). \index{Library!Components!sources}
 \end{itemize}
 
 \section{Tools, installation}
@@ -171,7 +156,7 @@ section~\ref{s:comp-overview}.
   
   This has improved significantly the portability of \MCS\ and thus simplified
   the installation of the package. Details about the installation and the
-  available tools are given in section~\ref{s:frontends}.
+  available tools are given in the {\it Installing \MCS} chapter of the {\it User Manual}.
 
 \begin{itemize}
 \item The list of required packages for a complete \MCS\ installation is now a C
@@ -226,6 +211,7 @@ The following features are planned for the oncoming releases of \MCS :
   etc. in instrument descriptions.
 \item Concentric components.
 \item Polarised components and magnetic field computation components.
+\item Optimize a set of parameters for a better flux and/or resolution on a given monitor.
 \end{itemize}
 
 

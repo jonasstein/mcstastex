@@ -115,7 +115,7 @@ from identifiers and C language keywords. In contrast, \MCS\
 identifiers (names), like C identifiers and keywords, \emph{are} case
 sensitive, another good reason to use a consistent case convention for
 keywords. All \MCS\ keywords are reserved, and thus should not be used 
-as C variable names. The list of these reserved keywords is shown in table~\ref{t:keywords}. \index{Keyword|textbf}
+as C variable names. The list of these reserved keywords is shown in table~\ref{t:keywords}. \index{Keyword}
 
 \begin{table}
   \begin{center} 
@@ -128,7 +128,7 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{AT} & I & Indicates the position of a component in an instrument definition. \\
       \texttt{DECLARE} & I,C & Declares C internal instrument or component variables. \\
       \texttt{DEFINE} & I,C & Starts an instrument or component definition. \\
-      \texttt{- INSTRUMENT} & (each associated parameter may have default values)& \\
+      \texttt{- INSTRUMENT} & & (each associated parameter may have default values) \\
       \texttt{- COMPONENT} & & \\
       \texttt{DEFINITION} & C & Defines component parameters that are constants (like C \#define). \\
       \texttt{END} & I,C & Ends the instrument or component definition. \\
@@ -355,8 +355,8 @@ specification used in the \texttt{AT} modifier. The \emph{position} of a compone
 
 The \texttt{PREVIOUS} \index{Keyword!PREVIOUS} keyword is a generic name to refer to the previous component in the simulation. Moreover, the \texttt{PREVIOUS(n)} keyword will refer to the $n$-th previous component, starting from the current component, so that \texttt{PREVIOUS} is equivalent to \texttt{PREVIOUS(1)}. This keyword should be used after the \texttt{RELATIVE} keyword, but not for the first component instance of the instrument description.
 \begin{quote}
-  \texttt{AT} $(x,y,z)$ \texttt{RELATIVE} \textit{PREVIOUS}
-  \texttt{ROTATED} $(\phi_x,\phi_y,\phi_z)$ \texttt{RELATIVE} \textit{PREVIOUS(2)}
+  \texttt{AT} $(x,y,z)$ \texttt{RELATIVE} \texttt{PREVIOUS}
+  \texttt{ROTATED} $(\phi_x,\phi_y,\phi_z)$ \texttt{RELATIVE} \texttt{PREVIOUS(2)}
 \end{quote}
 Invalid \texttt{PREVIOUS} references will be assumed to be absolute placement. 
 
@@ -1016,5 +1016,6 @@ be abbreviated, \textit{e.g.} as \verb+%IDENT+ or \verb+%I+.
   a list item in the link section of the description web page. This
   usually consists of an \verb+<A HREF="..."> ... </A>+ pointer to some
   other source of information.
+\item Optionally, an \verb+%INSTRUMENT_SITE+ section followed by a single word is used to sort \emph{instruments} by origin/location in the 'Neutron Site' menu in \verb+mcgui+.
 \item After \verb+%END+, no more comment text is read by McDoc.
 \end{itemize}
