@@ -137,14 +137,15 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{GROUP} & I & Defines an exclusive group of components. \\
       \texttt{\%include} & I,C & Imports an instrument part, a component or a piece of C code (when within embedded C). \\
       \texttt{INITIALIZE} & I,C & Embeds C code to be executed when starting. \\
-      \texttt{MCDISPLAY} & C & Embedded C code to display a geometric  representation of a component. \\
+      \texttt{MCDISPLAY} & C & Embeds C code to display a geometric  representation of a component. \\
       \texttt{OUTPUT} & C & Defines internal variables to be public and protected symbols (usually all those of DECLARE).\\
       \texttt{PARAMETERS} & C & Defines a class of component parameter. \\
       \texttt{POLARISATION} & C & Defines neutron polarisation coordinates. \\
       \texttt{RELATIVE} & I & Indicates that the AT and ROTATED keywords are relative to an other component. \\
       \texttt{ROTATED} & I & Indicates the orientation of a component in an instrument definition. \\
       \texttt{SAVE} & I,C & Embedded C code to execute when saving data. \\
-      \texttt{SETTING} & C & Defines component parameters that are variables(double, int, char*). \\
+      \texttt{SETTING} & C & Defines component parameters that are
+      variables (double, int, char*). \\
       \texttt{SHARE} & C & Declares global functions and variables to be used by all components. \\
       \texttt{STATE} & C & Defines neutron state coordinates. \\
       \texttt{TRACE} & I,C & Lists the components or embedded C code to execute during simulation. \\
@@ -187,7 +188,7 @@ between the special symbols \verb|%{| and \verb|%}|, as follows:
 \end{quote} \index{Embedded C code}
 The ``\verb|%{|'' and ``\verb|%}|'' must appear on a line by themselves (do not add comments after).
 Additionally, if a ``\verb+%include+'' statement is found \emph{within} an embedded C code block, the specified file will be included from the 'share' directory of the standard component library \index{Library!Components!share} (or from the
-current directory and any user-specified search directories) as a C library, just like the usual ``\verb+#include+'' \emph{but only once}. For instance, if many components require to read data from a file, they may all ask for ``\verb+%include "read_table"+'' \index{Library!Components!share!read_table} without duplicating the code of this library. If the file has no extension, both \verb+.h+ and \verb+.c+ files will be searched and included, otherwise, only the specified file will be imported. The \MCS\ 'run-time' shared 
+current directory and any user-specified search directories) as a C library, just like the usual ``\verb+#include+'' \emph{but only once}. For instance, if many components require to read data from a file, they may all ask for ``\verb+%include "read_table-lib"+'' \index{Library!Components!share!read_table} without duplicating the code of this library. If the file has no extension, both \verb+.h+ and \verb+.c+ files will be searched and included, otherwise, only the specified file will be imported. The \MCS\ 'run-time' shared 
 library is included by default (equivalent to ``\verb+%include "mcstas-r"+'' in the \texttt{DECLARE} section). \index{Library!Run-time}
 For an
 example of \texttt{\%include}, see the monitors/Monitor\_nD component.
@@ -221,7 +222,7 @@ correspond to setting parameters of the components. A motor position is
 a typical example of an instrument parameter. The input parameters of
 the instrument constitute the input that the user (or possibly a
 front-end program) must supply when the
-generated simulation is started.
+generated simulation is started. 
 
 \index{Parameters!Instruments}
 By default, the parameters will be floating point numbers, and will have
@@ -237,7 +238,8 @@ point parameters may be explicitly declared using the name
 Here \verb+d1+ and \verb+d2+ will be floating point parameters of C type
 \verb+double+, \verb+i+ will be an integer parameter of C type
 \verb+int+, and \verb+s1+ and \verb+s2+ will be string parameters of C
-type \verb+char *+.
+type \verb+char *+. 
+
 
 
 \subsection{The \texttt{DECLARE} section}
@@ -252,8 +254,8 @@ type \verb+char *+.
 \end{quote} \index{Embedded C code}
 This gives C declarations that may be referred to in the rest of the
 instrument definition. A typical use is to declare global variables or
-small functions that are used elsewhere in the instrument. This section
-is optional.
+small functions that are used elsewhere in the instrument. The \verb+%include ''file''+ keyword may be used to import a specific
+component definition or a part of an instrument. The \texttt{DECLARE} section is optional.
 
 \subsection{The \texttt{INITIALIZE} section}
 \index{Keyword!INITIALIZE}
@@ -355,7 +357,7 @@ arrangements, groups are defined by appending the \texttt{GROUP} modifier
 \end{quote}
 to all involved component declarations. \index{Keyword!GROUP}
 All components of the same named group are tested one after the other, until one of them interacts (uses the SCATTER macro \index{Library!Run-time!SCATTER}). The selected component acts on the neutron, and the rest of the group is skipped. Such groups are thus exclusive (only one of the elements is active).
-If no component of the group could intercept the neutron, it is ABSORBed. If you wish not to absorb these neutrons, you may end each group by a large monitor, which will eventually catch neutrons that wrere not caught by previous components of the group.
+If no component of the group could intercept the neutron, it is ABSORBed. If you wish not to absorb these neutrons, you may end each group by a large monitor, which will eventually catch neutrons that were not caught by previous components of the group.
 
 It is sometimes desirable to slighlty modify an existing component of the \MCS\ library. One would usually make a copy of the component, and extend the code of its \texttt{TRACE} section. \MCS\ provides an easy way to change the behaviour of existing components in an instrument definition without duplicating files, using the \texttt{EXTEND} modifier \index{Keyword!EXTEND}
 \begin{quote}
@@ -442,7 +444,8 @@ neutron is performed by a block of embedded C code.
 One example of a component definition is given in section~\ref{s:slit}, and all
 component definitions can be found on the McStas web-page~\cite{mcstas_webpage}.
 
-There exists a large number of functions and constants available in order to write efficient components. Look at the chapter~\ref{c:kernelcalls} for neutron propagation functions, geometric intersection time computations, vector operators, random number and vector generation, physical constants, coordinate retrieval and operations, file generation routines (for monitors), data file reading, \ldots
+There exists a large number of functions and constants available in
+order to write efficient components. Look at the appendix~\ref{c:kernelcalls} for neutron propagation functions, geometric intersection time computations, vector operators, random number and vector generation, physical constants, coordinate retrieval and operations, file generation routines (for monitors), data file reading, \ldots
 
 %A component definition looks as follows:
 
@@ -469,7 +472,7 @@ as well as in \verb+EXTEND+ sections of the instrument definition (see section~\
 \index{Parameters!Setting}
 \index{Parameters!Definition}
 
-Setting parameters are translated into C variables of type
+Setting parameters are translated into C variables usually of type
 \verb+double+ in the generated simulation program, so they are usually
 numbers. Definition parameters are translated into \verb+#define+ macro
 definitions, and so can have any type, including strings, arrays, and
@@ -626,7 +629,9 @@ FINALLY
 The \texttt{SHARE} section has the same role as \texttt{DECLARE} except that when using more than one instance of the component, it is inserted \emph{only once} in the simulation code. No occurence of the items to be shared should be in the \texttt{OUTPUT} parameter list (not to have \MCS\ rename the identifiers). 
 This is particularly useful when using many instances of the same component (for instance guide elements). If the declarations were in the \texttt{DECLARE} section, \MCS\ would duplicates it for each instance (making the simulation code bigger).
 A typical example is to have shared variables, functions, type and structure definitions that may be used from the component \texttt{TRACE} section. For an
-example of \texttt{SHARE}, see the samples/Single\_crystal component. This section is optional.
+example of \texttt{SHARE}, see the samples/Single\_crystal
+component. The \verb+%include ''file''+ keyword may be used to import
+a shared library. The \texttt{SHARE} section is optional.
 
 \subsection{The \texttt{INITIALIZE} section}
 \label{s:comp-initialize}
@@ -789,7 +794,11 @@ along the X axis and the second dimension is along the Y axis. This
 means that element $(i_x,i_y)$ can be obtained as $p[i_x*n+i_y]$ if $p$
 is a pointer to the first element.
 
-Additionally, a \verb+DETECTOR_OUT_3D+ macro also exists for saving 3D data, with the following syntax:
+\paragraph{Three-dimensional detectors/monitors}
+
+The results of a three-dimensional detector/\discretionary{}{}{}mon\-i\-tor are written to a file using the
+following macro:
+
 \begin{quote}
   \texttt{DETECTOR\_OUT\_3D({\it t},
         {\it xlabel}, {\it ylabel}, {\it zlabel},
@@ -797,10 +806,13 @@ Additionally, a \verb+DETECTOR_OUT_3D+ macro also exists for saving 3D data, wit
         $x_{\rm min}$, $x_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, 
         $z_{\rm min}$, $z_{\rm max}$, $m$, $n$, $p$\\
         \phantom{\texttt{DETECTOR\_OUT\_3D(}}% Paren hack ->)
-          $\&N[0][0]$, $\&p[0][0]$, $\&{\it p2}[0][0]$,
+          $\&N[0][0][0]$, $\&p[0][0][0]$, $\&{\it p2}[0][0][0]$,
         {\it filename})}
 \end{quote}
-The meaning of parameters is the same as those used in the 1D and 2D versions of DETECTOR\_OUT.
+The meaning of parameters is the same as those used in the 1D and 2D
+versions of DETECTOR\_OUT. The available data format currently save
+the 3D arrays as 2D, with the 3rd dimension specified in the {\it
+  type} field of the data header.
 
 \subsection{The \texttt{FINALLY} section}
 \label{s:comp-finally}
@@ -929,7 +941,8 @@ Two forms of documentation can be generated. One
 is the component entry dialog in the \verb+mcgui+ front-end, see
 section~\ref{s:mcgui}. The other is a collection of web pages documenting
 the component, handled via the \verb+mcdoc+ front-end (see section~\ref{s:mcdoc-run}), and the complete documentation for all available
-McStas components may be found at the \MCS\ webpage~\cite{mcstas_webpage}.
+McStas components may be found at the \MCS\
+webpage~\cite{mcstas_webpage}, and in the \MCS\ library (see~\ref{s:comp-overview}).
 
 Note that McDoc-compliant comments in the source code are no substitute
 for a good reference manual entry. The mathematical equations describing

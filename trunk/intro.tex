@@ -41,7 +41,11 @@ particularly difficult problems. A higher level tool specially designed
 for the needs of simulating neutron instruments is needed. As there was
 no existing simulation software that would fulfill our needs, the \MCS\ 
 project was initiated.
-
+In addition, the ILL required an efficient and general simulation
+package in order to achieve renewal of its instruments and guides. 
+A significant contribution to both the component library and the \MCS\ 
+kernel itself was developed at the ILL and included in the package, in 
+agreement with the original \MCS\ authors.
 
 \subsection{The goals of \MCS}
 \label{s:goals}
@@ -180,17 +184,22 @@ power of the C language is available if needed.
 The \MCS\ system documentation consists of the following major
 parts:
 \begin{itemize}
-\item A short list of new features introduced in this \MCS\ release appears in chapter~\ref{c:changes}
-\item A brief introduction to using \MCS\ is given in section~\ref{s:brief}.
-\item How to obtain the \MCS\ software is described in section~\ref{s:obtain}.
-\item Section~\ref{s:install} explains how to compile
-  and install the \MCS\ compiler and associated files, while
-  section~\ref{s:running} explains how to run the compiler to produce
+\item A short list of new features introduced in this \MCS\ release
+  appears in chapter~\ref{c:changes}
+\item Chapter~\ref{s:install} explains how to obtain, compile
+  and install the \MCS\ compiler, associated files and supportive software
+\item Chapter~\ref{c:running} includes a brief introduction
+  (section~\ref{s:brief}) as well a section (\ref{s:running}) on running the compiler to produce
   simulations. Section~\ref{s:run-sim} explains how to run the generated
-  simulations.
+  simulations. A number of front-end programs are used to run the
+  simulations and to aid in the data collection and analysis of the
+  results. These user interfaces are described in section~\ref{s:frontends}.
 \item The \MCS\ meta-language is described in chapter~\ref{s:kernel}. This
   chapter also describes a set of ibrary functions and definitions
-  that aid in the writing of simulations. See appendix~\ref{c:kernelcalls} for more details.
+  that aid in the writing of simulations. See
+  appendix~\ref{c:kernelcalls} for more details.
+\item Chapter~\ref{s:MCtechniques} concernts Monte Carlo techniques
+  and simulation strategies in general
 \item The \MCS\ component library contains a collection of
   well-tested, as well as user contributed, beam components that can be used in simulations.
   The \MCS\ component library is documented in a separate manual
@@ -201,9 +210,7 @@ parts:
   %for the components can be found in appendix~\ref{compcode}.
 \item A collection of example instrument definitions is described in
   chapter~\ref{s:instrument}.%, with source code given in appendix~\ref{instcode}.
-\item A number of front-end programs are used to run the
-  simulations and to aid in the data collection and analysis of the
-  results. These user interfaces are described in section~\ref{s:frontends}.
+
 \end{itemize}
 
 %In addition, some results from

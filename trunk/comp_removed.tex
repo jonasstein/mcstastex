@@ -11,7 +11,9 @@ release 1.4.
 \section{A short overview of the \MCS\ component library}
 \label{s:comp-overview}
 
-This section gives a quick overview of available \MCS\ components provided with the distribution, in the \verb+MCSTAS+ library. All of them are thought to be reliable, eventhough no absolute guaranty may be given concerning their accuracy.\index{Environment variable!MCSTAS}
+This section gives a quick overview of available \MCS\ components
+provided with the distribution, in the \verb+MCSTAS+ library. The
+location of this library is detailed in section~\ref{s:files}. All of them are thought to be reliable, eventhough no absolute guaranty may be given concerning their accuracy.\index{Environment variable!MCSTAS}
 
 The \verb+contrib+ directory of the library contains components that were given by \MCS\ users, but are not validated yet. \index{Library!Components!contrib}
 
@@ -26,7 +28,7 @@ catalog of the \MCS\ library, e.g using: \index{Tools!mcdoc}
 as well as the documentation of specific components, e.g with:
 \begin{quote}
   \verb|mcdoc --text| {\it name} \\
-  \verb|mcdoc| {\it file.comp} --show
+  \verb|mcdoc --show| {\it file.comp}
 \end{quote}
 The first line will search for all components matching the {\it name}, and display their help section as text, where as the second example will display the help corresponding to the {\it file.comp} component, using your BROWSER\index{Environment variable!BROWSER} setting, or as text if unset. The \verb+--help+ option will display the command help, as usual.
 
@@ -84,7 +86,7 @@ Arm                &  Arm/optical bench \\
  Chopper           &   Disk chopper. \\
  Chopper\_Fermi     &   Fermi Chopper with
                       curved slits. \\
- Soller            &  A simple analytical Soller collimator
+ Collimator\_straight &  A simple analytical Soller collimator
                       (with triangular
                       transmission).  \\
  Filter\_gen        &   This components may
@@ -235,7 +237,7 @@ TOFlog\_mon      &    Rectangular Time-of-flight
        MCSTAS/misc & Description \\ 
        \hline
        Progress\_bar  &       A simulation
-                      progress bar. may also trigger intermediate SAVE.\\ 
+                      progress bar. May also trigger intermediate SAVE.\\ 
  Vitess\_input      &   Read neutron state
                       parameters from
                       VITESS neutron file.\\ 
@@ -298,7 +300,8 @@ TOFlog\_mon      &    Rectangular Time-of-flight
       \hline
        MCSTAS/share & Description \\ 
        \hline
-       adapt\_tree-lib  & Handles a simulation optimisation space for adatative sampling.
+       adapt\_tree-lib  & Handles a simulation optimisation space for
+       adatative importance sampling.
                           Used by the Source\_adapt component. \\
        {\bf mcstas-r}      &   Main Run-time library (always included). \\
        monitor\_nd-lib & Handles multiple monitor types. 

@@ -3,7 +3,7 @@
 \chapter{Libraries and conversion constants}
 \label{c:kernelcalls}
 \index{Library|textbf}
-\index{Library!Shared|see{Library/Component/share}}
+\index{Library!Shared|see{Library/Components/share}}
 \index{Library!mcstas-r|see{Library/Run-time}}
 
 The \MCS\ Library contains a number of built-in functions
@@ -110,7 +110,7 @@ which may ease the task of writing component and instrument definitions.
   matrice is referred to as 
   ROT\_A\_COMP$(comp)[m][n]$, where $m$ and $n$ are
   0, 1, or 2. 
-\item {\bf INDEX\_CURRENT\_COMP} is the number (index) of the
+\item {\bf INDEX\_CURRENT\_COMP} is the first number (index) of the
        current component  (1 is first component of instrument).
 \item {\bf POS\_A\_COMP\_INDEX}$(index)$ is the absolute position of
   component $index$. \\
@@ -129,14 +129,15 @@ instrument.
 \item {\bf RESTORE\_NEUTRON}$(index, x, y, z, vx, vy, vz, t, sx, sy,
 sz, p)$ restores the neutron state to the one at the input of the
 component $index$. To ignore a component effect, use
-RESTORE\_NEUTRON (INDEX\_CURRENT\_COMP \\ 
-$, x, y, z, vx, vy, vz, t,
+RESTORE\_NEUTRON (INDEX\_CURRENT\_COMP$, \\ 
+x, y, z, vx, vy, vz, t,
 sx, sy, sz, p$) at the end of its TRACE section, or in its EXTEND
 section. These neutron states are in the local component coordinate
 systems.
 \item {\bf SCATTERED} is a variable set to 0 when entering
   a component, which is incremented each time a SCATTER event occurs.
-  This may be used in the \verb+EXTEND+ sections (always executed) to branch
+  This may be used in the \verb+EXTEND+ sections (always executed when
+  existing) to branch
   action depending if the component acted or not on the current neutron.
 \item {\bf extend\_list}($n$, \&\textit{arr}, \&\textit{len},
   \textit{elemsize}). Given an array \textit{arr} with \textit{len}
@@ -158,9 +159,9 @@ $z$ members of the Coord structure $P$ into $x,y,z$ variables.
 coords\_neg}$(a)$ enable to  operate on coordinates, and return the
 resulting Coord structure.
 \item {\bf rot\_set\_rotation}$(Rotation t, \phi_x, \phi_y, \phi_z)$ Get transformation for rotation first $\phi_x$ around x axis, then $\phi_y$ around y, then $\phi_z$ around z. $t$ should be a 'Rotation' ([3][3] 'double' matrix).
-\item {\bf rot\_mul}$(Rotation t1, Rotation t2, Rotation t3)$ makes $t3 = t1 . t2$.
-\item {\bf rot\_copy}$(Rotation dest, Rotation src)$ makes $dest = src$ for Rotation arrays.
-\item {\bf rot\_transpose}$(Rotation src, Rotation dst)$ makes $dest = src^t$.
+\item {\bf rot\_mul}$(Rotation t1, Rotation t2, Rotation t3)$ performs $t3 = t1 . t2$.
+\item {\bf rot\_copy}$(Rotation dest, Rotation src)$ performs $dest = src$ for Rotation arrays.
+\item {\bf rot\_transpose}$(Rotation src, Rotation dst)$ performs $dest = src^t$.
 \item {\bf rot\_apply}$(Rotation t, Coords a)$ returns a Coord structure which is $t.a$
 \end{itemize}
 
@@ -239,7 +240,7 @@ resulting Coord structure.
   radius $r_f$ (in meters), and perpendicular to the \emph{aim} vector.. All directions
   that intersect the sphere are chosen with equal probability. The solid
   angle of the sphere as seen from the position of the neutron is returned
-  in $d\Omega$. This routine was previously called randvec\_target\_sphere
+  in $d\Omega$. This routine was previously called {\bf randvec\_target\_sphere}
   (which still works).
 \item {\bf randvec\_target\_rect}(\&$v_x$, \&$v_y$, \&$v_z$, \&$d\Omega$,
   aim$_x$, aim$_y$, aim$_z$,$height, width)$ does the same as       randvec\_target\_circle but targetting at a rectangle with angular dimensions
@@ -255,13 +256,20 @@ The \verb+read_table-lib+ provides functionalities for reading text (and binary)
 \item {\bf Table\_Read}(\&$Table$, $filename$, $block$) reads numerical block number $block$ (0 for all) data from \emph{text} file $filename$ into $Table$. The block number changes when the numerical data changes its size, or a comment is encoutered (lines starting by '\verb+# ; % /+'). If the data could not be read, then $Table.data$ is NULL and $Table.rows = 0$. You may then try to read it using Table\_Read\_Offset\_Binary.
 \item {\bf Table\_Rebin}(\&$Table$) rebins $Table$ rows with increasing, evenly spaced first column (index 0), e.g. before using Table\_Value.
 \item {\bf Table\_Read\_Offset}(\&$Table$, $filename$, $block$, \&$offset$, $n_{rows}$) does the same as Table\_Read except that it starts at offset $offset$ (0 means begining of file) and reads $n_{rows}$ lines (0 for all). The $offset$ is returned as the final offset reached after reading the $n_{rows}$ lines.
-\item {\bf Table\_Read\_Offset\_Binary}(\&$Table$, $filename$, $type$, $block$, \&$offset$, $n_{rows}$, $n_{columns}$) does the same as Table\_Read\_Offset, but also specifies the $type$ of the file (may be "float" or "double"), the number $n_{rows}$ of rows to read, each of them having $n_{columns}$ elements. No header should be present.
+\item {\bf Table\_Read\_Offset\_Binary}(\&$Table$, $filename$, $type$,
+  $block$, \&$offset$, $n_{rows}$, $n_{columns}$) does the same as
+  Table\_Read\_Offset, but also specifies the $type$ of the file (may
+  be "float" or "double"), the number $n_{rows}$ of rows to read, each
+  of them having $n_{columns}$ elements. No header should be present
+  in the file.
 \item {\bf Table\_Info}$(Table)$ print information about the table $Table$.
 \item {\bf Table\_Index}($Table, m, n$) reads the $Table[m][n]$ element.
-\item {\bf Table\_Value}($Table, x, n$) looks for the closest $x$ value in the first column (index 0), and extracts in this row the $n$-th element. The first column is thus the 'x' axis for the data.
+\item {\bf Table\_Value}($Table, x, n$) looks for the closest $x$
+  value in the first column (index 0), and extracts in this row the
+  $n$-th element (starting from 0). The first column is thus the 'x' axis for the data.
 \end{itemize}
 
-The format of text files is free. Lines starting by '\verb+#, ;, %, /+' characters are considered to be comments. Data blocks are vectors and matrices. Block numbers are counted starting from 1, and changing when a comment is found, or the column number changes. For instance, the file 'MCSTAS/data/BeO.trm' (Transmission of a Berylium filter) looks like:
+The format of text files is free. Lines starting by '\verb+# ; % /+' characters are considered to be comments. Data blocks are vectors and matrices. Block numbers are counted starting from 1, and changing when a comment is found, or the column number changes. For instance, the file 'MCSTAS/data/BeO.trm' (Transmission of a Berylium filter) looks like:
 \begin{verbatim}
   # BeO transmission, as measured on IN12
   # Thickness: 0.05 [m]
@@ -280,7 +288,7 @@ The $filename$ is first searched into the current directory (and all user additi
 A usage example for this library part may be:
 \begin{verbatim}
     t_Table rTable;       % declares a t_Table structure
-    char file="great.dat";% a file name
+    char file="BeO.trm";  % a file name
     double x,y;
     
     Table_Init(&rTable);  % initialize the table to empty state
@@ -307,17 +315,18 @@ This library gathers a few functions used by a set of monitors e.g. Monitor\_nD,
 It may monitor any kind of data, create the data files, and may display many geometries (for \verb+mcdisplay+).
 Refer to these components for implementation examples, and ask the authors for more details.
 
-\section{Adaptative sampling Library}
+\section{Adaptative importance sampling Library}
 \index{Library!adapt\_tree-lib}
 
-This library is currently only used by the components Source\_adapt and Adapt\_check. It performs adaptative sampling of neutrons for simulation efficiency optimization.
-Refer to this component for implementation examples, and ask the authors for more details.
+This library is currently only used by the components Source\_adapt
+and Adapt\_check. It performs adaptative importance sampling of neutrons for simulation efficiency optimization.
+Refer to these components for implementation examples, and ask the authors for more details.
 
 \section{Vitess import/export Library}
 \index{Library!vitess-lib}
 
 This library is used by Vitess\_input, Vitess\_output components, as well as the \verb+mcstas2vitess+ utility (see section~\ref{s:mcstas2vitess}). \index{Tools!mcstas2vitess}
-Refer to this component for implementation examples, and ask the authors for more details.
+Refer to these components for implementation examples, and ask the authors for more details.
 
 \section{Constants for unit conversion etc.}
 The following predefined constants are useful for conversion

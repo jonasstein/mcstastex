@@ -1,13 +1,13 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
 \chapter{Running \MCS}
-
+\label{c:running}
 This chapter describes usage of the McStas simulation package. Refer
 to Chapter \ref{s:install} for installation instructions. In case of
 problems regarding installation or usage, the McStas mailing
 list~\cite{mcstas_webpage} or the authors should be contacted.
 
-To use \MCS\ , an instrument
+To use \MCS, an instrument
 definition file describing the instrument to be simulated must be
 written. Alternatively, an example instrument file can be obtained
 from the \verb+examples/+ directory in the distribution or from
@@ -16,7 +16,7 @@ another source.
 The structure of \MCS\ is illustrated in Figure~\ref{fig:structure}.
 
 The input files (instrument and component files) are written in the \MCS\
-meta-language and are edited either by a using your favourite editor
+meta-language and are edited either by using your favourite editor
 or by using the built in editor of the graphical user interface
 (\texttt{mcgui}). 
 
@@ -304,6 +304,8 @@ available on the \MCS\ WWW home page~\cite{mcstas_webpage}):
   using the options
   \verb|-Aa +Oall -Wl,-a,archive| (the \verb+-Aa+ option is necessary to
   enable the ANSI-C standard).
+\item SGI machines running Irix with the options
+  \verb|-Ofast -o32 -w|
 \end{itemize}
 A warning is in place here: it is tempting to spend far more time
 fiddling with compiler options and benchmarking than is actually saved
@@ -383,7 +385,7 @@ turned off using the \verb+--data-only+ or \verb+-a+ option.
 The format of the output files from \MCS\ simulations is described in
 more detail in section~\ref{s:analyze}. It may be chosen either with \verb+--format=FORMAT+ for each simulation or globally by setting the MCSTAS\_FORMAT environment variable. \index{Environment variable!MCSTAS\_FORMAT}
 The available format list is obtained using the \verb+--help+ option, and shown in table~\ref{t:formatoptions}.
-\MCS\ can presently generate many format, including the original \MCS /PGPLOT and the new Scilab and Matlab formats. All formats, except the \MCS /PGPLOT, may eventually support binary files, which are much smaller and faster to import, but are plateform dependent. The simulation data file extensions are appended automatically, depending on the format. For example:
+\MCS\ can presently generate many formats, including the original \MCS /PGPLOT and the new Scilab and Matlab formats. All formats, except the \MCS /PGPLOT, may eventually support binary files, which are much smaller and faster to import, but are platform dependent. The simulation data file extensions are appended automatically, depending on the format. For example:
 \begin{verbatim}
     ./vanadium_example.out ROT=90 --format="Scilab binary"
 \end{verbatim} 
@@ -518,9 +520,11 @@ This will result in a message showing status (here 33 \% achieved), as well as t
 # Date      : Wed May  7 00:00:52 2003
 # McStas: Saving data and resume simulation (continue)
 \end{verbatim}
-followed by the list of detector outputs (integrated counts.and files). Finally, sending a \verb+kill 13277+ (which is equivalent to \verb+kill -TERM 13277+) will end the simulation before the initial 'ncount' preset.
+followed by the list of detector outputs (integrated counts and files). Finally, sending a \verb+kill 13277+ (which is equivalent to \verb+kill -TERM 13277+) will end the simulation before the initial 'ncount' preset.
 
-A typical usage example would be, for instance, to save data during a simulation, plot or analyze it, and decide to interupt the simulation earlier if the statistics has been achieved.
+A typical usage example would be, for instance, to save data during a
+simulation, plot or analyze it, and decide to interupt the simulation
+earlier if the desired statistics has been achieved.
 
 Whenever simulation data is generated before end (or the simulation is interupted), the 'ratio' field of the monitored data will provide the level of achievement of the computation (for instance '3.33e+05/1e+06');
 
@@ -550,13 +554,13 @@ There are various other ways to speed-up a simulation
 \item Divide simulation into parts using a file for saving or generating neutron
       events. This way, a guide may be simulated only once, saving the neutron events 
       getting out from it as a file, which is being read quickly by the second simulation 
-      part. Use the Virtual\_input and Virtual\_output for this technique.
+      part. Use the Virtual\_input and Virtual\_output components for this technique.
 \item Use source optimizers like the components Source\_adapt or
       Source\_Optimizer. Such component may sometimes not be very efficient, when no
       neutron importance sampling can be achieved, or may even sometimes alter the
       simulation results. Be careful and always check results with a non-optimized 
       computation.
-\item Complex components usually take into account small effects in a simulation,
+\item Complex components usually take into account additional small effects in a simulation,
       but are much longer to execute. Thus, simple components should be prefered
       whenever possible, at least to start with. 
 \end{itemize}
@@ -571,7 +575,7 @@ The user should write a function script or a program that
 \item outputs a simulation quality measurement from this data, usually the integrated counts or some peak width.
 \end{itemize}
 
-For instance, for the \verb+prisma2+ we could write a function for Matlab (see section~\ref{s:analyze} for details about the Matlab data format) in order to sutdy the effects of the $TT$ parameter:
+For instance, for the \verb+prisma2+ we could write a function for Matlab (see section~\ref{s:analyze} for details about the Matlab data format) in order to study the effects of the $TT$ parameter:
 \begin{verbatim}
   function y = instr_value(p)
     TT = p(1);     % p may be a vector/matrix containing many parameters 
@@ -581,7 +585,7 @@ For instance, for the \verb+prisma2+ we could write a function for Matlab (see s
     system(syscmd); path(path) % execute simulation, and rehash files
     s = mcstas;     % get the simulation data, and the monitor data
     s = s.prisma2.m_mcstas.detector.prisma2_tof.signal;
-    eval(s);        % we could also use 'statistics' field
+    eval(s);        % we could also use the 'statistics' field
     y = -Mean;      % 'value' of the simulation
 \end{verbatim}
 
@@ -599,7 +603,7 @@ Be cautious and wise when interpreting the optimal guess.
 \label{s:frontends}
 
 \MCS\ includes a number of front-end programs that extend the
-functionality of the simulations. The front-end programs is an interface
+functionality of the simulations. A front-end programs is an interface
 between the user and the simulations, running the simulations and
 presenting the output in various ways to the user.
 
@@ -678,9 +682,33 @@ The ``File'' menu has the following features:
   further below.
 \item[Plot results] plots (using \verb+mcplot+) the results of the
   last simulation run or loaded.
+\item[Choose backend] selection of plotting backend
+  (PGPLOT/Matlab/Scilab). Opens the choose backend dialogue shown in
+  figure~\ref{fig:mcgui-choose}.
 \end{description}
+ \begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{figures/choose_backend.eps}
+  \end{center}
+\caption{The choose backend dialog in \texttt{mcgui}.}
+\label{fig:mcgui-choose}
+\end{figure}
 
-The ``Help'' menu has a single menu point, ``McStas web-page'', which
+The ``Help'' menu has the following features, through use of
+\verb+mcdoc+ and a web browser. To customize the used web browser, set
+the \verb+BROWSER+ environment variable. If \verb+BROWSER+ is not set,
+\verb+mcgui+ uses \verb+netscape+ on Unix and the default browser on
+Windows.
+\begin{description}
+\item[\MCS\ web page] calls \verb+mcdoc --web+, brings up the \MCS\
+  website in a web browser.
+\item[\MCS\ manual] calls \verb+mcdoc --manual+, brings up the local
+  pdf version of this manual, using a web browser.
+\item[Component doc index] displays the component documentation using
+  the component \verb+index.html+ index file.
+\item[Generate component index] (re-)generates the component \verb+index.html+.
+\end{description}
+ single menu point, ``McStas web-page'', which
 attempts to open a Netscape window with the McStas web-page. This
 obviously requires that Netscape is properly installed on the computer.
 
@@ -847,7 +875,7 @@ with the intensity and estimated error in all detectors. Additionally, a
 file \verb+mcstas.sim+ is written that can be read by the \verb+mcplot+
 front-end to plot the results on the screen or in a Postscript file, see
 section~\ref{s:mcplot}. \index{Tools!mcplot}
-Currently,\verb+mcrun+ only supports the \MCS /PGPLOT format \emph{for scans}.
+Currently, \verb+mcrun+ only supports the \MCS /PGPLOT format \emph{for scans}.
 \item When doing a scan, the \texttt{-f {\it file}} and
   \texttt{--file={\it file}} options make \verb+mcrun+ write the output
   to the files \texttt{{\it file\/}.dat} and \texttt{{\it file\/}.sim}
@@ -895,6 +923,16 @@ where \verb+sim+ is the name of either the instrument source \texttt{{\it sim}.i
 the simulation, as explained above. The \verb+-h+ option will list valid options.
 
 The drawing back-end program may be selected among PGPLOT, Matlab and Scilab using either the -p{\it PLOTTER} option or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT}
+For instance, calling 
+\begin{quote}
+  \verb+mcdisplay -pScilab ./vanadium\_example.out ROT=90+
+\end{quote}
+or (\verb+csh+/\verb+tcsh+ syntax)
+\begin{quote}
+  \verb+setenv MCSTAS_FORMAT Scilab+\\ 
+  \verb+mcdisplay ./vanadium\_example.out ROT=90+
+\end{quote}
+will output graphics using Scilab. 
 The \verb+mcdisplay+ front-end can also be run from the \verb+mcgui+ front-end.
 \index{Tools!mcgui}
 Examples of plotter appearence for \verb+mcdisplay+ is shown in figures
@@ -1051,7 +1089,7 @@ Here, {\it file\/} is the name of a file output from a simulation using
 the Res\_monitor component.
 % (section~\ref{s:res_monitor}). 
 
-This front-end currently only works with the PGPLOT plotter, but ports for Matlan and Scilab may be written in the future.
+This front-end currently only works with the PGPLOT plotter, but ports for Matlab and Scilab may be written in the future.
 
 The front-end will open a window displaying projections of the 4-dimensional
 resolution function $R(\boldsymbol{Q}, \omega)$. The covariance matrix of the
@@ -1069,8 +1107,8 @@ and PDL must all be properly installed on the system.
 
 \MCS\ provides an easy way to generate automatically an HTML help page about a given component, or the whole \MCS\ library. \index{Library!Components}
 \begin{quote}
-  \verb|mcdoc|
-  \verb|mcdoc| {\it comp}
+  \verb|mcdoc|\\
+  \verb|mcdoc| {\it comp}\\
   \verb|mcdoc -l|
 \end{quote}
 The first example generates an {\it index.html} catalog file using the available components (both locally, and in the \MCS\ library. When called with the \verb+--show+ or \verb+-s+ option, the library catalog of components is opened using the \verb+BROWSER+ environment variable \index{Environment variable!BROWSER} (e.g. netscape, konqueror, nautilus, msie, \ldots).
@@ -1185,14 +1223,16 @@ s =
 matlab> s.test.m_mcstas.monitor1.monitor1_y_kz
 ans =
           ...
-          Date: 1.0529e+09
-          File: 'monitor1.y_kz'
-          type: 'array_2d(20, 10)'
+          Date:       1.0529e+09
+          File:       'monitor1.y_kz'
+          type:       'array_2d(20, 10)'
           ...
-          ratio: '1e+06/1e+06'
+          ratio:      '1e+06/1e+06'
+          signal:     'Min=0; Max=5.54051e-10; Mean= 6.73026e-13;'
+          statistics: 'X0=0.438302; dX=0.0201232; Y0=51019.6; dY=20557.1;
           ...
 \end{verbatim}      
-The latter exemple accesses the data from the 'monitor1.y\_kz' file written by the 'monitor1' component in the 'test' instrument during the './mcstas' simulation.
+The latter example accesses the data from the 'monitor1.y\_kz' file written by the 'monitor1' component in the 'test' instrument during the './mcstas' simulation.
 
 \paragraph{HTML, XML/NeXus and NeXus formats}
 

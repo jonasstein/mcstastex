@@ -21,6 +21,21 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
 
 \begin{itemize}
 \item \MCS\ can now compile for Windows!
+\item An instrument source file may contain \texttt{EXTEND} \%\{ \ldots \}\% C blocks
+    just after   the usual \texttt{AT} \ldots \texttt{ROTATED} \ldots keywords, to
+    extend the behaviour of existing components, without touching their code. All
+    local component variables are  available. This may for instance be used to add a
+    new 'color' to neutrons,  i.e. assign a new characteristic variable to the
+    neutron. \index{Keyword!EXTEND}
+\item The instrument and components may have string (\verb+char*+) setting parameters. For
+    components, their length is limited to 1024 characters.
+    \index{Parameters!Instrument} \index{Parameters!Setting}
+\item In both components and instruments, the \texttt{FINALLY} section, that is
+    executed at the end of simulations, has been supplemented with a new \texttt{SAVE}
+    section. This latter is executed at simulation end (just before the
+    \texttt{FINALLY} section), but also each time an intermediate save is required (e.g.\  
+    when a 'kill -USR2 \$pid' is used under Unix, see section ref{s:new-features:run-time}). 
+    \index{Keyword!SAVE} \index{Keyword!FINALLY} \index{Signal handler!USR2 signal}
 \item Components may have a \texttt{SHARE} section, which is imported only once per
     type of component. \texttt{SHARE} has the same role as \texttt{DECLARE}, but is
     useful when several instances of the same component is used in a single simulation.
@@ -38,21 +53,6 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
     multi detectors, multiple collimators, etc. 
     After the \texttt{ROTATED} keyword, the keyword \texttt{GROUP} should be added
     followed by a group name (e.g. \texttt{GROUP} MyGroup). \index{Keyword!GROUP}
-\item In both components and instruments, the \texttt{FINALLY} section, that is
-    executed at the end of simulations, has been supplemented with a new \texttt{SAVE}
-    section. This latter is executed at simulation end (just before the
-    \texttt{FINALLY} section), but also each time an intermediate save is required (e.g.\  
-    when a 'kill -USR2 \$pid' is used under Unix, see section ref{s:new-features:run-time}). 
-    \index{Keyword!SAVE} \index{Keyword!FINALLY} \index{Signal handler!USR2 signal}
-\item The instrument and components may have string (\verb+char*+) setting parameters. For
-    components, their length is limited to 1024 characters.
-    \index{Parameters!Instrument} \index{Parameters!Setting}
-\item An instrument source file may contain \texttt{EXTEND} \%\{ \ldots \}\% C blocks
-    just after   the usual \texttt{AT} \ldots \texttt{ROTATED} \ldots keywords, to
-    extend the behaviour of existing components, without touching their code. All
-    local component variables are  available. This may for instance be used to add a
-    new 'color' to neutrons,  i.e. assign a new characteristic variable to the
-    neutron. \index{Keyword!EXTEND}
 \end{itemize}
 
 \section{Run-time} 
@@ -105,7 +105,8 @@ as well as in the appendix~\ref{c:kernelcalls}.
 \index{Components} \index{Library!Components}
   
   We here list some of the new components (found in the \MCS\ \verb+lib+ directory) 
-which are detailed in the {\it Component manual}.
+which are detailed in the {\it Component manual}, also mentioned in
+section~\ref{s:comp-overview}.
   
 \begin{itemize}
 \index{Library!Components!data}
@@ -186,3 +187,26 @@ which are detailed in the {\it Component manual}.
    but a port for Scilab/Matlab is under way. \index{Tools!mcresplot}
 \item \verb+mcdoc+ can now display an HTML catalog of the current library, as well as help for single components. \index{Tools!mcdoc}
 \end{itemize}
+
+\section{Future extensions}
+\label{s:future}
+The following features are planned for the oncoming releases of \MCS :
+\begin{itemize}
+\item Support for Matlab and Scilab in \verb+mcrun+ and
+  \verb+mcresplot+
+\item Extension of \verb+mcgui+ for performing \verb+mcrun+-like scans
+  directly from the gui. (This functionality is currently possible by
+  use of the contributed \verb+batchmaker+)
+\item Extension of \verb+mcdoc+ for instrument documentation
+\item Support for MPI (parallel processing library) in the runtime
+\item Language extension 'JUMP' for enabeling loops, 'teleporting'
+  etc. in instrument descriptions
+\end{itemize}
+
+
+
+
+
+
+
+
