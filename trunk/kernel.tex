@@ -139,7 +139,7 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{\%include} & I,C & Imports an instrument part, a component or a piece of C code (when within embedded C). \\
       \texttt{INITIALIZE} & I,C & Embeds C code to be executed when starting. \\
       \texttt{MCDISPLAY} & C & Embeds C code to display a geometric  representation of a component. \\
-      \texttt{OUTPUT} & C & Defines internal variables to be public and protected symbols (usually all those of DECLARE).\\
+      \texttt{OUTPUT} & C & Defines internal variables to be public and protected symbols (usually all global variables and functions of DECLARE).\\
       \texttt{PARAMETERS} & C & Defines a class of component parameter. \\
       \texttt{POLARISATION} & C & Defines neutron polarisation coordinates. \\
       \texttt{PREVIOUS} & C & Refers to a previous component position/orientation.\\
@@ -535,13 +535,13 @@ Setting parameters may optionally be declared to be of type \verb+int+ and \verb
 \index{Keyword!OUTPUT PARAMETERS}
 \index{Parameters!Protecting|see{Keyword/OUTPUT}}
 This declares a list of C identifiers (variables, functions) that are
-output parameters for the
+output parameters ({\it i.e.} global) for the
 component. Output parameters are used to hold values that are computed
 by the component itself, rather than being passed as input. This could
 for example be a count of neutrons in a detector or a constant that is
 precomputed to speed up computation.
 
-Using \texttt{OUTPUT PARAMETERS} is \emph{highly recommanded} for \texttt{DECLARE} and internal variables and functions in order to prevent that two component instances use the same variable names. Moreover (see section \ref{s:comp-declare} below), these may be accessed from any other instrument part (e.g. using the \verb+MC_GETPAR+ C macro).
+Using \texttt{OUTPUT PARAMETERS} is \emph{highly recommanded} for \texttt{DECLARE} and internal/global component variables and functions in order to prevent that two component instances use the same variable names. Moreover (see section \ref{s:comp-declare} below), these may be accessed from any other instrument part (e.g. using the \verb+MC_GETPAR+ C macro).
 On the other hand, the variables from the SHARE sections should \emph{not}
 be defined as OUTPUT parameters.
 
@@ -742,7 +742,7 @@ integral $p$ of the monitor bins, as well as the 2$^{nd}$ moment $\sigma$
 and the number of statistical events $N$. This will result in a line such as:
 
 \begin{quote}
-Detector: {\it CompName}\_I=$p$ {\it CompName}\_ERR=$\sigma$ {\it CompName}\_N=$N$ "{\it filename}"
+\verb+Detector:+ {\it CompName}\_I=$p$ {\it CompName}\_ERR=$\sigma$ {\it CompName}\_N=$N$ "{\it filename}"
 \end{quote}
 
 For 1D, 2D and 3D monitors/detectors, the data histogram store in the files
