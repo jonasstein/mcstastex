@@ -1,6 +1,6 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
-\chapter{New features in \MCS\ version \version\ }
+\chapter{New features in \MCS\ versions 1.7 - \version\ }
 \label{c:changes}
 
 Many new features have been implemented in \MCS\ version \version\  since
@@ -10,7 +10,12 @@ given here may be particularly  useful to experienced \MCS\ users who do not
 wish to read the whole  manual, searching only for new features. A global
 upward compatibility  exists for all changes, and thus all previous components
 and  instruments should work as before. Changes are labelled as 1.7 or 1.8 to 
-indicate in which \MCS\ version they appeared. 
+indicate in which \MCS\ version they appeared.
+
+\section{General}
+\label{s:new-features:general}
+As of \MCS\ version \version\, the license covering the \MCS\ package
+is the GNU General Pubclic License. See \verb+http://www.gnu.org+ for details.
 
 \section{Kernel} 
 \label{s:new-features:kernel}
@@ -94,7 +99,7 @@ as well as in the appendix~\ref{c:kernelcalls}.
     signal still gives informations (appeared in 1.7). \index{Signal handler!USR1 signal}
 \item New \verb+randvec_target_rect+ and \verb+randvec_target_rect_angular+
     functions now focus  on a rectangle (more efficient than the former
-    \verb+randvec_target_sphere+) (appeared in 1.7).
+    \verb+randvec_target_sphere+) (appeared in 1.7 and 1.8).
     \index{Library!Run-time!randvec\_target\_rect}
 \end{itemize}
 
@@ -109,7 +114,11 @@ the {\it Component Overview} of the {\it User Manual}.
   
 \begin{itemize}
 \item All components now have a valid header for \texttt{mcdoc} automatic documentation, as well as usage example.
-\item \texttt{contrib} This directory now contains contributed components. Those that will be found to be highly stable will then go into the other component categories. Contributed components (\verb+Guide_honeycomb+, \verb+Guide_tapering+, \verb+Guide_curved+) have been
+\item \texttt{contrib} This directory now contains contributed
+    components. Those that will be found to be highly stable will then
+    go into the other component categories. Contributed components
+    (\verb+Guide_honeycomb+, \verb+Guide_tapering+,
+    \verb+Guide_curved+, \verb+ISIS_moderator+) have been
     placed there (appeared in 1.7 and 1.8). \index{Library!Components!contrib}
 \item \texttt{data} This directory now contains example data files mainly for Laue diffraction, transmission and reflection files. \index{Library!Components!data}
 \item \texttt{doc} The documentation is now included in the \verb+doc+ directory. \index{Library!Components!doc}
@@ -132,13 +141,59 @@ the {\it Component Overview} of the {\it User Manual}.
     (no need to compute \verb+target_x|y|z+ vector, use e.g. \verb+target_index=1+). 
     Position an \verb+Arm+ at the focusing position when targetting to 
     centered components (appeared in 1.7). \index{Library!Components!samples}
-\item \texttt{samples} Rectangular focusing has been implemented (instead of circular) in most components. More sample shapes are available. A bug has been corrected in Single\_crystal. A Powder2 component (2 rings) has been added. Sans\_spheres is a new sample component for small angle scattering (appeared in 1.8). \index{Library!Components!samples}
+\item \texttt{samples} Rectangular focusing has been implemented
+  (instead of circular) in most components. More sample shapes are
+  available. A bug has been corrected in Single\_crystal. A Powder2
+  component (2 rings) has been added. Sans\_spheres is a new sample
+  component for small angle scattering. Phonon\_simple is a new sample
+  for phonon scattering. (appeared in 1.8). \index{Library!Components!samples}
 \item \texttt{share} Many dedicated libraries are now available as shared code for reading tables,
     handling data files and monitors. These are C functions to be \texttt{\%include}d
     into components (see e.g. \verb+MCSTAS/monitors/Monitor_nD.comp+) (appeared in 1.7).
     \index{Library!Components!share}
 \item \texttt{sources} The \verb+Source_gen+ and \verb+Source_Maxwell_3+ components may now simulate all kinds of continuous neutron sources. Some bugs were corrected in most sources in order to have an isotropic neutron emission. The \verb+Virtual_input+ and \verb+Virtual_output+ may load and save neutron event files (beware the size of the generated files !). Format may be text or binary (appeared in 1.7). \index{Library!Components!sources}
 \end{itemize}
+
+\section{Documentation}
+\label{s:new-features:documentation}
+As of \MCS\ \version\ an improved tutorial has been integrated
+into to the graphical user interface of \MCS\. The content of the
+tutorial is also available in appendix \ref{tutorial}.
+
+\section{Example instruments}
+\label{s:new-features:instruments}
+As mentioned above, \MCS\ \version\ has various improvements regarding
+distribution of instruments. Firstly, \verb+mcgui+ has a new special
+menu for instruments distributed with \MCS and secondly instruments can
+now have default values and thirdly a new \MCS\ tutorial has
+integrated into the user interface. These three new features together
+proves a solid starting point for new users of \MCS\. To further
+increase the value of the package, we have decided to include selveral
+example instruments contributed by \MCS\ users. The full list of 
+example instruments are
+\begin{itemize}
+\item{\verb+vanadium_example+, improved version used in the \MCS\
+    tutorial.}
+\item{\verb+linup-1+-\verb+linup-7+, legacy instruments of the Ris\o\
+    TAS1 instrument from a historical release of \MCS.}
+\item{\verb+h8_test+, model of the Brookhaven H8 triple-axis, written
+    by McStas team member Emmanuel Farhi}
+\item{\verb+ILL_D9+, a model of the ILL D9 hot four-circle
+    diffractometer, contributed by Chris Ling}
+\item{\verb+Hetfull+, a model of the ISIS HET spectrometer,
+    contributed by Dickon Champion}
+\item{\verb+focus_psi+, a model of the PSI FOCUS spectrometer,
+    contributed by Uwe Filges}
+\item{\verb+prisma2+, a model of the ISIS prisma2 spectrometer,
+    written by Kristian Nielsen and Mark Hagen from a historical release of \MCS.}
+\item{Test instruments \verb+ISIStest+ for testing the new
+    \verb+ISIS_moderator+ component, \verb+SANS+ for testing the new
+    \verb+Sans_spheres+ component and \verb+Test_Phonon+ for testing
+    the new \verb+Phonon_simple+ component, all contributed by the
+    corresponding component authors.} 
+\end{itemize}
+
+
 
 \section{Tools, installation}
 \label{s:new-features:tools}
