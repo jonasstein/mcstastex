@@ -3,7 +3,15 @@
 \chapter{New features in \MCS\ version \version\ }
 \label{c:changes}
 
-Many new features have been implemented in \MCS\ version \version\ as compared to version 1.5. The list given here may be particularly useful to confirmed \MCS\ users who do not wish to read the whole manual, searching only for new stuff. A global upward compatibility exists for all changes, and thus all previous components and instruments should work as before. 
+Many new features have been implemented in \MCS\ version \version\ 
+as compared to version 1.5 (no version 1.6. manual was written,
+the most important being that \MCS can now compile and run in
+a Windows enviroment. 
+The list of changes given here may be particularly 
+useful to experienced \MCS\ users who do not wish to read the whole 
+manual, searching only for new features. A global upward compatibility 
+exists for all changes, and thus all previous components and 
+instruments should work as before. 
 
 \section{Kernel} 
 \label{s:new-features:kernel}
@@ -12,31 +20,32 @@ Many new features have been implemented in \MCS\ version \version\ as compared t
 The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and program). See the chapter~\ref{s:kernel}, page~\pageref{s:kernel}, for more details.
 
 \begin{itemize}
+\item \MCS\ can now compile for Windows!
 \item Components may have a \texttt{SHARE} section, which is imported only once per
-    type of component. It has the same role as \texttt{DECLARE}, but only once.
+    type of component. \texttt{SHARE} has the same role as \texttt{DECLARE}, but is
+    useful when several instances of the same component is used in a single simulation.
     \index{Keyword!SHARE} \index{Keyword!DECLARE}
 \item The component files may have some \texttt{\%include} inside '\%\{ \}\%'
     \texttt{DECLARE} or \texttt{SHARE} C blocks. The files to include are searched
     locally, and then in the library. If an extension is found, only the specified
-    file is included, else both  .h and .c are embedded if the --no-runtime has not
-    been specified. The instrument files can also embed external files, both in C
-    blocks  and in the instrument parts (\texttt{DECLARE}, etc.) as in previous
-    releases. \index{Keyword!%include}
-\item Component instances in an instrument source file may be \texttt{GROUP}ed into 
-    exclusive assembly, i.e. only one component of the group will intercept
-    neutron, the rest will be skipped. This is useful for multi monochromators
-    multi detectors, multiple collimators, etc. This is a kind if splitting. Just add,
-    after the \texttt{ROTATED} keyword, the keyword \texttt{GROUP} followed by a group
-    name of your own (e.g. \texttt{GROUP} MyGroup). \index{Keyword!GROUP}
-\item In both components and instruments, the \texttt{FINALLY} section, that was
-    executed at the end of simulations, has been split into  still the
-    \texttt{FINALLY} (with the same function as before), and a new \texttt{SAVE}
+    file is included, else both  .h and .c are embedded unless the --no-runtime has
+    been specified. As in previous
+    releases, the instrument files can embed external files, both in C
+    blocks  and in the instrument parts (\texttt{DECLARE}, etc.) . \index{Keyword!%include}
+\item Component instances in an instrument file may be \texttt{GROUP}'ed into 
+    exclusive assembly, i.e.\ only one component of the group will intercept
+    the neutron ray, the rest will be skipped. This is useful for multi monochromators
+    multi detectors, multiple collimators, etc. 
+    After the \texttt{ROTATED} keyword, the keyword \texttt{GROUP} should be added
+    followed by a group name (e.g. \texttt{GROUP} MyGroup). \index{Keyword!GROUP}
+\item In both components and instruments, the \texttt{FINALLY} section, that is
+    executed at the end of simulations, has been supplemented with a new \texttt{SAVE}
     section. This latter is executed at simulation end (just before the
-    \texttt{FINALLY}), but also each time an intermediate save is required (e.g. 
-    when a 'kill -USR2 \$pid' is used under Unix). 
+    \texttt{FINALLY} section), but also each time an intermediate save is required (e.g.\  
+    when a 'kill -USR2 \$pid' is used under Unix, see section ref{s:new-features:run-time}). 
     \index{Keyword!SAVE} \index{Keyword!FINALLY} \index{Signal handler!USR2 signal}
-\item The instrument and components may have \verb+char*+ setting parameters. For
-    components, their length is limited to 1024 chars.
+\item The instrument and components may have string (\verb+char*+) setting parameters. For
+    components, their length is limited to 1024 characters.
     \index{Parameters!Instrument} \index{Parameters!Setting}
 \item An instrument source file may contain \texttt{EXTEND} \%\{ \ldots \}\% C blocks
     just after   the usual \texttt{AT} \ldots \texttt{ROTATED} \ldots keywords, to
@@ -44,14 +53,16 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
     local component variables are  available. This may for instance be used to add a
     new 'color' to neutrons,  i.e. assign a new characteristic variable to the
     neutron. \index{Keyword!EXTEND}
-\item \MCS\ can now compile for Windows.
 \end{itemize}
 
 \section{Run-time} 
 \label{s:new-features:run-time}
 \index{Library!Run-time}
 
-Some important modifications were done to the 'Run-time' library (e.g. the functions used in the instrument program). Some details may be found in sections~\ref{s:comp-save} as well as in the appendix~\ref{c:kernelcalls}.
+Some important modifications were done to the 'Run-time' library 
+(i.e.\ the functions used in the instrument program). 
+Some details may be found in section~\ref{s:comp-save} 
+as well as in the appendix~\ref{c:kernelcalls}.
 
 \begin{itemize}
 \item A global gravitation handling is now available, by setting the \verb+-g+ flag.
@@ -75,10 +86,11 @@ Some important modifications were done to the 'Run-time' library (e.g. the funct
     the \verb+MCSTAS_FORMAT+ environment variable. 
     \index{Environment variable!MCSTAS\_FORMAT} \index{Data format}
 \item It is possible to save 3D data arrays, by calling the DETECTOR\_OUT\_3D macro.
-    (handled as 2D by \verb+mcplot+). \index{Library!Run-time!DETECTOR\_OUT}
+    (handled as 2D by \verb+mcplot+ by ignoring the 3rd dimension). 
+    \index{Library!Run-time!DETECTOR\_OUT}
 \item The C type of the 'number of events' array in monitors (usually named
     \verb+L_N+) was changed from \verb+int+ to \verb+double+, to avoid overflow.
-    Please update your home-made monitors.
+    All 'home-made' monitors should be updated accordingly.
 \item The \verb+USR2+ signal generates an intermediate save for all monitors, during
     the simulation (executes the \texttt{SAVE} section). The \verb+USR1+ signal still
     gives informations. \index{Signal handler!USR1 signal}
@@ -92,7 +104,8 @@ Some important modifications were done to the 'Run-time' library (e.g. the funct
 \label{s:new-features:components}
 \index{Components} \index{Library!Components}
   
-  We here list some of the new components (e.g. the \MCS\ \verb+lib+ directory) which are detailed in the {\it Component manual}.
+  We here list some of the new components (found in the \MCS\ \verb+lib+ directory) 
+which are detailed in the {\it Component manual}.
   
 \begin{itemize}
 \index{Library!Components!data}
@@ -138,7 +151,9 @@ Some important modifications were done to the 'Run-time' library (e.g. the funct
 \label{s:new-features:tools}
 \index{Tools}
 \index{Installing}
-  A renewal of most \MCS\ Tools, used to edit and display instrument or results, is under way, aiming at proposing alternatives to the Perl+PerlTk+PGPLOT+PDL libraries.
+  A renewal of most \MCS\ Tools, used to edit and display instrument or results, 
+  has been undertaken, aiming at proposing alternatives to the Perl+PerlTk+PGPLOT+PDL 
+  libraries.
   This has improved significantly the portability of \MCS\ and thus simplified the
   installation of the package. Details about the installation and the available tools are given in section~\ref{s:frontends}.
 
@@ -167,7 +182,7 @@ Some important modifications were done to the 'Run-time' library (e.g. the funct
    Vitess~\cite{vitess_webpage} one. \index{Tools!mcstas2vitess}
 \item \verb+mcresplot+ can plot projections of the 4D resolution function of an 
    instrument obtained from the \verb+Res_sample+ and \verb+Res_monitor+ components.
-   It only works with the McStas/PGPLOT format right now, but a port for Scilab/Matlab
-   is under way. \index{Tools!mcresplot}
+   In version \version, it only works with the McStas/PGPLOT format, 
+   but a port for Scilab/Matlab is under way. \index{Tools!mcresplot}
 \item \verb+mcdoc+ can now display an HTML catalog of the current library, as well as help for single components. \index{Tools!mcdoc}
 \end{itemize}

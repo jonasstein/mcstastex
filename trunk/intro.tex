@@ -15,14 +15,15 @@ It is based on a meta-language specially designed for neutron
 simulation. Specifications are written in this language by users and
 automatically translated into efficient simulation codes in ANSI-C.
 The present version supports both continuous and pulsed source instru-
-ments as well as polarised neutrons, and includes a library of standard
-components with in total around 90 components. These enable to simulate all kinds of neutron scattering instruments (diffractometers, triple-axis, reflectometers, time-of-flight, small-angle, back-scattering, spin-echo,...).
+ments, and includes a library of standard
+components with in total around 90 components. These enable to simulate all kinds of neutron scattering instruments (diffractometers, triple-axis, reflectometers, time-of-flight, small-angle, back-scattering,...).
 
 The \MCS\ package is written in ANSI-C and is freely available for down-load
 from the \MCS\ web-page~\cite{mcstas_webpage}. The package is actively
 being developed and supported by Ris\o\ National Laboratory and the Institut Laue Langevin. 
 The system is well tested and
-is supplied with several examples and with an extensive documentation.
+is supplied with several examples and with an extensive documentation,
+including a separate component manual.
 
 
 \section{Background}
@@ -32,8 +33,9 @@ for neutron scattering at Ris\o\ National Laboratory. Simulation tools were urge
 not only to better utilize existing instruments
 ({\em e.g.} RITA-1 and RITA-2~\cite{cjp_73_697,pb_241_50,pb_283_343}), 
 but also to plan completely new instruments for new sources 
-({\em e.g.} the Spallation Neutron Source, SNS~\cite{sns_webpage} and the European
-Spallation Source, ESS~\cite{ess_webpage}). Writing programs in C or Fortran for
+({\em e.g.} the Spallation Neutron Source, SNS~\cite{sns_webpage} 
+and the European Spallation Source, ESS~\cite{ess_webpage}). 
+Writing programs in C or Fortran for
 each of the different cases involves a huge effort, with debugging presenting
 particularly difficult problems. A higher level tool specially designed
 for the needs of simulating neutron instruments is needed. As there was
@@ -44,8 +46,8 @@ project was initiated.
 \subsection{The goals of \MCS}
 \label{s:goals}
 
-The \MCS\ project had four main objectives that determined the design of
-the \MCS\ software.
+Initially, the \MCS\ project had four main objectives that determined the design
+of the \MCS\ software.
 
 \paragraph{Correctness.}
 It is essential to minimize the potential for bugs in computer
@@ -54,7 +56,7 @@ produce bad-looking output or may even crash. This is a nuisance, but at
 least you know that something is wrong. However, if a simulation
 contains bugs it produces wrong results, and unless the results are far
 off, you may not know about it! Complex simulations involve hundreds or
-even thousands of lines of formulae, and ``errare humanun est''. Thus the
+even thousands of lines of formulae, making debugging a major issue. Thus the
 system should be designed from the start to help minimize the potential
 for bugs to be introduced in the first place, and provide good tools for
 testing to maximize the chances of finding existing bugs.
@@ -64,7 +66,7 @@ When you commit yourself to using a tool for an important project, you
 need to know if the tool will satisfy not only your present, but also
 your future requirements. The tool must not have fundamental limitations that
 restrict its potential usage. Thus the \MCS\ systems needs to be
-flexible enough to simulate different kinds of instruments (triple-axis,
+flexible enough to simulate different kinds of instruments (e.g.\ triple-axis,
 time-of-flight and possible hybrids) as well as many different kind of
 optical components, and it must also be extensible so that future, as
 yet unforeseen, needs can be satisfied.
@@ -118,8 +120,9 @@ example, one user may merely look at some results prepared by others,
 without worrying about the details of the calculation. Another user
 may simulate a new instrument without having to reinvent the
 code for simulating the individual components in the instrument. A third
-user may write an intricate simulation of a complex analyser such as
-the one of the RITA spectrometers, and expect other users to easily
+user may write an intricate simulation of a complex component,
+e.g.\ a detailed description of a rotating velocity selector, 
+and expect other users to easily
 benefit from his/her work, and so on. \MCS\ attempts to make it
 possible to work at any combination of layers in isolation by separating
 the layers as much as possible in the design of the system and in
@@ -206,10 +209,12 @@ parts:
 %In addition, some results from
 %simulations with \MCS\ are described in
 %appendix~\ref{testresults}. 
-An explanation of \MCS\ terminology can be
-found in appendix~\ref{s:terminology}, and a list of library calls that may be used in
-component definitions appears in appendix~\ref{c:kernelcalls}.
+A list of library calls that may be used in component definitions 
+appears in appendix~\ref{c:kernelcalls}, and
+an explanation of the \MCS\ terminology can be
+found in appendix~\ref{s:terminology}.
 Plans for future extensions are presented on the \MCS\ web-page~\cite{mcstas_webpage}.
+A separate component manual will appear during 2003, see the \MCS\ web-page.
 
 
 %The \MCS\ package consists of four levels:
