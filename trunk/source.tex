@@ -1,6 +1,8 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
 \chapter{Source components}
+\label{c:source}
+\index{Sources}
 The main function of the source components is to determine a set of initial
 parameters $({\bf r}, {\bf v})$, or equivalent (${\bf r}, v, \Ombold $),
 for each neutron. This is done by Monte Carlo choices. 
@@ -11,10 +13,9 @@ The sources to be presented in the following all make their Monte Carlo
 choices for initial position and direction on the basis of a 
 uniform distribution, with the exception of Souce\_Div, where the 
 distribution of initial divergence (deviation between the nominal and
-actual direction) is Gaussian. The choice of energy distribution
-varies from a flat distribution in Source\_flat, over a single
-Maxwellian distribution in Source\_Maxwell, to the more realistic
-weighted sum of three Maxwellians in Source\_Maxwell3.
+actual direction) is Gaussian. The shape of the source may be a disk (Moderator,  Source\_adapt, Source\_flat and Source\_flux), a rectangle (Source\_div), a cube (ESS sources, Source\_Maxwell\_3)or even a box/cylinder (Source\_gen). The choice of energy distribution
+varies from a flat distribution in Source\_flat, to the more realistic
+weighted sum of three Maxwellians in Source\_Maxwell\_3 and Source\_gen.
 As neutron energy is in principle unlimited, all sources require
 energy/wavelength windows to be specified.
 
@@ -28,12 +29,11 @@ as the sum of weights of all emitted neutron rays during one simulation
 (the unit of weight is thus neutrons per second), if all neutron energies
 were allowed. In most sources, the total flux is a required parameter.
 For the simple sources Source\_flat and Source\_flat\_lambda (mostly used
-for test purposes), the flux may be omitted. In this case 
-each neutron ray carries a weight of unity (SHOULD WE DO THIS?? 
-NOT IMPLEMENTED BELOW!)
+for test purposes), the flux may be omitted. In this case the total integrated flux is set to unity.
 
 \section{Source\_flat: A circular continuous source with a flat energy spectrum}
-\label{sourceaim}
+\label{source-flat}
+\index{Sources!Source\_flat}
 \component{Source\_flat}{System}{ $r_{\rm s}$, $z_{\rm f}$, $w$, $h$, $E_0$, $\Delta E$}{None}
 
 This component is 
@@ -52,17 +52,18 @@ The initial neutron ray direction is focused within
 a solid angle, defined by a rectangular target of width
 $w$, height $h$, parallel to 
 the $xy$ plane placed at $(0,0,z_{\rm f})$. 
-A small angle approximation is used, assuming that 
-$w,h \ll z_{\rm f}$. (IS THIS STILL RIGHT? CHECK THIS!)
 
-The initial weight of the created neutron ray, $\pi_1$, is set to the
-solid angle of the focusing opening divided by $4\pi$,
-see discussion in \ref{s:focus}. (SHOULD WE HAVE THE FOCUS CHAPTER ALSO
-IN THE COMPONENT MANUAL?)
+The total weight of the neutron beam is set to the
+solid angle of the focusing opening divided by $4\pi$.
 
+\section{Source\_flux: A circular continuous source with a flat energy spectrum and absolute flux}
+\label{source-flux}
+\index{Sources!Source\_flux}
 
 \section{Source\_flat\_lambda: A continuous source with flat
   wavelength spectrum}
+\label{source-flat-lambda}
+\index{Sources!Source\_flat\_lambda}
 
 \component{Source\_flat\_lambda}{System}{ \textit{radius, dist, xw, yh, lambda\_0, d\_lambda}}{None}
 
@@ -80,8 +81,7 @@ $\textit{lambda\_0} + \textit{d\_lambda}$).
 IN GENERAL: HOW DO WE HANDLE MATH SYMBOLS IN THE COMPONENT DESCIPTIONS? THE 
 FIRST TWO COMPONENT DESCRIPTIONS ARE WIDELY DIFFERENT!
 
-\section{Source\_flux\_lambda: A continuous source with absolute
-  flux}
+\section{Source\_flux\_lambda: A continuous source with a flat wavelength spectrum and absolute flux}
 \label{Source_flux_lambda}
 
 The component {\bf Source\_flux\_lambda} is a variation on the
