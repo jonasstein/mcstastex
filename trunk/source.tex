@@ -52,9 +52,13 @@ The initial neutron ray direction is focused within
 a solid angle, defined by a rectangular target of width
 $w$, height $h$, parallel to 
 the $xy$ plane placed at $(0,0,z_{\rm f})$. 
+A small angle approximation is used, assuming that 
+$w,h \ll z_{\rm f}$. (IS THIS STILL RIGHT? CHECK THIS!)
 
-The total weight of the neutron beam is set to the
-solid angle of the focusing opening divided by $4\pi$.
+The initial weight of the created neutron ray, $\pi_1$, is set to the
+solid angle of the focusing opening divided by $4\pi$,
+see discussion in \ref{s:focus}. (SHOULD WE HAVE THE FOCUS CHAPTER ALSO
+IN THE COMPONENT MANUAL?)
 
 \section{Source\_flux: A circular continuous source with a flat energy spectrum and absolute flux}
 \label{source-flux}

@@ -43,8 +43,8 @@
 \renewcommand{\footrulewidth}{0pt}}
 
 \newcommand{\MCS}{{McStas}}
-\newcommand{\version}{{1.8}}
-\newcommand{\reldate}{{May 15th, 2003}}
+\newcommand{\version}{{1.9}}
+\newcommand{\reldate}{{May 1st, 2005}}
 \newcommand{\Ombold}{\mbox{\boldmath $\Omega$}}
 
 % enable index generation
@@ -55,8 +55,8 @@
 %\author{Peter Kj\ae r Willendrup and Kim Lefmann \\
 % Materials Research Department, \\
 % Ris\o\ National Laboratory, 4000 Roskilde, Denmark;\\
-% Emmanuel Farhi \\ ILL, Grenoble, France}
-%\date{June 1, 2003 \\[2\baselineskip]
+% Emmanuel Farhi and Klaus Lieutenant \\ ILL, Grenoble, France}
+%\date{May 1, 2005 \\[2\baselineskip]
 %\begin{center}
 %  \includegraphics[width=4.5in]{figures/vanadium-surf-2.eps}
 %\end{center}
@@ -78,28 +78,36 @@
 
 \include{preface_comp}
 
-\include{intro_comp}  % copied from manual/intro.tex
-\include{changes}     % as in manual (with future)
-
+\include{intro_comp}
 \include{comp}
 \include{instr_examples}
+\include{comp_removed}
+%\include{comp_future}
 
 \appendix
 \include{kernelcalls} % as in manual
 %\include{compcode}   % removed: too heavy !!
 %\include{instcode}
+\include{test}
 \include{terms}       % as in manual
 
 \addcontentsline{toc}{chapter}{\protect\numberline{}{Bibliography}}
 \bibliography{mcstas_comp}
 \bibliographystyle{jacs}
 
-%\begin{thebibliography}{99}
-%\bibitem{homepage} \MCS\ WWW home page: \\
-%   \indent\verb+http://neutron.risoe.dk/mcstas/+.
-%\bibitem{NNews} K. Lefmann and K. Nielsen, 
-%{\em McStas, a general software package for neutron ray-tracing simulations},
-%Newtron News \textbf{10/3} (1999), 20--24
+\begin{thebibliography}{99}
+\bibitem{mcstasmanual} P.~K.~Willendrup, E.~Farhi, K.~Lieutenant, and
+K.~Lefmann: \textit{Manual for \MCS\ version 1.9}, Ris\o\ National Laboratory
+2005
+\bibitem{mcstas_webpage} \MCS\ WWW home page: \\
+   \indent\verb+http://neutron.risoe.dk/mcstas/+.
+\bibitem{mcnsi_webpage} MCNSI WWW home page: \\
+   \indent\verb+http://mcnsi.risoe.dk/+
+\bibitem{nmi3_webpage} NMI3 WWW home page: \\
+   \indent\verb+http://neutron-eu.net/+
+\bibitem{NNews} K. Lefmann and K. Nielsen, 
+{\em McStas, a general software package for neutron ray-tracing simulations},
+Newtron News \textbf{10/3} (1999), 20--24
 %\bibitem{RITA1}
 %  T.E. Mason \textit{et al.}, {\em RITA: The reinvented 
 %triple axis spectrometer}, Can.~J. Phys. \textbf{73}
@@ -134,7 +142,7 @@
 %   \indent\verb+ftp://azoth.lansce.lanl.gov/pub/mclib/+.
 %\bibitem{importance} Some MC book on importance sampling
 %\bibitem{TAS1paper} Our paper on the TAS1 test results
-%\end{thebibliography}
+\end{thebibliography}
 
 \addcontentsline{toc}{chapter}{\protect\numberline{}{Index and keywords}}
 \printindex
