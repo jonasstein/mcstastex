@@ -276,7 +276,7 @@ The \verb+read_table-lib+ provides functionalities for reading text (and binary)
   $n$-th element (starting from 0). The first column is thus the 'x' axis for the data.
 \end{itemize}
 
-The format of text files is free. Lines starting by '\verb+# ; % /+' characters are considered to be comments. Data blocks are vectors and matrices. Block numbers are counted starting from 1, and changing when a comment is found, or the column number changes. For instance, the file 'MCSTAS/data/BeO.trm' (Transmission of a Berylium filter) looks like:
+The format of text files is free. Lines starting by '\verb+# ; % /+' characters are considered to be comments, and stored in $Table.header$. Data blocks are vectors and matrices. Block numbers are counted starting from 1, and changing when a comment is found, or the column number changes. For instance, the file 'MCSTAS/data/BeO.trm' (Transmission of a Berylium filter) looks like:
 \begin{verbatim}
   # BeO transmission, as measured on IN12
   # Thickness: 0.05 [m]
@@ -294,19 +294,19 @@ The $filename$ is first searched into the current directory (and all user additi
 
 A usage example for this library part may be:
 \begin{verbatim}
-    t_Table rTable;       % declares a t_Table structure
-    char file="BeO.trm";  % a file name
+    t_Table rTable;       // declares a t_Table structure
+    char file="BeO.trm";  // a file name
     double x,y;
     
-    Table_Init(&rTable);  % initialize the table to empty state
-    Table_Read(&rTable, file, 1); % reads the first numerical block
-    Table_Info(rTable);   % display table informations
+    Table_Init(&rTable);  // initialize the table to empty state
+    Table_Read(&rTable, file, 1); // reads the first numerical block
+    Table_Info(rTable);   // display table informations
     ...
-    x = Table_Index(rTable, 2,5);  % reads the 3rd row, 6th column element 
-                                   % of the table. Indexes start at zero in C.
-    y = Table_Value(rTable, 1.45,1);  % looks for value 1.45 in 1st column (x axis)
-                                      % and extract 2nd column value of that row
-    Table_Free(&rTable);  % free allocated memory for table
+    x = Table_Index(rTable, 2,5);  // reads the 3rd row, 6th column element 
+                                   // of the table. Indexes start at zero in C.
+    y = Table_Value(rTable, 1.45,1);  // looks for value 1.45 in 1st column (x axis)
+                                      // and extract 2nd column value of that row
+    Table_Free(&rTable);  // free allocated memory for table
     
 \end{verbatim}
 Additionally, if the block number (3rd) argument of  {\bf Table\_Read} is 0, all blocks will be catenated.
