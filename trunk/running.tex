@@ -602,7 +602,7 @@ Be cautious and wise when interpreting the optimal guess.
 functionality of the simulations. The front-end programs is an interface
 between the user and the simulations, running the simulations and
 presenting the output in various ways to the user.
-The list of available \MCS\ front-end programs may be obtained from the \verb+mcdoc -t+ command.
+The list of available \MCS\ front-end programs may be obtained from the \verb+mcdoc --tools+ command.
 An extended set of front-end programs is planned for future versions of
 \MCS, including a NeXus data format option~\cite{nexus_webpage}.
 
@@ -1058,9 +1058,13 @@ and PDL must all be properly installed on the system.
   \verb|mcdoc| {\it comp}
   \verb|mcdoc -l|
 \end{quote}
-The first example generates an {\it index.html} ctalog file using the available components (both locally, and in the \MCS\ library. When called with the \verb+--show+ or \verb+-s+ option, the library catalog of components is opened using the \verb+BROWSER+ environment variable \index{Environment variable!BROWSER} (e.g. netscape, konqueror, nautilus, msie, \ldots).
+The first example generates an {\it index.html} catalog file using the available components (both locally, and in the \MCS\ library. When called with the \verb+--show+ or \verb+-s+ option, the library catalog of components is opened using the \verb+BROWSER+ environment variable \index{Environment variable!BROWSER} (e.g. netscape, konqueror, nautilus, msie, \ldots).
+
 Alternatively, if a component {\it comp} is specified, it will be searched within the library, and an HTML help will be created for all available components matching {\it comp}. When using the \verb+-s+, the help will be opened. If the \verb+BROWSER+ is not defined, the help is displayed as text in the current terminal. This latter output may be forced with the \verb+-t+ or \verb+--text+ option.
-The last example will list the name and action of all \MCS\ tools.
+
+The last example will list the name and action of all \MCS\ tools (same as \verb+--tools+ option).
+
+Additionally, the \verb+--web+ and \verb+--manual+ options will open the \MCS\ web site page and the User Manual (this document), both requiring \verb+BROWSER+ to be defined. Finally, the \verb+--help+ option will display the command help, as usual.
 
 See section~\ref{s:mcdoc} for more details about the McDoc usage and header format.
 To use the \verb+mcdoc+ front-end, the program Perl should be available.
