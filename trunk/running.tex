@@ -561,6 +561,40 @@ There are various other ways to speed-up a simulation
       whenever possible, at least to start with. 
 \end{itemize}
 
+Additionally, the user may wish to optimize the parameters of a simulation (e.g. find the optimal curvature of a monochromator, or the best geometry of a given component). 
+The user should write a function script or a program that
+\begin{itemize}
+\item inputs the simulation parameters, which are usually numerical values such as $TT$ in the \verb+prisma2+ instrument from the \verb+examples+ directory of the package.
+\item builds a command line from these parameters.
+\item execute that command, and waits until the end of the computation.
+\item reads the relevant data from the monitors.
+\item outputs a simulation quality measurement from this data, usually the integrated counts or some peak width.
+\end{itemize}
+
+For instance, for the \verb+prisma2+ we could write a function for Matlab (see section~\ref{s:analyze} for details about the Matlab data format) in order to sutdy the effects of the $TT$ parameter:
+\begin{verbatim}
+  function y = instr_value(p)
+    TT = p(1);     % p may be a vector/matrix containing many parameters 
+    syscmd = [ 'mcrun prisma2.instr -n1e5 TT=' num2str(TT) ...
+               ' PHA=22 PHA1=-3 PHA2=-2 PHA3=-1 PHA4=0 PHA5=1'
+               ' PHA6=2 PHA7=3 TTA=44 --format="Matlab"' ];
+    system(syscmd); path(path) % execute simulation, and rehash files
+    s = mcstas;     % get the simulation data, and the monitor data
+    s = s.prisma2.m_mcstas.detector.prisma2_tof.signal;
+    eval(s);        % we could also use 'statistics' field
+    y = -Mean;      % 'value' of the simulation
+\end{verbatim}
+
+Then a numerical optimization should be available, such as those provided with Matlab, Scilab, IDL, and Perl-PDL high level languages. In this example, we may wish to maximize the \verb+instr_value+ function value. The \verb+fminsearch+ function of Matlab is a minimization method (that's why we have a minus sign for $y$ value), and:
+\begin{verbatim}
+    matlab> TT = fminsearch('instr_value', -25)
+\end{verbatim}
+will determine the best value of TT, starting from -25 estimate, in order to minimize function \verb+instr_value+, and thus maximize the mean detector counts.
+
+The choice of the optimization routine, of the simulation quality value to optimize 
+and the initial parameter guess all may have a large influence on the results. 
+Be cautious and wise when interpreting the optimal guess.
+
 \section{Using simulation front-ends}
 \label{s:frontends}
 
