@@ -559,7 +559,7 @@ Additionally, any system error will result in similar messages, giving indicatio
     \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
       \hline
       \texttt{USR1} & Request informations (status)  \\
-      \texttt{USR2} & Request informations and performs an intermediate saving of all monitors (status and save). This triggers the execution of all \texttt{SAVE} sections (see chapter~\ref{s:kernel}).  \\
+      \texttt{USR2, HUP} & Request informations and performs an intermediate saving of all monitors (status and save). This triggers the execution of all \texttt{SAVE} sections (see chapter~\ref{s:kernel}).  \\
       \texttt{INT, TERM} & Save and exit before end (status)  \\
       \hline
     \end{tabular}
@@ -626,7 +626,7 @@ Be cautious and wise when interpreting the optimal guess.
 \section{Using computer Grids and Clusters}
 \label{s:run-mpi}
 \index{Parallel computing|textbf}
-\index{MPI|textbf}\index{Grid computing|textbf}
+\index{MPI|textbf}\index{Grid computing|textbf}\index{mcstas-hosts}
 
 Parallelizing a computation is possible when dependencies between
   each computation are not too strong. The situation of \MCS\ is
@@ -636,7 +636,7 @@ Parallelizing a computation is possible when dependencies between
 
 \MCS\ provides two methods in order to distribute computations on many computers. 
 \begin{itemize}
-\item when scanning instrument parameters (using \texttt{mcrun -N}),
+\item when scanning instrument parameters (using \texttt{mcrun --multi -N}),
   it is possible to distribute each scan step on a list of computers.
 \item when using an homogeneous computer cluster, each simulation (including scan
   steps) may be computed in parallel using MPI (using \texttt{mcrun --mpi=Nb\_Nodes}).
@@ -647,20 +647,30 @@ Parallelizing a computation is possible when dependencies between
   distribute scan steps on a set of machines using \emph{ssh}
   connexions. To use this option you will need
   \begin{itemize}
-  \item{A set of unix machines of the same architecture (binary compatible).}
+  \item{A set of unix machines of the same architecture (binary compatible). All
+      machines should have the same \MCS\ distribution installed.}
   \item{ \texttt{ssh} access from the master node (where McStas is
       installed) to the slaves through e.g. DSA keys \emph{without} a
-      password. These keys should be generated using the command \texttt{ssh-keygen}.}
+      password. These keys should be generated using the command
+      \texttt{ssh-keygen}. Run \emph{e.g.} \texttt{ssh-keygen -t dsa} on 
+      master node, enter no passphrase and add resulting 
+      \texttt{.ssh/id_dsa.pub} to \texttt{.ssh/authorized_keys} 
+      on all the slave nodes.}
   \item{The machine names listed in the file \texttt{.mcstas-hosts} in
-      your home directory on the master node, one node per line.}
+      your home directory or in the \texttt{MCSTAS/tools/perl/mcstas-hosts} on
+      the master node, one node per line. The \verb'--machines=<file>' option
+      enables to specify the hosts file to use.}
+  \item{Execute \texttt{mcrun} as normally, appending \texttt{--multi} or
+      \texttt{-M} will divide the $N$ scanpoints across the machines in
+      \texttt{.mcstas-hosts $+$ localhost}.}
   \end{itemize}
-  Each of the scan steps is executed on distant machines, sending the executable with 
-  \emph{scp}, executing single simulations, and then retrieving individual scan steps on
-  the master machine.
+  Each of the scan steps is executed on distant machines, sending the executable
+  with \emph{scp}, executing single simulations, and then retrieving individual
+  scan steps on the master machine.
   {\bf Warning:} This option is considered \emph{experimental} - i.e.,
   you are welcome to use it, but be ready for trouble. Note also that
-  this is a unix only option in \texttt{mcgui} and \texttt{mcrun}, it {\bf does not} work
-  on windows.
+  this is a unix only option in \texttt{mcgui} and \texttt{mcrun}, it 
+  {\bf does not} work on windows.
   
 \subsection{Parallel computing (MPI)}
 
@@ -682,7 +692,7 @@ This usually also requires to setup properly the \texttt{ssh} connections and ke
   
 \subsubsection{MPI Basic usage}
 
-To enable parallel computation, compile McStas ouput C-source file
+To enable parallel computation, compile McStas output C-source file
 with \verb'mpicc' with the flag \verb'-DUSE_MPI' and run it using the
 wrapper of your MPI implementation (\verb'mpirun' for mpich or lammpi) :
 \begin{verbatim}
@@ -728,9 +738,10 @@ of MPI. Two new options have been added:
 \begin{itemize}
 \item \verb'--mpi=<number>': tells \verb'mcrun' to use MPI, and to
   spread the simulation over \verb'<number>' nodes
-\item \verb'--mpi-machines=<file>': defines a text file where the
+\item \verb'--machines=<file>': defines a text file where the
   nodes which are to be used for parallel computation are listed; by
-  default, \verb'mcrun' will look at \verb'$HOME/.mcstas-hosts'
+  default, \verb'mcrun' will look at \verb'$HOME/.mcstas-hosts' and 
+  \verb'MCSTAS/tools/perl/mcstas-hosts'.
 \end{itemize}
 
 Suppose you have four machines named \verb'node1' to \verb'node4'.
@@ -744,7 +755,7 @@ node4
 
 You can then spread a simulation \verb'sim.instr' using \verb'mcrun' :
 \begin{verbatim}
-  mcrun -c --mpi=4 --mpi-machines=machines.list \
+  mcrun -c --mpi=4 --machines=machines.list \
         sim.instr <instrument parameters>
 \end{verbatim}
 
@@ -802,7 +813,9 @@ every node.
 \item when simulating $N$ neutrons with $p$ machines, the effective
   number of neutrons simulated is $p \cdot \frac{N}{p}$
 \item signals are \emph{not} supported while simulating with MPI (since
-  asynchrone events cannot be easily transmitted to all nodes)
+  asynchrone events cannot be easily transmitted to all nodes). Anyway, 
+  depending on the MPI implementation, you may force all nodes to synchronize
+  and save data using the HUP signal (\verb'kill -HUP mcstasPID').
 \item some header of output files might contain minor errors
 \item the computation split doesn't take into account the speed or the
   load of nodes: the overall time of a distributed computation is
