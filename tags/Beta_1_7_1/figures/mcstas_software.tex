@@ -1,0 +1,51 @@
+%\documentclass{article}
+%\usepackage{pstricks,pst-node}
+
+%\begin{document}
+
+\begin{pspicture}*(0.0,0.0)(20,8)%\showgrid
+
+\newcommand{\textsize}{\small}
+
+\rput(8.0,1.0){\ovalnode{A}{
+   \begin{tabular}{c} {\textsize Executable} \\ {\textsize (C)} \end{tabular}
+}}
+
+\rput(5.0,3.0){\ovalnode{B}{
+   \begin{tabular}{c} {\textsize Compilation} \\ {\textsize (Flex/Bison)} \end{tabular}
+}}
+
+\rput(11.0,3.0){\ovalnode{C}{
+   \begin{tabular}{c} {\textsize Output data} \\ {\textsize (File)} \end{tabular}
+}}
+
+\rput(3.0,5.0){\ovalnode{D}{
+    \begin{tabular}{c} {\textsize Input} \\ {\textsize (Meta-language)} \end{tabular}
+}}
+
+\rput(12.0,5.0){\ovalnode{E}{
+    \begin{tabular}{c} {\textsize Analysis} \\ {\textsize (Perl/PDL)} \end{tabular}
+}}
+
+\rput(8.0,7.0){\ovalnode{F}{
+    \begin{tabular}{c} {\textsize Graphical User Interface} \\ {\textsize (Perl/Pgperl/Pgplot)} \end{tabular}
+}}
+
+\rput(16.0,3.0){\ovalnode{G}{
+    \begin{tabular}{c} {\textsize Analysis} \\ {\textsize (Matlab, IDL)} \end{tabular}
+}}
+
+\pnode(1.0,7.0){H}
+
+\ncline{->}{B}{A}
+\ncline{->}{A}{C}
+\ncline{->}{D}{B}
+\ncline{->}{C}{E}
+\ncline{->}{E}{F}
+\ncline{->}{F}{D}
+\ncline[linestyle=dashed]{->}{C}{G}
+\ncline[linestyle=dotted]{->}{H}{D}
+
+\end{pspicture}
+
+%\end{document}
