@@ -1,6 +1,6 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
-\subsection{Source\_adapt: A neutron source with adaptive importance sampling}
+\section{Source\_adapt: A neutron source with adaptive importance sampling}
 \label{s:Source_adapt}
 \label{s:source_adapt}
 
@@ -35,7 +35,7 @@ monitor (see sections~\ref{s:e_monitor} and~\ref{s:L_monitor}) placed
 just after the source will show the actual energy-dependent flux.
 
 
-\subsubsection{The adaption algorithm}
+\subsection{The adaption algorithm}
 
 The adaptive importance sampling works by subdividing the initial
 neutron phase space into a number of equal-sized bins. The division is
@@ -143,7 +143,7 @@ w_i(j) = \frac{\beta}{N_{\rm bin}} +
      \frac{\psi_i/n_i}{\sum_{j=1}^{N_{\rm bins}} \psi_j/n_j}
 $$
 
-\subsubsection{The implementation}
+\subsection{The implementation}
 
 The heart of the algorithm is a discrete distribution $p$. The
 distribution has $N$ \emph{bins}, $1\ldots N$. Each bin has a value

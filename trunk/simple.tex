@@ -1,11 +1,11 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
-\section{Simple optical components:
+\chapter{Simple optical components:
 Arms, slits, collimators, filters}
 Below we list a number of simple optical components 
 which require only a minimum of explanation.
 
-\subsection{Arm: The generic component}
+\section{Arm: The generic component}
 \label{explain:arm}
 The component {\bf Arm} is empty; is resembles an optical bench
 and has no effect on the neutron.
@@ -22,7 +22,7 @@ For more about the use of this component, see the
 sample instrument definitions listed in Appendix \ref{instcode}.
 
 
-\subsection{Slit: The rectangular slit}
+\section{Slit: The rectangular slit}
 \label{slit}
 The component {\bf Slit} is a very simple construction.
 It sets up a rectangular opening at $z=0$, and propagates the neutrons 
@@ -42,7 +42,7 @@ The input parameters of {\bf Slit} are the four coordinates,
 $(x_{\rm min}, x_{\rm max}, y_{\rm min}, y_{\rm max})$
 defining the opening of the rectangle.
 
-\subsection{Circular\_slit: The circular slit}
+\section{Circular\_slit: The circular slit}
 The component {\bf Circular\_slit} defines a circle in the $z=0$ plane,
 centered in the origin. In analogy with {\bf Slit},
 neutrons are propagated to this plane, and those which intersect
@@ -51,7 +51,7 @@ the plane outside the circle are ABSORB'ed.
 The only input parameter of {\bf Circular\_slit} is
 the radius, $r$, of the circle.
 
-\subsection{Beamstop\_rectangular: The rectangular beam stop}
+\section{Beamstop\_rectangular: The rectangular beam stop}
 \label{s:Beamstop_rectangular}
 The component {\bf Beamstop\_rectangular} models a thin, infinitely
 absorbing rectangle in the $X$-$Y$ plane, centered on the origin. The
@@ -59,7 +59,7 @@ input parameters are \textit{xmin}, \textit{xmax}, \textit{ymin}, and
 \textit{ymax} defining the edges of the slit in meters.
 
 
-\subsection{Beamstop\_circular: The circular beam stop}
+\section{Beamstop\_circular: The circular beam stop}
 \label{s:Beamstop_circular}
 The component {\bf Beamstop\_circular} models a thin, infinitely
 absorbing circular disk in the $X$-$Y$ plane, centered on the origin. It
@@ -67,7 +67,7 @@ takes a single input parameter \textit{radius} to define the circle
 radius in meters.
 
 
-\subsection{Soller: The simple Soller blade collimator}
+\section{Soller: The simple Soller blade collimator}
 The component {\bf Soller} defines two rectangular openings
 like the one in {\bf Slit}. Neutrons not clearing both these
 openings are ABSORB'ed, see the discussion in \ref{slit}.
@@ -123,7 +123,7 @@ and the collimator divergence $\delta$.
 If $\delta=0$, the collimating effect is disabled,
 so that $\pi_i = 1$ whenever the neutron clears the two apertures.
 
-\subsection{Filter: A transmission filter}
+\section{Filter: A transmission filter}
 A neutron transmission filter act in much of the same way as two
 identical slits, one after the other.
 The only difference is that the transmission of the filter

@@ -1,6 +1,6 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
-\section{Detectors and monitors}
+\chapter{Detectors and monitors}
 
 In real neutron experiments, detectors and monitors play quite
 different roles. One wants the detectors to be as efficient as 
@@ -22,7 +22,7 @@ fact, let the monitor have several of these properties at the same time,
 as seen for example in the energy sensitive monitor in
 section~\ref{s:e_monitor}.
 
-\subsection{Monitor: The single monitor}
+\section{Monitor: The single monitor}
 The component {\bf Monitor}
 consists of a rectangular opening --- like that for {\bf slit}.
 The neutron is propagated to the plane of the monitor
@@ -39,7 +39,7 @@ the opening coordinates $x_{\rm min}, x_{\rm max}, y_{\rm min}$,
 $y_{\rm max}$, 
 and the output parameters are the three count numbers, $N, I$, and $M_2$.
 
-\subsection{Monitor\_4PI: The $4\pi$ monitor}
+\section{Monitor\_4PI: The $4\pi$ monitor}
 The component {\bf Monitor\_4PI} does not model any physical monitor
 but may be thought of as a spherical monitor completely surrounding the
 previous component. 
@@ -52,7 +52,7 @@ This may be useful during tests.
 
 The output parameters for {\bf Monitor\_4PI} are the three count numbers, $N, I$, and $M_2$.
 
-\subsection{PSD\_monitor: The PSD monitor}
+\section{PSD\_monitor: The PSD monitor}
 The component {\bf PSD\_monitor} closely resembles 
 {\bf Monitor}.
 In the PSD monitor, though, the rectangular monitor window is divided
@@ -66,7 +66,7 @@ which to store $I(x,y)$.
 The output parameters are three two-dimensional arrays 
 of counts: $N(x,y), I(x,y), M_2(x,y)$.
 
-\subsection{PSD\_monitor\_4PI: The $4\pi$ PSD monitor}
+\section{PSD\_monitor\_4PI: The $4\pi$ PSD monitor}
 The component {\bf PSD\_monitor\_4PI} represents 
 a PSD monitor shaped as a sphere, much like {\bf Monitor\_4PI}.
 It subdivides the surface of the sphere into pixels of equal 
@@ -86,7 +86,7 @@ The output parameters of the component are the three count arrays
 $N(x,y), I(x,y)$, and $M_2(x,y)$. 
 
 
-\subsection{PSD\_monitor\_4PI\_log: The $4\pi$ PSD monitor with log scale}
+\section{PSD\_monitor\_4PI\_log: The $4\pi$ PSD monitor with log scale}
 
 The component {\bf PSD\_monitor\_4PI\_log} is the same as PSD\_monitor\_4PI
 described in the previous section, except that the output histograms
@@ -102,7 +102,7 @@ output files.
 The input parameters for PSD\_monitor\_4PI\_log are the same as for PSD\_monitor\_4PI.
 
 
-\subsection{TOF\_monitor: The time-of-flight monitor}
+\section{TOF\_monitor: The time-of-flight monitor}
 {\bf TOF\_monitor} is a rectangular single monitor 
 which is sensitive to
 the absolute time, where the neutron is hits the component.
@@ -118,7 +118,7 @@ and the name of the output file. Output parameters of the component
 are the three count arrays $N(i), I(i)$, and $M_2(i)$, where $i$ is
 the bin number. 
 
-\subsection{E\_monitor: The energy sensitive monitor}
+\section{E\_monitor: The energy sensitive monitor}
 \label{s:e_monitor}
 The component {\bf E\_monitor} resembles {\bf TOF\_monitor}
 to a very large extent. Only this monitor is sensitive to
@@ -134,7 +134,7 @@ are the three count arrays
 $N(i), I(i)$, and $M_2(i)$, $i$ being the bin number. 
 
 
-\subsection{L\_monitor: The wavelength sensitive monitor}
+\section{L\_monitor: The wavelength sensitive monitor}
 \label{s:L_monitor}
 The component {\bf L\_monitor} is a rectangular monitor with an opening
 in the \textit{x-y} plane which is sensitive to the neutron wavelength.
@@ -151,7 +151,7 @@ the lower and upper wavelength limit \textit{Lmin} and
 string giving the name of the file to store the data in.
 
 
-\subsection{Divergence\_monitor: The divergence sensitive monitor}
+\section{Divergence\_monitor: The divergence sensitive monitor}
 
 The component {\bf Divergence\_monitor} is a rectangular monitor
 with an opening in the \textit{x-y} plane,
@@ -177,7 +177,7 @@ Note that a divergence sensitive monitor with a small opening may be
 thought of as a non-reversing pinhole camera.
 
 
-\subsection{DivPos\_monitor: The divergence-position sensitive monitor}
+\section{DivPos\_monitor: The divergence-position sensitive monitor}
 
 The component {\bf DivPos\_monitor} is a rectangular monitor with an
 opening in the \textit{x-y} plane, which is sensitive to both the
@@ -200,7 +200,7 @@ detect, in degrees; and \textit{filename}, a
 string giving the name of the file to store the data in.
 
 
-\subsection{DivLambda\_monitor: The divergence-wavelength sensitive monitor}
+\section{DivLambda\_monitor: The divergence-wavelength sensitive monitor}
 
 The component {\bf DivLambda\_monitor} is a rectangular monitor
 with an opening in the \textit{x-y} plane,
@@ -226,7 +226,7 @@ string giving the name of the file to store the data in.
 \input{Monitor_nD}
 
 
-\subsection{Res\_monitor: The resolution monitor}
+\section{Res\_monitor: The resolution monitor}
 \label{s:res_monitor}
 The component \textbf{Res\_monitor} is used together with the
 \textbf{Res\_sample} component (described in section~\ref{s:res_sample})
@@ -272,7 +272,7 @@ resolution sample component used in the instrument.  The output
 parameters are the three count numbers, \textit{Nsum}, \textit{psum},
 and \textit{p2sum}, and the handle \textit{file} of the output file.
 
-\subsection{Adapt\_check: The simple adaptive importance sampling monitor}
+\section{Adapt\_check: The simple adaptive importance sampling monitor}
 \label{s:adapt_check}
 
 The component {\bf Adapt\_check} is used together with the Source\_adapt

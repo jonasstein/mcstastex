@@ -1,6 +1,6 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
-\subsection{Source\_Optimizer: A general Optimizer for McStas}
+\section{Source\_Optimizer: A general Optimizer for McStas}
 \label{s:sourceoptimizer}
 
 This component was contributed by Emmanuel Farhi, Institute
@@ -23,7 +23,7 @@ the signal error bars by a factor 4.5. Higher factors can often be
 achieved in practise. Of course, the overall flux remains the same as
 without optimizer.
 
-\subsubsection{The optimization algorithm}
+\subsection{The optimization algorithm}
 
 When a neutron reaches the {\bf Monitor\_Optimizer} location(s), the
 component records its position ($x$, $y$) and speed ($v_x,
@@ -91,7 +91,7 @@ instrument simulation).
 The memory requirements of the component are very low, as no big
 $n$-dimensional array is needed.
 
-\subsubsection{Using the Source\_Optimizer}
+\subsection{Using the Source\_Optimizer}
 
 To use this component, just install the {\bf Source\_Optimizer} after a
 source (but any location is possible in principle), and use the {\bf

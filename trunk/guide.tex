@@ -1,13 +1,13 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
-\section{Advanced optical components: mirrors and guides}
+\chapter{Advanced optical components: mirrors and guides}
 
 This section describes advanced neutron optical
 components such as supermirrors and guides.
 The first subsection, however, contains 
 only a description of the reflectivity of a supermirror.
 
-\subsection{Mirror reflectivity}
+\section{Mirror reflectivity}
 \label{s:mirrorreflect}
 To compute the reflectivity of the supermirrors, we use an empirical
 formula derived from experimental data (see figure~\ref{f:reflectivity}). 
@@ -55,7 +55,7 @@ To avoid spending large amounts of computation time on very low-weight
 neutrons, neutrons for which the reflectivity is lower than about
 $10^{-10}$ are ABSORB'ed.
 
-\subsection{Mirror: The single mirror}
+\section{Mirror: The single mirror}
 
 The component {\bf Mirror} 
 models a single rectangular neutron mirror plate. It can
@@ -79,7 +79,7 @@ the rectangular mirror dimensions $(l, h)$
 and the values of $R_0, m, Q_c, W$, and $\alpha$ for the mirror.
 
 
-\subsection{Guide: The guide section}
+\section{Guide: The guide section}
 
 The component {\bf Guide} 
 models a guide tube consisting of four flat mirrors. The
@@ -174,7 +174,7 @@ the guide length, $l$,
 and the values of $R_0, m, Q_c, W$, and $\alpha$ for the mirror.
 
 
-\subsection{Channeled\_guide: A guide section component with multiple channels}
+\section{Channeled\_guide: A guide section component with multiple channels}
 \label{s:channeled_guide}
 
 The component Channeled\_guide is a more flexible variation of the Guide

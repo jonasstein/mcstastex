@@ -1,6 +1,6 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
-\section{Powder-like sample components}
+\chapter{Powder-like sample components}
 \label{powder}
 In this section, we consider elastic coherent and incoherent
 scattering from polycrystalline samples. We have chosen to
@@ -102,7 +102,7 @@ case, the Monte Carlo simulation gives incorrect results.
 All samples of the powder type have been constructed with a focusing
 and a non-focusing option.
 
-\subsection{V\_sample: An incoherent scatterer, the V-sample}
+\section{V\_sample: An incoherent scatterer, the V-sample}
 \label{s:v_sample}
 
 A  vanadium sample is frequently being used for 
@@ -162,8 +162,8 @@ This is explained by the variation of attenuation with
 scattering angle.
 One test result is shown in Appendix \ref{testresults}.
 
-\subsection{Powder1: A general powder sample}
-\subsubsection{General considerations}
+\section{Powder1: A general powder sample}
+\subsection{General considerations}
 An ideal powder sample consists of many small
 crystallites, although each crystallite is sufficiently
 large not to cause size broadening.
@@ -286,7 +286,7 @@ The total attenuation through the sample due to scattering is given by
 $\mu^s = \mu_{\rm inc}^s + \sum_j \mu^s_j $, 
 where $\mu_{\rm inc}^s$ represents the incoherent scattering.
 
-\subsubsection{This implementation}
+\subsection{This implementation}
 For component {\bf Powder1}, we assume that the sample 
 has the shape of a solid cylinder. 
 Further, the incoherent scattering is only taken into account
