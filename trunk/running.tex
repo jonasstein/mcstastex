@@ -316,7 +316,7 @@ compiler versions. \MCS\ actually puts an effort into making the task of the C c
 easier, by in-lining code and using variables in an efficient way. As a
 result, \MCS\ simulations generally run quite fast, often fast enough
 that further optimizations are not worthwhile. Also, optimizations are higly
-time and memory comsuming during compilation, and thus may fail when dealing
+time and memory consuming during compilation, and thus may fail when dealing
 with large instrument descriptions (e.g. more that 100 elements). The compilation process is simplified when using components of the library making use of shared libraries (see \verb+SHARE+ keyword in chapter~\ref{s:kernel}).
 
 \section{Running the simulations}
@@ -396,7 +396,7 @@ or more generally (for bash/Bourne shell users)
 \end{verbatim}
 
 \subsection{Basic import and plot of results}
-
+\label{s:run-format}
 The previous example will result in a \verb+mcstas.m+ file, that may be read directly from Matlab (using the {\it sim file} function)
 \begin{verbatim}
     matlab> s=mcstas;
@@ -575,13 +575,13 @@ The user should write a function script or a program that
 \item outputs a simulation quality measurement from this data, usually the integrated counts or some peak width.
 \end{itemize}
 
-For instance, for the \verb+prisma2+ we could write a function for Matlab (see section~\ref{s:analyze} for details about the Matlab data format) in order to study the effects of the $TT$ parameter:
+For instance, for the \verb+prisma2+ instrument we could write a function for Matlab (see section~\ref{s:analyze} for details about the Matlab data format) in order to study the effects of the $TT$ parameter:
 \begin{verbatim}
   function y = instr_value(p)
     TT = p(1);     % p may be a vector/matrix containing many parameters 
     syscmd = [ 'mcrun prisma2.instr -n1e5 TT=' num2str(TT) ...
-               ' PHA=22 PHA1=-3 PHA2=-2 PHA3=-1 PHA4=0 PHA5=1'
-               ' PHA6=2 PHA7=3 TTA=44 --format="Matlab"' ];
+               ' PHA=22 PHA1=-3 PHA2=-2 PHA3=-1 PHA4=0 PHA5=1' ...
+               ' PHA6=2 PHA7=3 TTA=44 --format="Matlab binary"' ];
     system(syscmd); path(path) % execute simulation, and rehash files
     s = mcstas;     % get the simulation data, and the monitor data
     s = s.prisma2.m_mcstas.detector.prisma2_tof.signal;
@@ -603,7 +603,7 @@ Be cautious and wise when interpreting the optimal guess.
 \label{s:frontends}
 
 \MCS\ includes a number of front-end programs that extend the
-functionality of the simulations. A front-end programs is an interface
+functionality of the simulations. A front-end program is an interface
 between the user and the simulations, running the simulations and
 presenting the output in various ways to the user.
 
@@ -683,8 +683,8 @@ The ``File'' menu has the following features:
 \item[Plot results] plots (using \verb+mcplot+) the results of the
   last simulation run or loaded.
 \item[Choose backend] selection of plotting backend
-  (PGPLOT/Matlab/Scilab). Opens the choose backend dialogue shown in
-  figure~\ref{fig:mcgui-choose}.
+  (PGPLOT/Matlab/Scilab). Opens the choose backend dialog shown in
+  figure~\ref{fig:mcgui-choose}. All formats are chosen as full text.
 \end{description}
  \begin{figure}[htb!]
   \begin{center}
@@ -925,12 +925,12 @@ the simulation, as explained above. The \verb+-h+ option will list valid options
 The drawing back-end program may be selected among PGPLOT, Matlab and Scilab using either the -p{\it PLOTTER} option or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT}
 For instance, calling 
 \begin{quote}
-  \verb+mcdisplay -pScilab ./vanadium\_example.out ROT=90+
+  \verb+mcdisplay -pScilab ./vanadium_example.out ROT=90+
 \end{quote}
 or (\verb+csh+/\verb+tcsh+ syntax)
 \begin{quote}
   \verb+setenv MCSTAS_FORMAT Scilab+\\ 
-  \verb+mcdisplay ./vanadium\_example.out ROT=90+
+  \verb+mcdisplay ./vanadium_example.out ROT=90+
 \end{quote}
 will output graphics using Scilab. 
 The \verb+mcdisplay+ front-end can also be run from the \verb+mcgui+ front-end.
@@ -1016,7 +1016,7 @@ passed to mcplot, {\em e.g.} ``\texttt{mcplot {\it dir}}'' or ``\texttt{mcplot
   {\it file}}''.
 It is also possible to plot one single data file from a given monitor, passing its name to mcplot.
 
-The drawing back-end program may be selected among PGPLOT, Matlab and Scilab using either the -p{\it PLOTTER} option or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT} Moreover, the drawing back-end program will also be set depending on the {\it file} extension (see table~\ref{t:formatoptions}).
+The drawing back-end program may be selected among PGPLOT, Matlab and Scilab using either the -p{\it PLOTTER} option (e.g. \verb+mcplot -pScilab file+) or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT} Moreover, the drawing back-end program will also be set depending on the {\it file} extension (see table~\ref{t:formatoptions}).
 
 It should be emphasized that \verb+mcplot+ may \emph{only} display simulation results with the format that was chosen during the computation. Indeed, if you request data in a given format from a simulation, you will only be able to display results using that same drawing back-end.
 
@@ -1229,7 +1229,7 @@ ans =
           ...
           ratio:      '1e+06/1e+06'
           signal:     'Min=0; Max=5.54051e-10; Mean= 6.73026e-13;'
-          statistics: 'X0=0.438302; dX=0.0201232; Y0=51019.6; dY=20557.1;
+          statistics: 'X0=0.438302; dX=0.0201232; Y0=51019.6; dY=20557.1;'
           ...
 \end{verbatim}      
 The latter example accesses the data from the 'monitor1.y\_kz' file written by the 'monitor1' component in the 'test' instrument during the './mcstas' simulation.

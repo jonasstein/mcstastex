@@ -27,6 +27,12 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
     local component variables are  available. This may for instance be used to add a
     new 'color' to neutrons,  i.e. assign a new characteristic variable to the
     neutron. \index{Keyword!EXTEND}
+\item Component instances in an instrument file may be \texttt{GROUP}'ed into 
+    exclusive assembly, i.e.\ only one component of the group will intercept
+    the neutron ray, the rest will be skipped. This is useful for multi monochromators
+    multi detectors, multiple collimators, etc. 
+    After the \texttt{ROTATED} keyword, the keyword \texttt{GROUP} should be added
+    followed by a group name (e.g. \texttt{GROUP} MyGroup). \index{Keyword!GROUP}    
 \item The instrument and components may have string (\verb+char*+) setting parameters. For
     components, their length is limited to 1024 characters.
     \index{Parameters!Instrument} \index{Parameters!Setting}
@@ -47,12 +53,6 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
     been specified. As in previous
     releases, the instrument files can embed external files, both in C
     blocks  and in the instrument parts (\texttt{DECLARE}, etc.) . \index{Keyword!%include}
-\item Component instances in an instrument file may be \texttt{GROUP}'ed into 
-    exclusive assembly, i.e.\ only one component of the group will intercept
-    the neutron ray, the rest will be skipped. This is useful for multi monochromators
-    multi detectors, multiple collimators, etc. 
-    After the \texttt{ROTATED} keyword, the keyword \texttt{GROUP} should be added
-    followed by a group name (e.g. \texttt{GROUP} MyGroup). \index{Keyword!GROUP}
 \end{itemize}
 
 \section{Run-time} 
@@ -67,23 +67,10 @@ as well as in the appendix~\ref{c:kernelcalls}.
 \begin{itemize}
 \item A global gravitation handling is now available, by setting the \verb+-g+ flag.
 \item Many output formats are available for data. Use the \verb+--format="format"+
-    flag, e.g. \verb+--format="Scilab"+. For instance:
-    \begin{verbatim}
-      mcrun test.instr --format="Matlab binary" -n 1e4
-    \end{verbatim}
-    will create a \verb+mcstas.m+ file. Launch Matlab and execute:
-    \begin{verbatim}
-      s=mcstas('plot')
-    \end{verbatim}
-    will import data into variable s, and plot all detectors.
-    Binary formats are handled by IDL, Matlab, Scilab.
-    The present available format list, displayed with
-    the \verb+-h+ flag of the instrument program, is
-    \begin{verbatim}
-      "McStas" "Scilab" "Matlab" "IDL" "XML" "HTML" 
-    \end{verbatim}
+    flag, e.g. \verb+--format="Scilab"+. 
     The default format is McStas/PGPLOT, but may be specified globally using
     the \verb+MCSTAS_FORMAT+ environment variable. 
+    See section~\ref{s:run-format} for details.
     \index{Environment variable!MCSTAS\_FORMAT} \index{Data format}
 \item It is possible to save 3D data arrays, by calling the DETECTOR\_OUT\_3D macro.
     (handled as 2D by \verb+mcplot+ by ignoring the 3rd dimension). 

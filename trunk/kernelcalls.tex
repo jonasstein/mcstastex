@@ -110,8 +110,8 @@ which may ease the task of writing component and instrument definitions.
   matrice is referred to as 
   ROT\_A\_COMP$(comp)[m][n]$, where $m$ and $n$ are
   0, 1, or 2. 
-\item {\bf INDEX\_CURRENT\_COMP} is the first number (index) of the
-       current component  (1 is first component of instrument).
+\item {\bf INDEX\_CURRENT\_COMP} is the number (index) of the
+       current component  (starting from 1).
 \item {\bf POS\_A\_COMP\_INDEX}$(index)$ is the absolute position of
   component $index$. \\
   POS\_A\_COMP\_INDEX (INDEX\_CURRENT\_COMP) is the same as \\
@@ -129,8 +129,8 @@ instrument.
 \item {\bf RESTORE\_NEUTRON}$(index, x, y, z, vx, vy, vz, t, sx, sy,
 sz, p)$ restores the neutron state to the one at the input of the
 component $index$. To ignore a component effect, use
-RESTORE\_NEUTRON (INDEX\_CURRENT\_COMP$, \\ 
-x, y, z, vx, vy, vz, t,
+RESTORE\_NEUTRON (INDEX\_CURRENT\_COMP, \\ 
+$x, y, z, vx, vy, vz, t,
 sx, sy, sz, p$) at the end of its TRACE section, or in its EXTEND
 section. These neutron states are in the local component coordinate
 systems.
@@ -158,11 +158,11 @@ $z$ members of the Coord structure $P$ into $x,y,z$ variables.
 \item {\bf coords\_add}$(a,b)$, {\bf coords\_sub}$(a,b)$, {\bf
 coords\_neg}$(a)$ enable to  operate on coordinates, and return the
 resulting Coord structure.
-\item {\bf rot\_set\_rotation}$(Rotation t, \phi_x, \phi_y, \phi_z)$ Get transformation for rotation first $\phi_x$ around x axis, then $\phi_y$ around y, then $\phi_z$ around z. $t$ should be a 'Rotation' ([3][3] 'double' matrix).
-\item {\bf rot\_mul}$(Rotation t1, Rotation t2, Rotation t3)$ performs $t3 = t1 . t2$.
-\item {\bf rot\_copy}$(Rotation dest, Rotation src)$ performs $dest = src$ for Rotation arrays.
-\item {\bf rot\_transpose}$(Rotation src, Rotation dst)$ performs $dest = src^t$.
-\item {\bf rot\_apply}$(Rotation t, Coords a)$ returns a Coord structure which is $t.a$
+\item {\bf rot\_set\_rotation}({\it Rotation t}, $\phi_x, \phi_y, \phi_z$) Get transformation for rotation first $\phi_x$ around x axis, then $\phi_y$ around y, then $\phi_z$ around z. $t$ should be a 'Rotation' ([3][3] 'double' matrix).
+\item {\bf rot\_mul}{\it (Rotation t1, Rotation t2, Rotation t3)} performs $t3 = t1 . t2$.
+\item {\bf rot\_copy}{\it (Rotation dest, Rotation src)} performs $dest = src$ for Rotation arrays.
+\item {\bf rot\_transpose}{\it (Rotation src, Rotation dest)} performs $dest = src^t$.
+\item {\bf rot\_apply}{\it (Rotation t, Coords a)} returns a Coord structure which is $t.a$
 \end{itemize}
 
 \subsection{Mathematical routines}
@@ -260,7 +260,7 @@ The \verb+read_table-lib+ provides functionalities for reading text (and binary)
   $block$, \&$offset$, $n_{rows}$, $n_{columns}$) does the same as
   Table\_Read\_Offset, but also specifies the $type$ of the file (may
   be "float" or "double"), the number $n_{rows}$ of rows to read, each
-  of them having $n_{columns}$ elements. No header should be present
+  of them having $n_{columns}$ elements. No text header should be present
   in the file.
 \item {\bf Table\_Info}$(Table)$ print information about the table $Table$.
 \item {\bf Table\_Index}($Table, m, n$) reads the $Table[m][n]$ element.
