@@ -179,6 +179,8 @@ resulting Coord structure.
 \item {\bf normal\_vec}(\&$n_x$, \&$n_y$, \&$n_z$, $x$, $y$, $z$).
   Computes a unit vector $(n_x, n_y, n_z)$ normal to the vector
   $(x,y,z)$.
+\item {\bf solve\_2nd\_order}(*$t$, $A$,  $B$,  $C$).
+  Solves the 2$^{nd}$ order equation $At^2 + Bt = C = 0$ and returns the smallest positive solution into pointer *$t$.
 \end{itemize}
 
 \subsection{Output from detectors}
