@@ -8,8 +8,8 @@
 
 The \MCS\ Library contains a number of built-in functions
 and conversion constants which are useful when constructing
-components. These are stored in the \verb+share+ directory of 
-the \verb+MCSTAS+ library. \index{Library!Components!share} 
+components. These are stored in the \verb+share+ directory of
+the \verb+MCSTAS+ library. \index{Library!Components!share}
 \index{Environment variable!MCSTAS}
 
 Within these functions, the 'Run-time' part is available for all
@@ -38,7 +38,7 @@ Here, we present a short list of both each of the library contents and the run-t
 \label{s:calls:run-time}
 \index{Library!Run-time|textbf}
 \index{Library!mcstas-r|see{Library/Run-time}}
-Here we list a number of preprogrammed macros 
+Here we list a number of preprogrammed macros
 which may ease the task of writing component and instrument definitions.
 
 \subsection{Neutron propagation}
@@ -52,7 +52,7 @@ which may ease the task of writing component and instrument definitions.
   \MCS\ simulator to interrupt the simulation of the current neutron
   history and to start a new one.
 \item {\bf PROP\_Z0}. Propagates the neutron to the $z=0$ plane,
-  by adjusting $(x,y,z)$ and $t$. If the neutron velocity 
+  by adjusting $(x,y,z)$ and $t$. If the neutron velocity
   points away from the $z=0$ plane, the neutron is absorbed.
   If component is centered, in order to avoid the neutron to be propagated
   there, use the \verb+_intersect+ functions to determine intersection time(s),
@@ -63,9 +63,9 @@ which may ease the task of writing component and instrument definitions.
   includes gravity using the acceleration $(Ax,Ay,Az)$. In addition,
   to adjusting $(x,y,z)$ and $t$ also $(vx,vy,vz)$ is modified.
 \item {\bf SCATTER}. This macro is used to denote a scattering event
-  inside a component, see section~\ref{s:comp-trace}. It should be used e.g 
+  inside a component, see section~\ref{s:comp-trace}. It should be used e.g
   to indicate that a component has 'done something' (sctattered or detected).
-  This does not affect the simulation at all, and is mainly used by the 
+  This does not affect the simulation at all, and is mainly used by the
   \verb+MCDISPLAY+ section and the \verb+GROUP+ modifier (see~\ref{s:trace} and \ref{s:comp-mcdisplay}). See also the SCATTERED variable (below).
   \index{Keyword!GROUP} \index{Keyword!MCDISPLAY} \index{Keyword!EXTEND}
 \end{itemize}
@@ -85,15 +85,15 @@ which may ease the task of writing component and instrument definitions.
   instrument definition to reference the output parameters of a
   component. See page~\pageref{mcgetpar} for details.
 \item {\bf NAME\_CURRENT\_COMP} gives the name of the current component as a string.
-\item {\bf POS\_A\_CURRENT\_COMP} gives the absolute position of the 
+\item {\bf POS\_A\_CURRENT\_COMP} gives the absolute position of the
   current component. A component of the vector is referred to as
   POS\_A\_CURRENT\_COMP.$i$ where $i$ is $x$, $y$ or $z$.
-\item {\bf ROT\_A\_CURRENT\_COMP} and 
+\item {\bf ROT\_A\_CURRENT\_COMP} and
   {\bf ROT\_R\_CURRENT\_COMP} give the orientation
   of the current component as rotation matrices
   (absolute orientation and the orientation relative to
   the previous component, respectively). A
-  component of a rotation matrice is referred to as 
+  component of a rotation matrice is referred to as
   ROT\_A\_CURRENT\_COMP$[m][n]$, where $m$ and
   $n$ are 0, 1, or 2.
 \item {\bf POS\_A\_COMP}$(comp)$ gives the absolute position
@@ -107,9 +107,9 @@ which may ease the task of writing component and instrument definitions.
   orientation and the orientation relative to its
   previous component, respectively). Note that {\em comp}
   is not given as a string. A component of  a rotation
-  matrice is referred to as 
+  matrice is referred to as
   ROT\_A\_COMP$(comp)[m][n]$, where $m$ and $n$ are
-  0, 1, or 2. 
+  0, 1, or 2.
 \item {\bf INDEX\_CURRENT\_COMP} is the number (index) of the
        current component  (starting from 1).
 \item {\bf POS\_A\_COMP\_INDEX}$(index)$ is the absolute position of
@@ -120,7 +120,7 @@ which may ease the task of writing component and instrument definitions.
   component access the position of the next component (this is usefull for
   automatic targeting).  A component of the vector is referred to as \\
   POS\_A\_COMP\_INDEX$(index).i$ where $i$ is $x$, $y$ or $z$. {\bf
-  POS\_R\_COMP\_INDEX} works the same, but with relative coordinates. 
+  POS\_R\_COMP\_INDEX} works the same, but with relative coordinates.
 \item {\bf STORE\_NEUTRON}$(index, x, y, z, vx, vy, vz, t$, $sx, sy,
 sz, p)$ stores the current neutron state in the trace-history table,
 in local coordinate system. $index$ is usually INDEX\_CURRENT\_COMP.
@@ -129,7 +129,7 @@ instrument.
 \item {\bf RESTORE\_NEUTRON}$(index, x, y, z, vx, vy, vz, t, sx, sy,
 sz, p)$ restores the neutron state to the one at the input of the
 component $index$. To ignore a component effect, use
-RESTORE\_NEUTRON (INDEX\_CURRENT\_COMP, \\ 
+RESTORE\_NEUTRON (INDEX\_CURRENT\_COMP, \\
 $x, y, z, vx, vy, vz, t,
 sx, sy, sz, p$) at the end of its TRACE section, or in its EXTEND
 section. These neutron states are in the local component coordinate
@@ -153,7 +153,7 @@ systems.
 \subsection{Coordinate transformations}
 \begin{itemize}
 \item {\bf coords\_set}$(x,y,z)$ returns a Coord structure (like POS\_A\_CURRENT\_COMP) with $x$, $y$ and $z$ members.
-\item {\bf  coords\_get}$(P,$ \&$x$, \&$y$, \&$z)$ copies the $x$, $y$ and 
+\item {\bf  coords\_get}$(P,$ \&$x$, \&$y$, \&$z)$ copies the $x$, $y$ and
 $z$ members of the Coord structure $P$ into $x,y,z$ variables.
 \item {\bf coords\_add}$(a,b)$, {\bf coords\_sub}$(a,b)$, {\bf
 coords\_neg}$(a)$ enable to  operate on coordinates, and return the
@@ -197,13 +197,7 @@ resulting Coord structure.
   in DETECTOR\_OUT\_2D, but with the additional $z$ axis (the signal).
   Resulting data files are treated as 2D data, but the 3rd dimension is
   specified in the $type$ field.
-\item {\bf mcheader\_out}{\it (FILE *f,char *parent,
-  int m, int n, int p,
-  char *xlabel, char *ylabel, char *zlabel, char *title,
-  char *xvar, char *yvar, char *zvar,
-  double x1, double x2, double y1,  double y2, double z1, double z2,
-  char *filename)} appends a header file using the current data format setting. Signification of parameters may be found in section~\ref{s:comp-finally}. Please contact the authors in case of perplexity.
-\item {\bf mcinfo\_simulation}{\it (FILE *f, mcformat, 
+\item {\bf mcinfo\_simulation}{\it (FILE *f, mcformat,
   char *pre, char *name)} is used to append the simulation parameters into file $f$ (see for instance the Res\_monitor component). Internal variable $mcformat$ should be used as specified. Please contact the authors in case of perplexity.
 \end{itemize}
 
@@ -223,7 +217,7 @@ resulting Coord structure.
   centered at the origin.
 \item {\bf sphere\_intersect}(\&$t_1$, \&$t_2$, $x$, $y$, $z$, $v_x$, $v_y$, $v_z$,
   $r$). Similar to {\bf box\_intersect}, but using a sphere
-  of radius $r$. 
+  of radius $r$.
 \end{itemize}
 
 \subsection{Random numbers}
@@ -242,14 +236,14 @@ resulting Coord structure.
   angle of the sphere as seen from the position of the neutron is returned
   in $d\Omega$. This routine was previously called {\bf randvec\_target\_sphere}
   (which still works).
-\item {\bf randvec\_target\_rect\_angular}(\&$v_x$, \&$v_y$, \&$v_z$, 
+\item {\bf randvec\_target\_rect\_angular}(\&$v_x$, \&$v_y$, \&$v_z$,
   \&$d\Omega$, aim$_x$, aim$_y$, aim$_z$,$height, width, Rot$) does the same as
   randvec\_target\_circle but targetting at a rectangle with angular dimensions
   $height$ and $width$ (in {\bf radians}, not in degrees as other angles). The
   rotation matrix $Rot$ is the coordinate system orientation in the absolute
   frame, usually ROT\_A\_CURRENT\_COMP.
-\item {\bf randvec\_target\_rect}(\&$v_x$, \&$v_y$, \&$v_z$, 
-  \&$d\Omega$, aim$_x$, aim$_y$, aim$_z$,$height, width, Rot$) is the same as 
+\item {\bf randvec\_target\_rect}(\&$v_x$, \&$v_y$, \&$v_z$,
+  \&$d\Omega$, aim$_x$, aim$_y$, aim$_z$,$height, width, Rot$) is the same as
   randvec\_target\_rect\_angular but $height$ and $width$ dimensions are given
   in meters. This function is useful to target at a guide entry window.
 \end{itemize}
@@ -297,17 +291,17 @@ A usage example for this library part may be:
     t_Table rTable;       // declares a t_Table structure
     char file="BeO.trm";  // a file name
     double x,y;
-    
+
     Table_Init(&rTable);  // initialize the table to empty state
     Table_Read(&rTable, file, 1); // reads the first numerical block
     Table_Info(rTable);   // display table informations
     ...
-    x = Table_Index(rTable, 2,5);  // reads the 3rd row, 6th column element 
+    x = Table_Index(rTable, 2,5);  // reads the 3rd row, 6th column element
                                    // of the table. Indexes start at zero in C.
     y = Table_Value(rTable, 1.45,1);  // looks for value 1.45 in 1st column (x axis)
                                       // and extract 2nd column value of that row
     Table_Free(&rTable);  // free allocated memory for table
-    
+
 \end{verbatim}
 Additionally, if the block number (3rd) argument of  {\bf Table\_Read} is 0, all blocks will be catenated.
 The {\bf Table\_Value} function assumes that the 'x' axis is the first column (index 0).
@@ -345,27 +339,27 @@ between units
 Name & Value & Conversion from & Conversion to \\ \hline
 \textvb{DEG2RAD} & $2 \pi / 360$ & Degrees & radians \\
 \textvb{RAD2DEG} & $360 / (2 \pi)$ & Radians & degrees \\
-\textvb{MIN2RAD} & $2 \pi / (360 \cdot 60)$ 
+\textvb{MIN2RAD} & $2 \pi / (360 \cdot 60)$
   & Minutes of arc & radians \\
-\textvb{RAD2MIN} & $(360\cdot 60) / (2 \pi)$ 
+\textvb{RAD2MIN} & $(360\cdot 60) / (2 \pi)$
   & Radians & minutes of arc \\
-\textvb{V2K} & $10^{10} \cdot m_{\rm N}/\hbar$ 
-  & Velocity (m/s) & {\bf k}-vector (\AA$^{-1}$) \\ 
-\textvb{K2V} & $10^{-10} \cdot \hbar / m_{\rm N}$ 
+\textvb{V2K} & $10^{10} \cdot m_{\rm N}/\hbar$
+  & Velocity (m/s) & {\bf k}-vector (\AA$^{-1}$) \\
+\textvb{K2V} & $10^{-10} \cdot \hbar / m_{\rm N}$
   & {\bf k}-vector (\AA$^{-1}$) & Velocity (m/s) \\
 \textvb{VS2E} & $m_{\rm N} / (2 e)$
   & Velocity squared (m$^2$ s$^{-2}$) & Neutron energy (meV) \\
-\textvb{SE2V} & $\sqrt{2 e/m_{\rm N}}$ 
+\textvb{SE2V} & $\sqrt{2 e/m_{\rm N}}$
   & Square root of neutron energy (meV$^{1/2}$) & Velocity (m/s) \\
-\textvb{FWHM2RMS} & $1/\sqrt{8\log(2)}$ 
+\textvb{FWHM2RMS} & $1/\sqrt{8\log(2)}$
   & Full width half maximum & Root mean square (standard deviation) \\
-\textvb{RMS2FWHM} & $\sqrt{8\log(2)}$ 
+\textvb{RMS2FWHM} & $\sqrt{8\log(2)}$
   & Root mean square (standard deviation) & Full width half maximum \\
-\textvb{MNEUTRON} & $1.67492E-27 kg$ 
+\textvb{MNEUTRON} & $1.67492E-27 kg$
   & Neutron mass & \\
-\textvb{HBAR} & $1.05459E-34 Js$ 
+\textvb{HBAR} & $1.05459E-34 Js$
   & Planck constant & \\
-\textvb{PI} & $3.14159265358979323846$ 
+\textvb{PI} & $3.14159265358979323846$
   & $\pi$ & \\
 \hline
 \end{tabular}
