@@ -1,0 +1,165 @@
+% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
+
+\chapter{Kernel calls and conversion constants}
+\label{c:kernelcalls}
+The \MCS\ kernel contains a number of built-in functions
+and conversion constants which are useful when constructing
+components. Here, we present a short list of these features.
+
+\section{Kernel calls and functions}
+Here we list a number of preprogrammed macros 
+which may ease the task of writing component and instrument definitions.
+
+\subsection{Neutron propagation}
+\begin{itemize}
+\item {\bf ABSORB}. This macro issues an order to the overall
+  \MCS\ simulator to interrupt the simulation of the current neutron
+  history and to start a new one.
+\item {\bf PROP\_Z0}. Propagates the neutron to the $z=0$ plane,
+  by adjusting $(x,y,z)$ and $t$. If the neutron velocity 
+  points away from the $z=0$ plane, the neutron is absorbed.
+\item {\bf PROP\_DT}$(dt)$. Propagates the neutron through the
+  time interval $dt$, adjusting $(x,y,z)$ and $t$.
+\item {\bf PROP\_GRAV\_DT}$(dt,Ax,Ay,Az)$. Like {\bf PROP\_DT}, but it also
+  includes gravity using the acceleration $(Ax,Ay,Az)$. In addition,
+  to adjusting $(x,y,z)$ and $t$ also $(vx,vy,vz)$ is modified.
+\item {\bf SCATTER}. This macro is used to denote a scattering event
+  inside a component, see section~\ref{s:comp-trace}.
+\end{itemize}
+
+\subsection{Meta-language extensions}
+\begin{itemize}
+\item {\bf MC\_GETPAR}(). This may be used in the finally section of an
+  instrument definition to reference the output parameters of a
+  component. See page~\pageref{mcgetpar} for details.
+\item {\bf NAME\_CURRENT\_COMP} gives the name of the current component as a string.
+\item {\bf POS\_A\_CURRENT\_COMP} gives the absolute position of the 
+  current component. A component of the vector is referred to as
+  {\bf POS\_A\_CURRENT\_COMP.i} where $i$ is $x$, $y$ or $z$.
+\item {\bf ROT\_A\_CURRENT\_COMP} and 
+  {\bf ROT\_R\_CURRENT\_COMP} give the orientation
+  of the current component as rotation matrices
+  (absolute orientation and the orientation relative to
+  the previous component, respectively). A
+  component of a rotation matrice is referred to as 
+  {\bf ROT\_A\_CURRENT\_COMP[m][n]}, where $m$ and
+  $n$ are 0, 1, or 2.
+\item {\bf POS\_A\_COMP(comp)} gives the absolute position
+  of the component with the name {\em comp}. Note that
+  {\em comp} is not given as a string. A component of the
+  vector is referred to as {\bf POS\_A\_COMP(comp).i}
+  where $i$ is $x$, $y$ or $z$.
+\item {\bf ROT\_A\_COMP(comp)} and
+  {\bf ROT\_R\_COMP(comp)} give the orientation of the
+  component {\em comp} as rotation matrices (absolute
+  orientation and the orientation relative to its
+  previous component, respectively). Note that {\em comp}
+  is not given as a string. A component of  a rotation
+  matrice is referred to as 
+  {\bf ROT\_A\_COMP(comp)[m][n]}, where $m$ and $n$ are
+  0, 1, or 2. 
+\item {\bf extend\_list}($n$, \&\textit{arr}, \&\textit{len},
+  \textit{elemsize}). Given an array \textit{arr} with \textit{len}
+  elements each of size \textit{elemsize}, make sure that the array is
+  big enough to hold at least $n$ elements, by extending \textit{arr}
+  and \textit{len} if necessary. Typically used when reading a list of
+  numbers from a data file when the length of the file is not known in advance.
+\item {\bf mcget\_ncount}(). Returns the number of neutron histories to simulate.
+\end{itemize}
+
+\subsection{Mathematical routines}
+\begin{itemize}
+\item {\bf NORM}$(x,y,z)$. Normalizes the vector $(x,y,z)$ to have
+  length 1.
+\item {\bf scalar\_prod}$(a_x,a_y,a_z,b_x,b_y,b_z)$. Returns the scalar
+  product of the two vectors $(a_x,a_y,a_z)$ and $(b_x,b_y,b_z)$.
+\item {\bf vecprod}$(a_x,a_y,a_z,b_x,b_y,b_z, c_x,c_y,c_z)$. Sets
+  $(a_x,a_y,a_z)$ equal to the vector product $(b_x,b_y,b_z) \times (c_x,c_y,c_z)$.
+\item {\bf rotate}$(x,y,z,v_x,v_y,v_z,\varphi,a_x,a_y,a_z)$. Set
+  $(x,y,z)$ to the result of rotating the vector $(v_x,v_y,v_z)$
+  the angle $\varphi$ (in radians) around the vector $(a_x,a_y,a_z)$.
+\item {\bf normal\_vec}(\&$n_x$, \&$n_y$, \&$n_z$, $x$, $y$, $z$).
+  Computes a unit vector $(n_x, n_y, n_z)$ normal to the vector
+  $(x,y,z)$.
+\end{itemize}
+
+\subsection{Output from detectors}
+\begin{itemize}
+\item {\bf DETECTOR\_OUT\_0D}$()$. Used to output the results from a
+  single detector. The name of the detector is output together
+  with the simulated intensity and estimated statistical error. The
+  output is produced in a format that can be read by \MCS\ front-end
+  programs. See section~\ref{s:comp-finally} for details.
+\item {\bf DETECTOR\_OUT\_1D}$()$. Used to output the results from a
+  one-dimentional detector. See section~\ref{s:comp-finally} for details.
+\item {\bf DETECTOR\_OUT\_2D}$()$. Used to output the results from a
+  two-dimentional detector. See section~\ref{s:comp-finally} for details.
+\end{itemize}
+
+\subsection{Ray-geometry intersections}
+\begin{itemize}
+\item {\bf box\_intersect}(\&$t_1$, \&$t_2$, $x$, $y$, $z$, $v_x$, $v_y$, $v_z$,
+  $d_x$, $d_y$, $d_z$). Calculates the (0, 1, or 2) intersections between
+  the neutron path and a box of dimensions $d_x$, $d_y$, and $d_z$,
+  centered at the origin for a neutron with the parameters
+  $(x,y,z,v_x,v_y,v_z)$. The times of intersection are returned
+  in the variables $t_1$ and $t_2$, with $t_1 < t_2$. In the case
+  of less than two intersections, $t_1$ (and possibly $t_2$) are set to
+  zero. The function returns true if the neutron intersects the box,
+  false otherwise.
+\item {\bf cylinder\_intersect}(\&$t_1$, \&$t_2$, $x$, $y$, $z$, $v_x$, $v_y$, $v_z$,
+  $r$, $h$).  Similar to {\bf box\_intersect}, but using a cylinder of height $h$ and radius $r$,
+  centered at the origin.
+\item {\bf sphere\_intersect}(\&$t_1$, \&$t_2$, $x$, $y$, $z$, $v_x$, $v_y$, $v_z$,
+  $r$). Similar to {\bf box\_intersect}, but using a sphere
+  of radius $r$. 
+\end{itemize}
+
+\subsection{Random numbers}
+\begin{itemize}
+\item {\bf rand01}(). Returns a random number distributed uniformly between 0 and 1.
+\item {\bf randnorm}(). Returns a random number from a normal
+  distribution centered around 0 and with $\sigma=1$. The algorithm used to
+  get the normal distribution is explained in~\cite{num_rep}, chapter~7.
+\item {\bf randpm1}(). Returns a random number distributed uniformly between -1 and 1.
+\item {\bf randvec\_target\_sphere}(\&$v_x$, \&$v_y$, \&$v_z$, \&$d\Omega$,
+  aim$_x$, aim$_y$, aim$_z$, $r_f$).
+  Generates a random vector $(v_x, v_y, v_z)$, of the same
+  length as (aim$_x$, aim$_y$, aim$_z$),
+  which is targeted at a sphere centered at (aim$_x$, aim$_y$, aim$_z$)
+  with radius $r_f$. All directions that intersect the sphere are chosen
+  with equal probability. The solid angle of the sphere as seen from the
+  position of the neutron is returned in $d\Omega$.
+\end{itemize}
+
+\section{Constants for unit conversion etc.}
+The following predefined constants are useful for conversion
+between units
+\def\textvb{\textbf}
+\begin{center}
+\begin{tabular}{|l|c|p{0.29\textwidth}|p{0.252\textwidth}|}
+\hline
+Name & Value & Conversion from & Conversion to \\ \hline
+\textvb{DEG2RAD} & $2 \pi / 360$ & Degrees & radians \\
+\textvb{RAD2DEG} & $360 / (2 \pi)$ & Radians & degrees \\
+\textvb{MIN2RAD} & $2 \pi / (360 \cdot 60)$ 
+  & Minutes of arc & radians \\
+\textvb{RAD2MIN} & $(360\cdot 60) / (2 \pi)$ 
+  & Radians & minutes of arc \\
+\textvb{V2K} & $10^{10} \cdot m_{\rm N}/\hbar$ 
+  & Velocity (m/s) & {\bf k}-vector (\AA$^{-1}$) \\ 
+\textvb{K2V} & $10^{-10} \cdot \hbar / m_{\rm N}$ 
+  & {\bf k}-vector (\AA$^{-1}$) & Velocity (m/s) \\
+\textvb{VS2E} & $m_{\rm N} / (2 e)$
+  & Velocity squared (m$^2$ s$^{-2}$) & Neutron energy (meV) \\
+\textvb{SE2V} & $\sqrt{2 e/m_{\rm N}}$ 
+  & Square root of neutron energy (meV$^{1/2}$) & Velocity (m/s) \\
+\textvb{FWHM2RMS} & $1/\sqrt{8\log(2)}$ 
+  & Full width half maximum & Root mean square (standard deviation) \\
+\textvb{RMS2FWHM} & $\sqrt{8\log(2)}$ 
+  & Root mean square (standard deviation) & Full width half maximum \\
+\hline
+\end{tabular}
+\end{center}
+
+Further, we have defined the constants \textvb{PI}$=\pi$ and \textvb{HBAR}$=\hbar$.

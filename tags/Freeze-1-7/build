@@ -1,0 +1,32 @@
+#!/bin/sh
+# Simple script for building McStas manual
+# Requirements:
+# LaTeX
+# BiBTeX
+# dvips
+# gs
+# CVS checkout of mcstas in ../mcstas
+#
+# Run like e.g. ./build 1.7 - will leave you with
+# mcstas-1.7-manual.ps.gz and mcstas-1.7-manual.pdf
+
+# First latex run:
+latex manual
+# Bibtex:
+bibtex manual
+# Index
+makeindex manual
+# Repeat latex runs:
+latex manual
+latex manual
+# latex the Component_manual
+latex Component_manual
+# Create .ps and .pdf files
+dvips -o mcstas-$1-manual.ps manual.dvi
+dvips -o mcstas-$1-components.ps Component_manual.dvi
+ps2pdf mcstas-$1-manual.ps
+ps2pdf mcstas-$1-components.ps
+# gzip the .ps
+gzip mcstas-$1-manual.ps
+gzip mcstas-$1-components.ps
+
