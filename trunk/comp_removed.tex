@@ -316,3 +316,25 @@ TOFlog\_mon      &    Rectangular Time-of-flight
     }
   \end{center}
 \end{table}
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+      \hline
+       MCSTAS/data & Description \\ 
+       \hline
+ .lau & Laue pattern file, as issued from Crystallographica or FullProf
+       data: [ h   k   l Mult. d-space 2Theta   F-squared ] \\
+ .trm & transmission file, typically for monochromator crystals and filters
+       data: [ k (Angs-1) , Transmission (0-1) ] \\
+ .rfl & reflectivity file, typically for mirrors and monochromator crystals
+       data: [ k (Angs-1) , Reflectivity (0-1) ] \\       
+      \hline
+    \end{tabular}
+    \caption{Data files of the \MCS\ library.}
+    \label{t:comp-data}
+    \index{Library!Components!data}
+    }
+  \end{center}
+\end{table}
