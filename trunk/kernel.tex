@@ -141,7 +141,7 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{OUTPUT} & C & Defines internal variables to be public and protected symbols (usually all those of DECLARE).\\
       \texttt{PARAMETERS} & C & Defines a class of component parameter. \\
       \texttt{POLARISATION} & C & Defines neutron polarisation coordinates. \\
-      \texttt{PREVIOUS} & C & Refers to a previous component position/orientation. \\
+      \texttt{PREVIOUS} & C & Refers to a previous component position/orientation.\\
       \texttt{RELATIVE} & I & Indicates that the AT and ROTATED keywords are relative to an other component. \\
       \texttt{ROTATED} & I & Indicates the orientation of a component in an instrument definition. \\
       \texttt{SAVE} & I,C & Embedded C code to execute when saving data. \\
@@ -351,7 +351,7 @@ $\phi_x$ (in degrees) around the $x$ axis, then $\phi_y$ around the $y$ axis, an
 $\phi_z$ around the $z$ axis. Rotation may also be specified using
 \texttt{ABSOLUTE} rather than \texttt{RELATIVE}. If no rotation is
 specified, the default is $(0,0,0)$ using the same relative or absolute
-specification used in the \texttt{AT} modifier.
+specification used in the \texttt{AT} modifier. The \emph{position} of a component depends on its definition. Usually, it will be the input window position (e.g. for guide-like components), or the center position for cylindrical/spherical components. Thus, the next component position will be most of the time set to the previous component AT position increased by its size/radius along the $z$ axis.
 
 The \texttt{PREVIOUS} \index{Keyword!PREVIOUS} keyword is a generic name to refer to the previous component in the simulation. Moreover, the \texttt{PREVIOUS(n)} keyword will refer to the $n$-th previous component, starting from the current component, so that \texttt{PREVIOUS} is equivalent to \texttt{PREVIOUS(1)}. This keyword should be used after the \texttt{RELATIVE} keyword, but not for the first component instance of the instrument description.
 \begin{quote}
@@ -361,7 +361,7 @@ The \texttt{PREVIOUS} \index{Keyword!PREVIOUS} keyword is a generic name to refe
 Invalid \texttt{PREVIOUS} references will be assumed to be absolute placement. 
 
 The order and position of components in the \texttt{TRACE} section does not
-allow components to overlap, except for particular cases.
+allow components to overlap, except for particular cases (see the \texttt{GROUP} keyword below).
 Indeed, many components of the \MCS\ library \index{Library!Components} start
 by propagating the neutron event to the begining of the component itself.
 Anyway, when the corresponding propagation time is found to be negative
@@ -386,7 +386,7 @@ It is sometimes desirable to slighlty modify an existing component of the \MCS\ 
   \hbox to 3em{}\ldots C code executed after the component TRACE section \ldots \\
   \verb|%}|
 \end{quote} \index{Embedded C code}
-The embeded C code is appended to the component \texttt{TRACE} section, and all its internal variables may be used.
+The embeded C code is appended to the component \texttt{TRACE} section, and all its internal variables (as well as all the instrument variables) may be used.
 This component declaration modifier is of course optional. Within a \texttt{GROUP}, \emph{all} \texttt{EXTEND} sections of the group are executed. In order to discriminate components that are active from those that are skipped, one may use the SCATTERED flag, which is set to zero when entering each component or group, and incremented when the neutron is SCATTERed, as in the following example \index{Library!Run-time!SCATTER} \index{Library!Run-time!SCATTERED}
 \begin{quote}
   \texttt{COMPONENT} $\textit{name0} =
