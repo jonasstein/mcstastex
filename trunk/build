@@ -32,13 +32,20 @@ latex Component_manual
 # Create .ps and .pdf files
 dvips -o mcstas-$1-manual.ps manual.dvi
 dvips -o mcstas-$1-components.ps Component_manual.dvi
-ps2pdf mcstas-$1-manual.ps
-ps2pdf mcstas-$1-components.ps
+whichdvipdf=`which dvipdf`
+if [ -e "$whichdvipdf" ] ;
+then
+  echo "Generate PDF files using dvipdf (better quality than ps2pdf)"
+  dvipdf manual.dvi mcstas-$1-manual.pdf
+  dvipdf Component_manual.dvi mcstas-$1-components.pdf
+else
+  echo "Generate PDF files using ps2pdf"
+  ps2pdf mcstas-$1-manual.ps
+  ps2pdf mcstas-$1-components.ps
+fi
 # gzip the .ps
 gzip mcstas-$1-manual.ps
 gzip mcstas-$1-components.ps
 
 # clear LaTeX temporary files but keep ps, dvi, pdf
 rm -f *.aux *.bbl *.blg *.idx *.ilg *.ind *.log *.toc
-
-
