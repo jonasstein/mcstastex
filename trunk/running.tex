@@ -394,7 +394,7 @@ turned off using the \verb+--data-only+ or \verb+-a+ option.
 The format of the output files from \MCS\ simulations is described in
 more detail in section~\ref{s:analyze}. It may be chosen either with \verb+--format=FORMAT+ for each simulation or globally by setting the MCSTAS\_FORMAT environment variable. \index{Environment variable!MCSTAS\_FORMAT}
 The available format list is obtained using the \verb+name.out --help+ option, and shown in table~\ref{t:formatoptions}.
-\MCS\ can presently generate many formats, including the original \MCS /PGPLOT and the new Scilab and Matlab formats. All formats, except the \MCS /PGPLOT, may eventually support binary files, which are much smaller and faster to import, but are platform dependent. The simulation data file extensions are appended automatically, depending on the format. For example:
+\MCS\ can presently generate many formats, including the original \MCS /PGPLOT and the new Scilab and Matlab formats. All formats, except the \MCS /PGPLOT, may eventually support binary files, which are much smaller and faster to import, but are platform dependent. The simulation data file extensions are appended automatically, depending on the format, if the file names do not contain any. For example:
 \begin{verbatim}
     ./vanadium_example.out ROT=90 --format="Scilab_binary"
 \end{verbatim} 
@@ -427,6 +427,8 @@ and for IDL
     idl> s=mcstas(/plot)
 \end{verbatim} \index{Tools!IDL}
 See section~\ref{s:mcplot} for an other way of plotting simulation results using the \verb+mcplot+ front-end. \index{Tools!mcplot}
+
+When choosing the HTML format, the simulation results are save as a web page, whereas the monitor data files are saved as VRML files, displayed within the web page.
 
 \begin{table}
   \begin{center}
@@ -474,7 +476,10 @@ See section~\ref{s:mcplot} for an other way of plotting simulation results using
         & This option toggles the gravitation handling for the whole neutron propagation within the instrument. \\
       \hline
       \texttt{--format={\it FORMAT}}
-        & This option sets the data format for result files from monitors \\
+        & This option sets the file format for result simulation and data files. \\
+      \hline
+      \texttt{--format_data={\it FORMAT}}
+        & This option sets the file format for result data files from monitors. This enables to have simulation files in one format (e.g. HTML), and monitor files in an other format (e.g. VRML).\\
       \hline
       \texttt{{\it param}{\texttt =}{\it value}}
         & Set the value of an instrument parameter, rather than having
@@ -502,7 +507,8 @@ See section~\ref{s:mcplot} for an other way of plotting simulation results using
       \texttt{IDL} & .pro & IDL format. {\em Must} be used with -f option. \\
       \texttt{IDL\_binary} & & IDL format with external binary files (may be used with -d option). Also toggles -a option. \\
       \texttt{XML} & .xml & XML/NeXus format (may be used with -f and -d options). \\
-      \texttt{HTML} & .html & HTML format (generates a web page, may be used with -f and -d options).  \\
+      \texttt{HTML} & .html & HTML format (generates a web page, may be used with -f and -d options). Data files are saved as VRML objects. \\
+      \texttt{VRML} & .wrl & Virtual Reality file format for data files. Simulation files are not saved properly, and the HTML format should be used preferably.
       \texttt{Tripoli} &  & Tripoli 4 neutron events file format. Use \verb+Tripoli_input+/\verb+Tripoli_output+ components. \\
       \texttt{Vitess} &  & Vitess neutron events file format. Use \verb+Vitess_input+/\verb+Vitess_output+ components. \\
       \hline
