@@ -1,0 +1,343 @@
+% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
+
+\chapter{The component library}
+\label{s:components}
+\index{Library!Components|textbf}
+
+This chapter has been removed from the manual and will instead be published 
+in a separate manual describing the McStas components. The McStas component manual will be edited by the McStas authors and it will include contributions from users writing components. Until the \MCS\ component manual is published we refer to the McStas web-page~\cite{mcstas_webpage} where all components are documented using the McDoc system or to previous manual for 
+release 1.4.
+
+\section{A short overview of the \MCS\ component library}
+\label{s:comp-overview}
+
+This section gives a quick overview of available \MCS\ components
+provided with the distribution, in the \verb+MCSTAS+ library. The
+location of this library is detailed in section~\ref{s:files}. All of them are thought to be reliable, eventhough no absolute guaranty may be given concerning their accuracy.\index{Environment variable!MCSTAS}
+
+The \verb+contrib+ directory of the library contains components that were given by \MCS\ users, but are not validated yet. \index{Library!Components!contrib}
+
+Additionally the \verb+obsolete+ directory of the library gathers components that were renamed, or considered to be outdated. Anyway, they still all work as before.
+\index{Library!Components!obsolete}
+
+The \verb+mcdoc+ front-end (section~\ref{s:mcdoc-run}) enables to display both the 
+catalog of the \MCS\ library, e.g using: \index{Tools!mcdoc}
+\begin{quote}
+  \verb|mcdoc --show|
+\end{quote}
+as well as the documentation of specific components, e.g with:
+\begin{quote}
+  \verb|mcdoc --text| {\it name} \\
+  \verb|mcdoc --show| {\it file.comp}
+\end{quote}
+The first line will search for all components matching the {\it name}, and display their help section as text, where as the second example will display the help corresponding to the {\it file.comp} component, using your BROWSER\index{Environment variable!BROWSER} setting, or as text if unset. The \verb+--help+ option will display the command help, as usual.
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+      \hline
+       MCSTAS/sources & Description \\
+       \hline
+Adapt\_check & Optimization specifier for the Source\_adapt component. \\
+ESS\_moderator\_long & Parametrised pulsed source for modelling ESS long pulses. \\
+ESS\_moderator\_short & A parametrised pulsed source for modelling ESS short pulses. \\
+Moderator  & A simple pulsed source for time-of-flight. \\
+Monitor\_Optimizer &  To be used after the Source\_Optimizer component. \\
+Source\_Maxwell\_3 & Source with up to three Maxwellian distributions \\
+Source\_Optimizer & A component that optimizes the neutron flux passing through the Source\_Optimizer in order to have the maximum flux at the Monitor\_Optimizer position. \\
+Source\_adapt  &       Neutron source with adaptive importance sampling. \\
+Source\_div &          Neutron source with Gaussian divergence. \\
+Source\_flat &  A circular neutron source with flat energy spectrum and arbitrary flux.\\
+Source\_flat\_lambda & Neutron source with flat wavelength spectrum and
+arbitrary flux. \\
+Source\_flux         & An old variant of the official
+                      Source\_flux\_lambda component. \\
+Source\_flux\_lambda  & Neutron source with flat wavelength
+                      spectrum and 
+                      user-specified flux. \\
+Source\_gen     &    Circular/squared neutron source with flat or Maxwellian
+                      energy/wavelength spectrum (possibly spatially
+                      gaussian). \\
+Virtual\_input &  Source-like component that generates neutron events from an ascii/binary 'virtual source' file (for Virtual\_output). \\
+Virtual\_output &  Detector-like component that writes neutron state (for Virtual\_input). \\
+      \hline
+    \end{tabular}
+    \caption{Source components of the \MCS\ library.}
+    \label{t:comp-sources}
+    \index{Library!Components!sources}
+    }
+  \end{center}
+\end{table}
+
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+      \hline
+       MCSTAS/optics & Description \\
+       \hline
+Arm                &  Arm/optical bench \\
+ Beamstop          &   Rectangular/circular
+                      beam stop. \\
+ Bender            &   Models a curved
+                      neutron guide. \\
+ Chopper           &   Disk chopper. \\
+ Chopper\_Fermi     &   Fermi Chopper with
+                      curved slits. \\
+ Collimator\_linear &  A simple analytical Soller collimator
+                      (with triangular
+                      transmission).  \\
+ Filter\_gen        &   This components may
+                      either set the flux
+                      or change it (filter-like), using
+                      an external data
+                      file. \\
+ Guide             &   Neutron guide. \\
+ Guide\_channeled   &   Neutron guide with
+                      channels (bender
+                      section). \\
+ Guide\_gravity     &  Neutron guide with gravity. Can be
+                      channeled and focusing. \\
+
+ Guide\_wavy        &   Neutron guide with
+                      gaussian waviness. \\
+
+ Mirror             &  Single mirror plate. \\
+
+                      
+ Monochromator\_curved & Double bent multiple crystal
+                      slabs with anisotropic gaussian
+                      mosaic. \\
+
+ Monochromator\_flat &  Flat Monochromator
+                      crystal with
+                      anisotropic mosaic. \\
+
+ Selector            & A velocity selector
+                      (helical lamella
+                      type) such as
+                      V\_selector component. \\
+
+ Slit                & Rectangular/circular
+                      slit. \\
+
+ V\_selector          & Velocity selector. \\
+      \hline
+    \end{tabular}
+    \caption{Optics components of the \MCS\ library.}
+    \label{t:comp-optics}
+    \index{Library!Components!optics}
+    }
+  \end{center}
+\end{table}
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+      \hline
+       MCSTAS/samples & Description \\ 
+       \hline
+       Powder1      &  General powder sample with a single
+                scattering vector. \\
+
+ Res\_sample   & Sample for resolution function
+                calculation. \\
+
+ Single\_crystal & Mosaic single crystal with multiple
+                scattering vectors. \\
+
+ V\_sample      & Vanadium sample.\\
+      \hline
+    \end{tabular}
+    \caption{Sample components of the \MCS\ library.}
+    \label{t:comp-samples}
+    \index{Library!Components!samples}
+    }
+  \end{center}
+\end{table}
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+      \hline
+       MCSTAS/monitors & Description \\ 
+       \hline
+DivLambda\_monitor &  Divergence/wavelength monitor. \\
+DivPos\_monitor  &    Divergence/position
+                    monitor (acceptance
+                    diagram). \\
+Divergence\_monitor &  Horizontal+vertical
+                    divergence monitor. \\
+EPSD\_monitor    &    A monitor measuring neutron
+                    intensity vs. position, x,
+                    and neutron energy, E. \\
+E\_monitor       &    Energy-sensitive monitor. \\
+Hdiv\_monitor    &    Horizontal divergence monitor
+L\_monitor           Wavelength-sensitive monitor. \\
+Monitor          &   Simple
+                    single detector/monitor. \\
+                    
+Monitor\_4PI     &    Monitor that detects ALL
+                    non-absorbed neutrons. \\
+Monitor\_nD      &    This
+                    component is a general
+          Monitor that can output
+                    0/1/2D signals (Intensity
+                    or signal vs. [something]
+                    and vs. [something] ...). \\
+PSD\_monitor     &    Position-sensitive
+                    monitor. \\
+PSD\_monitor\_4PI  &   Spherical
+                    position-sensitive
+                    detector. \\
+PSDcyl\_monitor  &    A 2D
+                    Position-sensitive
+                    monitor. The shape is
+                    cylindrical with the axis
+                    vertical. The monitor
+                    covers the whole cylinder
+                    (360 degrees). \\
+PSDlin\_monitor   &   Rectangular 1D PSD,
+                    measuring intensity vs.
+                    vertical position, x. \\
+PreMonitor\_nD    &   This component is a
+                    PreMonitor that is to be
+                    used with one Monitor\_nD,
+                    in order to record some
+                    neutron parameter correlations. \\
+Res\_monitor      &   Monitor for resolution
+                    calculations. \\
+TOFLambda\_monitor &  Time-of-flight/wavelength
+                    monitor. \\
+TOF\_cylPSD\_monitor & Cylindrical (2pi) PSD
+                    Time-of-flight monitor. \\
+TOF\_monitor     &    Rectangular Time-of-flight
+                    monitor. \\
+TOFlog\_mon      &    Rectangular Time-of-flight
+                    monitor with logarithmic
+                    time binning. \\
+      \hline
+    \end{tabular}
+    \caption{Monitor components of the \MCS\ library.}
+    \label{t:comp-monitors}
+    \index{Library!Components!monitors}
+    }
+  \end{center}
+\end{table}
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+      \hline
+       MCSTAS/misc & Description \\ 
+       \hline
+       Progress\_bar  &       A simulation
+                      progress bar. May also trigger intermediate SAVE.\\ 
+ Vitess\_input      &   Read neutron state
+                      parameters from
+                      VITESS neutron file.\\ 
+ Vitess\_output    &  Write neutron state
+     parameters to VITESS
+                      neutron file.\\
+      \hline
+    \end{tabular}
+    \caption{Miscellaneous components of the \MCS\ library.}
+    \label{t:comp-misc}
+    \index{Library!Components!misc}
+    }
+  \end{center}
+\end{table}
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+      \hline
+       MCSTAS/contrib & Description \\ 
+       \hline
+       Al\_window     &         Aluminium
+                        window in the beam. \\
+ Collimator\_ROC   &      Radial
+                        Oscillationg
+                        Collimator (ROC). \\
+ FermiChopper    &       Fermi Chopper with
+                        rotating frame. \\
+ Filter\_graphite  &      Pyrolytic
+                        graphite filter
+                        (analytical model). \\
+ Filter\_powder   &       Box-shaped powder
+                        filter based on Single\_crystal (unstable). \\
+ Guide\_honeycomb & Neutron guide
+                        with gravity and
+                        honeycomb geometry. Can be
+                        channeled and
+                        focusing. \\
+ He3\_cell    &           Polarised 3He cell. \\
+
+ Monochromator\_2foc   &  Double bent
+                        monochromator with
+                        multiple slabs. \\
+
+ SiC           &         SiC multilayer sample for reflectivity simulations. \\
+      \hline
+    \end{tabular}
+    \caption{Contributed components of the \MCS\ library.}
+    \index{Library!Components!contrib}
+    \label{t:comp-contrib}
+    }
+  \end{center}
+\end{table}
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+      \hline
+       MCSTAS/share & Description \\ 
+       \hline
+       adapt\_tree-lib  & Handles a simulation optimisation space for
+       adatative importance sampling.
+                          Used by the Source\_adapt component. \\
+       {\bf mcstas-r}      &   Main Run-time library (always included). \\
+       monitor\_nd-lib & Handles multiple monitor types. 
+                        Used by Monitor\_nD, Res\_monitor, \ldots \\
+       read\_table-lib  & Enables to read a data table (text/binary) to be used within
+                          an instrument or a component. \\
+       vitess-lib &     Enables to read/write Vitess event binary files. 
+                        Used by Vitess\_input and Vitess\_output \\             
+      \hline
+    \end{tabular}
+    \caption{Shared libraries of the \MCS\ library. See Appendix~\ref{c:kernelcalls} for details.}
+    \label{t:comp-share}
+    \index{Library!Components!share}
+    \index{Library!Run-time}
+    }
+  \end{center}
+\end{table}
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+      \hline
+       MCSTAS/data & Description \\ 
+       \hline
+ .lau & Laue pattern file, as issued from Crystallographica or FullProf.
+       Data: [ h   k   l Mult. d-space 2Theta   F-squared ] \\
+ .trm & transmission file, typically for monochromator crystals and filters.
+       Data: [ k (Angs-1) , Transmission (0-1) ] \\
+ .rfl & reflectivity file, typically for mirrors and monochromator crystals.
+       Data: [ k (Angs-1) , Reflectivity (0-1) ] \\       
+      \hline
+    \end{tabular}
+    \caption{Data files of the \MCS\ library.}
+    \label{t:comp-data}
+    \index{Library!Components!data}
+    }
+  \end{center}
+\end{table}
