@@ -1,0 +1,43 @@
+% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
+
+\chapter{About the component library}
+\label{s:components}
+The component library is
+maintained by the \MCS\ system group. A number of basic components 
+``belongs'' the \MCS\ system, while other are contributed
+by specific authors, mentioned  along with each component.
+
+Users are encouraged to send
+contributions to us for inclusion in future releases.
+
+In the description of the theory behind the component functionality 
+we will use the usual symbols {\bf r} for the position 
+$(x,y,z)$ of the particle (unit m), and {\bf v} for 
+the particle velocity $(v_x, v_y, v_z)$ (unit m/s).
+Another frequently used symbol is 
+the wave vector ${\bf k} = m_{\rm N} {\bf v}/\hbar$ , where
+$m_{\rm N}$ is the neutron mass. {\bf k} is usually given in
+\AA$^{-1}$, while neutron energies are given in meV.
+In general, vectors are denoted by boldface symbols.
+Subscripts "i" and "f" denotes ``initial'' and ``final'', respectively,
+and are used in connection with the neutron state before and after
+an interaction with a component.
+Note that all mentioning of component geometry refer to
+the local coordinate system of the individual component.
+
+The source code for a few selected components is listed 
+in Appendix~\ref{compcode}. 
+Source code for all component may be found in the \verb+lib/mcstas/+
+subdirectory of the McStas installation; 
+the default is \verb+/usr/local/lib/mcstas/+.
+
+An overview of the component library is also given at the \MCS\ home page...
+
+\input{source}
+\input{simple}
+\input{guide}
+\input{chopper}
+\input{detector}
+\input{monochr}
+\input{powder}
+\input{inelastic}
