@@ -1,0 +1,51 @@
+% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
+
+\chapter{The component library}
+\label{s:components}
+This section is devoted to a description of components included in
+the component library.  The component library is
+maintained by the Ris\o{} group. All components were written at Ris\o\
+except the chopper components in
+sections~\ref{s:chopper} and~\ref{s:first_chopper} which have been
+kindly contributed by Philipp Bernhardt, Lehrstuhl f\"ur
+Kristallographie und Strukturphysik; and the Source\_Optimizer
+(section~\ref{s:sourceoptimizer}), Monitor\_Optimizer
+(section~\ref{s:monitoroptimizer}), and Monitor\_nD
+(section~\ref{s:monitornd}) components which were written by Emmanuel
+Farhi, Institute Laue-Langevin.
+Users are encouraged to send
+contributions to us for inclusion in future releases.
+
+In the explanations of the individual components we will use
+the usual symbols {\bf r} for the position $(x,y,z)$ of the particle
+(unit m), and {\bf v} for 
+the particle velocity $(v_x, v_y, v_z)$ (unit m/s).
+Another frequently used symbol is 
+the wave vector ${\bf k} = m_{\rm N} {\bf v}/\hbar$ , where
+$m_{\rm N}$ is the neutron mass. {\bf k} is usually given in
+\AA$^{-1}$, while neutron energies are given in meV.
+In general, vectors are denoted by boldface symbols.
+Subscripts "i" and "f" denotes "initial" and "final", respectively,
+and are used in connection with the neutron state before and after
+a scattering event.
+Note that all mentioning of component geometry refer to
+the local coordinate system of the individual component.
+
+The source code for components is listed 
+in Appendix~\ref{compcode}. 
+The components follow the same numbering
+in the Appendix as in the main text, \textit{e.g.} 
+component \textbf{Arm}, subsection \ref{explain:arm},
+appears in the Appendix as \ref{code:arm}.
+Source code for many of the more trivial components are not included in
+this manual. All sources may be found in the \verb+lib/mcstas/+
+subdirectory of the McStas installation; the default is \verb+/usr/local/lib/mcstas/+.
+
+\input{source}
+\input{simple}
+\input{guide}
+\input{chopper}
+\input{detector}
+\input{monochr}
+\input{powder}
+\input{inelastic}

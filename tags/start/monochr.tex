@@ -1,0 +1,23 @@
+% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
+
+\section{Bragg scattering single crystals, monochromators}
+
+In this class of components, we are concerned with elastic Bragg
+scattering from single crystals. The Mosaic\_anisotropic component
+models a thin mosaic crystal with a single scattering vector
+perpendicular to the surface. It is a replacement for the Monochromator
+component from previous releases; it uses a better algorithm that works
+in some cases where the old component would give wrong results. The
+Mosaic\_simple component is similar, but has an isotropic mosaic and
+allows a scattering vector that is not perpendicular to the surface. The
+Single\_crystal component is a general single crystal sample that allows
+the input of an arbitrary unit cell and a list of structure factors, and
+also allows anisotropic mosaic and $\Delta d/d$ lattice space variation.
+
+\input{Mosaic_simple.tex}
+\input{Mosaic_anisotropic.tex}
+\input{Single_crystal.tex}
+
+\subsection{Monochromator: The monochromator crystal}
+The component {\bf Monochromator} is obsolete as from McStas version
+1.2. Use the component {\bf Mosaic\_anisotropic} instead.
