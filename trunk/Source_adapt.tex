@@ -1,0 +1,192 @@
+% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
+
+\subsection{Source\_adapt: A neutron source with adaptive importance sampling}
+\label{s:Source_adapt}
+\label{s:source_adapt}
+
+The {\bf Source\_adapt} component is a neutron source that uses adaptive
+importance sampling to improve the efficiency of the simulations. It
+works by changing on-the-fly the probability distributions from which
+the initial neutron state is sampled so that samples in regions that
+contribute much to the accuracy of the overall result are preferred over
+samples that contribute little. The method can achive improvements of a
+factor of ten or sometimes several hundred in simulations where only a
+small part of the initial phase space contains useful neutrons.
+
+The physical characteristics of the source are similar to those of
+Source\_flat (see section~\ref{sourceaim}). The source is a thin
+rectangle in the $X$-$Y$ plane with a flat energy spectrum in a
+user-specified range. The flux per area per steradian per
+{\AA}ngstr{\o}m per second is specified by the user; the total weight of
+neutrons emitted from the source will then be the same irrespectively of
+the number of neutron histories simulated, corresponding to one second
+of measurements.
+
+The initial neutron weight is given by (see
+section~\ref{Source_flux_lambda} for details)
+$$ p_0 = \frac{N_{\rm total}}{N_{\rm sim}} = 
+    \frac{\Phi}{N_{\rm sim}} A \Omega \Delta\lambda $$
+Here $\Delta\lambda$ is the total wavelength range of the source; since
+the spectrum is flat in energy (but not in wavelength), the flux
+will actually be different for different energies. A later version of
+this component will probably adapt (in a backward-compatible way) a more
+sensible way to specify the flux. For now, an energy or wavelength
+monitor (see sections~\ref{s:e_monitor} and~\ref{s:L_monitor}) placed
+just after the source will show the actual energy-dependent flux.
+
+
+\subsubsection{The adaption algorithm}
+
+The adaptive importance sampling works by subdividing the initial
+neutron phase space into a number of equal-sized bins. The division is
+done on the three dimensions of energy, horizontal position, and
+horizontal divergence, using $N_{\rm eng}$, $N_{\rm pos}$, and $N_{\rm
+  div}$ number of bins in each dimension, respectively. The total number
+of bins is therefore
+$$
+N_{\rm bin} = N_{\rm eng} N_{\rm pos} N_{\rm div}
+$$
+Each bin $i$ is assigned a sampling weight $w_i$; the probability of
+emitting a neutron within bin $i$ is
+$$
+P(i) = \frac{w_i}{\sum_{j=1}^{N_{\rm bin}} w_j}
+$$
+In order to avoid false learning, the sampling weight of a bin is
+kept larger than $w_{\rm min}$, defined as
+$$
+w_{\rm min} = \frac{\beta}{N_{\rm bin}}\sum_{j=1}^{N_{\rm bin}}w_j,\qquad
+    0 \leq \beta \leq 1
+$$
+This way a (small) fraction $\beta$ of the neutrons are sampled
+uniformly from all bins, while the fraction $(1 - \beta)$ are sampled in an adaptive way.
+
+Compared to a uniform sampling of the phase space (where the probability
+of each bin is $1/N_{\rm bin}$), the neutron weight
+must be adjusted by the amount
+$$
+\pi_i = \frac{1/N_{\rm bin}}{P(i)} =
+    \frac{\sum_{j=1}^{N_{\rm bin}} w_j}{N_{\rm bin} w_i}
+$$
+
+In order to set the criteria for adaption, the Adapt\_check component is
+used (see section~\ref{s:adapt_check}). The source attemps to sample
+only from bins from which neutrons are not absorbed prior to the
+position in the instrument at which the Adapt\_check component is
+placed. Among those bins, the algorithm attemps to minimize the variance
+of the neutron weights at the Adapt\_check position. Thus bins that
+would give high weights at the Adapt\_check position are sampled more
+often (lowering the weights), while those with low weights are sampled
+less often.
+
+Let $\pi = p_1/p_0$ denote the ratio between the neutron weight $p_1$ at
+the Adapt\_check position and the initial weight $p_0$ just after the
+source. For each bin, the component keeps track of the sum $\psi$ of
+$\pi$'s as well as of the total number of neutrons $n_i$ from that
+bin. The average weight at the Adapt\_source position of bin $i$ is thus
+$\psi_i/n_i$.
+
+We now distribute a total sampling weight of $\beta$ uniformly
+among all the bins, and a total weight of $(1 - \beta)$ among bins in
+proportion to their average weight $\psi_i/n_i$ at the Adapt\_source
+position:
+$$
+w_i = \frac{\beta}{N_{\rm bin}} + 
+    (1-\beta) \frac{\psi_i/n_i}{\sum_{j=1}^{N_{\rm bins}} \psi_j/n_j}
+$$
+After each neutron event originating from bin $i$, the sampling weight $w_i$
+is updated.
+
+This basic idea can be improved with a small modification. The problem
+is that until the source has had the time to learn the right sampling
+weights, neutrons may be emitted with high neutron weights (but low
+probability). These low probability neutrons may account for a large fraction of
+the total intensity in detectors, causing large variances in the
+result. To avoid this, the component emits early neutrons with a lower
+weight, and later neutrons with a higher weight to compensate. This way
+the neutrons that are emitted with the best adaption contribute the most
+to the result.
+
+The factor with which the neutron weights are adjusted is given by a
+logistic curve
+\begin{equation}
+  F(j) = C\frac{y_0}{y_0 + (1 - y_0) e^{-r_0 j}}
+\end{equation}
+where $j$ is the index of the particular neutron history, $1 \leq j
+\leq N_{\rm hist}$. The constants $y_0$, $r_0$, and $C$ are given by
+\begin{eqnarray}
+  y_0 &=& \frac{2}{N_{\rm bin}} \\
+  r_0 &=& \frac{1}{\alpha}\frac{1}{N_{\rm hist}}
+     \log\left(\frac{1 - y_0}{y_0}\right) \\
+  C &=& 1 + \log\left(y_0 + \frac{1 - y_0}{N_{\rm hist}}
+     e^{-r_0 N_{\rm hist}}\right)
+\end{eqnarray}
+The number $\alpha$ is given by the user and specifies (as a fraction
+between zero and one) the point at which the adaption is considered
+good. The initial fraction $\alpha$ of neutron histories are emitted
+with low weight; the rest are emitted with high weight:
+$$ p_0(j) = 
+    \frac{\Phi}{N_{\rm sim}} A \Omega \Delta\lambda 
+    \frac{\sum_{j=1}^{N_{\rm bin}} w_j}{N_{\rm bin} w_i}
+    F(j)
+$$
+The choice of the constants $y_0$, $r_0$, and $C$ ensure that
+$$
+\int_{t=0}^{N_{\rm hist}} F(j) = 1
+$$
+so that the total intensity over the whole simulation will be correct
+
+Similarly, the adjustment of sampling weights is modified so that the
+actual formula used is
+$$
+w_i(j) = \frac{\beta}{N_{\rm bin}} + 
+    (1-\beta) \frac{y_0}{y_0 + (1 - y_0) e^{-r_0 j}}
+     \frac{\psi_i/n_i}{\sum_{j=1}^{N_{\rm bins}} \psi_j/n_j}
+$$
+
+\subsubsection{The implementation}
+
+The heart of the algorithm is a discrete distribution $p$. The
+distribution has $N$ \emph{bins}, $1\ldots N$. Each bin has a value
+$v_i$; the probability of bin $i$ is then $v_i/(\sum_{j=1}^N v_j)$.
+
+Two basic operations are possible on the distribution. An \emph{update}
+adds a number $a$ to a bin, setting $v_i^{\rm new} = v_i^{\rm old} +
+a$. A \emph{search} finds, for given input $b$, the minimum $i$ such
+that
+$$ b \leq \sum_{j=1}^{i} v_j. $$
+The search operation is used to sample from the distribution p. If $r$
+is a uniformly distributed random number on the interval
+$[0;\sum_{j=1}^N v_j]$ then $i = {\rm search}(r)$ is a random number
+distributed according to $p$. This is seen from the inequality
+$$ \sum_{j=1}^{i-1} v_j < r \leq \sum_{j=1}^{i} v_j, $$
+from which $r \in [\sum_{j=1}^{i-1} v_j; v_i + \sum_{j=1}^{i-1} v_j]$
+which is an interval of length $v_i$. Hence the probability of $i$ is
+$v_i/(\sum_{j=1}^N v_j)$.
+The update operation is used to
+adapt the distribution to the problem at hand during a simulation. Both
+the update and the add operation can be performed very efficiently; how
+this is achieved will be described elsewhere.
+
+The input parameters for Source\_adapt are
+\textit{xmin}, \textit{xmax}, \textit{ymin}, and
+\textit{ymax} in meters to set the source dimensions;
+\textit{dist}, \textit{xw}, and \textit{yh}
+to set the focusing as for Source\_flat (section~\ref{sourceaim}); \textit{E0} and
+\textit{dE} to set the range of energies emitted, in meV (the range
+will be from $\textit{E0} - \textit{dE}$ to
+$\textit{E0} + \textit{dE}$); flux to set the source flux $\Phi$ in ${\rm
+  cm}^{-2} {\rm st}^{-1} \textit{\AA} {\rm s}^{-1}$;
+$N_{\rm eng}$, $N_{\rm pos}$, and $N_{\rm
+  div}$ to set the number of bins in each dimensions; \textit{alpha} and
+\textit{beta} to set the parameters $\alpha$ and $\beta$ as described
+above; and \textit{filename} to give the name of a file in which to
+output the final sampling destribution.
+
+A good general-purpose value for $\alpha$ and $\beta$ is $\alpha = \beta
+= 0.25$. The number of bins to choose will depend on the
+application. More bins will allow better adaption of the sampling, but
+will require more neutron histories to be simulated before a good
+adaption is obtained. The output of the sampling distribution is only
+meant for debugging, and the units on the axis are not necessarily
+meaningful. Setting the filename to \verb+NULL+ disables the output of
+the sampling distribution.
