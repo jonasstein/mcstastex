@@ -1,0 +1,170 @@
+% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
+
+\chapter{New features in \MCS\ version \version\ }
+\label{c:changes}
+
+Many new features have been implemented in \MCS\ version \version\ as compared to version 1.5. The list given here may be particularly useful to confirmed \MCS\ users who do not wish to read the whole manual, searching only for new stuff. A global upward compatibility exists for all changes, and thus all previous components and instruments should work as before. 
+
+\section{Kernel} 
+\label{s:new-features:kernel}
+\index{Kernel}
+
+The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and program). See the chapter~\ref{s:kernel}, page~\pageref{s:kernel}, for more details.
+
+\begin{itemize}
+\item Components may have a \texttt{SHARE} section, which is imported only once per
+    type of component. It has the same role as \texttt{DECLARE}, but only once.
+    \index{Keyword!SHARE} \index{Keyword!DECLARE}
+\item The component files may have some \texttt{\%include} inside '\%\{ \}\%' C
+    \texttt{DECLARE} or \texttt{SHARE} blocks. The files to include are searched
+    locally, and then in the library. If an extension is found, only the specified
+    file is included, else both  .h and .c are embedded if the --no-runtime has not
+    been specified. The instrument files can also embed external files, both in C
+    blocks  and in the instrument parts (\texttt{DECLARE}, etc.) as in previous
+    releases. \index{Keyword!%include}
+\item Component instances in an instrument source file may be \texttt{GROUP}ed into 
+    exclusive assembly, i.e. only one component of the group will intercept
+    neutron, the rest will be skipped. This is usefull for multi monochromators
+    multi detectors, multiple collimators, etc. This is a kind if splitting. Just add,
+    after the \texttt{ROTATED} keyword, the keyword \texttt{GROUP} followed by a group
+    name of your own (e.g. \texttt{GROUP} MyGroup). \index{Keyword!GROUP}
+\item In both components and instruments, the \texttt{FINALLY} section, that was
+    executed at the end of simulations, has been split into  still the
+    \texttt{FINALLY} (with the same function as bfore), and a new \texttt{SAVE}
+    section. This latter is executed at simulation end (just before the
+    \texttt{FINALLY}), but also each time an intermediate save is required (e.g. a
+    'kill -USR2 \$pid' is used under Unix). 
+    \index{Keyword!SAVE} \index{Keyword!FINALLY} \index{Signal handler!USR2 signal}
+\item The instrument and components may have \verb+char*+ setting parameters. For
+    components, their length is limited to 1024 chars
+    \index{Parameters!Instrument} \index{Parameters!Setting}
+\item An instrument source file may contain \texttt{EXTEND} \%\{ \ldots \}\% C blocks
+    just after   the usual \texttt{AT} \ldots \texttt{ROTATED} \ldots keywords, to
+    extend the behaviour of existing components, without touching their code. All
+    local component variables are  available. This may for instance be used to add a
+    new 'color' to neutrons,  i.e. assign a new characteristic variable to the
+    neutron. \index{Keyword!EXTEND}
+\item \MCS\ can now compile for Windows.
+\end{itemize}
+
+\section{Run-time} 
+\label{s:new-features:run-time}
+\index{Library!Run-time}
+
+Some important modifications were done to the 'Run-time' library (e.g. the functions used in the instrument program). Some details may be found in sections~\ref{s:comp-finally} and \ref{} as well as in appendix~\ref{c:kernelcalls}.
+
+\begin{itemize}
+\item A global gravitation handling is now available, by setting the \verb+-g+ flag.
+\item Many output formats are available for data. Use the \verb+--format="format"+
+    flag, e.g. \verb+--format="Scilab"+. For instance:
+    \begin{verbatim}
+      mcrun test.instr --format="Matlab binary" -n 1e4
+    \end{verbatim}
+    will create a \verb+mcstas.m+ file. Launch Matlab and execute:
+    \begin{verbatim}
+      s=mcstas('plot')
+    \end{verbatim}
+    will import data into s, and plot all detectors.
+    Binary formats are handled by IDL, Matlab, Scilab.
+    The present available format list, displayed with
+    the \verb+-h+ flag for the instrument program, is
+    \begin{verbatim}
+      "McStas" "Scilab" "Matlab" "IDL" "XML" "HTML" 
+    \end{verbatim}
+    The default format is McStas/PGPLOT, but may be specified globally using
+    the \verb+MCSTAS_FORMAT+ environment variable. 
+    \index{Environment variable!MCSTAS\_FORMAT} \index{Data format}
+\item It is possible to save 3D data arrays, by calling the DETECTOR\_OUT\_3D macro.
+    (handled as 2D by \verb+mcplot+). \index{Library!Run-time!DETECTOR\_OUT\_3D}
+\item The C type of the 'number of events' array in monitors (usually named
+    \verb+L_N+) was changed from \verb+int+ to \verb+double+, to avoid overflow.
+    Please update your home-made monitors.
+\item The \verb+USR2+ signal generates an intermediate save for all monitors, during
+    the simulation (execute the \texttt{SAVE} section). The \verb+USR1+ signal still
+    gives informations. \index{Signal handler!USR1 signal}
+\item A new \verb+randvec_target_rect+ function now focuses on a rectangle (more
+    efficient than the former \verb+randvec_target_sphere+).
+    \index{Library!Run-time!randvec\_target\_rect}
+\end{itemize}
+
+
+\section{Components and Library} 
+\label{s:new-features:components}
+\index{Components} \index{Library!Components}
+  
+  We here list some of the new components (e.g. the \MCS \verb+lib+ directory) which are detailed in the {\it Component manual}.
+  
+\begin{itemize}
+\index{Library!Components!data}
+\item A new \verb+data+ directory contains neutron data tables (transmissions, reflectivities, Laue patterns, \ldots).
+\item The documentation is now included in the \verb+doc+ directory.
+      \index{Library!Components!doc}
+\item Many dedicated libraries are now available as shared code for reading tables,
+    handling data files and monitors. These are C functions to be \texttt{\%includ}ed
+    into components (see e.g. \verb+MCSTAS/monitors/Monitor_nD.comp+).
+    \index{Library!Components!share}
+\item Obsolete directory contains components that were renamed or old.
+      \index{Library!Components!obsolete}
+\item \verb+misc/Progress_bar+ component now exists, and may save data regularly.
+      \index{Library!Components!misc}
+\item \verb+optics/Monochromator_curved+ can read reflectivity and transmission tables.
+\item \verb+optics+ components were renamed by categories, starting with
+   Guide\_\ldots, Monochromator\_\ldots, Filter\_\ldots etc so that sorting is
+   easier. \index{Library!Components!optics}
+\item \verb+optics/Guide_gravity+ can handle a 2D array of channels.
+\item \verb+optics/Filter_gen+ can read a table from a file and affect the neutron
+    beam (replaces the obsolete \verb+Flux_adapter+). It may act as a filter or a
+    source.
+\item \verb+monitors/Monitor_nD+ can have automatic limits mode for either all or 
+    selected monitored variables. It may also plot banana monitors for
+    \verb+mcdisplay+ and monitor something else than the intensity, e.g. the mean
+    energy on a XY psd. \index{Library!Components!monitors}
+\item \verb+sources/Virtual_output+ can save all neutron events into a file
+    (beware the size of the generated files !). Format may be text or binary.
+    \index{Library!Components!sources}
+\item \verb+sources/Virtual_input+ can read the files generated by \verb+Virtual_output+.
+\item \verb+samples+ can now target towards any component, given its index 
+    (no need to compute \verb+target_x|y|z+ vector, use e.g. \verb+target_index=1+).
+    \index{Library!Components!samples}
+\item \verb+samples/Res_monitor+, \verb+Powder1+ and \verb+V_sample+ may now have a
+    sphere or box shape, and may focus to a circular or rectangular area.
+\item Contributed components (\verb+Guide_honeycomb+, \verb+Filter_powder+) have been
+    placed in the \verb+contrib+ directory. \index{Library!Components!contrib}
+\end{itemize}
+
+\section{Tools, installation}
+\label{s:new-features:tools}
+\index{Tools}
+\index{Installation}
+  A renewal of most \MCS\ Tools, used to edit and display instrument or results, is under way, aiming at proposing alternatives to the Perl+PerlTk+PGPLOT+PDL libraries.
+  This has improved significantly the portability of \MCS\ and thus simplified the
+  installation of the package. Details about the installation and the available tools are given in section~\ref{s:frontends}.
+
+\begin{itemize}
+\item The list of required packages for a complete \MCS\ installation is now a C
+    compiler, Perl, PerlTk and Scilab or Matlab.
+\item Matlab, Scilab and IDL may read directly McStas results if the simulation
+    was executed with the \verb+--format="..."+ option 
+    (see~\ref{s:new-features:run-time} changes). The former PGPLOT interface is still
+    supported. 
+    \index{Tools!Matlab} \index{Tools!Scilab} 
+    \index{Tools!IDL} \index{Tools!Perl libraries}
+\item \verb+mcplot+, \verb+mcdisplay+, \verb+mcgui+ are now less dependent on the
+    \verb+perl/PDL/pgplot+ installed versions. \index{Tools!mcplot}
+\item \verb+mcplot+ can plot a single simulation data file.
+\item \verb+mcplot+, \verb+mcresplot+, \verb+mcdisplay+ can output GIF, PS and color
+    PS files. They also have integrated help (-h options), and may generate output
+    files in a non interactive mode (read data, create output file, exit).
+\item \verb+mcplot+ and \verb+mcdisplay+ work with Matlab, PGPLOT and Scilab plotters
+   (depends on the \verb+MCSTAS_FORMAT+ environment variable, or -pPLOTTER option, or
+   PGPLOT if not set)
+\item \verb+mcrun+ can not currently generate scan results in other formats than
+   McStas/PGPLOT, but a port for Scilab/Matlab is under way. 
+   \index{Tools!mcrun}
+\item \verb+mcstas2vitess+ enables to convert a McStas component into a
+   Vitess~\cite{vitess_webpage} one. \index{Tools!mcstas2vitess}
+\item \verb+mcresplot+ can plot projections of the 4D resolution function of an 
+   instrument obtained from the \verb+Res_sample+ and \verb+Res_monitor+ components.
+   It only works with the McStas/PGPLOT format right now, but a port for Scilab/Matlab
+   is under way. \index{Tools!mcresplot}
+\end{itemize}
