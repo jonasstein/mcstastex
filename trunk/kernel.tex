@@ -410,6 +410,16 @@ This component declaration modifier is of course optional. Within a \texttt{GROU
 Components \emph{name1} and \emph{name2} are at the same position. If the first one intercepts the neutron (and has a SCATTER within its \texttt{TRACE} section), the SCATTERED variable becomes true, the code extension will result in printing "I scatter", and the second component will be skipped.
 Thus, we recommand to make use of the SCATTER keyword each time a component 'uses' the neutron (scatters, detects, \ldots).
 
+Sources are special components that set the neutron STATE parameters
+(e.g. position, speed, etc...) and are usually positioned at the very beginning of the
+TRACE section. As a default, neutrons are defined at the origin, with zero time and speed. As a consequence, the time spread is null. Most sources components only set the position and speed, but do not set the time of the created neutrons. You may manually set the neutron time spreading (for e.g. Time of Flight instruments) in an \verb+EXTEND+ code section such as:
+\begin{quote}
+  \texttt{COMPONENT} $\textit{MySource} = \textit{source}(\ldots)$ \texttt{AT}(\ldots) \texttt{EXTEND} \\
+  \hbox to 1em{} \verb|%{| \\
+  \hbox to 3em{} \verb+t = randpm1()*10e-6;+ \\
+  \hbox to 1em{} \verb|%}|
+\end{quote}
+This will set the time randomly between -10 and 10 $\mu$-seconds.
 
 \subsection{The \texttt{SAVE} section}
 \index{Keyword!SAVE}
@@ -523,14 +533,17 @@ Setting parameters may optionally be declared to be of type \verb+int+ and \verb
   \texttt{OUTPUT} \texttt{PARAMETERS} $(s_1, s_2, \ldots)$
 \end{quote}
 \index{Keyword!OUTPUT PARAMETERS}
-This declares a list of C identifiers that are output parameters for the
+\index{Parameters!Protecting|see{Keyword/OUTPUT}}
+This declares a list of C identifiers (variables, functions) that are
+output parameters for the
 component. Output parameters are used to hold values that are computed
 by the component itself, rather than being passed as input. This could
 for example be a count of neutrons in a detector or a constant that is
-precomputed to speed up computation. Output
-parameters will typically be declared as C variables in the
-\texttt{DECLARE} section, see section~\ref{s:comp-declare} below for an
-example.
+precomputed to speed up computation.
+
+Using \texttt{OUTPUT PARAMETERS} is \emph{highly recommanded} for \texttt{DECLARE} and internal variables and functions in order to prevent that two component instances use the same variable names. Moreover (see section \ref{s:comp-declare} below), these may be accessed from any other instrument part (e.g. using the \verb+MC_GETPAR+ C macro).
+On the other hand, the variables from the SHARE sections should \emph{not}
+be defined as OUTPUT parameters.
 
 The \texttt{OUTPUT} \texttt{PARAMETERS} section is optional.
 
@@ -541,8 +554,8 @@ The \texttt{OUTPUT} \texttt{PARAMETERS} section is optional.
 This declares the parameters that define the state of the incoming
 neutron. The task of the component code is to assign new values to these
 parameters based on the old values and the values of the definition and
-setting parameters. Note that $s_1$ and $s_2$ are obsolete and cannot be used.
-
+setting parameters. Note that $s_1$ and $s_2$ are obsolete and stand for
+$s_x$ and $s_y$ members of the polarisation vector. To access $s_z$, use:
 \begin{quote}
   \texttt{POLARISATION} \texttt{PARAMETERS} $(s_x,s_y,s_z)$
 \end{quote}
@@ -594,7 +607,7 @@ user forgetting to set an important parameter.
   \verb|%}|
 \end{quote}
 \index{Keyword!DECLARE}
-This gives C declarations of global variables etc. that are used by the
+This gives C declarations of global variables, functions, etc. that are used by the
 component code. This may for instance be used to declare a neutron
 counter for a detector component. This section is optional.
 
@@ -634,6 +647,7 @@ FINALLY
 %}
 \end{verbatim}
 \end{quote}
+This way, \MCS\ takes care to renamed transparently the two 'counts' \texttt{OUTPUT} parameters so that they are distinct, and can be accessed from elsewhere in the instrument (EXTEND, FINALLY, SAVE, ...) or from other components.
 
 \subsection{The \texttt{SHARE} section}
 \label{s:comp-share}
@@ -846,7 +860,7 @@ following macro:
         {\it filename})}
 \end{quote}
 The meaning of parameters is the same as those used in the 1D and 2D
-versions of DETECTOR\_OUT. The available data format currently save
+versions of DETECTOR\_OUT. The available data format currently saves
 the 3D arrays as 2D, with the 3rd dimension specified in the {\it
   type} field of the data header.
 
