@@ -1,0 +1,295 @@
+% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
+
+\chapter{\MCS\ source code for the component library}
+\label{compcode}
+
+\section*{List of component input and output parameters}
+
+Before listing the source code for the components, we
+bring a list of the components with their input and output parameters.
+
+\begin{center}
+\begin{tabular}{|ll|}
+\hline
+Source\_flat & \textbf{Input:} (radius, dist, xw, yh, E0, dE) \\
+ & \textbf{Output:} (hdiv, vdiv, p\_in) \\
+\hline
+Source\_flat\_lambda & \textbf{Input:} (radius, dist, xw, yh, lambda\_0, d\_lambda) \\
+ & \textbf{Output:} (hdiv, vdiv, p\_in) \\
+\hline
+Source\_flux\_lambda & \textbf{Input:} (radius, dist, xw, yh, lambda\_0,
+    d\_lambda, flux) \\
+ & \textbf{Output:} (hdiv, vdiv, p\_in) \\
+\hline
+Source\_div & \textbf{Input:} (width, height, hdiv, vdiv, E0, dE) \\
+\hline
+Moderator & \textbf{Input:} (radius, E0, E1, dist, xw, yh, t0, Ec, gam) \\
+\hline
+Source\_adapt & \textbf{Input:} (xmin, xmax, ymin, ymax, dist, xw, yh, E0, dE, flux) \\
+     & \phantom{\textbf{Input:}\ }(n\_E, N\_xpos, N\_xdiv, alpha, beta, filename) \\
+\hline
+Arm & \textbf{Input:} () \\
+\hline
+Slit & \textbf{Input:} (xmin, xmax, ymin, ymax) \\
+\hline
+Circular\_slit & \textbf{Input:} (radius) \\
+\hline
+Beamstop\_rectangular & \textbf{Input:} (xmin, xmax, ymin, ymax) \\
+\hline
+Beamstop\_circular & \textbf{Input:} (radius) \\
+\hline
+Soller & \textbf{Input:} (xmin, xmax, ymin, ymax, len, divergence) \\
+\hline
+Filter & \textbf{Input:} (xmin, xmax, ymin, ymax, len, T0, T1, Emin, Emax) \\
+\hline
+Mirror & \textbf{Input:} (xlength, yheight, R0, Qc, alpha, m, W) \\
+\hline
+Guide & \textbf{Input:} (w1, h1, w2, h2, l, R0, Qc, alpha, m, W) \\
+\hline
+Channeled\_Guide & \textbf{Input:} (w1, h1, w2, h2, l, d, k) \\
+                 & \phantom{\textbf{Input:}\ }(R0, Qcx, Qcy, alphax, alphay, mx, my, W) \\
+\hline
+\end{tabular}
+\end{center}
+\vfill
+\begin{center}
+\begin{tabular}{|ll|}
+\hline
+V\_selector & \textbf{Input:} (width, height, l0, r0, phi, l1, tb, rot, nb) \\
+\hline
+Chopper & \textbf{Input:} (w, R, f, n, pha) \\
+ & \textbf{Output:} (Tg, To) \\
+\hline
+First\_Chopper & \textbf{Input:} (w, R, f, n, pha, a) \\
+ & \textbf{Output:} (Tg, To) \\
+\hline
+Monitor & \textbf{Input:} (xmin, xmax, ymin, ymax) \\
+ & \textbf{Output:} (Nsum, psum, p2sum) \\
+\hline
+Monitor\_4PI & \textbf{Output:} (Nsum, psum, p2sum) \\
+\hline
+PSD\_monitor & \textbf{Input:} (xmin, xmax, ymin, ymax, nx, ny, filename) \\
+ & \textbf{Output:} (PSD\_N, PSD\_p, PSD\_p2) \\
+\hline
+PSD\_monitor\_4PI & \textbf{Input:} (radius, nx, ny, filename) \\
+ & \textbf{Output:} (PSD\_N, PSD\_p, PSD\_p2) \\
+\hline
+PSD\_monitor\_4PI\_log & \textbf{Input:} (radius, nx, ny, filename) \\
+ & \textbf{Output:} (PSD\_N, PSD\_p, PSD\_p2) \\
+\hline
+TOF\_monitor & \textbf{Input:} (xmin, xmax, ymin, ymax, nchan, dt, filename) \\
+ & \textbf{Output:} (TOF\_N, TOF\_p, TOF\_p2) \\
+\hline
+E\_monitor & \textbf{Input:} (xmin, xmax, ymin, ymax, Emin, Emax, nchan, filename) \\
+ & \textbf{Output:} (E\_N, E\_p, E\_p2) \\
+\hline
+L\_monitor & \textbf{Input:} (xmin, xmax, ymin, ymax, Lmin, Lmax, nchan, filename) \\
+ & \textbf{Output:} (L\_N, L\_p, L\_p2) \\
+\hline
+Divergence\_monitor & \textbf{Input:} (xmin, xmax, ymin, ymax, nh, nv) \\
+           & \phantom{\textbf{Input:}\ }(h\_maxdiv, v\_maxdiv, filename) \\
+ & \textbf{Output:} (Div\_N, Div\_p, Div\_p2) \\
+\hline
+DivPos\_monitor & \textbf{Input:} (xmin, xmax, ymin, ymax, 
+                       npos, ndiv, maxdiv, filename) \\
+ & \textbf{Output:} (Div\_N, Div\_p, Div\_p2) \\
+\hline
+DivLambda\_monitor & \textbf{Input:} (xmin, xmax, ymin, ymax, nlam, ndiv, maxdiv) \\
+          & \phantom{\textbf{Input:}\ }(lambda\_0, lambda\_1, filename) \\
+ & \textbf{Output:} (Div\_N, Div\_p, Div\_p2) \\
+\hline
+Res\_monitor & \textbf{Input:} (xmin, xmax, ymin, ymax, filename, res\_sample\_comp) \\
+ & \textbf{Output:} (Nsum, psum, p2sum, file) \\
+\hline
+Adapt\_check & \textbf{Input:} (source\_comp) \\
+\hline
+Mosaic\_simple & \textbf{Input:} (zmin, zmax, ymin, ymax, mosaic, R0, Qx, Qy, Qz) \\
+\hline
+Mosaic\_anisotropic & \textbf{Input:} (zmin, zmax, ymin, ymax, mosaich, mosaicv, r0, Q) \\
+\hline
+Single\_crystal & \textbf{Input:} (xwidth, yheight, zthick, delta\_d\_d, mosaic) \\
+ & \phantom{\textbf{Input:}\ }(ax, ay, az, bx, by, bz, cx, cy, cz, reflections) \\
+\hline
+V\_sample & \textbf{Input:} (radius\_i,radius\_o,h,pack,focus\_r) \\
+ & \phantom{\textbf{Input:}\ }(target\_x, target\_y, target\_z) \\
+\hline
+Powder1 & \textbf{Input:} (d\_phi0, radius, h, pack, Vc, sigma\_a, j, q, F2, DW) \\
+ & \phantom{\textbf{Input:}\ }(target\_x, target\_y, target\_z) \\
+ & \textbf{Output:} (my\_s\_v2, my\_a\_v, q\_v) \\
+\hline
+Res\_sample & \textbf{Input:} (radius\_i, radius\_o, h, focus\_r, E0, dE) \\
+ & \phantom{\textbf{Input:}\ }(target\_x, target\_y, target\_z) \\
+ & \textbf{Output:} (res\_struct) \\
+\hline
+\end{tabular}
+\end{center}
+
+\newpage
+
+\section{Source components}
+
+\subsection{Source\_flat}
+\smallverbatimfile{../components/Source_flat.comp}
+\newpage
+
+\addtocounter{subsection}{1}    % Skip Source_flat_lambda
+
+\subsection{Source\_flux\_lambda}
+\smallverbatimfile{../components/Source_flux_lambda.comp}
+\newpage
+
+\subsection{Source\_div}
+\smallverbatimfile{../components/Source_div.comp}
+\newpage
+
+\subsection{Moderator}
+\smallverbatimfile{../components/Moderator.comp}
+\newpage
+
+\subsection{Source\_adapt}
+\smallverbatimfile{../components/Source_adapt.comp}
+\newpage
+
+\addtocounter{subsection}{1}    % Skip Source_optimizer
+
+\section{Simple components}
+
+\subsection{Arm}
+\label{code:arm}
+\smallverbatimfile{../components/Arm.comp}
+\newpage
+
+\subsection{Slit}
+\smallverbatimfile{../components/Slit.comp}
+\newpage
+
+\addtocounter{subsection}{1}    % Skip Circular_slit
+%\subsection{Circular\_slit}
+%\smallverbatimfile{../components/Circular_slit.comp}
+%\newpage
+
+\addtocounter{subsection}{1}    % Skip Beamstop_rectangular
+\addtocounter{subsection}{1}    % Skip Beamstop_circular
+
+\subsection{Soller}
+\smallverbatimfile{../components/Soller.comp}
+\newpage
+
+\subsection{Filter}
+\smallverbatimfile{../components/Filter.comp}
+\newpage
+
+\section{Beam optical components}
+\addtocounter{subsection}{1}    % Skip mirror reflectivity
+
+\addtocounter{subsection}{1}    % Skip Mirror
+%\subsection{Mirror}
+%\smallverbatimfile{../components/Mirror.comp}
+%\newpage
+
+\subsection{Guide}
+\smallverbatimfile{../components/Guide.comp}
+\newpage
+
+\subsection{Channeled\_Guide}
+\smallverbatimfile{../components/Channeled_guide.comp}
+\newpage
+
+\section{Chopper-like components}
+\subsection{V\_selector.comp}
+\smallverbatimfile{../components/V_selector.comp}
+\newpage
+
+\subsection{Chopper.comp}
+\smallverbatimfile{../components/Chopper.comp}
+\newpage
+
+\addtocounter{subsection}{1}    % Skip First_Chopper
+%\subsection{First\_Chopper.comp}
+%\smallverbatimfile{../components/First_Chopper.comp}
+%\newpage
+
+\section{Detectors and monitors}
+\subsection{Monitor}
+\smallverbatimfile{../components/Monitor.comp}
+\newpage
+
+\addtocounter{subsection}{1}    % Skip Monitor_4PI
+%\subsection{Monitor\_4PI}
+%\smallverbatimfile{../components/Monitor_4PI.comp}
+%\newpage
+
+\subsection{PSD\_monitor}
+\label{app:psd_monitor}
+\smallverbatimfile{../components/PSD_monitor.comp}
+\newpage
+
+\subsection{PSD\_monitor\_4PI}
+\smallverbatimfile{../components/PSD_monitor_4PI.comp}
+\newpage
+
+\addtocounter{subsection}{1}    % Skip PSD_monitor_4PI_log
+
+\subsection{TOF\_monitor}
+\smallverbatimfile{../components/TOF_monitor.comp}
+\newpage
+
+\subsection{E\_monitor}
+\smallverbatimfile{../components/E_monitor.comp}
+\newpage
+
+\addtocounter{subsection}{1}    % Skip L_monitor
+\addtocounter{subsection}{1}    % Skip Divergence_monitor
+%\subsection{Divergence\_monitor}
+%\smallverbatimfile{../components/Divergence_monitor.comp}
+%\newpage
+\addtocounter{subsection}{1}    % Skip DivPos_monitor
+\addtocounter{subsection}{1}    % Skip DivLambda_monitor
+\addtocounter{subsection}{1}    % Skip Monitor_nD
+
+\subsection{Res\_monitor}
+\smallverbatimfile{../components/Res_monitor.comp}
+\newpage
+
+\subsection{Adapt\_check}
+\smallverbatimfile{../components/Adapt_check.comp}
+\newpage
+
+\addtocounter{subsection}{1}    % Skip Monitor_optimizer
+
+\section{Crystals}
+\subsection{Mosaic\_simple}
+\smallverbatimfile{../components/Mosaic_simple.comp}
+\newpage
+
+\addtocounter{subsection}{1}    % Skip Mosaic_anisotropic
+%\subsection{Mosaic\_anisotropic}
+%\smallverbatimfile{../components/Mosaic_anisotropic.comp}
+%\newpage
+
+\subsection{Single\_crystal}
+\smallverbatimfile{../components/Single_crystal.comp}
+\newpage
+
+\addtocounter{subsection}{1}    % Skip Monochromator
+%\subsection{Monochromator}
+%\smallverbatimfile{../components/Monochromator.comp}
+%\newpage
+
+\section{Powder-like samples}
+\addtocounter{subsection}{1}    % Skip intro section
+\subsection{V\_sample}
+\label{c:v-sample}
+\smallverbatimfile{../components/V_sample.comp}
+\newpage
+
+\subsection{Powder1}
+\label{c:powder1}
+\smallverbatimfile{../components/Powder1.comp}
+\newpage
+
+\section{Inelastic samples}
+\subsection{Res\_sample}
+\label{c:res-sample}
+\smallverbatimfile{../components/Res_sample.comp}
+\newpage
