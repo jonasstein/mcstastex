@@ -52,11 +52,11 @@
 
 %\title{Component manual\\ to the neutron ray-tracing package
 % \MCS ,\\ version \version}
-%\author{Peter Kj\ae r Willendrup and Kim Lefmann \\
+%\author{Kim Lefmann and Peter Kj\ae r Willendrup \\
 % Materials Research Department, \\
 % Ris\o\ National Laboratory, 4000 Roskilde, Denmark;\\
 % Emmanuel Farhi and Klaus Lieutenant \\ ILL, Grenoble, France}
-%\date{May 1, 2005 \\[2\baselineskip]
+%\date{\reldate \\[2\baselineskip]
 %\begin{center}
 %  \includegraphics[width=4.5in]{figures/vanadium-surf-2.eps}
 %\end{center}
@@ -77,8 +77,8 @@
 %\listoftables
 
 \include{preface_comp}
-
 \include{intro_comp}
+\include{techniq}
 \include{comp}
 \include{instr_examples}
 \include{comp_removed}
@@ -88,7 +88,7 @@
 \include{kernelcalls} % as in manual
 %\include{compcode}   % removed: too heavy !!
 %\include{instcode}
-\include{test}
+%\include{test}       % contained instr_examples
 \include{terms}       % as in manual
 
 \addcontentsline{toc}{chapter}{\protect\numberline{}{Bibliography}}
@@ -97,8 +97,8 @@
 
 \begin{thebibliography}{99}
 \bibitem{mcstasmanual} P.~K.~Willendrup, E.~Farhi, K.~Lieutenant, and
-K.~Lefmann: \textit{Manual for \MCS\ version 1.9}, Ris\o\ National Laboratory
-2005
+K.~Lefmann: \textit{Manual for \MCS\ version 1.9}, 
+Ris\o\ National Laboratory 2005
 \bibitem{mcstas_webpage} \MCS\ WWW home page: \\
    \indent\verb+http://neutron.risoe.dk/mcstas/+.
 \bibitem{mcnsi_webpage} MCNSI WWW home page: \\
@@ -107,7 +107,9 @@ K.~Lefmann: \textit{Manual for \MCS\ version 1.9}, Ris\o\ National Laboratory
    \indent\verb+http://neutron-eu.net/+
 \bibitem{NNews} K. Lefmann and K. Nielsen, 
 {\em McStas, a general software package for neutron ray-tracing simulations},
-Newtron News \textbf{10/3} (1999), 20--24
+Neutron News \textbf{10/3} (1999), 20--24
+\bibitem{nisp_webpage} The www site for NISP and MClib is \\
+  \indent\verb+???????+.
 %\bibitem{RITA1}
 %  T.E. Mason \textit{et al.}, {\em RITA: The reinvented 
 %triple axis spectrometer}, Can.~J. Phys. \textbf{73}
@@ -138,8 +140,6 @@ Newtron News \textbf{10/3} (1999), 20--24
 %\bibitem{normal-alg} William H.\ Press, Saul A.\ Teukolsky, William T.\
 %  Vetterling, Brian P. Flannery, {\em Numerical Recipes in C},
 %  Cambridge University Press (1996)
-% \bibitem{MCLIB} The FTP site for MCLIB and MC\_RUN is \\
-%   \indent\verb+ftp://azoth.lansce.lanl.gov/pub/mclib/+.
 %\bibitem{importance} Some MC book on importance sampling
 %\bibitem{TAS1paper} Our paper on the TAS1 test results
 \end{thebibliography}

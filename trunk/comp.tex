@@ -4,10 +4,13 @@
 \label{c:components}
 The component library is
 maintained by the \MCS\ system group. A number of basic components 
-``belongs'' the \MCS\ system, while other are contributed
-by specific authors, mentioned  along with each component.
+``belongs'' the \MCS\ system, and are supported and tested by the \MCS\
+team.
 
-Users are encouraged to send
+Other components are contributed
+by specific authors, who are listed at each component
+they contribute.
+\MCS\ users are encouraged to send their
 contributions to us for inclusion in future releases.
 
 In the description of the theory behind the component functionality 
@@ -21,14 +24,19 @@ $m_{\rm N}$ is the neutron mass. {\bf k} is usually given in
 In general, vectors are denoted by boldface symbols.
 Subscripts "i" and "f" denotes ``initial'' and ``final'', respectively,
 and are used in connection with the neutron state before and after
-an interaction with a component.
+an interaction with the component in question.
 Note that all mentioning of component geometry refer to
-the local coordinate system of the individual component, in which the $z$ axis is along propagation axis, the $y$ axis is vertical up, and the $x$ completes the direct coordinate system.
+the local coordinate system of the individual component.
+The axis convention is so that the $z$ axis is along 
+the neutron propagation axis, the $y$ axis is vertical up, 
+and the $x$ completes the right-handed coordinate system.
 
-Source code for all component may be found in the \verb+lib/mcstas/+
+Source code for all components may be found in the \verb+lib/mcstas/+
 subdirectory of the McStas installation; 
-the default is \verb+/usr/local/lib/mcstas/+ on Unix-like systems and \verb+C:\mcstas\lib+ on Windows systems, but it can be
-changed to something else using the \verb+MCSTAS+ environment variable. \index{Environment variable!MCSTAS}
+the default is \verb+/usr/local/lib/mcstas/+ 
+on Unix-like systems and \verb+C:\mcstas\lib+ on Windows systems, but it can be
+changed using the \verb+MCSTAS+ environment variable. 
+\index{Environment variable!MCSTAS}
 
 As a complement to this Component Manual, we encourage users to use
 the \verb+mcdoc+ front-end which enables to display both the 
@@ -41,15 +49,26 @@ as well as the documentation of specific components, e.g with:
   \verb|mcdoc --text| {\it name} \\
   \verb|mcdoc --show| {\it file.comp}
 \end{quote}
-The first line will search for all components matching the {\it name}, and display their help section as text, whereas the second example will display the help corresponding to the {\it file.comp} component, using your BROWSER\index{Environment variable!BROWSER} setting, or as text if unset. The \verb+--help+ option will display the command help, as usual.
+The first line will search for all components matching the {\it name}, 
+and display their help section as text, 
+whereas the second example will display the help corresponding to 
+the {\it file.comp} component, using your 
+BROWSER\index{Environment variable!BROWSER} setting, or as text if unset. 
+The \verb+--help+ option will display the command help, as usual.
 
 An overview of the component library is also given at the \MCS\ home page...
 
-\input{source}
-\input{simple}
-\input{guide}
-\input{chopper}
-\input{detector}
-\input{monochr}
-\input{powder}
-\input{inelastic}
+%\input{source}
+%\input{simple}
+%\input{guide}
+%\input{chopper}
+%\input{detector}
+%\input{monochr}
+%\input{powder}
+%\input{inelastic}
+
+\input{sources}
+\input{optics}
+\input{samples}
+\input{monitors}
+\input{misc}

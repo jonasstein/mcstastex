@@ -1,0 +1,51 @@
+\section{Source\_Maxwell\_3: A simple continuous source 
+with a Maxwellian spectrum}
+\label{source-maxwell}
+\index{Sources!Source\_Maxwell\_3}
+
+\component{Source\_Maxwell\_3}{System}{ $h$, $w$, $d_{\rm foc}$, $xw$, $yh$, $\lambda_{\rm low}$, $\lambda_{\rm high}$, $I_1$, $T_1$}{$I_2$, $T_2$, $I_3$, $T_3$}
+
+This component is a source with a Maxwellian energy/wavelength distribution 
+sampled in the range $\lambda_{\rm low}$ to $\lambda_{\rm high}$.
+This component is not used for detailed time-of-flight simulations,
+so $t=0$ for all neutron rays.
+
+The initial neutron ray position is chosen randomly from within a
+rectangle of area $h \times w$ in the $z=0$ plane. 
+
+The initial neutron ray direction is focused within
+a solid angle, defined by a rectangular target of width
+$xw$, height $yh$, parallel to 
+the $xy$ plane placed at $(0,0,d_{\rm foc})$. 
+
+The energy distribution used is a sum of 1-3 Maxwellians with
+temperatures $T_1$ to $T_3$ and integrated intensities $I_1$ to $I_3$.
+
+The initial weight of the created neutron ray, $\pi_1$, is 
+calculated in the following way for one single Maxwellian:
+The intensity in a small wavelength interval $(\lambda, \lambda+d\lambda)$ is
+$ I_1 M(\lambda,T_1) d\lambda $
+where 
+$M(\lambda,T_1) = 2 \alpha^2 \exp(-\alpha/\lambda^2) / \lambda^5 $ is the normalized Maxwell distribution ($\alpha=949.0 \rm{K \AA}^2/T_1$).
+The number of neutrons per second through a focusing window 
+of solid angle $\Omega$
+from a source of area $A$ within the wavelength interval $\lambda_1$ to
+$\lambda_2$ is thus
+\begin{equation}
+I_{\rm tot} = \Omega A \int_{\lambda_1}^{\lambda_2} I_1 M(\lambda,T_1) d\lambda.
+\end{equation}
+In a Monte Carlo integration, the observed intensity becomes
+\begin{equation}
+I_{\rm MC} \approx N_{\rm MC} \int p(\lambda) \pi_1(\lambda) ,
+\end{equation}
+where $N_{\rm MC}$ is the number of Monte Carlo steps. 
+We here choose the wavelength from a uniform distribution between the two
+limits, giving $p(\lambda)=1/(\lambda_{\rm high}-\lambda_{\rm low})$.
+To fulfill $I_{\rm tot} = I_{\rm MC}$ we need to have
+\begin{equation}
+\pi_1(\lambda) = \Omega A \delta\lambda I_1 M(\lambda,T_1) / N_{\rm MC} .
+\end{equation}
+
+This expression is strictly valid only for $\Omega \ll 1$, 
+see also the discussion on focusing in the \MCS\ Manual \ref{s:focus}. 
+The expression is easily generalized to a general number of Maxwellians.

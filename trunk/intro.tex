@@ -16,25 +16,26 @@ simulation. Specifications are written in this language by users and
 automatically translated into efficient simulation codes in ANSI-C.
 The present version supports both continuous and pulsed source instru-
 ments, and includes a library of standard
-components with in total around 90 components. These enable to simulate all kinds of neutron scattering instruments (diffractometers, triple-axis, reflectometers, time-of-flight, small-angle, back-scattering,...).
+components with in total around 90 components. These enable to simulate all kinds of neutron scattering instruments (diffractometers, triple-axis, reflectometers, small-angle, back-scattering,...) for both continuous and pulsed sources.
 
 The \MCS\ package is written in ANSI-C and is freely available for down-load
 from the \MCS\ web-page~\cite{mcstas_webpage}. The package is actively
-being developed and supported by Ris\o\ National Laboratory and the Institut Laue Langevin. 
+being developed and supported by Ris\o\ National Laboratory 
+and the Institut Laue Langevin (ILL). 
 The system is well tested and
-is supplied with several examples and with an extensive documentation,
-including a separate component manual.
+is supplied with several examples and with an extensive documentation.
+Besides this manual, a separate component manual exists.
 
 
 \section{Background}
 
-The \MCS\ project is the main part of a major effort in Monte Carlo simulations
-for neutron scattering at Ris\o\ National Laboratory. Simulation tools were urgently needed,
+In the late 90'ies at Ris\o\ National Laboratory, 
+simulation tools were urgently needed,
 not only to better utilize existing instruments
 ({\em e.g.} RITA-1 and RITA-2~\cite{cjp_73_697,pb_241_50,pb_283_343}), 
 but also to plan completely new instruments for new sources 
 ({\em e.g.} the Spallation Neutron Source, SNS~\cite{sns_webpage} 
-and the European Spallation Source, ESS~\cite{ess_webpage}). 
+and the planned European Spallation Source, ESS~\cite{ess_webpage}). 
 Writing programs in C or Fortran for
 each of the different cases involves a huge effort, with debugging presenting
 particularly difficult problems. A higher level tool specially designed
@@ -44,14 +45,14 @@ project was initiated.
 In addition, the ILL required an efficient and general simulation
 package in order to achieve renewal of its instruments and guides. 
 A significant contribution to both the component library and the \MCS\ 
-kernel itself was developed at the ILL and included in the package, in 
-agreement with the original \MCS\ authors.
+kernel itself was early performed at the ILL and included in the package.
+ILL later became a part of the core \MCS\ team.
 
 \subsection{The goals of \MCS}
 \label{s:goals}
 
-Initially, the \MCS\ project had four main objectives that determined the design
-of the \MCS\ software.
+Initially, the \MCS\ project had four main objectives 
+that determined its design.
 
 \paragraph{Correctness.}
 It is essential to minimize the potential for bugs in computer
@@ -70,8 +71,8 @@ When you commit yourself to using a tool for an important project, you
 need to know if the tool will satisfy not only your present, but also
 your future requirements. The tool must not have fundamental limitations that
 restrict its potential usage. Thus the \MCS\ systems needs to be
-flexible enough to simulate different kinds of instruments (e.g.\ triple-axis,
-time-of-flight and possible hybrids) as well as many different kind of
+flexible enough to simulate different kinds of instruments
+as well as many different kind of
 optical components, and it must also be extensible so that future, as
 yet unforeseen, needs can be satisfied.
 %
