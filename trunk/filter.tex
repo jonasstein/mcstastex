@@ -1,0 +1,29 @@
+\section{Filter: A transmission filter}
+A neutron transmission filter act in much of the same way as two
+identical slits, one after the other.
+The only difference is that the transmission of the filter
+varies with the neutron energy.
+
+In the simple component {\bf Filter},
+we have not tried to simulate the details of the transmission
+process (which includes absorption, incoherent scattering,
+and Bragg scattering in a polycrystalline sample, {\em e.g.} Be).
+Instead, the transmission is parametrised to be
+$\pi_i=T_0$ when $E \leq E_{\rm min}$, $\pi_i=T_1$ when $E \geq E_{\rm max}$,
+and linearly interpolated between the two values
+in the intermediate interval.
+\begin{equation}
+\pi_i = \left\{ \begin{array}{lc}
+ T_0  & E \leq E_{\rm min} \\
+ T_1 + (T_0-T_1) \frac{E_{\rm max}-E}{E_{\rm max}-E_{\rm min}}
+ & E_{\rm min} < E < E_{\rm max} \\
+ T_1  & E_\geq E_{\rm max} \\
+\end{array} \right.
+\end{equation}
+If $T_1=0$, the neutrons with $E>E_{\rm max}$ are ABSORB'ed.
+
+The input parameters are the four slit coordinates, 
+$(x_{\rm min}, x_{\rm max}, y_{\rm min}, y_{\rm max})$,
+the distance, $l$, between the slits, and the transmission parameters 
+$T_0$, $T_1$, $E_{\rm min}$, and $E_{\rm max}$. 
+The energies are given in meV.

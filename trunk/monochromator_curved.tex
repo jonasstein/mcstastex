@@ -1,0 +1,41 @@
+% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
+
+\section{Monochromator\_curved: An infinitely thin, curved mosaic crystal with 
+a single scattering vector}
+\label{s:monochromator_curved}
+
+\component{Monochromator\_curved}{System, Peter Link}{$z_{\rm w}$, $y_{\rm h}$, gap, $\eta_{\rm h}$, $\eta_{\rm v}$, $n_{\rm h}$, $n_{\rm v}$, $R_0$, $Q$, $r_{\rm h}$, $r_{\rm v}$}{$d_{\rm m}$, $\eta$, $h$, $w$, verbose, transmit, reflect}
+
+
+This component simulates an array of infinitely thin single
+crystals with a single scattering vector perpendicular to the
+surface and a mosaic spread. 
+This component is used to simulate a singly or doubly
+curved monochromator or analyzer.
+
+The component uses  rectangular pieces of monochromator material
+as described in {\bf Monochromator\_curved}. 
+The important parameters are the piece height and width,
+$y_{\rm h}$ and $z_{\rm w}$, respectively, the
+horizontal and vertical mosaicities, $\eta_{\rm h}$ and $\eta_{\rm v}$,
+respectively. The number of pieces vertically and horizontally are called
+$n_{\rm v}$ and $n_{\rm h}$, respectively, and the vertical and horizontal
+radii of curvature are named $r_{\rm v}$ and $r_{\rm h}$, respectively.
+The scattering vector is named $Q$, and as described in 
+{\bf Monochromator\_flat}, multiples of $Q$ can be applied.
+
+If just one mosaicity, $\eta$, is specified, this the same for 
+both directions.
+
+The constant monochromator reflectivity, $R_0$ can be replaced by
+a file of tabulated reflectivities. In the same sense, the transmission
+can be modeled by a tabulated file. 
+
+As for {\bf Monochromator\_flat}, the crystal is assumed to be infinitely
+thin, and the varition in lattice spacing, ($\Delta d/d$), 
+is assumed to be zero. Hence, this
+component is not suitable for simulating backscattering instruments or to
+investigate multiple scattering effects.
+
+The algorithm for scattering and calculation of the neutron weight for
+the individual blades is described under {\bf Monochromator\_flat}.
