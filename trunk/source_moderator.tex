@@ -1,0 +1,32 @@
+
+\section{Moderator: A time-of-flight source}
+The simple time-of-flight source component {\bf Moderator} resembles
+the source component {\bf Source\_flat} described in \ref{sourceaim}.
+Like {\bf Source\_flat}, {\bf Moderator} is circular and focuses
+on a rectangular target. Further, the initial velocity is chosen
+with a linear distribution within an interval, defined by the
+minimum and maximum energies, $E_0$ and $E_1$,
+respectively.
+
+The initial time of the neutron is determined on basis of a 
+simple heuristical model for the time dependence of the 
+neutron intensity from a time-of-flight source.
+For all neutron energies, the flux decay is assumed to be exponential,
+\begin{equation}
+\Psi(E,t) = \exp(-t/\tau(E)) ,
+\end{equation}
+where the decay constant is given by
+\begin{equation}
+\tau(E) = \left\{ 
+\begin{array}{cc}
+ \tau_0                               & ; E<E_c \\
+ \tau_0 / [ 1 + (E-E_c)^2/\gamma^2 ]  & ; E \geq E_c
+\end{array}
+\right.
+\end{equation}
+
+The input parameters for {\bf Moderator} are the source radius, $r_{\rm s}$,
+the minimum and maximum energies, $E_0$ and $E_1$ (in meV),
+the distance to the target, $z_{\rm f}$, the dimensions of the target,
+$w$ and $h$, and the decay parameters 
+$\tau_0$ (in $\mu$s), $E_c$, and $\gamma$ (both in meV).

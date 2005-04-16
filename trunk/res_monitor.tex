@@ -1,0 +1,50 @@
+% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
+
+\section{Res\_monitor: The detector for resolution calculation}
+\label{s:res_monitor}
+
+\component{Res\_monitor}{System, Alan Tennant}{$x_{\rm min}$, $x_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, filename, res\_sample, buffer size}{$x_w$, $y_h$, $z_t$, options}
+
+The component {\bf Res\_monitor} is used for calculating the
+resolution function of a particular instrument with detector of the
+shape, size, and position as {\bf Res\_monitor}.
+The shape of {\rm Res\_sample} is by default rectangular,
+but can be a box, a sphere, a disk, or a cylinder,
+depending on the parameter ``options''.
+The component works like a normal single detector, but
+also records all scattering events in the resolution sample and writes
+them to a file that can later be read by \verb+mcresplot+.
+
+As described in section~\ref{s:res_sample},
+the instrument definition should contain an instance of the
+\textbf{Res\_sample} component, the name of which should be passed as an
+input parameter to \textbf{Res\_monitor}. For example
+\begin{verbatim}
+    COMPONENT mysample = Res_sample( ... )
+    ...
+    COMPONENT det = Res_monitor(res_sample_comp = mysample, ...)
+    ...
+\end{verbatim}
+
+The output file is in ASCII format, one line per scattering event, with
+the following columns:
+\begin{itemize}
+\item ${\bf k}_{\rm i}$, the three components of the initial wave vector.
+\item ${\bf k}_{\rm f}$, the three components of the final wave vector.
+\item ${\bf r}$, the three components of the position of the scattering
+  event in the sample.
+\item $p_{\rm i}$, the neutron weight just after the scattering event.
+\item $p_{\rm f}$, the relative neutron weight adjustment from sample to
+  detector (so the total weight in the detector is $p_{\rm i}p_{\rm f}$).
+\end{itemize}
+From ${\bf k}_{\rm i}$ and ${\bf k}_{\rm f}$, we may compute ${\bf Q} =
+{\bf k}_{\rm i} - {\bf k}_{\rm f}$ and $\omega = (\mbox{2.072
+  meV$\cdot$\AA$^2$})({\bf k}_{\rm i}^2 - {\bf k}_{\rm f}^2)$.
+
+The vectors are given in the local coordinate system of the resolution
+sample component. The wave vectors are in units of $\mbox{\AA}^{-1}$, the
+scattering position in units of meters.
+
+ The output parameters from {\bf Res\_monitor}
+are the three count numbers, \textit{Nsum}, \textit{psum},
+and \textit{p2sum}, and the handle \textit{file} of the output file.
