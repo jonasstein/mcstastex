@@ -498,7 +498,7 @@ component.
 \index{Keyword!SETTING PARAMETERS}
 This declares the definition and setting parameters of the component.
 The parameters define the characteristics of the component, and can be
-accessed from the \verb+TRACE+, \verb+INITIALIZE+, \verb+SAVE+, \verb+FINALLY+, and \verb+MCDISPLAY+ sections (see below),
+accessed from all sections of the component (see below),
 as well as in \verb+EXTEND+ sections of the instrument definition (see section~\ref{s:instrdefs}).
 \index{Parameters!Setting}
 \index{Parameters!Definition}
@@ -515,6 +515,8 @@ possible to use a general C expression for the value of a definition
 parameter in the instrument definition, only constants and variable
 names may be used. For this reason, setting parameters should be used
 whenever possible.
+
+Except in the \verb+INITIALIZE+ section of components, changing setting parameter values only affects the current section.
 
 There are a few cases where the use of definition parameters instead of
 setting parameters makes sense. If the parameter is not numeric, nor a character string ({\em i.e.} an
@@ -679,7 +681,7 @@ a shared library. The \texttt{SHARE} section is optional.
 \index{Keyword!INITIALIZE}
 This gives C code that will be executed once at the start of the
 simulation, usually to initialize any variables declared in the
-\texttt{DECLARE} section. This section is optional.
+\texttt{DECLARE} section. This section is optional. Component setting parameters may be modified in this section, affecting the rest of the component.
 
 
 \subsection{The \texttt{TRACE} section}
