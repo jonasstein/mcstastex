@@ -387,7 +387,7 @@ It is sometimes desirable to slighlty modify an existing component of the \MCS\ 
   \hbox to 3em{}\ldots C code executed after the component TRACE section \ldots \\
   \verb|%}|
 \end{quote} \index{Embedded C code}
-The embeded C code is appended to the component \texttt{TRACE} section, and all its internal variables (as well as all the instrument variables) may be used.
+The embeded C code is appended to the component \texttt{TRACE} section, and all its internal variables (as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters) may be used.
 This component declaration modifier is of course optional. Within a \texttt{GROUP}, \emph{all} \texttt{EXTEND} sections of the group are executed. In order to discriminate components that are active from those that are skipped, one may use the SCATTERED flag, which is set to zero when entering each component or group, and incremented when the neutron is SCATTERed, as in the following example \index{Library!Run-time!SCATTER} \index{Library!Run-time!SCATTERED}
 \begin{quote}
   \texttt{COMPONENT} $\textit{name0} =
