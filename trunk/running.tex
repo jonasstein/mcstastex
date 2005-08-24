@@ -553,7 +553,7 @@ A typical usage example would be, for instance, to save data during a
 simulation, plot or analyze it, and decide to interupt the simulation
 earlier if the desired statistics has been achieved. This may be done automatically using the \verb+Progress_bar+ component.
 
-Whenever simulation data is generated before end (or the simulation is interupted), the 'ratio' field of the monitored data will provide the level of achievement of the computation (for instance '3.33e+05/1e+06');
+Whenever simulation data is generated before end (or the simulation is interupted), the 'ratio' field of the monitored data will provide the level of achievement of the computation (for instance '3.33e+05/1e+06'). Intensities are then usually to be scaled accordingly.
 
 Additionally, any system error will result in similar messages, giving indication about the occurence of the error (in which component ? in which section ?). Whenever possible, the simulation will {\em try} to save the data before ending. Most errors appear when writing a new component, in the \texttt{INITIALIZE}, \texttt{TRACE} or \texttt{FINALLY} sections. Memory errors usually show up when C pointers have not been allocated/unallocated before usage, whereas mathematical errors are set when, for instance, dividing per zero.
 

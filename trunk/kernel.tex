@@ -367,12 +367,12 @@ Indeed, many components of the \MCS\ library \index{Library!Components} start
 by propagating the neutron event to the begining of the component itself.
 Anyway, when the corresponding propagation time is found to be negative
 ({\it i.e.} the neutron is already \emph{after} the component, and has thus
-passed the 'active' position), the neutron event is ABSORBed, resulting in a zero intensity and event counts after a given position. Such situations
-may arise e.g. when positioning some components not one after the other (nested, in parallel, or overlapping), for
-instance in a multiple crystal monochromator (they are then side by side). One
-would then like the neutron to interact with \emph{one of} the components and
-then continue after this group of components. In order to handle such
-arrangements, groups are defined by appending the \texttt{GROUP} modifier
+passed the 'active' position), the neutron event is ABSORBed, resulting in a zero intensity and event counts after a given position. The number of such removed neutrons is indicated at the end of the simulation.
+Getting such warning messages is an indication that either some components overlap, or some neutrons are getting outside of the simulation, for instance this usually happens after a monochromator, as the non-reflected beam is indeed lost. A special warning appears when no neutron can reach some part of the simulation. This is usually the sign of either overlapping components or a very low intensity.
+
+Some configuration require to position some components not one after the other (nested, in parallel, or overlapping), for instance in a multiple crystal monochromator (they are then side by side). One would then like the neutron to interact with \emph{one of} the components and then continue after this group of components.
+
+In order to handle such arrangements without removing neutrons, groups are defined by appending the \texttt{GROUP} modifier
 \begin{quote}
   \texttt{GROUP} \textit{name}
 \end{quote}
