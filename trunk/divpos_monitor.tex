@@ -1,27 +1,27 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
 \section{DivPos\_monitor: A divergence and position sensitive monitor}
-\component{DivPos\_monitor}{System}{$x_{\rm min}$, $x_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, $n_x$, $n_{\rm h}$, $\eta_{\rm h,max}$, filename}{}
+\component{DivPos\_monitor}{System}{$x_{\rm min}$, $x_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, $n_x$, $n_{\rm h}$, $\eta_{\rm h,max}$, filename}{}{}
 
 {\bf DivPos\_monitor} is a two-dimensional monitor component,
-which is sensitive to both spatial position ($x$) and divergence 
+which is sensitive to both spatial position ($x$) and divergence
 defined by $\eta_{\rm h} = \tan^{-1}(v_x/v_z)$.
 The detector window is set
 by the $x$ and $y$ input coordinates.
 
 The neutron counts are being histogrammed
 into $n_x \times n_{\rm h}$ pixels, each of which acts like a single
-counter. The horizontal divergence range accepted is 
+counter. The horizontal divergence range accepted is
 $[-\eta_{\rm h,max}; \eta_{\rm h,max}]$, and the horizontal position
 range is the size of the detector.
 
-The output from {\bf PSD\_monitor} is the integrated counts, $n, I, M_2$, 
-as well as 
-three two-dimensional arrays of counts: $n(x,\eta_{\rm h}), 
+The output from {\bf PSD\_monitor} is the integrated counts, $n, I, M_2$,
+as well as
+three two-dimensional arrays of counts: $n(x,\eta_{\rm h}),
 I(x,\eta_{\rm h}), M_2(x,\eta_{\rm h})$.
 The arrays are written to a file and can be read e.g. by the tool
 {\bf MC\_plot}, see the system manual.
 
 This component can easily be change into being sensitive
-to $y$ and vetical divergence but ROTATE'ing it 
+to $y$ and vetical divergence but ROTATE'ing it
 90 degrees around the $z$ direction.

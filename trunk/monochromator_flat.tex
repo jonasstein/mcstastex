@@ -1,10 +1,10 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
-\section{Monochromator\_flat: An infinitely thin, flat mosaic crystal with 
+\section{Monochromator\_flat: An infinitely thin, flat mosaic crystal with
 a single scattering vector}
 \label{s:monochromator_flat}
 
-\component{Monochromator\_flat}{System}{$z_{\rm min}$, $z_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, $\eta_{\rm h}$, $\eta_{\rm v}$, $r_0$, $Q$}{$d_{\rm m}$}
+\component{Monochromator\_flat}{System}{$z_{\rm min}$, $z_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, $\eta_{\rm h}$, $\eta_{\rm v}$, $r_0$, $Q$}{$d_{\rm m}$}{}
 
 
 This component simulates an infinitely thin single
@@ -18,18 +18,18 @@ The orientation of the
 micro-crystals deviates from the nominal crystal orientation so that the
 probability of a given micro-crystal orientation is proportional to a
 Gaussian in the angle between the given and the nominal orientation. The
-width of the Gaussian is given by the mosaic spread, $\eta$, of the crystal. 
+width of the Gaussian is given by the mosaic spread, $\eta$, of the crystal.
 $\eta$ is assumed to be large compared to the inherent Bragg width of the
 scattering vector (often a few arc seconds).
 The horizontal and vertical mosaicities, $\eta_{\rm h}$ and $\eta_{\rm v}$,
 respectively, are allowed to be different.
 
 The monochromator dimensions are given by the length, $z_{\rm w}$, and
-the height, $y_{\rm h}$. As the parameter names indicate, the 
+the height, $y_{\rm h}$. As the parameter names indicate, the
 monochromator is initially placed in the $z-y$ plane. This definition
-is made to ensure that the physical monochromator angle \verb+A1+ 
+is made to ensure that the physical monochromator angle \verb+A1+
 will equal the \MCS rotation angle around the $y$-axis.
- 
+
 As a further simplification, the crystal is assumed to be infinitely
 thin. This means that multiple scattering effects are not simulated. It
 also means that the total reflectivity is used as a parameter for
@@ -38,7 +38,7 @@ the scattering efficiency does not vary with neutron wavelength.
 The variance
 of the lattice spacing ($\Delta d/d$) is assumed to be zero, so this
 component is not suitable for simulating backscattering instruments (use
-the component {\rm Single\_crystal} 
+the component {\rm Single\_crystal}
 in section~\ref{s:Single_crystal} for that).
 
 When a neutron trajectory intersects the crystal, the first step in the
@@ -59,10 +59,10 @@ projection of $2{\bf k}_i$ onto ${\bf Q}_0$ (see
 figure~\ref{f:mosaic_order}).
 %  k=2PI/lambda
 %  q=2k sin(theta)
-%  
+%
 %  2 PI n/k = d q/2k
 %  q = n 4 PI/d
-%  
+%
 %  n 2PI/k = n 4 PI/q \sin\theta
 %  1/k = 2/q\sin\theta
 %  n q = 2k\sin\theta

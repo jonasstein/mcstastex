@@ -13,7 +13,7 @@ suitable distributions. For example, the initial position is
 always found from a uniform distribution over the source surface.
 For time-of-flight sources, the choice of $t$ is being made on basis of
 detailed analytical expressions.
-For other sources, the initial neutron time is set to zero. In the case you would like to use a 'conventional' source (e.g. steady state source) with time-of-flight settings, it is then \emph{important} to set the time of each neutron using a random number in a distribution. This may be achieved thanks to the \verb+EXTEND+ keyword in the instrument description source:
+For other sources, the initial neutron time is set to zero (default). In the case you would like to use a 'conventional' source (e.g. steady state source) with time-of-flight settings, it is then \emph{important} to set the time of each neutron using a random number from a distribution. This may be achieved thanks to the \verb+EXTEND+ keyword in the instrument description source:
 
 \begin{verbatim}
   TRACE
@@ -44,7 +44,7 @@ inside the energy/wavelength range. Similarly, as most sources can focus neutron
 The flux~$\Phi$ is the number of neutrons emitted per second from a
 one~cm$^2$ area on the source surface, with direction within a one
 steradian solid angle, and with wavelength within a one {\AA}ngstr{\o}m
-interval. The total number of neutrons emitted towards a given diafraghm
+interval. The total number of neutrons emitted towards a given diaphragm
 in one second is therefore
 $$ N_{\rm total} = \Phi A \Omega \Delta\lambda $$
 where $A$ is the source area, $\Omega$ is the solid angle of the
@@ -59,16 +59,55 @@ The simulations are performed so that detector intensities
 are independent of the number of neutron histories simulated
 (though of course more neutron histories will give better statistics).
 
+As a start, we recommand new \MCS\ users to use the Source\_simple component, then use the Source\_Maxwell\_3 or the Source\_gen.
+
+Optimizers can dramatically improve the statistics, but may occasionally give wrong results, due to misleaded optimization. You should always check such simulations with non-optimized ones.
+
+Other ways to speed-up simulations are to read events from a file. See section \ref{sources-seealso} for possible file formats.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{figures/sources.eps}
+  \end{center}
+\caption{A source component that emits neutron events randomly, either from a model, or from a data file.}
+\label{f:source}
+\end{figure}
+
 \newpage
 \input{source_simple}
 
-%\input{source_div}
+\newpage
+\input{source_div}
 
 \newpage
 \input{source_maxwell}
 
-%\input{source_gen}
+\newpage
+\input{source_gen}
 
-%\input{Source_adapt}
+\newpage
+\input{Source_adapt}
 
-%\input{Source_Optimizer}
+\newpage
+\input{Source_Optimizer}
+
+\newpage
+\input{Monitor_Optimizer}
+
+\newpage
+\section{Other sources components}
+\label{sources-seealso}
+
+There are other ways to define a source.
+
+Pulsed source components are available for the SNS ({\bf contrib/SNS\_source}), ISIS ({\bf contrib/ISIS\_moderator}) and potential ESS ({\bf ESS\_moderator\_long} and {\bf  ESS\_moderator\_short}) facilities. Additionally, the {\bf Moderator} component implements a simple pulse model.
+
+When no model exists (e.g. not a Maxwellian distribution), you may have access to measurement, estimated flux distributions, event files, and - better - to MCNP/Triploli4 neutron event records. The following components are then for you.
+
+\begin{enumerate}
+\item{{\bf misc/Virtual\_input} can read a \MCS\ event file (in text or binary format), often bringing a factor 10 speed-up. See section \ref{virtual_input}.}
+\item{{\bf contrib/Virtual\_tripoli4\_input} does the same, but from event files (text format) obtained from the \emph{Tripoli4} \cite{tripoli_webpage} reactor simulation program. Such files are usually huge.}
+\item{{\bf misc/Vitess\_input} can read \emph{Vitess} \cite{vitess_webpage} neutron event binary files.}
+\item{{\bf optics/Filter\_gen} reads a 1D distributionb from a file, and may either modify or set the flux according to it.}
+\item{A component for reading MCNP "PTRAC" records is planed for a next release. Contact us if you wish to participate.}
+\end{enumerate}

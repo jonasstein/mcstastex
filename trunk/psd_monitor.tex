@@ -1,10 +1,10 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
 \section{PSD\_monitor: The PSD monitor}
-\component{PSD\_monitor}{System}{$x_{\rm min}$, $x_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, $n_x$, $n_y$, filename}{}
+\component{PSD\_monitor}{System}{$x_{\rm min}$, $x_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, $n_x$, $n_y$, filename}{}{}
 
 
-The component {\bf PSD\_monitor} resembles other monitors, e.g. 
+The component {\bf PSD\_monitor} resembles other monitors, e.g.
 {\bf E\_Monitor}, and also propagates the neutron to the detector
 surface in the $(x,y)$-plane, where the detector window is set
 by the $x$ and $y$ input coordinates.
@@ -13,11 +13,11 @@ rather its position. the rectangular monitor window is divided
 into $n_x \times n_y$ pixels, each of which acts like a single
 counter.
 
-The output from {\bf PSD\_monitor} is the integrated counts, $n, I, M_2$, 
-as well as 
+The output from {\bf PSD\_monitor} is the integrated counts, $n, I, M_2$,
+as well as
 three two-dimensional arrays of counts: $n(x,y), I(x,y), M_2(x,y)$.
 The arrays are written to a file and can be read e.g. by the tool
 {\bf MC\_plot}, see the system manual.
 
-{\bf Burde man ikke kunne specificere en radius, 
+{\bf Burde man ikke kunne specificere en radius,
 og s\aa\ blev den en 2D cylinder detektor??}

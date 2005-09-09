@@ -1,20 +1,17 @@
 \section{Vitual\_output: Saving the first part of a split simulation}
 \label{virtual_output}
 
-\component{Virtual\_output}{System}{filename}{buffer size, type}
+\component{Virtual\_output}{System}{filename}{buffer size, type}{}
 
 The component {\bf Virtual\_output} stores the neutron ray parameters
-from a split simulation. It is then possible to let the 
+from a split simulation. It is then possible to let the
 next part of the simulation be performed by another instrument,
 which reads the stored neutron ray
 parameters by the component {\bf Virtual\_input}.
 
 All neutron ray parameters are saved to the output file, which is by default
-of ``text'' type, but can also assume the binary formats 
-``float'' or ``double''. The storing of neutron rays continue until the 
+of ``text'' type, but can also assume the binary formats
+``float'' or ``double''. The storing of neutron rays continue until the
 specified number of simulations have been performed.
 
-For performance reasons, it is possible to specify the size of 
-the buffer to use in writing the neutron rays to file. Default 
-is to buffer the whole file, but this may be fatal for very large
-simulations.
+The buffer size may be used to limit the size of the output file, but intentities may be then wrong. The best is to let the default value to zero,m and save all neutrons. You may control then the size of the file with the general $ncounts$ parameter.

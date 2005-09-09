@@ -47,6 +47,8 @@ which may ease the task of writing component and instrument definitions.
 \index{Library!Run-time!PROP\_Z0}
 \index{Library!Run-time!PROP\_DT}
 \index{Library!Run-time!PROP\_GRAV\_DT}
+\index{Library!Run-time!ALLOW\_BACKPROP}
+Propagation routines perform all necessary operations to transport neutrons from one point to an other. Except when using the special \verb+ALLOW_BACKPROP;+ call prior to exectuting any \verb+PROP_*+ propagation, thoses neutrons which do not reach the $z=0$ plane and have negative propagation times are removed automatically. such as
 \begin{itemize}
 \item {\bf ABSORB}. This macro issues an order to the overall
   \MCS\ simulator to interrupt the simulation of the current neutron
@@ -61,7 +63,8 @@ which may ease the task of writing component and instrument definitions.
   time interval $dt$, adjusting $(x,y,z)$ and $t$.
 \item {\bf PROP\_GRAV\_DT}$(dt,Ax,Ay,Az)$. Like {\bf PROP\_DT}, but it also
   includes gravity using the acceleration $(Ax,Ay,Az)$. In addition,
-  to adjusting $(x,y,z)$ and $t$ also $(vx,vy,vz)$ is modified.
+  to adjusting $(x,y,z)$ and $t$, also $(vx,vy,vz)$ is modified.
+\item {\bf ALLOW\_BACKPROP}. Indicates that the next propagation routine will not remove any neutrons, eventhough negative propagation times are found. Further propagations are not affected.\index{Removed neutron events}
 \item {\bf SCATTER}. This macro is used to denote a scattering event
   inside a component, see section~\ref{s:comp-trace}. It should be used e.g
   to indicate that a component has 'done something' (sctattered or detected).

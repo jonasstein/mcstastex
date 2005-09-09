@@ -1,4 +1,8 @@
 \section{Source\_div: A divergent source}
+\label{source-div}
+\index{Sources!Source\_div}
+
+\component{Source\_div}{System}{ $w$, $h$, $\delta_h$, $\delta_v$, $E_0$, $\Delta E$}{$\lambda_0$, $d\lambda$, gauss}{Validated, position is the center of area}
 
 {\bf Source\_div} is a rectangular source which emits a
 beam of a certain divergence around the main exit direction
@@ -12,7 +16,8 @@ beam profile at the end of a guide or at the sample
 position.
 
 The input parameters for Source\_div are the source dimensions
-$w$ and $h$ (in m), the divergencies $\delta_h$ and $\delta_v$ (FWHM in degrees), 
+$w$ and $h$ (in m), the divergencies $\delta_h$ and $\delta_v$ (FWHM in degrees),
 and the mean energy $E_0$ and the energy spread $dE$ (both in meV).
-The neutron energy range is $(E_0-dE; E_0+dE)$. 
+The neutron energy range is $(E_0-dE; E_0+dE)$.
+If the \verb+gauss+ flag is set to 0, the distribution is uniform, instead of Gaussian.
 

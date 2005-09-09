@@ -2,16 +2,19 @@
 
 \section{Source\_adapt: A neutron source with adaptive importance sampling}
 \label{s:Source_adapt}
-\label{s:source_adapt}
+\label{s:source-adapt}
+\index{s:source-adapt}
+\index{Optimization}
 
 The {\bf Source\_adapt} component is a neutron source that uses adaptive
 importance sampling to improve the efficiency of the simulations. It
 works by changing on-the-fly the probability distributions from which
 the initial neutron state is sampled so that samples in regions that
 contribute much to the accuracy of the overall result are preferred over
-samples that contribute little. The method can achive improvements of a
+samples that contribute little. The method can achieve improvements of a
 factor of ten or sometimes several hundred in simulations where only a
 small part of the initial phase space contains useful neutrons.
+On the other side, a warning is in place here regarding potential wrong results using optimization techniques (see section \ref{s:optim} of the \MCS\ user manual). It is highly recommanded in any case to benchmark 'optimized' simulations against non-optimized ones, checking that obtained results are the same, but hopefully with a much improved statistics.
 
 The physical characteristics of the source are similar to those of
 Source\_flat (see section~\ref{sourceaim}). The source is a thin
@@ -24,7 +27,7 @@ of measurements.
 
 The initial neutron weight is given by (see
 section~\ref{Source_flux_lambda} for details)
-$$ p_0 = \frac{N_{\rm total}}{N_{\rm sim}} = 
+$$ p_0 = \frac{N_{\rm total}}{N_{\rm sim}} =
     \frac{\Phi}{N_{\rm sim}} A \Omega \Delta\lambda $$
 Here $\Delta\lambda$ is the total wavelength range of the source; since
 the spectrum is flat in energy (but not in wavelength), the flux
@@ -90,7 +93,7 @@ among all the bins, and a total weight of $(1 - \beta)$ among bins in
 proportion to their average weight $\psi_i/n_i$ at the Adapt\_source
 position:
 $$
-w_i = \frac{\beta}{N_{\rm bin}} + 
+w_i = \frac{\beta}{N_{\rm bin}} +
     (1-\beta) \frac{\psi_i/n_i}{\sum_{j=1}^{N_{\rm bins}} \psi_j/n_j}
 $$
 After each neutron event originating from bin $i$, the sampling weight $w_i$
@@ -124,8 +127,8 @@ The number $\alpha$ is given by the user and specifies (as a fraction
 between zero and one) the point at which the adaption is considered
 good. The initial fraction $\alpha$ of neutron histories are emitted
 with low weight; the rest are emitted with high weight:
-$$ p_0(j) = 
-    \frac{\Phi}{N_{\rm sim}} A \Omega \Delta\lambda 
+$$ p_0(j) =
+    \frac{\Phi}{N_{\rm sim}} A \Omega \Delta\lambda
     \frac{\sum_{j=1}^{N_{\rm bin}} w_j}{N_{\rm bin} w_i}
     F(j)
 $$
@@ -138,12 +141,14 @@ so that the total intensity over the whole simulation will be correct
 Similarly, the adjustment of sampling weights is modified so that the
 actual formula used is
 $$
-w_i(j) = \frac{\beta}{N_{\rm bin}} + 
+w_i(j) = \frac{\beta}{N_{\rm bin}} +
     (1-\beta) \frac{y_0}{y_0 + (1 - y_0) e^{-r_0 j}}
      \frac{\psi_i/n_i}{\sum_{j=1}^{N_{\rm bins}} \psi_j/n_j}
 $$
 
 \subsection{The implementation}
+
+\component{Source\_adapt}{K. Nielsen}{$x_{min}$, $x_{max}$, $y_{min}$, $y_{max}$, $E0$, $dE$, dist, $xw$, $yh$, $Phi$}{$\alpha$, $\beta$ (plenty, default values are ok)}{not fully validated}
 
 The heart of the algorithm is a discrete distribution $p$. The
 distribution has $N$ \emph{bins}, $1\ldots N$. Each bin has a value
@@ -190,3 +195,5 @@ adaption is obtained. The output of the sampling distribution is only
 meant for debugging, and the units on the axis are not necessarily
 meaningful. Setting the filename to \verb+NULL+ disables the output of
 the sampling distribution.
+
+As an alternative, you may use the Source\_Optimizer component (see section \ref{source-optimizer}).

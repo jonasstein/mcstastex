@@ -15,7 +15,7 @@
 \usepackage{makeidx}
 
 \newcommand{\smallverbatimfile}[1]{{\footnotesize\verbatimfile{#1}}}
-\newcommand{\component}[4]{\begin{tabular}{|ll|}\hline {\bf Name:} & #1 \\ \hline {\bf Author:} & #2 \\ \hline {\bf Input parameters} & #3 \\ \hline {\bf Optional parameters} & #4 \\ \hline \end{tabular} \\ \noindent }
+\newcommand{\component}[5]{\begin{tabular}{|ll|}\hline {\bf Name:} & #1 \\ \hline {\bf Author:} & #2 \\ \hline {\bf Input parameters} & #3 \\ \hline {\bf Optional parameters} & #4 \\ \hline {\bf Notes} & #5 \\ \hline \end{tabular} \\ \noindent }
 
 \def\reportnum{Ris{\o}--R--1xyz(EN)}
 
@@ -94,55 +94,6 @@
 \addcontentsline{toc}{chapter}{\protect\numberline{}{Bibliography}}
 \bibliography{mcstas_comp}
 \bibliographystyle{jacs}
-
-\begin{thebibliography}{99}
-\bibitem{mcstasmanual} P.~K.~Willendrup, E.~Farhi, K.~Lieutenant, and
-K.~Lefmann: \textit{Manual for \MCS\ version 1.9}, 
-Ris\o\ National Laboratory 2005
-\bibitem{mcstas_webpage} \MCS\ WWW home page: \\
-   \indent\verb+http://neutron.risoe.dk/mcstas/+.
-\bibitem{mcnsi_webpage} MCNSI WWW home page: \\
-   \indent\verb+http://mcnsi.risoe.dk/+
-\bibitem{nmi3_webpage} NMI3 WWW home page: \\
-   \indent\verb+http://neutron-eu.net/+
-\bibitem{NNews} K. Lefmann and K. Nielsen, 
-{\em McStas, a general software package for neutron ray-tracing simulations},
-Neutron News \textbf{10/3} (1999), 20--24
-\bibitem{nisp_webpage} The www site for NISP and MClib is \\
-  \indent\verb+???????+.
-%\bibitem{RITA1}
-%  T.E. Mason \textit{et al.}, {\em RITA: The reinvented 
-%triple axis spectrometer}, Can.~J. Phys. \textbf{73}
-%    (1995) 697--702
-%\bibitem{RITA2}
-%  K.N. Clausen \textit{et al.}, {\em The Rita spectrometer at Ris\o{}
-%    --- design considerations and recent results\/}, Physica B 241--243 (1998) 50--55.
-%\bibitem{ESS} ESS WWW home page: \\
-%   \indent\verb+http://www.kfa-juelich.de/ess/ess.html+
-%\bibitem{debian} Debian GNU/Linux WWW home page: \\
-%   \indent\verb+http://www.debian.org/+.
-%\bibitem{NeXus} NeXus WWW home page: \\
-%   \indent\verb+http://www.neutron.anl.gov/nexus/+.
-%\bibitem{mfit} MFit WWW home page: \\
-%   \indent\verb+http://www.risoe.dk/fys/Manuals/Matlab/Mfit/index.html+.
-%\bibitem{mcdoc-docs} Internet address
-%  \verb+http://neutron.risoe.dk/mcstas/mcdoc/index.html+.
-%\bibitem{squires} G.~L.~Squires, \textit{Introduction to the Theory of
-%    Thermal Neutron Scattering}, Dover Publications (1996)
-%\bibitem{crystallographica} Crystallographica v1.50b, Oxford Cryosystems, 1998
-%\bibitem{bacon} G.~E.~Bacon, \textit{Neutron Diffraction},
-%  Oxford University Press (1975)
-%\bibitem{TAS1report} A. Abrahamsen, N. B. Christensen, 
-%  and E. Lauridsen,
-%  {\em \MCS\ simulations of the TAS1 spectrometer},
-%  Students Report, Niels Bohr Institute, University of Copenhagen
-%  (1998)
-%\bibitem{normal-alg} William H.\ Press, Saul A.\ Teukolsky, William T.\
-%  Vetterling, Brian P. Flannery, {\em Numerical Recipes in C},
-%  Cambridge University Press (1996)
-%\bibitem{importance} Some MC book on importance sampling
-%\bibitem{TAS1paper} Our paper on the TAS1 test results
-\end{thebibliography}
 
 \addcontentsline{toc}{chapter}{\protect\numberline{}{Index and keywords}}
 \printindex

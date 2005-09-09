@@ -1,8 +1,9 @@
 \section{Collimator\_linear: The simple Soller blade collimator}
+\label{collimator-linear}
 
-\component{Collimator\_linear}{System}{$x_{\rm min}$, $x_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$,, $L$, $\delta$ (in deg.)}
+\component{Collimator\_linear}{System}{$x_{min}$, $x_{max}$, $y_{min}$, $y_{max}$, $L$, $\delta$ (in deg.)}{}{}
 
-The component {\bf Collimator\_linear} 
+The component {\bf Collimator\_linear}
 models a standard linear Soller blade collimator.
 The collimator has two identical rectangular openings,
 defined like the one in {\bf Slit}. Neutrons not clearing both
@@ -15,8 +16,8 @@ component can be employed, see section~\ref{s:channeled_guide}.
 
 Let $L$ be the length of the collimator blades
 and $d$ the distance between them.
-Then let $\phi$ be the angle between the 
-neutron path and the vertical $y-z$ plane along the collimator axis 
+Then let $\phi$ be the angle between the
+neutron path and the vertical $y-z$ plane along the collimator axis
 ($\phi$ is also called the {\em horizontal divergence}).
 We then define the collimation angle as the maximal allowed
 horizontal divergence: $\delta = \tan^{-1}(d/L)$,
@@ -41,7 +42,7 @@ probability is $T = 1-\tan|\phi|/\tan\delta$.
     \includegraphics[width=0.9\textwidth]{figures/collimator.eps}
   \end{center}
 \caption{The geometry of a simple Soller blade collimators:
-The real Soller collimator, seen from the top (left), 
+The real Soller collimator, seen from the top (left),
 and a sketch of the component {\bf Soller} (right).
 The symbols are defined in the text.}
 \label{f:collimator}
