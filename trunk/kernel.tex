@@ -195,6 +195,8 @@ library is included by default (equivalent to ``\verb+%include "mcstas-r"+'' in 
 For an
 example of \texttt{\%include}, see the monitors/Monitor\_nD component.
 
+If the instrument description compilation fails, check that the keywords syntax is correct, that no semi-colon \verb+;+ sign is missing (e.g. in C blocks and after an ABSORB macros), and there can not be name conflicts between instrument and component instances variables.\index{Can not compile}
+
 
 \section{Writing instrument definitions}
 \label{s:instrdefs}
@@ -245,10 +247,10 @@ type \verb+char *+.
 The parameters of an instrument may be given default values. Parameters with default values are called \emph{optional
   parameters}, and need not be given an explicit value when the
 instrument simulation is executed. When executed without any parameter value in the command line (see section~\ref{s:run-sim}), the instrument asks for all parameter values, but pressing the \verb+Return+ key selects the default value (if any). When used with at least one parameter value in the command line, all non specified parameters will have their value set to the default one (if any). A parameter is given a
-default value using the syntax ``\textit{param}\texttt{ = }\textit{value}''.
+default value using the syntax ``\textit{param}\texttt{= }\textit{value}''.
 For example
 \begin{quote}
-  \texttt{DEFINE INSTRUMENT test(d1 = 1, string s2="hello")}
+  \texttt{DEFINE INSTRUMENT test(d1= 1, string s2="hello")}
 \end{quote}
 Here \verb+d1+ is an optional parameter and if no value is given
 explicitly, ``1'' will be used.
@@ -269,7 +271,7 @@ instruments for which some parameters are seldom changed or of unclear significa
 This gives C declarations that may be referred to in the rest of the
 instrument definition. A typical use is to declare global variables or
 small functions that are used elsewhere in the instrument. The \verb+%include ''file''+ keyword may be used to import a specific
-component definition or a part of an instrument. The \texttt{DECLARE} section is optional.
+component definition or a part of an instrument. Variables defined here are global, and may conflict with internal \MCS\ variables, specially symbols like \verb+x,y,z,s1,s2,vx,vy,vz,t+ and generally all names starting with \verb+mc+ should be avoided. If you can not compile the instrument, this may be the reason. \index{Can not compile}The \texttt{DECLARE} section is optional.
 
 \subsection{The \texttt{INITIALIZE} section}
 \index{Keyword!INITIALIZE}
@@ -282,7 +284,7 @@ component definition or a part of an instrument. The \texttt{DECLARE} section is
   \verb|%}|
 \end{quote} \index{Embedded C code}
 This gives code that is executed when the simulation starts. This section is
-optional.
+optional. Instrument SETTING parameters (e.g. doing tests or automatic settings) may be modified in this section.
 
 
 \subsection{The \texttt{TRACE} section}
@@ -577,7 +579,7 @@ the component is used in an instrument definition. A parameter is given a
 default value using the syntax ``\textit{param}\texttt{ = }\textit{value}''.
 For example
 \begin{quote}
-  \texttt{SETTING PARAMETERS (radius, height, pack = 1)}
+  \texttt{SETTING PARAMETERS (radius, height, pack= 1)}
 \end{quote}
 Here \verb+pack+ is an optional parameter and if no value is given
 explicitly, ``1'' will be used\footnote{In contrast, if no value is
@@ -1020,6 +1022,8 @@ The comment syntax uses \verb+%IDENTIFICATION+, \verb+%DESCRIPTION+,
 \verb+%PARAMETERS+, \verb+%LINKS+, and \verb+%END+
 keywords to mark different sections of the documentation. Keywords may
 be abbreviated, \textit{e.g.} as \verb+%IDENT+ or \verb+%I+.
+
+Additionally, optional keys \verb+%VALIDATION+ and \verb+%BUGS+ may be found to list validation status and possible bugs in the component.
 
 \begin{itemize}
 \item In the \verb+%IDENTIFICATION+

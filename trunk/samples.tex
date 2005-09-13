@@ -4,50 +4,47 @@
 
 This class of components models the sample of the experiment.
 This is by far the most challenging part of a neutron scattering
-instrument to model. However, for purpose of simulating 
-instrument performance, details of the samples are rather unimportant, 
+instrument to model. However, for purpose of simulating
+instrument performance, details of the samples are rather unimportant,
 allowing for simple approximations. On the contrary, for full
-virtual experiments it is of importance to have realistic and 
+virtual experiments it is of importance to have realistic and
 detailed sample descriptions. \MCS\ contains both simple and detailed
 samples, although there is still room for much more development.
 
 We first consider incoherent scattering. The simple component {\bf Vanadium}
 performs both incoherent scattering and absorption.
 
-An important component is elastic Bragg scattering from an ideal powder.
-The component {\bf Powder2} models a simple powder with only two
-reflections and incoherent scattering. A more general powder sample is
-highly wanted!!
+An important component class is elastic Bragg scattering from an ideal powder.
+The components {\bf Powder1} and {\bf Powder2} model a simple powder with one or two
+reflections and incoherent scattering. Finally, the {\bf PowderN} component extends the capabilities to N lines, read from a LAZY/Crystallographica data file.
 
-Next type is Bragg scattering from single crystals. 
+Next type is Bragg scattering from single crystals.
 The simplest single crystals are in fact the monochromator components
 {\bf Monochromator\_flat} and {\bf Monochromator\_curved},
 which were presented in the section on optics.
-The monochromators are models of a thin mosaic crystal 
-with a single scattering vector perpendicular to the surface. 
-Much more advanced, the component {\bf Single\_crystal} 
-is a general single crystal sample that allows
+The monochromators are models of a thin mosaic crystal
+with a single scattering vector perpendicular to the surface.
+Much more advanced, the component {\bf Single\_crystal}
+is a general single crystal sample (with multiple scattering) that allows
 the input of an arbitrary unit cell and a list of structure factors, and
 also allows anisotropic mosaic and $\Delta d/d$ lattice space variation.
 
 Isotropoic small-angle scattering is simulated in {\bf Sans\_Spheres},
-which models scattering from a collection of hard spheres.A more general
+which models scattering from a collection of hard spheres. A more general
 SANS sample is highly wanted. In addition, a reflectometry sample
 should be developed.
 
 Inelastic scattering from a dispersion is exemplified by
-the relatively simple component {\bf Phonon}, while elastic scattering
-from a continuum is exemplified by the component {\bf LSCO}.
-There are large possibilities to develop more types of inelastic
-scattering samples, including mere general dispersions and inelastic powder
-scattering.
+the relatively simple component {\bf Phonon}.
+
+For a more general sample model, the {\bf Isotropic\_Sqw} component is able to simulate all kinds of isotropic materials: liquids, glasses, polymers, powders, ... Physical processes include coherent/incoherent scattering, both elastic and inelastic, with absorption and multiple scattering. Moreover, this compoennt may be used concentrically, to model a sample environment. Thus it may handle most samples except single crystals.
 
 In general, all samples are assumed to be homogeneous. There would also be
 potential in developing an inhomogeneous sample, e.g. with
 spatially varying lattice constant, relevant for stress/strain scanners.
 Inhomogeneously absorbing sample for tomography could also be possible.
-Further, no polarization effects are yet taken into account in any 
-of the samples.  
+Further, no polarization effects are yet taken into account in any
+of the samples.
 
 \input{vanadium.tex}
 \input{powder2.tex}

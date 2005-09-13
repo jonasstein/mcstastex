@@ -69,7 +69,7 @@ Other ways to speed-up simulations are to read events from a file. See section \
   \begin{center}
     \includegraphics[width=0.9\textwidth]{figures/sources.eps}
   \end{center}
-\caption{A source component that emits neutron events randomly, either from a model, or from a data file.}
+\caption{A circular source component (at z=0) emitting neutron events randomly, either from a model, or from a data file.}
 \label{f:source}
 \end{figure}
 
@@ -89,6 +89,9 @@ Other ways to speed-up simulations are to read events from a file. See section \
 \input{Source_adapt}
 
 \newpage
+\input{moderator}
+
+\newpage
 \input{Source_Optimizer}
 
 \newpage
@@ -100,7 +103,12 @@ Other ways to speed-up simulations are to read events from a file. See section \
 
 There are other ways to define a source.
 
-Pulsed source components are available for the SNS ({\bf contrib/SNS\_source}), ISIS ({\bf contrib/ISIS\_moderator}) and potential ESS ({\bf ESS\_moderator\_long} and {\bf  ESS\_moderator\_short}) facilities. Additionally, the {\bf Moderator} component implements a simple pulse model.
+Pulsed source components are available for new facilities:
+\begin{enumerate}
+\item SNS ({\bf contrib/SNS\_source})
+\item ISIS ({\bf contrib/ISIS\_moderator})
+\item ESS (project) ({\bf ESS\_moderator\_long} and {\bf  ESS\_moderator\_short}).
+\end{enumerate}
 
 When no model exists (e.g. not a Maxwellian distribution), you may have access to measurement, estimated flux distributions, event files, and - better - to MCNP/Triploli4 neutron event records. The following components are then for you.
 

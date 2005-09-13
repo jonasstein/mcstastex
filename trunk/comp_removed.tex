@@ -21,12 +21,12 @@ Additionally the \verb+obsolete+ directory of the library gathers components tha
 The \verb+mcdoc+ front-end (section~\ref{s:mcdoc-run}) enables to display both the
 catalog of the \MCS\ library, e.g using: \index{Tools!mcdoc}
 \begin{quote}
-  \verb|mcdoc --show|
+  \verb|mcdoc|
 \end{quote}
 as well as the documentation of specific components, e.g with:
 \begin{quote}
   \verb|mcdoc --text| {\it name} \\
-  \verb|mcdoc --show| {\it file.comp}
+  \verb|mcdoc| {\it file.comp}
 \end{quote}
 The first line will search for all components matching the {\it name}, and display their help section as text, where as the second example will display the help corresponding to the {\it file.comp} component, using your BROWSER\index{Environment variable!BROWSER} setting, or as text if unset. The \verb+--help+ option will display the command help, as usual.
 
@@ -75,11 +75,12 @@ Arm                &  Arm/optical bench \\
  Bender            &   Models a curved
                       neutron guide (shown straight). \\
  Chopper           &   Disk chopper. \\
- Chopper\_Fermi     &   Fermi Chopper with
-                      curved slits. \\
  Collimator\_linear &  A simple analytical Soller collimator
                       (with triangular
                       transmission).  \\
+ Collimator\_radial &  A radial Soller collimator.\\
+ FermiChopper      &  Straight Fermi Chopper with
+                        rotating frame. \\
  Filter\_gen        &   This components may
                       either set the flux
                       or change it (filter-like), using
@@ -115,6 +116,7 @@ Arm                &  Arm/optical bench \\
                       slit. \\
 
  V\_selector          & Velocity selector. \\
+ Vitess\_ChopperFermi & Curved Fermi chopper (slower than FermiChopper). From the Vitess package.\\
       \hline
     \end{tabular}
     \caption{Optics components of the \MCS\ library.}
@@ -131,11 +133,14 @@ Arm                &  Arm/optical bench \\
       \hline
        {\bf MCSTAS/samples} & Description \\
        \hline
+  Isotropic\_Sqw & A general S(q,$\omega$) scatterer with multiple scattering, for liquids, powders, glasses, polymers. May be concentrically arranged. Coherent/incoherent, elastic/inelastic scattering. \\
+  Phonon\_simple   & Acoustic phonon isotropic scatterer (simple). \\
   Powder1      &  General powder sample with a single
                 scattering vector. \\
   Powder2      &  General powder sample with a two
                 scattering vectors. \\
-
+  PowderN      &  General powder sample with a N
+                scattering vectors, using a data file. \\
   Res\_sample   & Sample for resolution function
                 calculation. \\
 
@@ -143,8 +148,10 @@ Arm                &  Arm/optical bench \\
 
   Single\_crystal & Mosaic single crystal with multiple
                 scattering vectors. \\
+  TOFRes\_sample & Sample for resolution function
+                calculation (TOF version). \\
 
- V\_sample      & Vanadium sample.\\
+  V\_sample      & Vanadium sample.\\
       \hline
     \end{tabular}
     \caption{Sample components of the \MCS\ library.}
@@ -205,7 +212,7 @@ PreMonitor\_nD    &   This component is a
                     in order to record some
                     neutron parameter correlations. \\
 Res\_monitor      &   Monitor for resolution
-                    calculations. \\
+                    calculations (Res\_sample and TOFRes\_sample). \\
 TOFLambda\_monitor &  Time-of-flight/wavelength
                     monitor. \\
 TOF\_cylPSD\_monitor & Cylindrical (2pi) PSD
@@ -231,9 +238,9 @@ TOFlog\_mon      &    Rectangular Time-of-flight
       \hline
        {\bf MCSTAS/misc} & Description \\
        \hline
-       Progress\_bar  &       A simulation
+ Progress\_bar     &       A simulation
                       progress bar. May also trigger intermediate SAVE.\\
- Vitess\_input      &   Read neutron state
+ Vitess\_input     &   Read neutron state
                       parameters from
                       VITESS neutron file.\\
  Vitess\_output    &  Write neutron state
@@ -255,33 +262,35 @@ TOFlog\_mon      &    Rectangular Time-of-flight
       \hline
        {\bf MCSTAS/contrib} & Description \\
        \hline
-       Al\_window     &         Aluminium
+ Al\_window     &         Aluminium
                         window in the beam. \\
  Collimator\_ROC   &      Radial
                         Oscillationg
                         Collimator (ROC). \\
- Guide\_curved     &     Non focusing continuous curved guide (shown curved). \\
- Guide\_tapering  &     Rectangular tapered guide (parabolic, elliptic, sections ...). \\
-
- FermiChopper    &       Fermi Chopper with
-                        rotating frame. \\
  Filter\_graphite  &      Pyrolytic
                         graphite filter
                         (analytical model). \\
  Filter\_powder   &       Box-shaped powder
                         filter based on Single\_crystal (unstable). \\
+ Guide\_curved     &     Non focusing continuous curved guide (shown curved). \\
  Guide\_honeycomb & Neutron guide
                         with gravity and
                         honeycomb geometry. Can be
                         channeled and
                         focusing. \\
- He3\_cell    &           Polarised 3He cell. \\
+ Guide\_tapering  &     Rectangular tapered guide (parabolic, elliptic, sections ...). \\
 
+ He3\_cell    &           Polarised 3He cell. \\
+ ISIS\_moderator    &     ISIS Target 1 and 2 moderator models based on MCNP calculations. \\
  Monochromator\_2foc   &  Double bent
                         monochromator with
                         multiple slabs. \\
-
+ PSD\_monitor\_rad & A banana PSD monitor. \\
  SiC           &         SiC multilayer sample for reflectivity simulations. \\
+ SNS\_source    & SNS moderator models based on MCNP calculations. \\
+ Virtual\_tripoli4\_input & Reads a 'Batch' neutron events file from Tripoli 4. \\
+ Virtual\_tripoli4\_output& Writes a 'Batch' neutron events file for Tripoli 4. \\
+
       \hline
     \end{tabular}
     \caption{Contributed components of the \MCS\ library.}

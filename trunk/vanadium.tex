@@ -4,12 +4,12 @@
 \section{V\_sample: An incoherent scatterer, the V-sample}
 \label{s:v_sample}
 
-\component{V\_sample}{System}{$r_{\rm i}$, $r_{\rm o}$, $h$, $r_{\rm foc}$, $x_{\rm target}$, $y_{\rm target}$, $z_{\rm target}$}{$w_x$, $h_y$, $t_z$, $w_{\rm focus}, h_{\rm focus}$, $w_{\rm foc, angle}$, $h_{\rm foc, angle}$, $\sigma_{\rm abs}$, $\sigma_{\rm inc}$, $V_0$, $f_{\rm pack}$, target\_index}{validated}
+\component{V\_sample}{System}{$r_{\rm i}$, $r_{\rm o}$, $h$, $r_{\rm foc}$, $x_{\rm target}$, $y_{\rm target}$, $z_{\rm target}$}{$w_x$, $h_y$, $t_z$, $w_{\rm focus}, h_{\rm focus}$, $w_{\rm foc, angle}$, $h_{\rm foc, angle}$, \\ $\sigma_{\rm abs}$, $\sigma_{\rm inc}$, $V_0$, $f_{\rm pack}$, target\_index}{validated}
 
 A sample with incoherent scattering, e.g. vanadium, is frequently used for
 calibration purposes, as this gives an isotropic, elastically scattered beam.
 
-The component {\bf V\_sample}, shown in \ref{c:v-sample}
+The component {\bf V\_sample}
 has {\em only} absorption and incoherent scattering.
 For the sample geometry, we default use a
 hollow cylinder (which has the solid cylinder as a limiting case).
@@ -68,6 +68,6 @@ one finds that  the resulting direction dependence
 of the scattered intensity is {\em not} isotropic.
 This is explained by the variation of attenuation with
 scattering angle.
-One test result is shown in Appendix \ref{testresults}.
+One test result is shown in the instrument example chapter of the \MCS\ User Manual.
 
 Multiple scattering is not inlcuded in this component.

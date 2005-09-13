@@ -7,10 +7,10 @@ to Chapter \ref{s:install} for installation instructions. In case of
 problems regarding installation or usage, the McStas mailing
 list~\cite{mcstas_webpage} or the authors should be contacted.
 
-Important note for Windows users: It is a known problem that some of
+{\bf Important note for Windows users:} It is a known problem that some of
 the \MCS\ tools do not support filenames / directories with spaces.
 We are working on a more general approach to this problem, which will
-hopefully be solved in the next release.
+hopefully be solved in the next release. Also, there are known issues for \MCS\ with recent Perl versions for Windows. We recommand to use ActiveState {\bf Perl 5.6}.
 
 To use \MCS, an instrument
 definition file describing the instrument to be simulated must be
@@ -145,12 +145,12 @@ continuously. However, users do not update their software on a daily basis,
 and as a compromise we have adopted the following policy of \MCS\ .
 
 \begin{itemize}
-\item A version {\version}.x will contain bug fixes and new functionality. A new manual
+\item A version {\version}.x will possibly contain bug fixes and minor new functionality. A new manual
 will, however, not be released and the modifications are documented on the
 \MCS\ web-page. The extensions of the forthcoming version {\version}.x are also listed
 on the web, and new versions may be released quite frequently when it is requested
 by the user community.
-\item A version 1.9 will contain an updated manual. It will typically be released
+\item A version 1.10 will contain important new features and an updated manual. It will typically be released
 once or twice a year in connection to for example a \MCS\ workshop.
 \end{itemize}
 
@@ -327,7 +327,7 @@ easier, by in-lining code and using variables in an efficient way. As a
 result, \MCS\ simulations generally run quite fast, often fast enough
 that further optimizations are not worthwhile. Also, optimizations are higly
 time and memory consuming during compilation, and thus may fail when dealing
-with large instrument descriptions (e.g. more that 100 elements). The compilation process is simplified when using components of the library making use of shared libraries (see \verb+SHARE+ keyword in chapter~\ref{s:kernel}).
+with large instrument descriptions (e.g. more that 100 elements). The compilation process is simplified when using components of the library making use of shared libraries (see \verb+SHARE+ keyword in chapter~\ref{s:kernel}). Refer to section \ref{s:optim} for other optimization methods.\index{Optimization}
 
 \section{Running the simulations}
 \label{s:run-sim}
@@ -387,7 +387,7 @@ The complete list of options
 and arguments accepted by \MCS\ simulations appears in
 table~\ref{f:simoptions}.
 
-\subsection{Choosing a data file format}
+\subsection{Choosing an output data file format}
 
 Data files contain header lines with information about the
 simulation from which they originate. In case the data must be analyzed
@@ -513,8 +513,9 @@ When choosing the HTML format, the simulation results are save as a web page, wh
       \texttt{XML} & .xml & XML/NeXus format (may be used with -f and -d options). \\
       \texttt{HTML} & .html & HTML format (generates a web page, may be used with -f and -d options). Data files are saved as VRML objects. \\
       \texttt{VRML} & .wrl & Virtual Reality file format for data files. Simulation files are not saved properly, and the HTML format should be used preferably. \\
-      \texttt{Tripoli} &  & Tripoli 4 neutron events file format. Use \verb+Tripoli_input+/\verb+Tripoli_output+ components. \\
-      \texttt{Vitess} &  & Vitess neutron events file format. Use \verb+Vitess_input+/\verb+Vitess_output+ components. \\
+      {\it Tripoli} &  & Tripoli 4 neutron events file format. Use \verb+Virtual_tripoli4_input+/\verb+Virtual_tripoli4_output+ components. \\
+      {\it Vitess} &  & Vitess neutron events file format. Use \verb+Vitess_input+/\verb+Vitess_output+ components. \\
+      {\it McStas events} & & McStas event files in text or binary format. Use \verb+Virtual_input+/\verb+Virtual_output+ components. \\
       \hline
     \end{tabular}
     \caption{Available formats supported by \MCS\ simulations.}
@@ -918,9 +919,9 @@ The ``File'' menu has the following features:
   further below.
 \item[Plot results] plots (using \verb+mcplot+) the results of the
   last simulation run or loaded.
-\item[Choose backend] selection of plotting backend
+\item[Configuration options] selection of plotting backend
   (PGPLOT/Matlab/Scilab). Opens the choose backend dialog shown in
-  figure~\ref{fig:mcgui-choose}. All formats are chosen as full text, but a 'Use binary files' option is possible.
+  figure~\ref{fig:mcgui-choose}. All formats are chosen as full text, but a 'Use binary files' option is possible. Additionally, the editor to use to list instrument descriptions can be chosen. The HTML/VRML data files save results as a web-page document requiring a VRML viewer to display the data files as a 3D surface.
 \end{description}
 
 \noindent The ``Neutron Site'' menu contains a list of template/example instruments as found in the \MCS\ library, sorted by neutron site. When selecting one of these, a local copy of the instrument description is transfered to the active directory (so that users have modification rights). One may then view its source (Edit) and use it directly for simulations/trace (3D View).
@@ -938,21 +939,20 @@ the \verb+BROWSER+ environment variable. If \verb+BROWSER+ is not set,
 \verb+mcgui+ uses \verb+netscape+ on Unix and the default browser on
 Windows.
 \begin{description}
-\item[\MCS\ web page] calls \verb+mcdoc --web+, brings up the \MCS\
-  website in a web browser.
 \item[\MCS\ User manual] calls \verb+mcdoc --manual+, brings up the local
   pdf version of this manual, using a web browser.
 \item[\MCS\ Component manual] calls \verb+mcdoc --comp+, brings up the local
   pdf version of the component manual, using a web browser.
-\item[Component doc index] displays the component documentation using
+\item[Component library index] displays the component documentation using
   the component \verb+index.html+ index file.
-\item[Generate component index] (re-)generates locally the component \verb+index.html+.
+\item[\MCS\ web page] calls \verb+mcdoc --web+, brings up the \MCS\
+  website in a web browser.
+\item[Tutorial] opens the \MCS\ tutorial for a quick start.
+\item[Current instrument info] generates a description web-page of the current edited instrument.
 \item[Test \MCS\ installtion] launches a self test procedure to check that the \MCS\ package is installed properly, generates accurate results, and may use the plotter to display the results.
-\end{description}
- single menu point, ``McStas web-page'', which
-attempts to open a Netscape window with the McStas web-page. This
-obviously requires that Netscape is properly installed on the computer.
+\item[Generate component index] (re-)generates locally the component \verb+index.html+.
 
+\end{description}
 
 \subsubsection{The run dialog}
 
@@ -977,25 +977,29 @@ The meaning of the different fields is as follows:
   the input parameters of the instrument. The type of each instrument
   parameter is given in parenthesis after each name. Floating point
   numbers are denoted by (D) (for the C type ``\verb+double+''), (I)
-  denotes integer parameters, and (S) denotes strings.
+  denotes integer parameters, and (S) denotes strings. For parameter scans, enter the minimum and maximum values to scan, separated by a coma, e.g. \verb+1,10+ and do not forget to set the {\bf \# Scanpoints} to more than 1.
 \item[Output to] allows the entry of a directory to store the
   resulting data files in (like the \verb+--dir+ option). If no name is
   given, the results are put in the current directory, to be overwritten
   by the next simulation.
+\item[Force] Forces to overwrite existing data files
 \item[Neutron count] sets the number of neutron histories to
   simulate (the \verb+--ncount+ option).
+  \item[Gravity] Activates gravitation handling. Some components may not handle it properly, and produce wrong results.
 \item[Distribute mcrun scans (grid)] activates the distribution of the scan
   steps over a computer grid, using an \texttt{ssh} mechanism.
   See section~\ref{s:run-mpi} on parallel computing for more informations
-  about how to define and access the grid.
+  about how to define and access the grid. This options is only visible if MPI/ssh is available.
 \item[Plot results] -- if checked, the \verb+mcplot+ front-end will be run
   after the simulation has finished, and the plot dialog will pop up
   (see below).
+\item[Format] The data file format can be changed the same way as in the ``Simulation/Configuration options''.
 \item[Random seed/Set seed to] selects between using a random seed (different
   in each simulation) for the random number generator, or using a fixed
   seed (to reproduce results for debugging).
-\item[Simulate/Trace] selects between running the simulation
-  normally, or using the \verb+mcdisplay+ front-end.
+\item[Simulate/Trace (3D)] selects between running the simulation
+  normally, or using the \verb+mcdisplay+ front-end to view the instrument in 3D and trace the neutrons individually inside components.
+\item[\# Scanpoints] sets the number of times the simulation has to repeated to cover a parameter scan. If no parameter scan is specified, the simulation is just repeated.
 \item[Inspect component] will trace neutron trajectories that only reach a given component (e.g. sample or detector).
 \item[First component] seletcs the first component to plot (default is first) in order to define a region of interest.
 \item[Last component] seletcs the last component to plot (default is first) in order to define a region of interest.
@@ -1241,7 +1245,7 @@ variable!PGPLOT\_DEV} \index{Tools!Perl libraries}
 \paragraph{Matlab and Scilab back-ends}
 
 A 3D view of the instrument, and various operations (zoom, export, print, trace neutrons, \ldots) is available from dedicated Graphical User Interfaces.
-The \verb+--inspect+ option may be used (see previous paragraph), as well as the \verb+--first+ and \verb+--last+ options to specify a region of interest.
+The \verb+--inspect+ option may be used (see previous paragraph), as well as the \verb+--first+ and \verb+--last+ options to specify a region of interest. {\bf Note:} The Scilab plotter for \emph{Windows} does not allow to rotate interactively the 3D view, and you are to use the \emph{alpha} and \emph{theta} choices in the pop-up Dialog.
 
 The \verb+mcdisplay+ front-end will then
 require the Perl+PGPLOT, and either Scilab or Matlab to be installed. \index{Tools!Matlab} \index{Tools!Scilab}

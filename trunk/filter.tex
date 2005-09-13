@@ -5,8 +5,12 @@
 
 This component is an ideal flat filter to change the neutron flux according to a 1D input table (text file).
 
-It may act as a source ($options$="set") or a filter ($options$="multiply", default mode). The table itself is a free format file which accept comment lines. The table is used according to one neutron parameter among the wavevector, the energy or the wavelength, as specified in the $options$ parameter.
+It may act as a source ($options$="set") or a filter ($options$="multiply", default mode). The table itself is a 2 column free format file which accept comment lines. The first table column stands for the wavevector, the energy or the wavelength, as specified in the $options$ parameter, whereas the second column is the tranmission/weight modifier.
+
+A usage example as a source would use \verb+options="wavelength, set"+, if the first column in the data is supposted to be $\lambda$ (in Angstrom). An other example using the component as a filter would be \verb+options="energy, multiply"+ if the first column is $\omega$ (in meV).
 
 The input parameters are the filter window size $x_{min}$, $x_{max}$, $y_{min}$, $y_{max}$, the behaviour specification string $options$ and the file to use $file$. Additionally, rescaling can be made automatic with the $scaling$ and relative $thickness$ parameters.
 
-Some example data files are given with \MCS\ in the \verb+MCSTAS\data+ directory as \verb+*.trm+ files for transmission.
+Some example data files are given with \MCS\ in the \verb+MCSTAS/data+ directory as \verb+*.trm+ files for transmission. These are 2 columns data files.
+
+If you whish to simulate a thick filter, surround this component with two slits.

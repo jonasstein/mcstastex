@@ -1,11 +1,10 @@
 \section{Monitor\_nD: A general Monitor for 0D/1D/2D records}
 \label{s:monitornd}
 
-This component was contributed by Emmanuel Farhi, Institute
-Laue-Langevin.
+\component{Monitor\_nD}{System}{$x_{\rm min}$, $x_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, options}{$file$, $x_{width}, y_{height}, z_{thick}$, $bins$, $min$, $max$}{}
 
-The component {\bf Monitor\_nD} is a general Monitor that can output any
-set of physical parameters concerning the passing neutrons. The
+The component {\bf Monitor\_nD} is a general Monitor that may output any
+set of physical parameters regarding the passing neutrons. The
 generated files are either a set of 1D signals ([Intensity] {\it vs.}
 [Variable]), or a single 2D signal ([Intensity] {\it vs.} [Variable 1]
 {\it vs.} [Variable 1]), and possibly a simple long list of the selected
@@ -14,19 +13,24 @@ physical parameters for each neutron.
 The input parameters for {\bf Monitor\_nD} are its dimensions $x_{\rm
   min}, x_{\rm max}, y_{\rm min}$, $y_{\rm max}$ (in meters) and an {\it
   options} string describing what to detect, and what to do with the
-signals, in clear language. The formatting of the {\it options}
+signals, in clear language. The $x_{width}, y_{height}, z_{thick}$ may also be used to enter dimensions.
+
+The formatting of the {\it options}
 parameter is free, as long as it contains some specific keywords, that
 can be sometimes followed by values. The {\it no} or {\it not} option
 modifier will revert next option. The {\it all} option can also affect a
 set of monitor configuration parameters (see below).
 
+As the usage of this component ebnables to monitor virtually anything, and thus the combinations of options and parameters is infinite, we shall only present the most basic configuration. The reader should refer to the on-line component help, using e.g. \verb+mcdoc Monitor_nD.comp+.
+
 \subsubsection{The Monitor\_nD geometry}
 
-The monitor shape can be selected among four geometries:
+The monitor shape can be selected among six geometries:
 \begin{enumerate}
 \item{({\it square}) The default geometry is flat rectangular in ($xy$)
     plane with dimensions $x_{\rm min}, x_{\rm max}, y_{\rm min}$,
     $y_{\rm max}$.}
+\item{({\it box})A rectangular box with dimensions $x_{width}, y_{height}, z_{thick}$.}
 \item{({\it disk}) When choosing this geometry, the detector is a flat
     disk in ($xy$) plane. The radius is then
     \begin{equation}
@@ -41,23 +45,24 @@ The monitor shape can be selected among four geometries:
     \begin{equation}
       \mbox{radius} =  \max ( \mbox{abs } [ x_{\rm min}, x_{\rm max} ] ),
     \end{equation}
-    and the height along $y$ is 
+    and the height along $y$ is
     \begin{equation}
       \mbox{height} =  | y_{\rm max} - y_{\rm max} |.
     \end{equation}
     }
+\item{({\it banana}) The same as the cylinder, but without the top/bottom caps, and on a restricted angular range. The angular range is specified using a \verb+theta+ variable limit specification in the \verb+options+.}
 \end{enumerate}
 
 By default, the monitor is flat, rectangular. Of course, you can choose
 the orientation of the {\bf Monitor\_nD} in the instrument description
 file with the usual \texttt{ROTATED} modifier.
 
-For the {\it sphere} and {\it cylinder}, the incoming neutrons are
-monitored by default, but you can choose to monitor outgoing neutron
-with the {\it outgoing} option.
+For the {\it box}, {\it sphere} and {\it cylinder}, the outgoing neutrons are
+monitored by default, but you can choose to monitor incoming neutron
+with the {\it incoming} option.
 
 At last, the {\it slit} or {\it absorb} option will ask the component to
-absorb the neutrons that do not intersect the monitor.
+absorb the neutrons that do not intersect the monitor. The {\it exclusive} option word removes neutrons which are similarly outside the monitor limits (that may be other than geometrical).
 
 \subsubsection{The neutron parameters that can be monitored}
 
@@ -67,20 +72,26 @@ and position. Some can have more than one name (e.g. \texttt{energy} or
 
 
 \begin{verbatim}
- kx ky kz k wavevector (Angs-1) Wavevector norm or coordinates
- vx vy vz v            (m/s)    Velocity norm or coordinates
- x y z radius          (m)      Position and radius in (xy) plane
- t time                (s)      Time of Flight
- energy omega          (meV)    Neutron energy
- lambda wavelength     (Angs)   Neutron wavelength
- p intensity flux      (n/s) or (n/cm^2/s) The neutron weight
- ncounts               (1)      The number of events detected
- sx sy sz              (1)      Spin of the neutron
- vdiv                  (deg)    vertical divergence
- hdiv divergence       (deg)    horizontal divergence
- angle                 (deg)    divergence from <z> direction
- theta longitude       (deg)    longitude (x/z)
- phi   lattitude       (deg)    lattitude (y/z)
+    kx ky kz k wavevector [Angs-1] (    usually axis are
+    vx vy vz v            [m/s]         x=horz., y=vert., z=on axis)
+    x y z                 [m]      Distance, Position
+    kxy vxy xy radius     [m]      Radial wavevector, velocity and position
+    t time                [s]      Time of Flight
+    energy omega          [meV]
+    lambda wavelength     [Angs]
+    p intensity flux      [n/s] or [n/cm^2/s]
+    ncounts               [1]
+    sx sy sz              [1]      Spin
+    vdiv ydiv dy          [deg]    vertical divergence (y)
+    hdiv divergence xdiv  [deg]    horizontal divergence (x)
+    angle                 [deg]    divergence from  direction
+    theta longitude       [deg]    longitude (x/z) [for sphere and cylinder]
+    phi   lattitude       [deg]    lattitude (y/z) [for sphere and cylinder]
+\end{verbatim}
+as well as two other special variables
+\begin{verbatim}
+    user user1            will monitor the [Mon_Name]_Vars.UserVariable{1|2}
+    user2                 to be assigned in an other component (see below)
 \end{verbatim}
 
 To tell the component what you want to monitor, just add the variable
@@ -89,12 +100,12 @@ names in the {\it options} parameter. The data will be sorted into {\it
 can also be set by user. The {\it auto} option will automatically
 determine what limits should be used to have a good sampling of signals.
 
-The {\it with borders} option will monitor variables that are outside
+The {\it borders} option will monitor variables that are outside
 the limits. These values are then accumulated on the 'borders' of the
 signal.
 
 Each monitoring will record the flux (sum of weights $p$) versus the
-given variables. The {\it per cm2} option will ask to normalize the flux
+given variables. The {\it cm2} option will ask to normalize the flux
 to the monitor section surface.
 
 Some examples ?
@@ -116,6 +127,7 @@ automatic extensions showing what was monitored (such as
 \texttt{MyMonitor.x}). You can also set the filename in {\it options}
 with the {\it file} keyword followed by the file name that you want. The
 extension will then be added if the name does not contain a dot (.).
+Finally, the $filename$ parameter may also be used.
 
 The output files format are standard 1D or 2D McStas detector files.
 The {\it no file} option will {\it unactivate} monitor, and make it a
@@ -144,27 +156,68 @@ the file, but you can specify for instance "{\it list} 3000 neutrons" or
 "{\it list all} neutrons". This last option might require a lot of
 memory and generate huge files.
 
-\subsubsection{Usage examples}
+\subsubsection{Monitor equivalences}
+
+In the following table, we show how the Monitor\_nD may substitute any other \MCS\ monitor.
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+\hline
+\MCS\ monitor & Monitor\_nD equivalent \\
+\hline
+Divergence\_monitor & {\it options}="dx bins=$ndiv$ limits=[$-\alpha/2 \alpha/2$],
+                                lambda bins=$nlam$ limits=[$\lambda_0$ $\lambda_1$] file=$file$"\\
+DivLambda\_monitor  & {\it options}="dx bins=$nh$   limits=[$-h_{max}/2 h_{max}/2$],
+                                    dy bins=$nv$   limits=[$-v_{max}/2 v_{max}/2$]" {\it filename}=$file$\\
+DivPos\_monitor     & {\it options}="dx bins=$ndiv$ limits=[$-\alpha/2 \alpha/2$],
+                                     x bins=$npos$" {\it xmin}=$x_{min}$ {\it xmax}=$x_{max}$ \\
+E\_monitor          & {\it options}="energy bins=$nchan$ limits=[$E_{min} E_{max}$]" \\
+EPSD\_monitor       & {\it options}="energy bins=$n_E$ limits=[$E_{min} E_{max}$], x bins=$nx$"
+                              {\it xmin}=$x_{min}$ {\it xmax}=$x_{max}$ \\
+Hdiv\_monitor       & {\it options}="dx bins=$nh$ limits=[$-h_{max}/2 h_{max}/2$]" {\it filename}=$file$ \\
+L\_monitor          & {\it options}="lambda bins=$nh$ limits=[$-\lambda_{max}/2 \lambda_{max}/2$]" {\it filename}=$file$ \\
+Monitor\_4PI        & {\it options}="sphere" \\
+Monitor            & {\it options}="unactivate" \\
+PSDcyl\_monitor     & {\it options}="theta bins=$nr$,y bins=$ny$, cylinder"
+{\it filename}=$file$ {\it yheight}=$height$ {\it xwidth}=2*radius\\
+PSDlin\_monitor     & {\it options}="x bins=$nx$" {\it xmin}=$x_{min}$ {\it xmax}=$x_{max}$ {\it ymin}=$y_{min}$ {\it ymax}=$y_{max}$ {\it filename}=$file$\\
+PSD\_monitor\_4PI    & {\it options}="x y, sphere" \\
+PSD\_monitor        & {\it options}="x bins=$nx$, y bins=$ny$" {\it xmin}=$x_{min}$ {\it xmax}=$x_{max}$ {\it ymin}=$y_{min}$ {\it ymax}=$y_{max}$ {\it filename}=$file$\\
+TOF\_cylPSD\_monitor & {\it options}="theta bins=$n_\phi$, time bins=$nt$ limits=[$t_0, t_1$], cylinder" {\it filename}=$file$ {\it yheight}=$height$ {\it xwidth}=2*radius\\
+TOFLambda\_monitor  & {\it options}="lambda bins=$n_\lambda$ limits=[$\lambda_0$ $\lambda_1$], time bins=$nt$ limits=[$t_0, t_1$]" {\it filename}=$file$\\
+TOFlog\_mon         & {\it options}="log time bins=$nt$ limits=[$t_0, t_1$]" \\
+TOF\_monitor        & {\it options}="time bins=$nt$ limits=[$t_0, t_1$]" \\
+\hline
+    \end{tabular}
+    \caption{Using Monitor\_nD in place of other components. All limits specifications may be advantageously replaced by an {\it auto} word preceeding each monitored variable. Not all file and dimension specifications are indicated (e.g. filename, xmin, xmax, ymin, ymax).}
+    \label{t:monitor-nd-equiv}
+    }
+  \end{center}
+\end{table}
+
+\subsubsection{Other usage examples}
 
 \begin{itemize}
 \item{
 \begin{verbatim}
-COMPONENT MyMonitor = Monitor_nD( 
-    xmin = -0.1, xmax = 0.1, 
-    ymin = -0.1, ymax = 0.1, 
+COMPONENT MyMonitor = Monitor_nD(
+    xmin = -0.1, xmax = 0.1,
+    ymin = -0.1, ymax = 0.1,
     options = "energy auto limits")
 \end{verbatim}
 will monitor the neutron energy in a single 1D file (a kind of E\_monitor)}
-\item{\texttt{{\it options}="x y, all bins=50"} \\
+\item{\texttt{{\it options}="x y, all bins=50, all auto"} \\
 will monitor the neutron $x$ and $y$ in a single 2D file (same as PSD\_monitor)}
 
-\item{\texttt{{\it options}="multiple x bins=30, y limits=[-0.05 0.05]"} \\
+\item{\texttt{{\it options}="multiple x bins=30, y limits=[-0.05 0.05], all auto"} \\
 will monitor the neutron $x$ and $y$ in two 1D files}
-\item{\texttt{{\it options}="x y z kx ky kz,  auto limits"} \\
+\item{\texttt{{\it options}="x y z kx ky kz, all auto"} \\
 will monitor theses variables in six 1D files}
-\item{\texttt{{\it options}="x y z kx ky kz, list all, auto limits"} \\
+\item{\texttt{{\it options}="x y z kx ky kz, list all, all auto"} \\
 will monitor all theses neutron variables in one long list}
-\item{\texttt{{\it options}="multiple x y z kx ky kz, and list 2000,  auto limits"} \\
+\item{\texttt{{\it options}="multiple x y z kx ky kz, and list 2000, all auto"} \\
     will monitor all theses neutron variables in one list of 2000 events
     and in six 1D files}
 \end{itemize}

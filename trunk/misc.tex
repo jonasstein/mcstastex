@@ -1,14 +1,14 @@
 \chapter{Special-purpose components}
 
-The chapter deals with components that are not easily included 
+The chapter deals with components that are not easily included
 in any of the other chapters because of their special nature,
-but which still are considered to be of significant importance 
+but which still are considered to be of significant importance
 to \MCS .
 
 One part of these components deals with splitting simulations
 into two (or more) stages. For example, a guide system is often
 not changed much, and a long simulation of neutron rays
-``surviving'' through the guide system could be reused 
+``surviving'' through the guide system could be reused
 for several simulations of the instrument back-end, speeding up
 the simulations by (typically) one or two orders of magnitude.
 The components for doing this trick is {\bf Virtual\_input} and
@@ -17,7 +17,7 @@ The components for doing this trick is {\bf Virtual\_input} and
 Another pair of components performs the simulation of the instrument
 resolution functions. This is {\bf Res\_sample}, that is to be
 placed at the sample position, and {\bf Res\_monitor}, that should
-be localized at the position of the instrument detector. 
+be localized at the position of the instrument detector.
 
 \newpage
 \input{virtual_input}
@@ -26,3 +26,12 @@ be localized at the position of the instrument detector.
 \newpage
 \input{res_sample}
 \input{res_monitor}
+
+\newpage
+\section{Progress\_bar: Simulation progress and automatic saving}
+\component{Progress\_bar}{System}{percent, flag\_save}{}{}
+\label{s:progress-bar}
+
+This component is an Arm (see section \ref{explain:arm}) which additionally displays the simulation progress and status. The default is to work with a 10 \% step, but it may be changed using the \verb+percent+ parameter (from 0 to 100). The estimated computation time is displayed at the begining and actual simulation time is shown at the end.
+
+Additionally, setting the \verb+flag_save+ to 1 results in a regular save of the data files during the simulation course. This means that is is possible to view the data before the end of the computation, and have also a trace of it in case of computer crash. The advancement level is stored in these temporary data files. Technically, this save is equivalent to sending regularly a USR2 signal to the running simulation.
