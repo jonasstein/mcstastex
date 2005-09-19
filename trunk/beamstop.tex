@@ -1,5 +1,6 @@
 \section{Beamstop: A neutron absorbing area}
 \label{beamstop}
+\index{Optics!Beam stop}
 
 \component{Beamstop}{System}{$x_{min}$, $x_{max}$, $y_{min}$, $y_{max}$, $r$}{}{}
 
@@ -22,7 +23,7 @@ $(x_{\rm min}, x_{\rm max}, y_{\rm min}, y_{\rm max})$
 defining the opening of a rectangle, or the radius $r$ of
 a circle, depending on which parameters are specified.
 
-In the case you are not interested by the 'direct beam' (e.g. after a monochromator or sample), it is possible to simulate an ideal beamstop so that only the scattered beam is left. This is for instance the case when you only want to see the scattered neutrons from a sample, removing the direct beam and any background signal from other parts of the instrument.
+In the case you are not interested by the 'direct beam' (e.g. after a monochromator or sample), it is possible to simulate an ideal beamstop so that only the scattered beam is left. This is for instance the case when you only want to see the scattered neutrons from a sample, removing the direct beam and any background signal from other parts of the instrument.\index{Keyword!EXTEND}
 \begin{verbatim}
 COMPONENT MySample=V_sample(...) AT (...)
 EXTEND

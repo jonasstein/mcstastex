@@ -28,7 +28,7 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
 
 \begin{itemize}
 \item Gravitation support has been validated. There was a bug revealed with long wavelength neutrons. Some components (see e.g. some guides) still do not support this option (bug \#1).
-\item Monitor binning was most of the time not centered, but left justified. Data files are now ok, but Matlab, Scilab, Octave and IDL plotter routines are to be updated (bugs \#11, 12, 39).
+\item Monitor binning was not plotted correctly (not centered). This has been fixed for PGPLOT/McStas, Matlab, Scilab and Octave plotters (bugs \#11, 12, 39).
 
 \item McStas can use MPI parallel processing, if it is properly installed.
 \item Alternatively, a basic 'grid' computing may be used to split scan steps onto a list of machines.

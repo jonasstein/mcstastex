@@ -3,6 +3,7 @@
 \chapter{Source components}
 \label{c:source}
 \index{Sources}
+\index{Library!Components!sources}
 
 \MCS\ contains a number of different source components,
 and any simulation will contain exactly one source.
@@ -13,7 +14,7 @@ suitable distributions. For example, the initial position is
 always found from a uniform distribution over the source surface.
 For time-of-flight sources, the choice of $t$ is being made on basis of
 detailed analytical expressions.
-For other sources, the initial neutron time is set to zero (default). In the case you would like to use a 'conventional' source (e.g. steady state source) with time-of-flight settings, it is then \emph{important} to set the time of each neutron using a random number from a distribution. This may be achieved thanks to the \verb+EXTEND+ keyword in the instrument description source:
+For other sources, the initial neutron time is set to zero (default). In the case you would like to use a 'conventional' source (e.g. steady state source) with time-of-flight settings, it is then \emph{important} to set the time of each neutron using a random number from a distribution. This may be achieved thanks to the \verb+EXTEND+ keyword in the instrument description source:\index{Keyword!EXTEND}
 
 \begin{verbatim}
   TRACE
@@ -103,7 +104,7 @@ Other ways to speed-up simulations are to read events from a file. See section \
 
 There are other ways to define a source.
 
-Pulsed source components are available for new facilities:
+Pulsed source components are available for new facilities:\index{Sources!Pulsed sources}
 \begin{enumerate}
 \item SNS ({\bf contrib/SNS\_source})
 \item ISIS ({\bf contrib/ISIS\_moderator})
@@ -114,8 +115,8 @@ When no model exists (e.g. not a Maxwellian distribution), you may have access t
 
 \begin{enumerate}
 \item{{\bf misc/Virtual\_input} can read a \MCS\ event file (in text or binary format), often bringing a factor 10 speed-up. See section \ref{virtual_input}.}
-\item{{\bf contrib/Virtual\_tripoli4\_input} does the same, but from event files (text format) obtained from the \emph{Tripoli4} \cite{tripoli_webpage} reactor simulation program. Such files are usually huge.}
-\item{{\bf misc/Vitess\_input} can read \emph{Vitess} \cite{vitess_webpage} neutron event binary files.}
-\item{{\bf optics/Filter\_gen} reads a 1D distributionb from a file, and may either modify or set the flux according to it.}
+\item{{\bf contrib/Virtual\_tripoli4\_input} does the same, but from event files (text format) obtained from the \emph{Tripoli4} \cite{tripoli_webpage} reactor simulation program. Such files are usually huge.\index{Sources!Virtual source from Tripoli4}}
+\item{{\bf misc/Vitess\_input} can read \emph{Vitess} \cite{vitess_webpage} neutron event binary files.\index{Sources!Virtual source from Vitess}}
+\item{{\bf optics/Filter\_gen} reads a 1D distributionb from a file, and may either modify or set the flux according to it.\index{Sources!from 1D table input}}
 \item{A component for reading MCNP "PTRAC" records is planed for a next release. Contact us if you wish to participate.}
 \end{enumerate}

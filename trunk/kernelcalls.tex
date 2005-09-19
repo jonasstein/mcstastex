@@ -254,7 +254,7 @@ resulting Coord structure.
 \end{itemize}
 
 \section{Reading a data file into a vector/matrix (Table input, \texttt{read\_table-lib})}
-\index{Library!read\_table-lib (Read\_Table)|textbf}
+\index{Library!read\_table-lib (Read\_Table)|textbf}\label{s:read-table}\index{Data files}
 The \verb+read_table-lib+ provides functionalities for reading text (and binary) data files. To use this library, add a \verb+%include "read_table-lib"+ in your component definition DECLARE or SHARE section. Tables are structures of type $t_Table$ (see \verb+read_table-lib.h+ file for details):
 \begin{verbatim}
     /* t_Table structure (most important members) */
@@ -270,7 +270,7 @@ The \verb+read_table-lib+ provides functionalities for reading text (and binary)
 Available functions to read \emph{a single} vector/matrix are:
 \begin{itemize}
 \item {\bf Table\_Init}(\&$Table$, $rows$, $columns$) returns an allocated Table structure. Use $rows=columns=0$ not to allocate memory. Calls to Table\_Init are optional as other functions do it already.
-\item {\bf Table\_Read}(\&$Table$, $filename$, $block$) reads numerical block number $block$ (0 to catenate all) data from \emph{text} file $filename$ into $Table$, which is as well initialized in the process. The block number changes when the numerical data changes its size, or a comment is encoutered (lines starting by '\verb+# ; % /+'). If the data could not be read, then $Table.data$ is NULL and $Table.rows = 0$. You may then try to read it using Table\_Read\_Offset\_Binary. Return value is the number of read elements.
+\item {\bf Table\_Read}(\&$Table$, $filename$, $block$) reads numerical block number $block$ (0 to catenate all) data from \emph{text} file $filename$ into $Table$, which is as well initialized in the process. The block number changes when the numerical data changes its size, or a comment is encoutered (lines starting by '\verb+# ; % /+'). If the data could not be read, then $Table.data$ is NULL and $Table.rows = 0$. You may then try to read it using Table\_Read\_Offset\_Binary. Return value is the number of read elements, or -1 in case of error.
 \item {\bf Table\_Read\_Offset}(\&$Table$, $filename$, $block$, \&$offset$, $n_{rows}$) does the same as Table\_Read except that it starts at offset $offset$ (0 means begining of file) and reads $n_{rows}$ lines (0 for all). The $offset$ is returned as the final offset reached after reading the $n_{rows}$ lines.
 \item {\bf Table\_Read\_Offset\_Binary}(\&$Table$, $filename$, $type$,
   $block$, \&$offset$, $n_{rows}$, $n_{columns}$) does the same as

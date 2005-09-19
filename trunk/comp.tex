@@ -13,6 +13,7 @@ they contribute.
 \MCS\ users are encouraged to send their
 contributions to us for inclusion in future releases.
 
+\subsubsection{Coordinate system and symbols}
 In the description of the theory behind the component functionality
 we will use the usual symbols {\bf r} for the position
 $(x,y,z)$ of the particle (unit m), and {\bf v} for
@@ -31,16 +32,11 @@ The axis convention is so that the $z$ axis is along
 the neutron propagation axis, the $y$ axis is vertical up,
 and the $x$ completes the right-handed coordinate system.
 Most components 'position' (as specified in the instrument description with the \verb+AT+ keyword) corresponds to the input side of it. Some components are centered (e.g. radial components).
+\index{Symbols}\index{Coordinates system}
 
 Components are usually not designed to overlap. Warnings will be issued during simulation when no neutron can reach portions of the instrument, or neutrons are removed for computational reasons. This is usually the sign of either overlapping components or a very low intensity.\index{Removed neutron events}
 
-Source code for all components may be found in the \verb+lib/mcstas/+
-subdirectory of the McStas installation;
-the default is \verb+/usr/local/lib/mcstas/+
-on Unix-like systems and \verb+C:\mcstas\lib+ on Windows systems, but it can be
-changed using the \verb+MCSTAS+ environment variable.
-\index{Environment variable!MCSTAS}
-
+\subsubsection{Component help resources}
 As a complement to this Component Manual, we encourage users to use
 the \verb+mcdoc+ front-end which enables to display both the
 catalog of the \MCS\ library, e.g using: \index{Tools!mcdoc}
@@ -61,14 +57,17 @@ The \verb+--help+ option will display the command help, as usual.
 
 An overview of the component library is also given in chapter \ref{s:components} and at the \MCS\ home page \cite{mcstas_webpage}...
 
-%\input{source}
-%\input{simple}
-%\input{guide}
-%\input{chopper}
-%\input{detector}
-%\input{monochr}
-%\input{powder}
-%\input{inelastic}
+\subsubsection{About data files}\index{Data files}\index{Library!read\_table-lib (Read\_Table)}
+Source code for all components may be found in the \verb+lib/mcstas/+
+subdirectory of the McStas installation;
+the default is \verb+/usr/local/lib/mcstas/+
+on Unix-like systems and \verb+C:\mcstas\lib+ on Windows systems, but it can be
+changed using the \verb+MCSTAS+ environment variable.
+\index{Environment variable!MCSTAS}
+
+Some components require external data files, e.g. lattice crystallographic definitions for Laue and powder pattern diffraction, $S(q,\omega)$ tables for inelastic scattering, neutron events files for virtual sources, transmission and reflectivity files, etc.
+
+Such files distributed with \MCS\ are located in the \verb+data+ sub-directory of the \verb+MCSTAS+ library. Components that make use of the \MCS\ file system, including the \verb+read-table+ library (see section \ref{s:read-table} may access all \MCS\ data files without making local copies. Of course, you are welcome to define your own data files, and eventually contribute to \MCS\ if you find then valuable.
 
 \input{sources}
 \input{optics}

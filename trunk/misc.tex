@@ -1,4 +1,5 @@
 \chapter{Special-purpose components}
+\index{Library!Components!misc}
 
 The chapter deals with components that are not easily included
 in any of the other chapters because of their special nature,
@@ -31,6 +32,8 @@ be localized at the position of the instrument detector.
 \section{Progress\_bar: Simulation progress and automatic saving}
 \component{Progress\_bar}{System}{percent, flag\_save}{}{}
 \label{s:progress-bar}
+\index{Optics!Point in space (Arm, Optical bench)}
+\index{Simulation progress bar}
 
 This component is an Arm (see section \ref{explain:arm}) which additionally displays the simulation progress and status. The default is to work with a 10 \% step, but it may be changed using the \verb+percent+ parameter (from 0 to 100). The estimated computation time is displayed at the begining and actual simulation time is shown at the end.
 

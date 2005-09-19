@@ -1,6 +1,7 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
 \chapter{Samples}
+\index{Library!Components!samples}
 
 This class of components models the sample of the experiment.
 This is by far the most challenging part of a neutron scattering
@@ -45,6 +46,29 @@ spatially varying lattice constant, relevant for stress/strain scanners.
 Inhomogeneously absorbing sample for tomography could also be possible.
 Further, no polarization effects are yet taken into account in any
 of the samples.
+
+\begin{table}
+  \begin{center}
+  {\let\my=\\
+    \begin{tabular}{|c|cc|cc|c|c|}
+    \hline
+    Sample        & \multicolumn{2}{c|}{Coherent} & \multicolumn{2}{c|}{Incoherent} &&\\
+    Process       & Elastic & Inelastic & Elastic & Inelastic & Absorption & Multi. Scatt.\\
+    \hline
+    Phonon\_simple&         & X         &         &           & X & \\
+    Isotropic\_Sqw&  X      & X         & X       & X         & X & X \\
+    Powder1       &  1 line &           &         &           & X & \\
+    PowderN       &  N lines&           &         &           & X & \\
+    Sans\_spheres &  colloid&           &         &           & X & \\
+    Single\_crystal& X      &           & X       &           & X & X \\
+    V\_sample     &         &           & X       &           & X & \\
+    \hline
+    \end{tabular}
+    \caption{Processes implemented in sample components}
+    \label{t:sample-process}
+  }
+  \end{center}
+\end{table}
 
 \input{vanadium.tex}
 \input{powder2.tex}

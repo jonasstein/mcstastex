@@ -1,9 +1,12 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
-\subsection{Single\_crystal: The single crystal component}
+\section{Single\_crystal: The single crystal component}
 \label{s:Single_crystal}
+\index{Samples!Single crystal diffraction}
+\index{Diffraction}
+\index{Incoherent elastic scattering}
 
-\subsubsection{The physical model}
+\subsection{The physical model}
 
 The textbook expression for the scattering cross-section of a crystal
 is~\cite{squires}:
@@ -170,7 +173,7 @@ cross-section is supplied by the user as a constant $\sigma_{\rm
 2200~m/s, so the actual cross-section for a neutron of velocity $v$ is
 $\sigma_{\rm abs} = \sigma_{2200} \frac{\rm 2200~m/s}{v}$.
 
-\subsubsection{The algorithm}
+\subsection{The algorithm}
 
 The overview of the algorithm used in the Single\_crystal component is
 as follows:
@@ -256,7 +259,7 @@ each other and to the plane normal $\boldsymbol{n} =
 \boldsymbol{\rho}/\rho$.
 
 Each $\boldsymbol{t}$ defines a potential final wave vector
-$\boldsymbol{k}_{\rm f}(\boldsymbol{t}) = \boldsymbol{k}_{\rm i} + 
+$\boldsymbol{k}_{\rm f}(\boldsymbol{t}) = \boldsymbol{k}_{\rm i} +
 \boldsymbol{P}(\boldsymbol{t})$. The value of the 3-dimensional Gaussian
 for this $\boldsymbol{k}_{\rm f}$ is
 \begin{equation}
@@ -347,13 +350,13 @@ and~(\ref{eq:crystal-gauss-2}):
          |F_{\boldsymbol{\tau}}|^2 d\Omega \\
   &=& \frac{1}{\boldsymbol{k}_i^2} N\frac{(2\pi)^3}{V_0}
          \frac{1}{(\sqrt{2\pi})^3}\frac{e^{-\alpha}}{\sigma_1\sigma_2\sigma_3}
-         |F_{\boldsymbol{\tau}}|^2 
+         |F_{\boldsymbol{\tau}}|^2
          \int e^{-(\boldsymbol{t}-\boldsymbol{t}_0)^{\rm T} M
          (\boldsymbol{t}-\boldsymbol{t}_0)}
          d\boldsymbol{t} \\
   &=& \det(L) \frac{1}{\boldsymbol{k}_i^2} N\frac{(2\pi)^{3/2}}{V_0}
          \frac{e^{-\alpha}}{\sigma_1\sigma_2\sigma_3}
-         |F_{\boldsymbol{\tau}}|^2 
+         |F_{\boldsymbol{\tau}}|^2
          \int e^{-\frac{1}{2}\boldsymbol{g}^{\rm T}\boldsymbol{g}}
          d\boldsymbol{g} \\
   &=& 2\pi\det(L) \frac{1}{\boldsymbol{k}_i^2} N\frac{(2\pi)^{3/2}}{V_0}
@@ -413,7 +416,7 @@ $$
   \sum_{\boldsymbol{\tau}} r_{\boldsymbol{\tau}}}{\sigma_{\rm coh}
   r_{\boldsymbol{\tau}}}.$$
 
-\subsubsection{The implementation}
+\subsection{The implementation}
 
 The equations describing the Single\_crystal simulation are quite
 complex, and consequently the code is fairly sizeable. Most of it is
