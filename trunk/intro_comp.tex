@@ -1,5 +1,5 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
-
+ 
 \chapter{Introduction to \MCS}
 
 Efficient design and optimization of neutron spectrometers are
@@ -9,7 +9,7 @@ these challenges. When \MCS\ version 1.0 was released in October
 scattering community to tackle the problems currently faced at reactor and
 spallation sources. The \MCS\ project was designed to provide such a framework.
 
-\MCS\ %({\em Monte Carlo Simulations of Triple Axis Spectrometers\/})
+\MCS\ %({\em Monte Carlo Simulations of Triple Axis Spectrometers\/}) 
 is a fast and versatile software tool for neutron ray-tracing simulations.
 It is based on a meta-language specially designed for neutron
 simulation. Specifications are written in this language by users and
@@ -20,8 +20,8 @@ components with in total around 90 components. These enable to simulate all kind
 
 The \MCS\ package is written in ANSI-C and is freely available for down-load
 from the \MCS\ web-page~\cite{mcstas_webpage}. The package is actively
-being developed and supported by Ris\o\ National Laboratory
-and the Institut Laue Langevin (ILL).
+being developed and supported by Ris\o\ National Laboratory 
+and the Institut Laue Langevin (ILL). 
 The system is well tested and
 is supplied with several examples and with an extensive documentation.
 Besides this component manual, a system manual exists.
@@ -29,29 +29,29 @@ Besides this component manual, a system manual exists.
 
 \section{Background}
 
-In the late 90'ies at Ris\o\ National Laboratory,
+In the late 90'ies at Ris\o\ National Laboratory, 
 simulation tools were urgently needed,
 not only to better utilize existing instruments
-({\em e.g.} RITA-1 and RITA-2~\cite{cjp_73_697,pb_241_50,pb_283_343}),
-but also to plan completely new instruments for new sources
-({\em e.g.} the Spallation Neutron Source, SNS~\cite{sns_webpage}
-and the planned European Spallation Source, ESS~\cite{ess_webpage}).
+({\em e.g.} RITA-1 and RITA-2~\cite{cjp_73_697,pb_241_50,pb_283_343}), 
+but also to plan completely new instruments for new sources 
+({\em e.g.} the Spallation Neutron Source, SNS~\cite{sns_webpage} 
+and the planned European Spallation Source, ESS~\cite{ess_webpage}). 
 Writing programs in C or Fortran for
 each of the different cases involves a huge effort, with debugging presenting
 particularly difficult problems. A higher level tool specially designed
 for the needs of simulating neutron instruments is needed. As there was
-no existing simulation software that would fulfill our needs, the \MCS\
+no existing simulation software that would fulfill our needs, the \MCS\ 
 project was initiated.
 In addition, the ILL required an efficient and general simulation
-package in order to achieve renewal of its instruments and guides.
-A significant contribution to both the component library and the \MCS\
+package in order to achieve renewal of its instruments and guides. 
+A significant contribution to both the component library and the \MCS\ 
 kernel itself was early performed at the ILL and included in the package.
 ILL later became a part of the core \MCS\ team.
 
 \subsection{The goals of \MCS}
 \label{s:goals}
 
-Initially, the \MCS\ project had four main objectives
+Initially, the \MCS\ project had four main objectives 
 that determined its design.
 
 \paragraph{Correctness.}
@@ -104,7 +104,7 @@ translates them into efficient simulation programs written in ANSI-C.
 In realizing the design of \MCS, the task was
 separated into four conceptual layers:
 \begin{enumerate}
-\item Modeling the physical processes of neutron scattering, \textit{i.e}.\
+\item Modeling the physical processes of neutron scattering, \textit{i.e}.\ 
   the calculation of the fate of a neutron that passes through the
   individual components of the instrument (absorption, scattering at a
   particular angle, etc.)
@@ -126,7 +126,7 @@ without worrying about the details of the calculation. Another user
 may simulate a new instrument without having to reinvent the
 code for simulating the individual components in the instrument. A third
 user may write an intricate simulation of a complex component,
-e.g.\ a detailed description of a rotating velocity selector,
+e.g.\ a detailed description of a rotating velocity selector, 
 and expect other users to easily
 benefit from his/her work, and so on. \MCS\ attempts to make it
 possible to work at any combination of layers in isolation by separating
@@ -148,7 +148,7 @@ write new component or instrument definitions, and even if those
 internals change in later versions of \MCS, existing definitions can be
 used without modification.
 
-The \MCS\ system also utilizes the meta-language to let the \MCS\
+The \MCS\ system also utilizes the meta-language to let the \MCS\ 
 compiler generate as much code as possible automatically, letting the
 compiler handle some of the things that would otherwise be the task of
 the user/programmer. \textit{Correctness} is improved by having a well-tested
@@ -184,18 +184,19 @@ power of the C language is available if needed.
 
 This \MCS\ Component Manual consists of the following major parts:
 \begin{itemize}
-\item A thorough description of system components
-from chapter~\ref{c:components}, sorted by categories.
+\item A thorough description of system components 
+from chapter~\ref{c:components}, sorted by categories. 
+\item A list of example instruments from the library in chapter~\ref{c:instr_examples}. 
 \item The \MCS\ library functions and definitions
   that aid in the writing of simulations and components in
-  Appendix~\ref{c:kernelcalls}.
+  Appendix~\ref{c:kernelcalls}.    
 \end{itemize}
 An explanation of \MCS\ terminology can be
 found in appendix~\ref{s:terminology}.
 
 Additionally, you may refer to the list of example instruments from the library in the \MCS\ User Manual.
 
-Plans for future component development are presented
+Plans for future component development are presented 
 on the \MCS\ web-page~\cite{mcstas_webpage}.
 
 
@@ -205,30 +206,30 @@ on the \MCS\ web-page~\cite{mcstas_webpage}.
 %and other elemental tools ({\em e.g.} creation and annihilation
 %of a neutron). The kernel is maintained by the Ris\o\ group.
 
-%\paragraph{The components.} Here resides the code for simulation
+%\paragraph{The components.} Here resides the code for simulation 
 % of the individual spectrometer components
 % (sources, detectors, samples, and optical elements).
 % Components may have input parameters, like the angle of divergence of a
 % collimator or the mosaicity of a monochromator crystal.
 % Interested users are encouraged to modify existing components and to
 % design new ones.
-% A library of general and well documented components
+% A library of general and well documented components 
 % is being maintained by the Ris\o\ group.
 
-%\paragraph{The instruments.} An instrument definition is written
+%\paragraph{The instruments.} An instrument definition is written 
 % in the \MCS\ meta-language, which is a means of positioning
-% components within an experimental geometry.
-% Instruments may have inout parameters, like {\em e.g.}\ the three
+% components within an experimental geometry. 
+% Instruments may have inout parameters, like {\em e.g.}\ the three 
 % $(\omega,2\theta)$ pairs of a standard triple-axis spectrometer.
-% For each specific instrument, a new instrument definition
-% should be written. This will usually be done by the users,
+% For each specific instrument, a new instrument definition 
+% should be written. This will usually be done by the users, 
 % possibly in collaboration with the Ris\o\ group.
 
-%\paragraph{The instrument control interface.}
+%\paragraph{The instrument control interface.} 
 % Here, the setting parameters of the
 % instrument may be controlled in order to perform a simulation series.
 
-% In the present version 1.0, the control interface
+% In the present version 1.0, the control interface 
 % consists of a very preliminary MATLAB program,
 % but we expect soon to implement a simulation version of the
 % Ris\o\ spectrometer control software TASCOM.
@@ -239,7 +240,7 @@ on the \MCS\ web-page~\cite{mcstas_webpage}.
 %\paragraph{Data analysis and visualization}
 % The output data is in the present version written as
 % plain ASCII format, but will later be written in the TASCOM format,
-% from where it may easily be converted into the general
+% from where it may easily be converted into the general 
 % NeXus format\cite{NeXus}.
 % This enables the user to choose between various analysis packages
 % for the output side.

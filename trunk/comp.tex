@@ -2,6 +2,8 @@
 
 \chapter{About the component library}
 \label{c:components}
+
+\section{Authorship}
 The component library is
 maintained by the \MCS\ system group. A number of basic components
 ``belongs'' the \MCS\ system, and are supported and tested by the \MCS\
@@ -13,7 +15,7 @@ they contribute.
 \MCS\ users are encouraged to send their
 contributions to us for inclusion in future releases.
 
-\subsubsection{Coordinate system and symbols}
+subsubsection{Coordinate system and symbols}
 In the description of the theory behind the component functionality
 we will use the usual symbols {\bf r} for the position
 $(x,y,z)$ of the particle (unit m), and {\bf v} for
@@ -26,7 +28,9 @@ In general, vectors are denoted by boldface symbols.
 Subscripts "i" and "f" denotes ``initial'' and ``final'', respectively,
 and are used in connection with the neutron state before and after
 an interaction with the component in question.
-Note that all mentioning of component geometry refer to
+
+\section{Component coordinate system}
+All mentioning of component geometry refer to
 the local coordinate system of the individual component.
 The axis convention is so that the $z$ axis is along
 the neutron propagation axis, the $y$ axis is vertical up,
@@ -36,7 +40,15 @@ Most components 'position' (as specified in the instrument description with the 
 
 Components are usually not designed to overlap. Warnings will be issued during simulation when no neutron can reach portions of the instrument, or neutrons are removed for computational reasons. This is usually the sign of either overlapping components or a very low intensity.\index{Removed neutron events}
 
-\subsubsection{Component help resources}
+\section{Component source code}
+Source code for all components may be found in the \verb+lib/mcstas/+
+subdirectory of the McStas installation;
+the default is \verb+/usr/local/lib/mcstas/+
+on Unix-like systems and \verb+C:\mcstas\lib+ on Windows systems, but it can be
+changed using the \verb+MCSTAS+ environment variable.
+\index{Environment variable!MCSTAS}
+
+\section{Documentation}
 As a complement to this Component Manual, we encourage users to use
 the \verb+mcdoc+ front-end which enables to display both the
 catalog of the \MCS\ library, e.g using: \index{Tools!mcdoc}
@@ -55,7 +67,7 @@ the {\it file.comp} component, using your
 BROWSER\index{Environment variable!BROWSER} setting, or as text if unset.
 The \verb+--help+ option will display the command help, as usual.
 
-An overview of the component library is also given in chapter \ref{s:components} and at the \MCS\ home page \cite{mcstas_webpage}...
+An overview of the component library is also given in chapter \ref{s:components} and at the \MCS\ home page \cite{mcstas_webpage}.
 
 \subsubsection{About data files}\index{Data files}\index{Library!read\_table-lib (Read\_Table)}
 Source code for all components may be found in the \verb+lib/mcstas/+
@@ -69,9 +81,6 @@ Some components require external data files, e.g. lattice crystallographic defin
 
 Such files distributed with \MCS\ are located in the \verb+data+ sub-directory of the \verb+MCSTAS+ library. Components that make use of the \MCS\ file system, including the \verb+read-table+ library (see section \ref{s:read-table} may access all \MCS\ data files without making local copies. Of course, you are welcome to define your own data files, and eventually contribute to \MCS\ if you find then valuable.
 
-\input{sources}
-\input{optics}
-\input{samples}
-\input{monitors}
-\input{misc}
-%\input{contrib}
+
+\section{Component validation}
+

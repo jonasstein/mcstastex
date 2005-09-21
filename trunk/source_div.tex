@@ -1,14 +1,14 @@
 \section{Source\_div: A divergent source}
 \label{source-div}
-\index{Sources!Divergent source}
+\index{Sources!Source\_div}
 
-\component{Source\_div}{System}{ $w$, $h$, $\delta_h$, $\delta_v$, $E_0$, $\Delta E$}{$\lambda_0$, $d\lambda$, gauss}{Validated, position is the center of area}
+\component{Source\_div}{System}{ $w$, $h$, $\delta_h$, $\delta_v$, $E_0$, $\Delta E$}{$\lambda_0$, $d\lambda$, gauss}{Validated}
 
 {\bf Source\_div} is a rectangular source which emits a
 beam of a certain divergence around the main exit direction
 (the direction of the $z$ axis).
-The beam intensity and divergence are uniform over
-the whole of the source, and the energy distribution
+The beam intensity is uniform over
+the whole of the source, and the energy (or wavelength) distribution
 of the beam is uniform.
 
 This component may be used as a simple model of the
@@ -18,6 +18,9 @@ position.
 The input parameters for Source\_div are the source dimensions
 $w$ and $h$ (in m), the divergencies $\delta_h$ and $\delta_v$ (FWHM in degrees),
 and the mean energy $E_0$ and the energy spread $dE$ (both in meV).
-The neutron energy range is $(E_0-dE; E_0+dE)$.
-If the \verb+gauss+ flag is set to 0, the distribution is uniform, instead of Gaussian.
+The neutron energy range is $E_0 \pm \Delta E$, or alternatively
+the wavelength range is $\lambda_0 \pm d\lambda$
+
+If the \verb+gauss+ flag is set to 0, the divergence distribution is uniform, 
+otherwise Gaussian.
 

@@ -1,14 +1,14 @@
 \section{Source\_simple: A simple continuous source
 with a flat energy/wavelength spectrum}
 \label{source-simple}
-\index{Sources!Simple continuous source}
+\index{Sources!Source\_simple}
 
 \component{Source\_simple}{System}{ $r_{\rm s}$, $z_{\rm foc}$, $w$, $h$, $E_0$, $\Delta E$, $\Psi$}{$\lambda_0$, $d\lambda$}{Validated, position is the center of disk}
 
 This component is
-a simple source with a energy distribution which is uniform
+a simple source with an energy distribution which is uniform
 in the range $E_0 \pm dE$
-(or wavelength distribution in the range $\lambda_0 \pm d\lambda$).
+(alternatively: a wavelength distribution in the range $\lambda_0 \pm d\lambda$).
 This component is not used for detailed time-of-flight simulations,
 so we put $t=0$ for all neutron rays.
 
@@ -27,7 +27,7 @@ The initial weight of the created neutron ray, $p_0$, is set to the
 energy-integrated flux, $\Psi$, times the source area, $\pi r_{\rm s}^2$
 times a solid-angle factor, which is basically the
 solid angle of the focusing rectangle.
-See also the discussion on focusing in the \MCS\ Manual \ref{s:focus}.
+See also the discussion on focusing in section \ref{s:focus}.
 
-This component replaces Source\_flux\_lambda, Source\_flat, Source\_flat\_lambda, and
-Source\_flux.
+This component replaces the obsolete components
+Source\_flux\_lambda, Source\_flat, Source\_flat\_lambda, and Source\_flux.

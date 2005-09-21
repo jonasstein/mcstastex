@@ -11,7 +11,7 @@ The reader of this
 document is not supposed to have specific knowledge of neutron scattering,
 but some basic understanding of physics is helpful in
 understanding the theoretical background for the component functionality.
-For details about simulation techniques, we refer to
+For details about performing simulations, we refer to
 the \MCS\ system manual \cite{mcstasmanual}.
 We assume familiarity with the use of
 the C programming language.
@@ -43,38 +43,41 @@ as authors of the individual components. We encourage other
 users to contribute components with manual entries for inclusion in
 future versions of \MCS.
 
-In case of any errors, questions, suggestions,
+In case of errors, questions, suggestions,
 %or other need for support should arise,
 do not hesitate to
 contact the authors at \verb+mcstas@risoe.dk+
-or consult the \MCS\ WWW home page~\cite{mcstas_webpage}.
+or consult the \MCS\ home page~\cite{mcstas_webpage}.
 
 Important developments on the component side in \MCS\ version \version\
-as compared to version 1.4 (the last version of the component manual) include
+as compared to version 1.4 (the last version of the component manual;
+then included in the system manual) include
 
 \begin{itemize}
-\item{Validation of most components against analytical formula, and benchmarking with simple cases}
-\item{sources}
+\item{Validation of most components against analytical formula, 
+and benchmarking with simple cases}
+\item{Newly added, relatistic source components}
   \begin{itemize}
   \item \verb+ISIS_moderator+ ISIS source model based on MCNPX (D. Champion and S. Ansell, ISIS)
   \item \verb+Virtual_tripoli4_input/output+ Trioli4 (similar to MCNP) files reading/writing (G. Campioni, LLB)
   \item \verb+SNS_source+ SNS source model based on MCNPX (G. Granroth, SNS)
   \item \verb+Source_gen+ ILL sources Maxwellian parameters (E. Farhi/N. Kernavanois/H. Bordallo, ILL)
   \end{itemize}
-\item{optics}
+\item{Newly added, optical components}
   \begin{itemize}
   \item \verb+Radial_collimator+ Radial collimator approximated and exact options (E. Farhi, ILL)
   \item \verb+FermiChopper+ and \verb+Vitess_ChopperFermi+ Two Fermi Chopper components (M. Poehlmann, G. Zsigmond, ILL and PSI)
-  \item \verb+Guide_tapering+ Models a rectangular tapered guide (U. Filges, PSI)
+  \item \verb+Guide_tapering+ A rectangular tapered guide (U. Filges, PSI)
   \item \verb+Guide_curved+  Non-focusing curved neutron guide (R. Stewart, ILL)
   \end{itemize}
-\item{samples}
+\item{A suite of sample components}
   \begin{itemize}
   \item \verb+Phonon_simple+ An isotropic acoustic phonon (K. Lefmann, Ris\o)
-  \item \verb+Powder2+ \verb+PowderN+ 2 and N lines powder single diffraction (K. Lefmann, P. Willendrup, Ris\o)
+  \item \verb+Powder2+, \verb+PowderN+. 2 and N lines powder single diffraction (K. Lefmann, P. Willendrup, Ris\o)
   \item \verb+Sans_spheres+ hard spheres in thin solution, mono disperse (L. Arleth, Ris\o)
-  \item \verb+Isotropic_Sqw+ isotropic sample (powder, liquid, glass) elastic/inelastic scattering from S(q,w) data
-  \item \verb+SANS_*+ collection of samples for SANS (H. Frielinghaus,  FZ-Juelich)
+  \item \verb+Isotropic_Sqw+ isotropic sample (powder, liquid, glass) 
+elastic/inelastic scattering from $S(q,\omega)$ data (E.Farhi, V. Hugovieux, ILL)
+  \item \verb+SANS_*+ A collection of samples for SANS (H. Frielinghaus,  FZ-J\"ulich)
   \end{itemize}
 \end{itemize}
 
@@ -90,8 +93,8 @@ the WWW home pages~\cite{mcnsi_webpage,nmi3_webpage}.
 
 If you {\bf appreciate} this software, please subscribe to the \verb+neutron-mc@risoe.dk+ email list, send us a smiley message, and contribute to the package. We also encourage you to refer to this software when publishing results, with the following citations:
 \begin{itemize}
-\item{K. Lefmann and K. Nielsen, Neutron News 10, 20, (1999).}
-\item{P. Willendrup, E. Farhi and K. Lefmann, Physica B, 350 (2004) 735.}
+\item{K. Lefmann and K. Nielsen, Neutron News {\bf 10/3}, 20, (1999).}
+\item{P. Willendrup, E. Farhi and K. Lefmann, Physica B, {\bf 350}, 735 (2004).}
 \end{itemize}
 
 
