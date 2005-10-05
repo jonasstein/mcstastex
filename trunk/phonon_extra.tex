@@ -1,0 +1,123 @@
+This component models a simple phonon signal from a single crystal of 
+one element in an {\em fcc} crystal structure.
+Only one isotropic acoustic phonon branch is modeled, and the longitudinal
+and transverse dispersions are identical with the velocity of sound being $c$.
+Other physical parameters are the atomic mass, $M$, the lattice parameter, $a$,
+the scattering length, $b$,
+the Debye-Waller factor, \verb+DW+, and the temperature, $T$.
+
+Incoherent scattering and absorption are also taken into account by the cross
+sections $\sigma_{\rm abs}$ and $\sigma_{\rm inc}$.
+
+The sample can have the form of a cylinder with height $h$ and radius
+$r_0$, or a box with dimensions $w_x, h_y, t_z$. 
+
+Phonons are emitted into a specific range of solid angles, specified 
+by the location $(x_t, y_t, z_t)$ and the focusing radius, $r_0$.
+Alternatively, the focusing is given by a rectangle, 
+$w_{\rm focus}$ and $h_{\rm focus}$, and the focus point is given by the
+indeox of a down-stream optical element, \verb+target_index+.
+
+Multiple scattering is not included in this component. The scattering
+cross section is given by the detailed calculations below.
+
+\subsubsection{The phonon cross section} % This is taken directly from the paper %
+The inelastic phonon cross section for a Bravais crystal of a pure element
+is given by Ref.~\cite[ch.3~]{squires} 
+\begin{eqnarray}
+\frac{d^2\sigma'}{d\Omega dE_{\rm f}} &=&
+  b^2 \frac{k_{\rm f}}{k_{\rm i}} \frac{(2\pi)^3}{V_0}\frac{1}{2M} \exp(-2W) \nonumber \\
+&\times&
+  \sum_{\tau,q,p} \frac{(\mbox{\boldmath $\kappa$} \cdot {\bf e}_{q,p})^2}
+                       {\omega_{q,p}} 
+  \left\langle n_{q,p} + \frac{1}{2} \mp \frac{1}{2} \right\rangle
+  \delta(\omega\pm\omega_{q,p}) \delta(\kappa\pm{\bf q}-\tau) ,
+\end{eqnarray}
+where both annihilation and creation of one phonon is considered
+(represented by the plus and minus sign in the dispersion relation,
+respectively).
+In the equation, 
+$\exp(-2W)$ is the Debye-Waller factor, \verb+DW+ and
+$V_{\rm c} = \rho_{\rm c}^{-1}$ is the volume of the unit cell.
+The sum runs over the reciprocal lattice vectors, $\tau$, 
+over the polarisation index, $p$,
+and the $N$ allowed wave vectors {\bf q} within the Brillouin zone
+(where $N$ is the number of unit cells in the crystal).
+Further, ${\bf e}_{q,p}$ is the
+polarization unit vectors, $\omega_{q,p}$ the phonon dispersion,
+and $\langle n_{q,p} \rangle$ is the Bose factor at the given value of
+$\hbar |\omega_{q,p}|/(k_{\rm B}T)$.
+
+We have simplified this expression by assuming no polarization
+dependence of the dispersion, giving 
+$\sum_{p} (\mbox{\boldmath $\kappa$} \cdot {\bf e}_{q,p})^2 = \kappa^2$.
+We assume that the inter-atomic interaction is nearest-neighbour-only
+so that the phonon dispersion becomes: 
+\begin{equation}
+d_1({\bf q}) = c_1/a \sqrt(z-s_q) ,
+\end{equation}
+where $z=12$ is the number of nearest neighbours and 
+$s_q=\sum_{\rm nn} \cos({\bf q} \cdot {\bf r}_{\rm nn})$,
+where in turn ${\bf r}_{\rm nn}$ is the lattice positions of the 
+nearest neighbours.
+
+This dispersion relation may be modified with a small effort,
+since it is given as a separate c-function attatched to the component.
+
+To calculate $d\sigma/d\Omega$ we need to transform the 
+{\bf q} sum into an integral over the Brillouin zone by 
+$\sum_q \rightarrow N V_{\rm c} (2\pi)^{-3} \int_{\rm BZ} d^3{\bf q}$.
+The $\mbox{\boldmath $\kappa$}$ sum can now be removed by
+expanding the {\bf q} integral to infinity. 
+All in all, the partial differential cross section reads
+\begin{eqnarray}
+\frac{d^2\sigma'}{d\Omega dE_{\rm f}}
+  (\mbox{\boldmath $\kappa$},\omega) &=&
+  b^2 \frac{k_{\rm f}}{k_{\rm i}} N \frac{1}{2M} 
+  \int \frac{\hbar \kappa^2}{c_1 |{\bf q}-{\bf Q}|} 
+  \left\langle n_{q}+\frac{1}{2}\mp\frac{1}{2} \right\rangle
+  \delta(\omega\pm\omega_{q}) \delta(\mbox{\boldmath $\kappa$}\pm{\bf q}) 
+   d^3{\bf q} \nonumber \\
+ &=& b^2 \frac{k_{\rm f}}{k_{\rm i}} N 
+          \frac{\hbar^2 \kappa^2}{2M c_1|{\bf q}-{\bf Q}|} 
+  \left\langle n_{\kappa}+\frac12\pm\frac12 \right\rangle 
+  \delta(\hbar\omega\pm d_1(\kappa)) .
+\end{eqnarray}
+Using the integration sketched in eq.~(\ref{eq:dcsdisp}), we reach
+*** CHECK THIS!! ***
+\begin{equation} \label{eq:phononcross}
+\left(\frac{d\sigma'}{d\Omega}\right)_j =
+b^2 \frac{k_{\rm f}^2}{k_{\rm i}} N 
+\frac{\hbar^4 \kappa^2}{2Mm c_1 |{\bf q}-{\bf Q}| J(k_{{\rm f},j})} 
+\left\langle n_{\kappa}+\frac12\pm\frac12 \right\rangle . 
+\end{equation}
+A rough order-of-magnitude consideration gives
+$\frac{\hbar^2 k_{{\rm f},j}}{mJ(k_{{\rm f},j})} \approx 1$,
+$\frac{k_{{\rm f},j}}{k_{{\rm f},i}}\approx 1$,
+$\langle n_{\kappa}+\frac12\pm\frac12 \rangle \approx 1$,
+$\frac{\hbar^2\kappa^2}{2M\hbar\omega_\kappa}
+\approx \frac{m}{M}$ (for large disperison values?????).
+Hence, $\left(\frac{d\sigma}{d\Omega}\right)_j \approx N b^2 \frac{m}{M}$, and
+$\sigma_{\rm inel}$ becomes a fraction of $4 \pi N b^2$, as one
+would expect.
+The differential cross section per unit cell is found from 
+(\ref{eq:phononcross}) by letting $N=1$. 
+
+\subsubsection{The algorithm}
+(*** SEE IF THIS IS WRITTEN ELSEWHERE ***)
+
+\subsubsection{The weight transformation}
+The total weight transformation becomes
+\begin{equation} \label{eq:phonon_mult}
+\pi_i = a_{\rm lin} \rho_c l_{\rm max} n_{\rm s} \Delta \Omega
+ b^2 \frac{k_{\rm f}^2}{k_{\rm i}}
+ \frac{\hbar^4 \kappa}{2Mm c_1 |{\bf q}-{\bf Q}| J(k_{{\rm f},j})} 
+ \left\langle n_{\kappa}+\frac12\pm\frac12 \right\rangle ,
+\end{equation}
+where the Jacobian reads
+\begin{equation}
+J = -\frac{\hbar^2}{m} k_{\rm f} 
+    - c \frac{\partial}{\partial k_{\rm f}} 
+        \left| {\bf k}_{\rm i} - k_{\rm f} \hat{k}_{\rm f} \right| .
+\end{equation}
+
