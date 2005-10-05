@@ -2,15 +2,14 @@
 
 \section{Monochromator\_flat: An infinitely thin, flat mosaic crystal with
 a single scattering vector}
-\index{Optics!Monochromator}
 \label{s:monochromator_flat}
+\index{Optics!Monochromator}
 
-\component{Monochromator\_flat}{System}{$z_{\rm min}$, $z_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, $\eta_{\rm h}$, $\eta_{\rm v}$, $r_0$, $Q$}{$d_{\rm m}$}{}
-
+\component{Monochromator\_flat}{System}{$z_{\rm min}$, $z_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, $\eta_{\rm h}$, $\eta_{\rm v}$, $r_0$, $Q_0$}{$d_{\rm m}$}{}
 
 This component simulates an infinitely thin single
-crystal with a single scattering vector perpendicular to the
-surface and a mosaic spread. A typical
+crystal with a single scattering vector, $Q_0=2\pi / d_m$, perpendicular to the
+surface. A typical
 use for this component is to simulate a simple monochromator or analyzer.
 
 The physical model used in the component is a rectangular piece of
@@ -19,7 +18,8 @@ The orientation of the
 micro-crystals deviates from the nominal crystal orientation so that the
 probability of a given micro-crystal orientation is proportional to a
 Gaussian in the angle between the given and the nominal orientation. The
-width of the Gaussian is given by the mosaic spread, $\eta$, of the crystal.
+width of the Gaussian is given by the mosaic spread, $\eta$, of the crystal
+(given in units of arc minutes).
 $\eta$ is assumed to be large compared to the inherent Bragg width of the
 scattering vector (often a few arc seconds).
 The horizontal and vertical mosaicities, $\eta_{\rm h}$ and $\eta_{\rm v}$,
@@ -27,13 +27,14 @@ respectively, are allowed to be different.
 
 The monochromator dimensions are given by the length, $z_{\rm w}$, and
 the height, $y_{\rm h}$. As the parameter names indicate, the
-monochromator is initially placed in the $z-y$ plane. This definition
-is made to ensure that the physical monochromator angle \verb+A1+
-will equal the \MCS rotation angle around the $y$-axis.
+monochromator is placed in the $z-y$ plane of the local coordinate system. 
+This definition is made to ensure that the physical monochromator angle 
+(often denoted \verb+A1+) will equal the \MCS\ rotation angle 
+of the Monochromator component around the $y$-axis.
 
 As a further simplification, the crystal is assumed to be infinitely
 thin. This means that multiple scattering effects are not simulated. It
-also means that the total reflectivity is used as a parameter for
+also means that the total reflectivity, $r_0$ is used as a parameter for
 the model rather than the atomic scattering cross section, implying that
 the scattering efficiency does not vary with neutron wavelength.
 The variance
@@ -45,19 +46,18 @@ in section~\ref{s:Single_crystal} for that).
 When a neutron trajectory intersects the crystal, the first step in the
 computation is to determine the probability of scattering. This
 probability is then used in a Monte Carlo choice deciding whether to
-scatter or transmit the neutron. The scattering probability is the sum
-of the probabilities of first-order scattering, second-order, \ldots, up
-to the highest order that permits Bragg scattering at the given neutron
-wave length. However, in most cases at most one order will have a
+scatter or transmit the neutron. The physical scattering probability is the sum
+of the probabilities of first- second-, and higher-order scattering -
+up tp the highest order possible for the given neutron wavelength. 
+However, in most cases at most one order will have a
 significant scattering probability, and the computation thus considers
 only the order that best matches the neutron wavelength. Bragg's law is
-%
-$$ n{\bf Q}_0 = 2{\bf k}_i\sin\theta $$
-%
-Thus, the scattering order is obtained simply as the integer multiple
-$n$ of the nominal scattering vector ${\bf Q}_0$ which is closest to the
-projection of $2{\bf k}_i$ onto ${\bf Q}_0$ (see
-figure~\ref{f:mosaic_order}).
+\begin{equation}
+n{\bf Q}_0 = 2{\bf k}_i\sin\theta 
+\end{equation}
+Thus, the scattering order is specified by the integer $n$, which makes
+$n {\bf Q}_0$ closest to the projection of $2{\bf k}_i$ onto ${\bf Q}_0$ 
+(see figure~\ref{f:mosaic_order}).
 %  k=2PI/lambda
 %  q=2k sin(theta)
 %
@@ -82,11 +82,13 @@ figure~\ref{f:mosaic_order}).
 \end{figure}
 %
 Once $n$ has been determined, the Bragg angle $\theta$ can be
-computed. The angle $d$ that the nominal scattering vector ${\bf Q}_0$
+computed. The angle $\alpha$ that the nominal scattering vector ${\bf Q}_0$
 makes with the closest scattering vector ${\bf q}$ that admits Bragg
 scattering is then used to compute the probability of reflection from
 the mosaic
-$$ p_{\rm reflect} = R_0 e^{-d^2/2\sigma^2}, $$
+\begin{equation} 
+p_{\rm reflect} = R_0 e^{-\alpha^2/2\sigma^2},
+\end{equation}
 where $R_0$ is the reflectivity at the Bragg angle (see
 figure~\ref{f:mosaic_angle}). The probability $p_{\rm reflect}$ is used
 in a Monte Carlo choice to decide whether the neutron is transmitted or
@@ -98,7 +100,7 @@ reflected.
     \psfrag{ki}[r][r]{$2{\bf k}_{\rm i}$}
     \psfrag{kf}[l][l]{$2{\bf k}_{\rm f}$}
     \psfrag{Q0}[l][l]{${\bf Q}_0$}
-    \psfrag{d}[c][c]{$d$}
+    \psfrag{alpha}[c][c]{$\alpha$}
     \psfrag{q}[l][l]{$\bf q$}
     \includegraphics[width=0.5\textwidth]{figures/mosaic_angle.eps}
   \end{center}
@@ -127,15 +129,21 @@ $\varphi$ only from a suitably narrow range.
 
 The (small) deviation angle $\sigma$ of ${\bf q}$ from the nominal
 scattering vector $n{\bf Q}_0$ corresponds to a $\Delta q$ of
-$$ \Delta q \approx \sigma 2k\sin\theta. $$
+\begin{equation} 
+\Delta q \approx \sigma 2k\sin\theta. 
+\end{equation}
 The angle $\varphi$ corresponds to a $\Delta k_{\rm f}$ (and hence
 $\Delta q$) of
-$$ \Delta q \approx \varphi k \sin(2\theta) $$
+\begin{equation}
+\Delta q \approx \varphi k \sin(2\theta)
+\end{equation}
 (see figure~\ref{f:mosaic_cone}).
 Hence we may sample $\varphi$ from a Gaussian with standard deviation
-$$ \sigma\frac{2k\sin\theta}{k\sin(2\theta)} =
+\begin{equation} 
+\sigma\frac{2k\sin\theta}{k\sin(2\theta)} =
 \sigma\frac{2k\sin\theta}{2k\sin\theta\cos\theta} =
-\frac{\sigma}{\cos\theta} $$
+\frac{\sigma}{\cos\theta}
+\end{equation}
 to get good statistics.
 %
 \begin{figure}
@@ -179,11 +187,3 @@ In the implementation, the integral in~(\ref{eq:mosaic_integral}) is computed
 using a 15-order Gaussian quadrature formula, with the integral
 restricted to an interval of width $5\sigma/\cos\theta$ for the same
 reasons discussed above on the sampling of $\varphi$.
-
-The input parameters for Mosaic\_simple are \textit{zmin},
-\textit{zmax}, \textit{ymin}, and \textit{ymax} to define the surface of
-the crystal in the Y-Z plane; \textit{mosaic} to give the FWHM of the
-mosaic spread; \textit{R0} to give the reflectivity at the Bragg angle,
-and \textit{Qx}, \textit{Qy}, and \textit{Qz} to give the scattering
-vector.
-

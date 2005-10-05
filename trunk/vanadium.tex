@@ -1,6 +1,3 @@
-% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
-
-
 \section{V\_sample: An incoherent scatterer, the V-sample}
 \label{s:v_sample}
 \index{Samples!Incoherent isotropic scatterer (Vanadium)}
@@ -28,17 +25,17 @@ outer radius $r_{\rm o}$, and height $h$, see figure \ref{f:v-sample}.
 \label{f:v-sample}
 \end{figure}
 
-When calculating the neutron path length within
-the cylinder, the kernel function
-\verb+cylinder_intersect+
-is used twice, once for the outer radius and once
-for the inner radius.
+%When calculating the neutron path length within
+%the cylinder, the kernel function
+%\verb+cylinder_intersect+
+%is used twice, once for the outer radius and once
+%for the inner radius.
 
-The sample geometry can be made rectangular by specifying the width, $w_x$, the
-height, $h_y$, and the thickness, $t_z$.
+Alternatively, the sample geometry can be made rectangular 
+by specifying the width, $w_x$, the height, $h_y$, and the thickness, $t_z$.
 
 The incoherent scattering gives
-a completely uniform angular distribution of the scattered
+a uniform angular distribution of the scattered
 neutrons from each nucleus: $\gamma(\Omega) = 1/4\pi$.
 For the focusing we choose to have a uniform distribution on
 a target sphere of radius $r_{\rm foc}$, at the position
@@ -72,4 +69,7 @@ This is explained by the variation of attenuation with
 scattering angle.
 One test result is shown in the instrument example chapter of the \MCS\ User Manual.
 
-Multiple scattering is not inlcuded in this component.
+Multiple scattering is not inlcuded in this component. To obtain
+intensities similar to real measured ones, we therefore do not 
+take attenuation from scattering into account for the outgoing
+neutron ray.

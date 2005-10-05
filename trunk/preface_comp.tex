@@ -11,18 +11,19 @@ The reader of this
 document is not supposed to have specific knowledge of neutron scattering,
 but some basic understanding of physics is helpful in
 understanding the theoretical background for the component functionality.
-For details about performing simulations, we refer to
+For details about setting up and running simulations, we refer to
 the \MCS\ system manual \cite{mcstasmanual}.
 We assume familiarity with the use of
 the C programming language.
 
-We especially like to thank Kristian Nielsen for laying a solid foundation
-for the \MCS\ system, which the authors of this manual benefit from daily.
-Also Per-Olof \AA strand has contributed to the development of
-the \MCS\ system.
+%We especially like to thank Kristian Nielsen for laying a solid foundation
+%for the \MCS\ system, which the authors of this manual benefit from daily.
+
 It is a pleasure to thank Dir.~Kurt N.~Clausen for his continuous
 support to \MCS\ and for having initiated the project.
 Continuous support to \MCS\ has also come from Prof.~Robert McGreevy.
+Apart from the authors of this manual, 
+also Per-Olof \AA strand has contributed to the development of the \MCS\ system.
 %Both he and our other collaborators, Henrik M.\ R\o nnow and Mark
 %Hagen have made major contributions to the project.  Also the
 %contributions from our test users, the students Asger Abrahamsen, Niels
@@ -43,7 +44,7 @@ as authors of the individual components. We encourage other
 users to contribute components with manual entries for inclusion in
 future versions of \MCS.
 
-In case of errors, questions, suggestions,
+In case of errors, questions, or suggestions,
 %or other need for support should arise,
 do not hesitate to
 contact the authors at \verb+mcstas@risoe.dk+
@@ -51,17 +52,19 @@ or consult the \MCS\ home page~\cite{mcstas_webpage}.
 
 Important developments on the component side in \MCS\ version \version\
 as compared to version 1.4 (the last version of the component manual;
-then included in the system manual) include
+then a section of the system manual) include
 
 \begin{itemize}
-\item{Validation of most components against analytical formula, 
-and benchmarking with simple cases}
+\item{Validation of most components gainst analytical formula, 
+and benchmarking in simple cases}
 \item{Newly added, relatistic source components}
   \begin{itemize}
   \item \verb+ISIS_moderator+ ISIS source model based on MCNPX (D. Champion and S. Ansell, ISIS)
   \item \verb+Virtual_tripoli4_input/output+ Trioli4 (similar to MCNP) files reading/writing (G. Campioni, LLB)
   \item \verb+SNS_source+ SNS source model based on MCNPX (G. Granroth, SNS)
   \item \verb+Source_gen+ ILL sources Maxwellian parameters (E. Farhi/N. Kernavanois/H. Bordallo, ILL)
+  \item \verb+ESS_moderator_short+ Calculated source model for the short target station of the ESS project (K. Lefmann, Ris\o )
+  \item \verb+ESS_moderator_long+ Calculated source model for the long target station of the ESS project (K. Lefmann, Ris\o )
   \end{itemize}
 \item{Newly added, optical components}
   \begin{itemize}
@@ -73,10 +76,10 @@ and benchmarking with simple cases}
 \item{A suite of sample components}
   \begin{itemize}
   \item \verb+Phonon_simple+ An isotropic acoustic phonon (K. Lefmann, Ris\o)
-  \item \verb+Powder2+, \verb+PowderN+. 2 and N lines powder single diffraction (K. Lefmann, P. Willendrup, Ris\o)
-  \item \verb+Sans_spheres+ hard spheres in thin solution, mono disperse (L. Arleth, Ris\o)
-  \item \verb+Isotropic_Sqw+ isotropic sample (powder, liquid, glass) 
-elastic/inelastic scattering from $S(q,\omega)$ data (E.Farhi, V. Hugovieux, ILL)
+  \item \verb+PowderN+. N lines powder diffraction (P.K. Willendrup, Ris\o)
+  \item \verb+Sans_spheres+ hard spheres in thin solution, mono disperse (L. Arleth, the Royal Veterinary and Agricultural University (DK), Kim Lefmann, Ris\o )
+  \item \verb+Isotropic_Sqw+ isotropic inelastic sample (powder, liquid, glass) 
+elastic/inelastic scattering from $S(q,\omega)$ data (E. Farhi, V. Hugovieux, ILL)
   \item \verb+SANS_*+ A collection of samples for SANS (H. Frielinghaus,  FZ-J\"ulich)
   \end{itemize}
 \end{itemize}

@@ -1,13 +1,12 @@
-% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
-
 \section{Source\_Optimizer: A general Optimizer for McStas}
 \label{source-optimizer}
 \index{Sources!Optimizer}\index{Optimization}
-\component{Source\_Optimizer}{E. Farhi}{options}{bins, step, keep}{not fully validated}
+\component{Source\_Optimizer}{E. Farhi, ILL}{options}{bins, step, keep}{not fully validated}
 
-This component is not exactly a source, but rather a neutron beam modifier. It should be positioned after the source, anywhere in the instrument description.
-
-The component {\bf Source\_Optimizer} optimizes the whole neutron flux
+The component {\bf Source\_Optimizer} is not exactly a source, 
+but rather a neutron beam modifier. 
+It should be positioned after the source, anywhere in the instrument description.
+The component  optimizes the whole neutron flux
 in order to achieve better statistics at each {\bf Monitor\_Optimizer}
 location(s) (see section~\ref{monitor-optimizer} for this latter
 component). It acts on any incoming neutron beam (from any source
@@ -16,13 +15,15 @@ along the instrument.
 
 The usage of the optimizer is very simple, and usually does not require
 any configuration parameter. Anyway the user can still customize the
-optimization {\it via} various {\it options}.
+optimization through various {\it options}.
 
-The optimizer efficiency makes it easy to increase the number of events
-at optimization criteria locations by a factor of 20, and thus decreases
-the signal error bars by a factor 4.5. Higher factors can often be
-achieved in practise. Of course, the overall flux remains the same as
-without optimizer.
+Inb contrast to {\bf Source\_adapt}, this optimizer does not
+record correlations between neutron parameters. 
+Nevertheless it is rather efficient, 
+enabling the user to increase the number of events
+at optimization criteria locations by typically a factor of 20.
+Hence, the signal error bars will decrease by a factor 4.5, 
+since the overall flux remains unchanged.
 
 \subsection{The optimization algorithm}
 
@@ -36,8 +37,8 @@ When a {\it bad} neutron comes to the {\bf Source\_Optimizer} (it would
 then have few chances to reach {\bf Monitor\_Optimizer}), it is changed
 into a better one. That means that its position and velocity coordinates
 are translated to better values according to the {\it good} neutrons
-distribution tables. The neutron energy ($\surd v_x^2 + v_y^2 +
-v_z^2$) is kept (as far as possible).
+distribution tables. The neutron energy 
+($\sqrt{v_x^2 + v_y^2 + v_z^2}$) is kept (as far as possible).
 
 The {\bf Source\_Optimizer} works as follow:
 \begin{enumerate}
@@ -71,7 +72,7 @@ The {\bf Source\_Optimizer} works as follow:
     {\it Reference} one.
     The energy (and velocity) spectra of neutron beam is also kept, as
     far as possible. For instance, an optimization of $v_z$ will induce
-    a modification of $v_x$ or $v_y$ to try to keep $|\vec{v}|$
+    a modification of $v_x$ or $v_y$ to try to keep $|{\bf v}|$
     constant.
     }
 \item{When the {\it continuous} optimization option is activated (by

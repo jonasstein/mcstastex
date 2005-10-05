@@ -4,16 +4,21 @@
 \index{Optics!Point in space (Arm, Optical bench)}
 
 The component {\bf Arm} is empty; is resembles an optical bench
-and has no effect on the neutron.
+and has no effect on the neutron ray.
 The function of this component is only to set up a local
 co-ordinate system within the instrument definition.
 Other components may then be
-positioned relative to the arm component
+positioned relative to the {\bf Arm} component
 using the \MCS\ meta-language.
-The use of arm components in the instrument definitions
+The use of {\rm Arm} components in the instrument definitions
 is not required but is recommended for clarity.
-
 {\bf Arm} has no input parameters.
 
-An alternative to the Arm component is the {\bf Progress\_bar} (see section \ref{s:progress-bar}) which does the same as Arm, {\it i.e.} nothing, but also displays the simulation progess, and optionally saves regularly the data files in the course of the simulation, so that you can look at it raising \emph{during} the simulation.
+In stead of the first {\rm Arm} component in an instrument,
+the user should consider to use {\bf Progress\_bar} 
+(see section \ref{s:progress-bar}) which like {\bf Arm} has no effect
+on the neutron ray. 
+However, {\bf Progress\_bar} displays the simulation progess, 
+and may even save the data files in the course of the simulation, 
+so that results can be studied \emph{during} the simulation.
 

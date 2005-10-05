@@ -1,5 +1,3 @@
-% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
-
 \chapter{Samples}
 \index{Library!Components!samples}
 
@@ -16,8 +14,9 @@ We first consider incoherent scattering. The simple component {\bf Vanadium}
 performs both incoherent scattering and absorption.
 
 An important component class is elastic Bragg scattering from an ideal powder.
-The components {\bf Powder1} and {\bf Powder2} model a simple powder with one or two
-reflections and incoherent scattering. Finally, the {\bf PowderN} component extends the capabilities to N lines, read from a LAZY/Crystallographica data file.
+The component {\bf PowderN} models a powder scatterer with reflections 
+given in a LAZY/Crystallographica file.
+The component includes absorption and incoherent scattering. 
 
 Next type is Bragg scattering from single crystals.
 The simplest single crystals are in fact the monochromator components
@@ -27,18 +26,28 @@ The monochromators are models of a thin mosaic crystal
 with a single scattering vector perpendicular to the surface.
 Much more advanced, the component {\bf Single\_crystal}
 is a general single crystal sample (with multiple scattering) that allows
-the input of an arbitrary unit cell and a list of structure factors, and
-also allows anisotropic mosaic and $\Delta d/d$ lattice space variation.
+the input of an arbitrary unit cell and a list of structure factors, read
+from a LAZY/Crystallographica file.
+This component also allows anisotropic mosaicity 
+and $\Delta d/d$ lattice space variation.
 
 Isotropoic small-angle scattering is simulated in {\bf Sans\_Spheres},
 which models scattering from a collection of hard spheres. A more general
-SANS sample is highly wanted. In addition, a reflectometry sample
-should be developed.
+SANS sample is under development. 
+In addition, a reflectometry sample will soon be developed.
 
 Inelastic scattering from a dispersion is exemplified by
-the relatively simple component {\bf Phonon}.
+the component {\bf Phonon\_simple}, which models a single phonon dispersion.
 
-For a more general sample model, the {\bf Isotropic\_Sqw} component is able to simulate all kinds of isotropic materials: liquids, glasses, polymers, powders, ... Physical processes include coherent/incoherent scattering, both elastic and inelastic, with absorption and multiple scattering. Moreover, this compoennt may be used concentrically, to model a sample environment. Thus it may handle most samples except single crystals.
+For a more general sample model, the {\bf Isotropic\_Sqw} component 
+is able to simulate all kinds of isotropic materials: 
+Liquids, glasses, polymers, powders, etc, with $S(q,\omega)$ table
+specified by an input file.
+Physical processes include coherent/incoherent scattering, 
+both elastic and inelastic, with absorption and multiple scattering. 
+Moreover, this component may be used concentrically, 
+to model a sample environment. 
+Thus it may handle most samples except single crystals.
 
 In general, all samples are assumed to be homogeneous. There would also be
 potential in developing an inhomogeneous sample, e.g. with
@@ -57,7 +66,6 @@ of the samples.
     \hline
     Phonon\_simple&         & X         &         &           & X & \\
     Isotropic\_Sqw&  X      & X         & X       & X         & X & X \\
-    Powder1       &  1 line &           &         &           & X & \\
     PowderN       &  N lines&           &         &           & X & \\
     Sans\_spheres &  colloid&           &         &           & X & \\
     Single\_crystal& X      &           & X       &           & X & X \\
@@ -70,11 +78,11 @@ of the samples.
   \end{center}
 \end{table}
 
-\input{vanadium.tex}
-\input{powder2.tex}
-\input{Single_crystal.tex}
-\input{sans.tex}
-\input{phonon.tex}
-\input{isotropic_sqw}
-%\input{LSCO.tex}
+\input{vanadium.tex}         \newpage
+\input{powder2.tex}          \newpage
+\input{Single_crystal.tex}   \newpage
+\input{sans.tex}             \newpage
+\input{phonon.tex}           \newpage
+%\input{LSCO.tex}            \newpage
+\input{isotropic_sqw.tex}    
 

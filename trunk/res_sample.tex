@@ -1,26 +1,25 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
-\section{Res\_sample: A uniform scatterer for resolution calculation}
+\section{Res\_sample: A sample-like component for resolution calculation}
 \label{s:res_sample}
 \index{Samples!Resolution function, sample for}
 
-\component{Res\_sample}{System, Alan Tennant}{$r_{\rm i}$, $r_{\rm o}$, $h$, $r_{\rm focus}$, $x_{\rm target}$, $y_{\rm target}$, $z_{\rm target}$, $E_0$, $\Delta E$ }{$x_w$, $y_h$, $z_t$, $x_{\rm focus}$, $y_{\rm focus}$, $a_{\rm v, focus}$, $a_{\rm h, focus}$, target index}{}
+\component{Res\_sample}{(System); Alan Tennant, HMI}{$r_{\rm i}$, $r_{\rm o}$, $h$, $r_{\rm focus}$, $x_{\rm target}$, $y_{\rm target}$, $z_{\rm target}$, $E_0$, $\Delta E$ }{$x_w$, $y_h$, $z_t$, $x_{\rm focus}$, $y_{\rm focus}$, $a_{\rm v, focus}$, $a_{\rm h, focus}$, target index}{}
 
-The component \textbf{Res\_sample} models an inelastic sample that
-scatters completely homogeneous in position and energy,
-within specified intervals. Regardless of
-the state of the incoming neutron, all directions and energies for the
-scattered neutron have the same probability. This is clearly
-not a physical sample! Rather, the component is meant
-for computation of the resolution function, but it may also be used
-for test and debugging purposes. For calculations of the resolution
+The component \textbf{Res\_sample} scatters neutron rays isotropically
+in position and uniformly in energy, within specified intervals. 
+Regardless of the state of the incoming neutron ray, 
+all directions and energies for the
+scattered ray have the same probability. The component is meant
+for computation of the resolution function, but may also be used
+for test and debugging purposes. For actual calculations of the resolution
 function, {\bf Res\_sample} should be used
 together with the \textbf{Res\_monitor} component, described in
 section~\ref{s:res_monitor}.
 
 The shape of {\rm Res\_sample} is either a hollow cylinder
-or a rectangular box, as specified for {\rm Vanadium}
-(see section~\ref{s:v_sample}).The hollow cylinder shape is
+or a rectangular box. 
+The hollow cylinder shape is
 specified with the inner and outer radius, $r_{\rm i}$ and $r_{\rm o}$,
 respectively, and the height, $h$.
 If these parameters are unspecified,
@@ -44,23 +43,18 @@ See figure~\ref{f:res_sample}.\par
   \end{center}
 \end{figure}
 %
-The component only propagates the neutrons that are scattered; neutrons
-that would pass through or miss {\bf Res\_sample} are absorbed. There is no
-modeling of the cross section of the sample, secondary extinction
-\textit{etc.}; the scattering probability is proportional to the neutron
-flight path length inside the sample, with the constant of
-proportionality arbitrarily set to $1/(2|\textit{radius\_o}|)$. The
-reason for this is that the resolution
-function of an instrument (although including the sample size)
-is independent of any sample properties such as scattering
-and absorbtion cross sections.does not depend on the scattering
-cross section.
+The component only propagates neutron rays that are scattered; 
+other rays are absorbed. The scattering probability is proportional to the neutron
+flight path length inside the sample, to make a true volume weighting
+of the sample. The reason for this is that the resolution
+function of an instrument is independent of any sample properties 
+such as scattering and absorbtion cross sections.
 
 The point of scattering in the sample is chosen uniformly
 along the neutron flight path inside the sample, and the scattered
-neutron is given a random energy and direction. The energy is selected in
+neutron ray is given a random energy and direction. This energy is selected in
 the interval $[E_0-\Delta E; E_0+\Delta E]$ which hence must be
-chosen large enough to cover all interesting neutrons. Similarly, the
+chosen large enough to cover all interesting neutrons. Similarly, the scattered
 direction is chosen in a user-specified range,
 either within a sphere of radius $r_{\rm foc}$, within a rectangular
 target with measures $(x_{\rm focus}, y_{\rm focus})$

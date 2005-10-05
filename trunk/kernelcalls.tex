@@ -48,26 +48,32 @@ which may ease the task of writing component and instrument definitions.
 \index{Library!Run-time!PROP\_DT}
 \index{Library!Run-time!PROP\_GRAV\_DT}
 \index{Library!Run-time!ALLOW\_BACKPROP}
-Propagation routines perform all necessary operations to transport neutrons from one point to an other. Except when using the special \verb+ALLOW_BACKPROP;+ call prior to exectuting any \verb+PROP_*+ propagation, thoses neutrons which do not reach the $z=0$ plane and have negative propagation times are removed automatically. such as
+Propagation routines perform all necessary operations to transport neutron rays 
+from one point to an other. Except when using the special 
+\verb+ALLOW_BACKPROP;+ call prior to exectuting any \verb+PROP_*+ propagation, 
+the neutron rays which have negative propagation times are removed automatically. 
 \begin{itemize}
 \item {\bf ABSORB}. This macro issues an order to the overall
   \MCS\ simulator to interrupt the simulation of the current neutron
   history and to start a new one.
 \item {\bf PROP\_Z0}. Propagates the neutron to the $z=0$ plane,
-  by adjusting $(x,y,z)$ and $t$. If the neutron velocity
-  points away from the $z=0$ plane, the neutron is absorbed.
-  If component is centered, in order to avoid the neutron to be propagated
-  there, use the \verb+_intersect+ functions to determine intersection time(s),
+  by adjusting $(x,y,z)$ and $t$ accordingly. 
+  If the propagation time is negative, the neutron ray is absorbed.
+  For components that are centered along the $z$-axis, 
+  use the \verb+_intersect+ functions to determine intersection time(s),
   and then a \verb+PROP_DT+ call.
 \item {\bf PROP\_DT}$(dt)$. Propagates the neutron through the
-  time interval $dt$, adjusting $(x,y,z)$ and $t$.
+  time interval $dt$, adjusting $(x,y,z)$ and $t$ accordingly.
 \item {\bf PROP\_GRAV\_DT}$(dt,Ax,Ay,Az)$. Like {\bf PROP\_DT}, but it also
-  includes gravity using the acceleration $(Ax,Ay,Az)$. In addition,
+  includes gravity using the acceleration $(Ax,Ay,Az)$. In addition
   to adjusting $(x,y,z)$ and $t$, also $(vx,vy,vz)$ is modified.
-\item {\bf ALLOW\_BACKPROP}. Indicates that the next propagation routine will not remove any neutrons, eventhough negative propagation times are found. Further propagations are not affected.\index{Removed neutron events}
+\item {\bf ALLOW\_BACKPROP}. Indicates that the next propagation routine 
+  will not remove the neutron ray, even if negative propagation times 
+  are found. Further propagations are not affected.\index{Removed neutron events}
 \item {\bf SCATTER}. This macro is used to denote a scattering event
   inside a component, see section~\ref{s:comp-trace}. It should be used e.g
-  to indicate that a component has 'done something' (sctattered or detected).
+  to indicate that a component has interacted with the neutron ray 
+  (e.g. scattered or detected).
   This does not affect the simulation at all, and is mainly used by the
   \verb+MCDISPLAY+ section and the \verb+GROUP+ modifier (see~\ref{s:trace} and \ref{s:comp-mcdisplay}). See also the SCATTERED variable (below).
   \index{Keyword!GROUP} \index{Keyword!MCDISPLAY} \index{Keyword!EXTEND}
@@ -96,7 +102,7 @@ Propagation routines perform all necessary operations to transport neutrons from
   of the current component as rotation matrices
   (absolute orientation and the orientation relative to
   the previous component, respectively). A
-  component of a rotation matrice is referred to as
+  component of a rotation matrix is referred to as
   ROT\_A\_CURRENT\_COMP$[m][n]$, where $m$ and
   $n$ are 0, 1, or 2.
 \item {\bf POS\_A\_COMP}$(comp)$ gives the absolute position
@@ -121,9 +127,10 @@ Propagation routines perform all necessary operations to transport neutrons from
   POS\_A\_CURRENT\_COMP. You may use
   POS\_A\_COMP\_INDEX \\ (INDEX\_CURRENT\_COMP+1) to make, for instance, your
   component access the position of the next component (this is usefull for
-  automatic targeting).  A component of the vector is referred to as \\
-  POS\_A\_COMP\_INDEX$(index).i$ where $i$ is $x$, $y$ or $z$. {\bf
-  POS\_R\_COMP\_INDEX} works the same, but with relative coordinates.
+  automatic targeting).  A component of the vector is referred to as
+  POS\_A\_COMP\_INDEX$(index).i$ where $i$ is $x$, $y$ or $z$. 
+\item {\bf POS\_R\_COMP\_INDEX} works the same as above, 
+  but with relative coordinates.
 \item {\bf STORE\_NEUTRON}$(index, x, y, z, vx, vy, vz, t$, $sx, sy,
 sz, p)$ stores the current neutron state in the trace-history table,
 in local coordinate system. $index$ is usually INDEX\_CURRENT\_COMP.
@@ -139,9 +146,8 @@ section. These neutron states are in the local component coordinate
 systems.
 \item {\bf SCATTERED} is a variable set to 0 when entering
   a component, which is incremented each time a SCATTER event occurs.
-  This may be used in the \verb+EXTEND+ sections (always executed when
-  existing) to branch
-  action depending if the component acted or not on the current neutron.
+  This may be used in the \verb+EXTEND+ sections to determine whether
+  the component interacted with the current neutron ray.
 \item {\bf extend\_list}($n$, \&\textit{arr}, \&\textit{len},
   \textit{elemsize}). Given an array \textit{arr} with \textit{len}
   elements each of size \textit{elemsize}, make sure that the array is
@@ -161,7 +167,10 @@ $z$ members of the Coord structure $P$ into $x,y,z$ variables.
 \item {\bf coords\_add}$(a,b)$, {\bf coords\_sub}$(a,b)$, {\bf
 coords\_neg}$(a)$ enable to  operate on coordinates, and return the
 resulting Coord structure.
-\item {\bf rot\_set\_rotation}({\it Rotation t}, $\phi_x, \phi_y, \phi_z$) Get transformation for rotation first $\phi_x$ around x axis, then $\phi_y$ around y, then $\phi_z$ around z. $t$ should be a 'Rotation' ([3][3] 'double' matrix).
+\item {\bf rot\_set\_rotation}({\it Rotation t}, $\phi_x, \phi_y, \phi_z$) 
+  Get transformation matrix for rotation 
+  first $\phi_x$ around x axis, then $\phi_y$ around y, 
+  and last $\phi_z$ around z. $t$ should be a 'Rotation' ([3][3] 'double' matrix).
 \item {\bf rot\_mul}{\it (Rotation t1, Rotation t2, Rotation t3)} performs $t3 = t1 . t2$.
 \item {\bf rot\_copy}{\it (Rotation dest, Rotation src)} performs $dest = src$ for Rotation arrays.
 \item {\bf rot\_transpose}{\it (Rotation src, Rotation dest)} performs $dest = src^t$.
@@ -183,7 +192,8 @@ resulting Coord structure.
   Computes a unit vector $(n_x, n_y, n_z)$ normal to the vector
   $(x,y,z)$.
 \item {\bf solve\_2nd\_order}(*$t$, $A$,  $B$,  $C$).
-  Solves the 2$^{nd}$ order equation $At^2 + Bt = C = 0$ and returns the smallest positive solution into pointer *$t$.
+  Solves the 2$^{nd}$ order equation $At^2 + Bt = C = 0$ and returns 
+  the smallest positive solution into pointer *$t$.
 \end{itemize}
 
 \subsection{Output from detectors}
@@ -192,7 +202,7 @@ resulting Coord structure.
   single detector. The name of the detector is output together
   with the simulated intensity and estimated statistical error. The
   output is produced in a format that can be read by \MCS\ front-end
-  programs. See section~\ref{s:comp-finally} for details.
+  programs. See section~\ref{s:comp-finally} ??? for details.
 \item {\bf DETECTOR\_OUT\_1D}$(...)$. Used to output the results from a
   one-dimentional detector. See section~\ref{s:comp-finally} for details.
 \item {\bf DETECTOR\_OUT\_2D}$(...)$. Used to output the results from a
@@ -203,7 +213,10 @@ resulting Coord structure.
   Resulting data files are treated as 2D data, but the 3rd dimension is
   specified in the $type$ field.
 \item {\bf mcinfo\_simulation}{\it (FILE *f, mcformat,
-  char *pre, char *name)} is used to append the simulation parameters into file $f$ (see for instance the Res\_monitor component). Internal variable $mcformat$ should be used as specified. Please contact the authors in case of perplexity.
+  char *pre, char *name)} is used to append the simulation parameters into file $f$ 
+  (see for instance the Res\_monitor component). 
+  Internal variable $mcformat$ should be used as specified. 
+  Please contact the authors for further information.
 \end{itemize}
 
 \subsection{Ray-geometry intersections}
@@ -237,25 +250,30 @@ resulting Coord structure.
   v_z)$, of the same length as (aim$_x$, aim$_y$, aim$_z$), which is
   targeted at a \emph{disk} centered at (aim$_x$, aim$_y$, aim$_z$) with
   radius $r_f$ (in meters), and perpendicular to the \emph{aim} vector.. All directions
-  that intersect the sphere are chosen with equal probability. The solid
-  angle of the sphere as seen from the position of the neutron is returned
+  that intersect the circle are chosen with equal probability. The solid
+  angle of the circle as seen from the position of the neutron is returned
   in $d\Omega$. This routine was previously called {\bf randvec\_target\_sphere}
   (which still works).
 \item {\bf randvec\_target\_rect\_angular}(\&$v_x$, \&$v_y$, \&$v_z$,
-  \&$d\Omega$, aim$_x$, aim$_y$, aim$_z$,$height, width, Rot$) does the same as
+  \&$d\Omega$, aim$_x$, aim$_y$, aim$_z$,$h, w, Rot$) does the same as
   randvec\_target\_circle but targetting at a rectangle with angular dimensions
-  $height$ and $width$ (in {\bf radians}, not in degrees as other angles). The
+  $h$ and $w$ (in {\bf radians}, not in degrees as other angles). The
   rotation matrix $Rot$ is the coordinate system orientation in the absolute
   frame, usually ROT\_A\_CURRENT\_COMP.
 \item {\bf randvec\_target\_rect}(\&$v_x$, \&$v_y$, \&$v_z$,
   \&$d\Omega$, aim$_x$, aim$_y$, aim$_z$,$height, width, Rot$) is the same as
   randvec\_target\_rect\_angular but $height$ and $width$ dimensions are given
-  in meters. This function is useful to target at a guide entry window.
+  in meters. This function is useful to e.g. target at a guide entry window.
 \end{itemize}
 
 \section{Reading a data file into a vector/matrix (Table input, \texttt{read\_table-lib})}
-\index{Library!read\_table-lib (Read\_Table)|textbf}\label{s:read-table}\index{Data files}
-The \verb+read_table-lib+ provides functionalities for reading text (and binary) data files. To use this library, add a \verb+%include "read_table-lib"+ in your component definition DECLARE or SHARE section. Tables are structures of type $t_Table$ (see \verb+read_table-lib.h+ file for details):
+\label{s:read-table}
+\index{Library!read\_table-lib (Read\_Table)|textbf}
+  The \verb+read_table-lib+ provides functionalities for reading text 
+  (and binary) data files. To use this library, 
+  add a \verb+%include "read_table-lib"+ in your component definition 
+  DECLARE or SHARE section. Tables are structures of type $t_{\rm Table}$ 
+  (see \verb+read_table-lib.h+ file for details):
 \begin{verbatim}
     /* t_Table structure (most important members) */
     double *data;     /* Use Table_Index(Table, i j) to extract [i,j] element */
@@ -269,11 +287,18 @@ The \verb+read_table-lib+ provides functionalities for reading text (and binary)
 
 Available functions to read \emph{a single} vector/matrix are:
 \begin{itemize}
-\item {\bf Table\_Init}(\&$Table$, $rows$, $columns$) returns an allocated Table structure. Use $rows=columns=0$ not to allocate memory. Calls to Table\_Init are optional as other functions do it already.
-\item {\bf Table\_Read}(\&$Table$, $filename$, $block$) reads numerical block number $block$ (0 to catenate all) data from \emph{text} file $filename$ into $Table$, which is as well initialized in the process. The block number changes when the numerical data changes its size, or a comment is encoutered (lines starting by '\verb+# ; % /+'). If the data could not be read, then $Table.data$ is NULL and $Table.rows = 0$. You may then try to read it using Table\_Read\_Offset\_Binary. Return value is the number of read elements, or -1 in case of error.
-\item {\bf Table\_Read\_Offset}(\&$Table$, $filename$, $block$, \&$offset$, $n_{rows}$) does the same as Table\_Read except that it starts at offset $offset$ (0 means begining of file) and reads $n_{rows}$ lines (0 for all). The $offset$ is returned as the final offset reached after reading the $n_{rows}$ lines.
+\item {\bf Table\_Init}(\&$Table$, $rows$, $columns$) returns an allocated 
+  Table structure. Use $rows=columns=0$ not to allocate memory. 
+  Calls to Table\_Init are optional, since initialization is being
+  performed by other functions already.
+\item {\bf Table\_Read}(\&$Table$, $filename$, $block$) reads numerical block number $block$ (0 to catenate all) data from \emph{text} file $filename$ into $Table$, which is as well initialized in the process. The block number changes when the numerical data changes its size, or a comment is encoutered (lines starting by '\verb+# ; % /+'). If the data could not be read, then $Table.data$ is NULL and $Table.rows = 0$. You may then try to read it using Table\_Read\_Offset\_Binary. Return value is the number of read elements.
+\item {\bf Table\_Read\_Offset}(\&$Table$, $filename$, $block$, \&\textit{offset}, $n_{rows}$) 
+  does the same as Table\_Read except that it starts at offset \textit{offset} 
+  (0 means begining of file) and reads $n_{rows}$ lines (0 for all). 
+  The \textit{offset} is returned as the final offset reached after 
+  reading the $n_{rows}$ lines.
 \item {\bf Table\_Read\_Offset\_Binary}(\&$Table$, $filename$, $type$,
-  $block$, \&$offset$, $n_{rows}$, $n_{columns}$) does the same as
+  $block$, \&\textit{offset}, $n_{rows}$, $n_{columns}$) does the same as
   Table\_Read\_Offset, but also specifies the $type$ of the file (may
   be "float" or "double"), the number $n_{rows}$ of rows to read, each
   of them having $n_{columns}$ elements. No text header should be present
@@ -289,7 +314,10 @@ Available functions to read \emph{a single} vector/matrix are:
 
 Available functions to read \emph{an array} of vectors/matrices in a \emph{text} file are:
 \begin{itemize}
-\item {\bf Table\_Read\_Array}($File$, \&$n$) read and split $file$ into as many blocks as necessary and return a $t_Table$ array. Each block contains a single vector/matrix. This only works for text files. The number of blocks in put into $n$.
+\item {\bf Table\_Read\_Array}($File$, \&$n$) read and split $file$ 
+into as many blocks as necessary and return a $t_{\rm Table}$ array. 
+Each block contains a single vector/matrix. This only works for text files. 
+The number of blocks in put into $n$.
 \item {\bf Table\_Free\_Array}(\&$Table$) free the $Table$ array.
 \item {\bf Table\_Info\_Array}(\&$Table$) display information about all data blocks.
 \end{itemize}
@@ -305,7 +333,9 @@ The format of text files is free. Lines starting by '\verb+# ; % /+' characters 
   1.1000  0.80680
   ...
 \end{verbatim}
-Binary files should be of type "float" (i.e. REAL*32) and "double" (i.e. REAL*64), and should \emph{not} contain text header lines. These files are plateform dependent (little or big endian).
+Binary files should be of type "float" (i.e. REAL*32) and "double" (i.e. REAL*64), 
+and should \emph{not} contain text header lines. These files are platform 
+dependent (little or big endian).
 
 The $filename$ is first searched into the current directory (and all user additional locations specified using the \verb+-I+ option, see section~\ref{s:files}), and if not found, in the \verb+data+ sub-directory of the \verb+MCSTAS+ library location. \index{Library!Components!data}
 \index{Environment variable!MCSTAS} This way, you do not need to have local copies of the \MCS\ Library Data files (see table~\ref{t:comp-data}).
@@ -373,12 +403,12 @@ between units
 \begin{tabular}{|l|c|p{0.29\textwidth}|p{0.252\textwidth}|}
 \hline
 Name & Value & Conversion from & Conversion to \\ \hline
-\textvb{DEG2RAD} & $2 \pi / 360$ & Degrees & radians \\
-\textvb{RAD2DEG} & $360 / (2 \pi)$ & Radians & degrees \\
+\textvb{DEG2RAD} & $2 \pi / 360$ & Degrees & Radians \\
+\textvb{RAD2DEG} & $360 / (2 \pi)$ & Radians & Degrees \\
 \textvb{MIN2RAD} & $2 \pi / (360 \cdot 60)$
-  & Minutes of arc & radians \\
+  & Minutes of arc & Radians \\
 \textvb{RAD2MIN} & $(360\cdot 60) / (2 \pi)$
-  & Radians & minutes of arc \\
+  & Radians & Minutes of arc \\
 \textvb{V2K} & $10^{10} \cdot m_{\rm N}/\hbar$
   & Velocity (m/s) & {\bf k}-vector (\AA$^{-1}$) \\
 \textvb{K2V} & $10^{-10} \cdot \hbar / m_{\rm N}$
@@ -391,14 +421,12 @@ Name & Value & Conversion from & Conversion to \\ \hline
   & Full width half maximum & Root mean square (standard deviation) \\
 \textvb{RMS2FWHM} & $\sqrt{8\log(2)}$
   & Root mean square (standard deviation) & Full width half maximum \\
-\textvb{MNEUTRON} & $1.67492E-27 kg$
-  & Neutron mass & \\
-\textvb{HBAR} & $1.05459E-34 Js$
-  & Planck constant & \\
+\textvb{MNEUTRON} & $1.67492 \cdot 10^{-27}$~kg
+  & Neutron mass, $m_{\rm n}$ & \\
+\textvb{HBAR} & $1.05459 \cdot 10^{-34}$~Js
+  & Planck constant, $\hbar$ & \\
 \textvb{PI} & $3.14159265358979323846$
   & $\pi$ & \\
 \hline
 \end{tabular}
 \end{center}
-
-Further, we have defined the constants \textvb{PI}$=\pi$ and \textvb{HBAR}$=\hbar$.

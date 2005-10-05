@@ -16,16 +16,27 @@ The components for doing this trick is {\bf Virtual\_input} and
 {\bf Virtual\_output}, which stores and reads neutron rays, respectively.
 
 Another pair of components performs the simulation of the instrument
-resolution functions. This is {\bf Res\_sample}, that is to be
+resolution functions. This is {\bf Res\_sample} and {\bf TOF\_res\_sample}, 
+which are to be
 placed at the sample position, and {\bf Res\_monitor}, that should
 be localized at the position of the instrument detector.
 
+{\bf Progress\_bar} is a clever simulation utility that displays the simulation
+status, but assumes the form of a component.
+
 \newpage
 \input{virtual_input}
+
+\newpage
 \input{virtual_output}
 
 \newpage
 \input{res_sample}
+
+\newpage
+\input{tof_res_sample}
+
+\newpage
 \input{res_monitor}
 
 \newpage
@@ -35,6 +46,17 @@ be localized at the position of the instrument detector.
 \index{Optics!Point in space (Arm, Optical bench)}
 \index{Simulation progress bar}
 
-This component is an Arm (see section \ref{explain:arm}) which additionally displays the simulation progress and status. The default is to work with a 10 \% step, but it may be changed using the \verb+percent+ parameter (from 0 to 100). The estimated computation time is displayed at the begining and actual simulation time is shown at the end.
+This component is an Arm (see section \ref{explain:arm}) which 
+additionally displays the simulation progress and status. 
+The default is to work with a 10 \% step, but it may be changed using 
+the \verb+percent+ parameter (from 0 to 100). 
+The estimated computation time is displayed at the begining 
+and actual simulation time is shown at the end.
 
-Additionally, setting the \verb+flag_save+ to 1 results in a regular save of the data files during the simulation course. This means that is is possible to view the data before the end of the computation, and have also a trace of it in case of computer crash. The advancement level is stored in these temporary data files. Technically, this save is equivalent to sending regularly a USR2 signal to the running simulation.
+Additionally, setting the \verb+flag_save+ to 1 results in 
+a regular save of the data files during the simulation. 
+This means that is is possible to view the data before the end 
+of the computation, and have also a trace of it in case of 
+computer crash. The advancement level is stored in these temporary 
+data files. Technically, this save is equivalent to sending regularly 
+a USR2 signal to the running simulation.
