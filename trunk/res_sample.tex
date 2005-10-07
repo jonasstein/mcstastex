@@ -1,5 +1,3 @@
-% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
-
 \section{Res\_sample: A sample-like component for resolution calculation}
 \label{s:res_sample}
 \index{Samples!Resolution function, sample for}
@@ -14,7 +12,7 @@ scattered ray have the same probability. The component is meant
 for computation of the resolution function, but may also be used
 for test and debugging purposes. For actual calculations of the resolution
 function, {\bf Res\_sample} should be used
-together with the \textbf{Res\_monitor} component, described in
+together with \textbf{Res\_monitor}, described in
 section~\ref{s:res_monitor}.
 
 The shape of {\rm Res\_sample} is either a hollow cylinder
@@ -24,37 +22,38 @@ specified with the inner and outer radius, $r_{\rm i}$ and $r_{\rm o}$,
 respectively, and the height, $h$.
 If these parameters are unspecified,
 the shape is instead a box of dimensions $x_w$, $y_h$, and $z_t$.
-See figure~\ref{f:res_sample}.\par
 %
-\begin{figure}[htbp]
-  \begin{center}
-        \psfrag{ri}[c][c]{\textit{radius\_i}}
-        \psfrag{ro}[c][c]{\textit{radius\_o}}
-        \psfrag{h}[c][c]{\textit{h}}
-        \psfrag{bri}[c][c]{\textit{radius\_i}}
-        \psfrag{bro}[c][c]{$-\textit{radius\_o}$}
-        \psfrag{bh}[c][c]{\textit{h}}
-        \psfrag{X}[c][c]{\textit{X}}
-        \psfrag{Y}[c][c]{\textit{Y}}
-        \psfrag{Z}[c][c]{\textit{Z}}
-        \includegraphics[width=0.9\textwidth]{figures/res_sample.eps}
-    \caption{The two possible shapes of the \textbf{Res\_sample} component.}
-    \label{f:res_sample}
-  \end{center}
-\end{figure}
+%\begin{figure}[htbp]
+%  \begin{center}
+%        \psfrag{ri}[c][c]{\textit{radius\_i}}
+%        \psfrag{ro}[c][c]{\textit{radius\_o}}
+%        \psfrag{h}[c][c]{\textit{h}}
+%        \psfrag{bri}[c][c]{\textit{radius\_i}}
+%        \psfrag{bro}[c][c]{$-\textit{radius\_o}$}
+%        \psfrag{bh}[c][c]{\textit{h}}
+%        \psfrag{X}[c][c]{\textit{X}}
+%        \psfrag{Y}[c][c]{\textit{Y}}
+%        \psfrag{Z}[c][c]{\textit{Z}}
+%        \includegraphics[width=0.9\textwidth]{figures/res_sample.eps}
+%    \caption{The two possible shapes of the \textbf{Res\_sample} component.}
+%    \label{f:res_sample}
+%  \end{center}
+%\end{figure}
 %
 The component only propagates neutron rays that are scattered; 
 other rays are absorbed. The scattering probability is proportional to the neutron
 flight path length inside the sample, to make a true volume weighting
 of the sample. The reason for this is that the resolution
 function of an instrument is independent of any sample properties 
-such as scattering and absorbtion cross sections.
+such as scattering and absorbtion cross sections but will in general
+depend on sample size and shape.
 
-The point of scattering in the sample is chosen uniformly
+The point of scattering inside the sample is chosen uniformly
 along the neutron flight path inside the sample, and the scattered
 neutron ray is given a random energy and direction. This energy is selected in
 the interval $[E_0-\Delta E; E_0+\Delta E]$ which hence must be
-chosen large enough to cover all interesting neutrons. Similarly, the scattered
+chosen large enough to cover all interesting neutron energies. 
+Similarly, the scattered
 direction is chosen in a user-specified range,
 either within a sphere of radius $r_{\rm foc}$, within a rectangular
 target with measures $(x_{\rm focus}, y_{\rm focus})$
@@ -70,86 +69,4 @@ for every scattering event and used to compute the resolution function.
 For an example of using the
 information in the output parameter, see the description of the
 \textbf{Res\_monitor} component in section~\ref{s:res_monitor}.
-
-\subsection{Background on resolution functions}
-
-In an experiment, as well as in the simulation, the expected intensity
-is by definition of the resolution function given by
-%
-$$
-  I = \int R({\bf Q}, \omega) \sigma({\bf Q}, \omega) d{\bf Q}d\omega
-$$
-%
-Here $I({\bf Q}_0, \omega_0)$ is the measured or simulated intensity in
-the detector, $R$ is the resolution function for the instrument in a
-given setup, $\sigma$ is the scattering cross section of the sample, and
-$({\bf Q}, \omega)$ denote the scattering vector and energy transfer in
-the sample. For the uniform scatterer, $\sigma({\bf Q}, \omega) = 1/V_0$
-is a constant, so we have
-%
-$$
-  I = 1/V_0 \int R({\bf Q}, \omega) d{\bf Q}d\omega
-$$
-%
-If we instead consider only the intensity contributed by scattering with
-parameters $({\bf Q}, \omega)$ that lie within a small part $\Delta\Omega$ of
-the total phase space and has volume $\Delta V$,
-%
-$$
-  I_{\Delta\Omega} = 1/V_0 \int_{\Delta\Omega} R({\bf Q}, \omega) d{\bf Q}d\omega
-  = \frac{\Delta V}{V_0} R(\Delta\Omega)
-$$
-%
-(where $R(\Delta\Omega)$ denotes the average value of $R$ over
-$\Delta\Omega$), we get a good approximation of the value of $R$
-provided that $\Delta\Omega$ is sufficiently small. This is useful with
-the output from the simulations, since $I_{\Delta\Omega}$ is
-approximated by
-
-$$ I_{\Delta\Omega} \approx \sum_{({\bf Q_i},\omega_i) \in \Delta\Omega} p_i $$
-
-
-This can be used to
-histogram the resolution function or visualize it in different ways. The
-3D visualization of the resolution function produced by the
-\verb+mcresplot+ program for example uses this by displaying a cloud of
-dots, the local density of which is proportional to the resolution
-function.
-
-The \verb+mcresplot+ program also computes the covariance and resolution
-matrices. Letting $(x^1_i,x^2_i,x^3_i,x^4_i)$ denote the $({\bf
-  Q_i},\omega_i)$ values obtained from the scattering events in the
-simulation and $\mu^j = (\sum_i p_i x^j_i) / (\sum_i p_i)$ the mean
-value of $x^j_i$, the covariance matrix is computed as
-$$ {\bf C}_{jk} = \Big(\sum_i p_i (x^j_i - \mu_j) (x^k_i - \mu_k)\Big) /
-   \Big(\sum_i p_i\Big) $$
-This covariance matrix is given in the local coordinate system of the
-sample component. The \verb+mcresplot+ program actually outputs the
-covariance matrix in another coordinate system which is rotated around
-the Y axis so that the projection to the X-Z plane of the average
-scattering vector ${\bf Q}_{\rm avg} = (\sum_i p_i {\bf Q}_i) / (\sum_i
-p_i)$ is parallel to the X axis.
-
-The resolution matrix ${\bf M}$ is the inverse of the covariance matrix
-and is also output in the rotated coordinate system by \verb+mcresplot+.
-The 4-dimensional gaussian distribution, defined by
-\begin{equation}
-  \label{eq:gauss-res}
-  f({\bf X}) = e^{-\frac{1}{2}{\bf X}^T {\bf M} {\bf X}}
-\end{equation}
-where ${\bf X} = ({\bf Q},\omega)$, has covariance matrix ${\bf C}$ and
-thus defines the gaussian resolution function with the same covariance
-as the resolution computed by the simulation.
-
-The \verb+mcresplot+ program provides for the simultaneous visualization
-of the computed and the gaussian resolution function by obtaining an
-appropriate number of random points with the statistical
-distribution~(\ref{eq:gauss-res}). Each point ${\bf X}$ is obtained as
-follows: A vector ${\bf Y}$ is generated of four individually gaussian
-distributed random numbers with mean zero and variance one. Using the
-Cholesky decomposition of ${\bf C}$, ${\bf C} = {\bf L}{\bf L}^T$, we
-have
-$$ {\bf X} = {\bf L} {\bf Y}.$$
-
-
 

@@ -2,7 +2,7 @@
 \label{virtual_output}
 \index{Sources!Virtual source, recording neutron events}
 
-\component{Virtual\_output}{System}{filename}{buffer size, type}{}
+\component{Virtual\_output}{System}{filename}{buffer-size, type}{}
 
 The component {\bf Virtual\_output} stores the neutron ray parameters
 from a split simulation. The idea is to let the
@@ -15,7 +15,7 @@ of ``text'' type, but can also assume the binary formats
 ``float'' or ``double''. The storing of neutron rays continue until the
 specified number of simulations have been performed.
 
-The buffer size may be used to limit the size of the output file, but 
+\verb+buffer-size+ may be used to limit the size of the output file, but 
 absolute intentities are then likely to be wrong. 
 We recommend to use the default value of zero, saving all neutron rays. 
 The size of the file is then controlled indirectly with 

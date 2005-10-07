@@ -3,8 +3,7 @@
 
 The chapter deals with components that are not easily included
 in any of the other chapters because of their special nature,
-but which still are considered to be of significant importance
-to \MCS .
+but which are still part of the \MCS\ system.
 
 One part of these components deals with splitting simulations
 into two (or more) stages. For example, a guide system is often
@@ -16,19 +15,19 @@ The components for doing this trick is {\bf Virtual\_input} and
 {\bf Virtual\_output}, which stores and reads neutron rays, respectively.
 
 Another pair of components performs the simulation of the instrument
-resolution functions. This is {\bf Res\_sample} and {\bf TOF\_res\_sample}, 
+resolution functions. This is {\bf Res\_sample} and {\bf TOF\_Res\_sample}, 
 which are to be
 placed at the sample position, and {\bf Res\_monitor}, that should
 be localized at the position of the instrument detector.
 
-{\bf Progress\_bar} is a clever simulation utility that displays the simulation
+{\bf Progress\_bar} is a simulation utility that displays the simulation
 status, but assumes the form of a component.
 
 \newpage
-\input{virtual_input}
+\input{virtual_output}
 
 \newpage
-\input{virtual_output}
+\input{virtual_input}
 
 \newpage
 \input{res_sample}
@@ -43,12 +42,12 @@ status, but assumes the form of a component.
 \section{Progress\_bar: Simulation progress and automatic saving}
 \component{Progress\_bar}{System}{percent, flag\_save}{}{}
 \label{s:progress-bar}
-\index{Optics!Point in space (Arm, Optical bench)}
 \index{Simulation progress bar}
 
-This component is an Arm (see section \ref{explain:arm}) which 
-additionally displays the simulation progress and status. 
-The default is to work with a 10 \% step, but it may be changed using 
+This component displays the simulation progress and status
+but does not affect the neutron parameters. 
+The display is updated in regular intervals of the full simulation;
+the default step size is 10 \%, but it may be changed using 
 the \verb+percent+ parameter (from 0 to 100). 
 The estimated computation time is displayed at the begining 
 and actual simulation time is shown at the end.

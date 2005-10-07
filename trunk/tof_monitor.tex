@@ -1,5 +1,3 @@
-% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
-
 \section{TOF\_monitor: The time-of-flight monitor}
 \component{TOF\_monitor}{System}{$x_{\rm min}$, $x_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, $n_{\rm chan}$, $t_0$, $t_1$, filename}{$\Delta t$}{}
 \index{Monitors!Time-of-flight monitor}
@@ -9,14 +7,14 @@ in the $x-y$ plane, given by the $x$ and $y$ parameters,
 like for {\rm Slit}.
 The neutron ray is propagated to the plane of the monitor
 by the kernel call PROP\_Z0.
-A neutron ray if counted if it passes within the rectangular opening 
+A neutron ray is counted if it passes within the rectangular opening 
 given by the $x$ and $y$ limits.
 
 Special about {\bf TOF\_monitor} is that it is sensitive to
-the time, $t$, where the neutron ray is hits the component.
+the time, $t$, where the neutron ray hits the component.
 Like in a real time-of-flight detector, the time dimension is
 binned into small time intervals.
-Hence this monitor updates a one-dimensional histogram of counts.
+Hence this monitor maintains a one-dimensional histogram of counts.
 The $n_{\rm chan}$ time intervals begin at $t_0$ and
 end at $t_1$ (alternatively, the interval length is specified by $\Delta t$).
 As usual in time-of-flight analysis, all times are given in units of $\mu$s.

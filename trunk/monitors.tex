@@ -1,5 +1,3 @@
-% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
-
 \chapter{Monitors and detectors}
 \index{Library!Components!monitors}
 
@@ -21,11 +19,11 @@ that one may allow the monitor to be sensitive to any neutron property,
 as {\em e.g.} direction, energy, and divergence, in addition to what
 is found in real-world detectors (space and time). One may, in
 fact, let the monitor have several of these properties at the same time,
-as seen for example in the energy sensitive monitor in
-section~\ref{s:e-monitor}.
+as seen for example in the divergence/position sensitive monitor in
+section~\ref{s:divpos-monitor}.
 
 When a monitor detects a neutron ray,
-a number counting variable is incremented: $n_i = n_{i-1}+1$
+a number counting variable is incremented: $n_i = n_{i-1}+1$.
 In addition, the neutron
 weight $p_i$ is added to the weight counting variable:
 $I_i = I_{i-1} + p_i$,
@@ -36,7 +34,7 @@ the detected intensity (in units of neutrons/sec.) is $I_N$,
 while the estimated errorbar is $\sqrt{M_{2,N}^2}$.
 
 Many different monitor components have been developed for
-\MCS , but we have selected to support only the most important ones.
+\MCS , but we have decided to support only the most important ones.
 One example of the monitors we have omitted is the single monitor,
 {\bf Monitor},
 that measures just one number (with errorbars) per simulation.
