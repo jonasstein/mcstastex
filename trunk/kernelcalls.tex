@@ -71,11 +71,15 @@ the neutron rays which have negative propagation times are removed automatically
   will not remove the neutron ray, even if negative propagation times 
   are found. Further propagations are not affected.\index{Removed neutron events}
 \item {\bf SCATTER}. This macro is used to denote a scattering event
-  inside a component, see section~\ref{s:comp-trace}. It should be used e.g
+  inside a component.
+%, see section~\ref{s:comp-trace}. 
+  It should be used e.g
   to indicate that a component has interacted with the neutron ray 
   (e.g. scattered or detected).
   This does not affect the simulation at all, and is mainly used by the
-  \verb+MCDISPLAY+ section and the \verb+GROUP+ modifier (see~\ref{s:trace} and \ref{s:comp-mcdisplay}). See also the SCATTERED variable (below).
+  \verb+MCDISPLAY+ section and the \verb+GROUP+ modifier 
+%(see~\ref{s:trace} and \ref{s:comp-mcdisplay}). 
+  See also the SCATTERED variable (below).
   \index{Keyword!GROUP} \index{Keyword!MCDISPLAY} \index{Keyword!EXTEND}
 \end{itemize}
 
@@ -92,7 +96,8 @@ the neutron rays which have negative propagation times are removed automatically
 \begin{itemize}
 \item {\bf MC\_GETPAR}(). This may be used in the finally section of an
   instrument definition to reference the output parameters of a
-  component. See page~\pageref{mcgetpar} for details.
+  component. 
+% See page~\pageref{mcgetpar} for details.
 \item {\bf NAME\_CURRENT\_COMP} gives the name of the current component as a string.
 \item {\bf POS\_A\_CURRENT\_COMP} gives the absolute position of the
   current component. A component of the vector is referred to as
@@ -124,8 +129,9 @@ the neutron rays which have negative propagation times are removed automatically
 \item {\bf POS\_A\_COMP\_INDEX}$(index)$ is the absolute position of
   component $index$. \\
   POS\_A\_COMP\_INDEX (INDEX\_CURRENT\_COMP) is the same as \\
-  POS\_A\_CURRENT\_COMP. You may use
-  POS\_A\_COMP\_INDEX \\ (INDEX\_CURRENT\_COMP+1) to make, for instance, your
+  POS\_A\_CURRENT\_COMP. You may use \\
+  POS\_A\_COMP\_INDEX  (INDEX\_CURRENT\_COMP+1) \\
+  to make, for instance, your
   component access the position of the next component (this is usefull for
   automatic targeting).  A component of the vector is referred to as
   POS\_A\_COMP\_INDEX$(index).i$ where $i$ is $x$, $y$ or $z$. 
@@ -202,11 +208,14 @@ resulting Coord structure.
   single detector. The name of the detector is output together
   with the simulated intensity and estimated statistical error. The
   output is produced in a format that can be read by \MCS\ front-end
-  programs. See section~\ref{s:comp-finally} ??? for details.
+  programs. 
+%See section~\ref{s:comp-finally} ??? for details.
 \item {\bf DETECTOR\_OUT\_1D}$(...)$. Used to output the results from a
-  one-dimentional detector. See section~\ref{s:comp-finally} for details.
+  one-dimentional detector. 
+%See section~\ref{s:comp-finally} for details.
 \item {\bf DETECTOR\_OUT\_2D}$(...)$. Used to output the results from a
-  two-dimentional detector. See section~\ref{s:comp-finally} for details.
+  two-dimentional detector. 
+%See section~\ref{s:comp-finally} for details.
 \item {\bf DETECTOR\_OUT\_3D}$(...)$. Used to output
   the results from a three-dimentional detector. Arguments are the same as
   in DETECTOR\_OUT\_2D, but with the additional $z$ axis (the signal).
@@ -378,21 +387,25 @@ You may look into, for instance, the Monochromator\_curved component, or the Vir
 \section{Monitor\_nD Library}
 \index{Library!monitor\_nd-lib}
 
-This library gathers a few functions used by a set of monitors e.g. Monitor\_nD, Res\_monitor, Virtual\_output, \ldots.
+This library gathers a few functions used by a set of monitors e.g. Monitor\_nD, Res\_monitor, Virtual\_output, etc.
 It may monitor any kind of data, create the data files, and may display many geometries (for \verb+mcdisplay+).
 Refer to these components for implementation examples, and ask the authors for more details.
 
 \section{Adaptative importance sampling Library}
 \index{Library!adapt\_tree-lib}
 
-This library is currently only used by the components Source\_adapt
-and Adapt\_check. It performs adaptative importance sampling of neutrons for simulation efficiency optimization.
+This library is currently only used by the components {\bf Source\_adapt}
+and {\bf Adapt\_check}. It performs adaptative importance sampling of neutrons for simulation efficiency optimization.
 Refer to these components for implementation examples, and ask the authors for more details.
 
 \section{Vitess import/export Library}
 \index{Library!vitess-lib}
 
-This library is used by Vitess\_input, Vitess\_output components, as well as the \verb+mcstas2vitess+ utility (see section~\ref{s:mcstas2vitess}). \index{Tools!mcstas2vitess}
+This library is used by the components 
+{\bf Vitess\_input} and {\bf Vitess\_output}, 
+as well as the \verb+mcstas2vitess+ utility.
+% (see section~\ref{s:mcstas2vitess}). 
+\index{Tools!mcstas2vitess}
 Refer to these components for implementation examples, and ask the authors for more details.
 
 \section{Constants for unit conversion etc.}
@@ -425,7 +438,7 @@ Name & Value & Conversion from & Conversion to \\ \hline
   & Neutron mass, $m_{\rm n}$ & \\
 \textvb{HBAR} & $1.05459 \cdot 10^{-34}$~Js
   & Planck constant, $\hbar$ & \\
-\textvb{PI} & $3.14159265358979323846$
+\textvb{PI} & $3.14159265...$
   & $\pi$ & \\
 \hline
 \end{tabular}
