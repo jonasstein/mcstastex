@@ -1,14 +1,16 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
 \chapter{Advanced optical components: mirrors, guides, and choppers}
+\index{Optics|textbf}
 
 This section describes advanced neutron optical
 components such as supermirrors and guides as well as various rotating choppers.
-A description of the reflectivity of a supermirror is found 
+A description of the reflectivity of a supermirror is found
 in section~\ref{s:mirror}.
 
 \section{Mirror: The single mirror}
 \label{s:mirror}
+\index{Optics!Mirror plane}
 \component{Mirror}{System}{$l$, $h$, $m$}{$R_0, Q_c, W, \alpha$}{validated, no gravitation support}
 
 The component {\bf Mirror}
@@ -39,8 +41,8 @@ This component may produce wrong results with gravitation support.
 \subsection{Mirror reflectivity}
 \label{ss:mirrorreflect}
 To compute the reflectivity of the supermirrors, we use an empirical
-formula derived from experimental data \cite{pb_241_50}, 
-see Fig.~\ref{f:reflectivity}. The reflectivity is given by 
+formula derived from experimental data \cite{pb_241_50},
+see Fig.~\ref{f:reflectivity}. The reflectivity is given by
 \begin{equation} \label{e:Rmirror}
   R = \left\{
     \begin{array}{ll}
@@ -58,7 +60,7 @@ Q = |{\bf k}_{\bf i} - {\bf k}_{\bf f}|
   = \frac{m_{\rm n}}{\hbar} |{\bf v}_{\bf i} - {\bf v}_{\bf f}|,
 \end{equation}
 $m_{\rm n}$ being the neutron mass.
-The number $m$ in (\ref{e:Rmirror}) is a parameter determined by 
+The number $m$ in (\ref{e:Rmirror}) is a parameter determined by
 the mirror materials,
 the bilayer sequence, and the number of bilayers.
 As can be seen, $R=R_0$ for $Q < Q_{\rm c}$, where $Q_{\rm c}$ is the
@@ -89,6 +91,7 @@ $ W=1/300$~\AA$^{-1}$.
 \newpage
 
 \section{Guide: The guide section}
+\index{Optics!Straight guide}
 
 \component{Guide}{System}{$w_1, h_1$, $w_2, h_2$, $l$, $m$}{$R_0, Q_c, W, \alpha$}{validated, no gravitation support}
 
@@ -102,10 +105,10 @@ figure~\ref{f:guide}. Neutrons not clearing the guide entrance are
 ABSORB'ed. For a more general guide simulation, see {\bf Channeled\_guide}
 in section~\ref{s:channeled_guide}.
 
-Further input parameters are the values of $R_0, m, Q_c, W$, and $\alpha$ 
+Further input parameters are the values of $R_0, m, Q_c, W$, and $\alpha$
 as for {\bf Mirror}.
 
-{\bf Guide} may produce wrong results with gravitation support. 
+{\bf Guide} may produce wrong results with gravitation support.
 Use {\bf Guide\_gravity} (section \ref{s:guide_gravity}) in this case.
 
 \begin{figure}
@@ -139,10 +142,10 @@ With these definitions, the time of intersection of the neutron with a
 guide side can be computed by considering the projection onto the
 normal:
 \begin{equation}
-t^\alpha_\beta = \frac{({\bf O}^\alpha_\beta - {\bf r}_0) \cdot {\bf n}^\alpha_\beta} 
+t^\alpha_\beta = \frac{({\bf O}^\alpha_\beta - {\bf r}_0) \cdot {\bf n}^\alpha_\beta}
   {{\bf v} \cdot {\bf n}^\alpha_\beta}  ,
 \end{equation}
-where $\alpha$ and $\beta$ are indices for the different guide walls, 
+where $\alpha$ and $\beta$ are indices for the different guide walls,
 assuming the values (h,v) and (1,2), respectively.
 For a neutron that leaves the guide directly through the guide exit we have
 \begin{equation}
@@ -206,13 +209,13 @@ neutron bender devices. By setting the $m$ value of the supermirror
 coatings to zero, nonreflecting walls are
 simulated; this may be used to simulate a Soller collimator.
 
-The input parameters are $w_1$, $h_1$, $w_2$, $h_2$, and $l$ 
-to set the guide dimensions as for {\bf Guide} 
-(entry window, exit window, and length); 
+The input parameters are $w_1$, $h_1$, $w_2$, $h_2$, and $l$
+to set the guide dimensions as for {\bf Guide}
+(entry window, exit window, and length);
 $k$ to set the number of channels; $d$ to set the thickness of the
-channel walls; and $R_0$, $W$, $Q_{cx}$, $Q_{cy}$, $\alpha_x$, $\alpha_y$, 
+channel walls; and $R_0$, $W$, $Q_{cx}$, $Q_{cy}$, $\alpha_x$, $\alpha_y$,
 $m_x$, and $m_y$ to set the supermirror parameters as described under {\bf Guide}
-(the names with \textit{x} denote the vertical mirrors, 
+(the names with \textit{x} denote the vertical mirrors,
 and those with \textit{y} denote the horizontal ones).
 
 \subsection{Algorithm}
@@ -223,9 +226,9 @@ of the Guide component. Finally the coordinates are restored when the
 neutron exits the guide or is absorbed.
 
 \subsection{Known problems}
-This component may produce wrong results with gravitation support. Use Guide\_gravity (section \ref{s:guide_gravity}) in this case. 
+This component may produce wrong results with gravitation support. Use Guide\_gravity (section \ref{s:guide_gravity}) in this case.
 Additionally, the focusing channeled geometry (for $k > 1$ and different
-values of $w_1$ and $w_2$) is buggy 
+values of $w_1$ and $w_2$) is buggy
 (wall slopes are not computed correctly, and the component 'leaks' neutrons).
 
 \newpage
@@ -236,21 +239,21 @@ values of $w_1$ and $w_2$) is buggy
 
 \component{Guide\_gravity}{System}{$w_1, h_1$, $w_2, h_2$, $l$, $k$, $m$}{$d, R_0, Q_c, W, \alpha$, wavy, chamfers, $k_h$, $n$, $G$}{fully validated, {\bf with} gravitation support}
 
-This component is a variation of {\bf Guide\_channeled} 
-(section \ref{s:channeled_guide}) with the ability to handle 
-gravitation effects and functional channeled focusing geometry. 
-Channels can be specified in two dimensions, 
+This component is a variation of {\bf Guide\_channeled}
+(section \ref{s:channeled_guide}) with the ability to handle
+gravitation effects and functional channeled focusing geometry.
+Channels can be specified in two dimensions,
 producing a 2D array ($k, k_h$) on smaller guide channels.
 
-Waviness effects, supposed to be randomly distributed 
-(\emph{i.e.} non-periodic waviness) 
-can be specified globally, or for each part of the guide section. 
-Additionally, chamfers (originating from the substrate manufacturing) 
+Waviness effects, supposed to be randomly distributed
+(\emph{i.e.} non-periodic waviness)
+can be specified globally, or for each part of the guide section.
+Additionally, chamfers (originating from the substrate manufacturing)
 may be defined the same way.
 
-The straight section of length $l$ may be divided into $n$ bits of same length 
+The straight section of length $l$ may be divided into $n$ bits of same length
 within which chamfers are taken into account.
 
-To activate gravitation support, either select the \MCS\ gravitation support, 
+To activate gravitation support, either select the \MCS\ gravitation support,
 or set the gravitation field strength $G$ (e.g. -9.81 on Earth).
 

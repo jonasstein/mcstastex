@@ -4,15 +4,15 @@
 \label{c:components}
 This \MCS\ Component Manual consists of the following major parts:
 \begin{itemize}
-\item A thorough description of system components, 
-with one chapter per major category: Sources, optics (two chapters), 
-monochromators, samples, monitors, and other components. 
+\item A thorough description of system components,
+with one chapter per major category: Sources, optics (two chapters),
+monochromators, samples, monitors, and other components.
 \item The \MCS\ library functions and definitions
   that aid in the writing of simulations and components in
-  Appendix~\ref{c:kernelcalls}.    
+  Appendix~\ref{c:kernelcalls}.
 \item An explanation of the \MCS\ terminology in Appendix~\ref{s:terminology}.
 \end{itemize}
-Additionally, you may refer to the list of example instruments 
+Additionally, you may refer to the list of example instruments
 from the library in the \MCS\ User Manual.
 
 \section{Authorship}
@@ -28,7 +28,7 @@ they contribute as well as in this manual.
 contributions to us for inclusion in future releases.
 
 Some contributed components have later been taken over by the \MCS\ system
-group, with permission from the original authors. 
+group, with permission from the original authors.
 The original author will still appear both in the component code and in the
 \MCS\ manual.
 
@@ -37,7 +37,7 @@ In the description of the theory behind the component functionality
 we will use the usual symbols {\bf r} for the position
 $(x,y,z)$ of the particle (unit m), and {\bf v} for
 the particle velocity $(v_x, v_y, v_z)$ (unit m/s).
-Anoother essential quantity is the neutron wave vector 
+Another essential quantity is the neutron wave vector
 ${\bf k} = m_{\rm n} {\bf v}/\hbar$ , where
 $m_{\rm n}$ is the neutron mass. {\bf k} is usually given in
 \AA$^{-1}$, while neutron energies are given in meV.
@@ -55,7 +55,7 @@ wave vector change is denoted the {\em scattering vector}
 \end{equation}
 In analogy, the {\em energy transfer} is given by
 \begin{equation}
-\hbar \omega \equiv E_{\rm i}-E_{\rm f} = 
+\hbar \omega \equiv E_{\rm i}-E_{\rm f} =
 \frac{\hbar^2}{2 m_{\rm n}} \left( k_{\rm i}^2 - k_{\rm f}^2 \right).
 \end{equation}
 
@@ -64,43 +64,43 @@ All mentioning of component geometry refer to
 the local coordinate system of the individual component.
 The axis convention is so that the $z$ axis is along
 the neutron propagation axis, the $y$ axis is vertical up,
-and the $x$ axis points left when looking along the $z$-axis, 
+and the $x$ axis points left when looking along the $z$-axis,
 completing a right-handed coordinate system.
-Most components 'position' (as specified in the instrument description 
-with the \verb+AT+ keyword) corresponds to their input side. 
+Most components 'position' (as specified in the instrument description
+with the \verb+AT+ keyword) corresponds to their input side.
 Some components are centered (e.g. radial components).
 \index{Symbols}\index{Coordinates system}
 
-Components are usually not designed to overlap. 
+Components are usually not designed to overlap.
 Warnings will be issued during simulation if sections of the instrument
-is not reached by any neutron rays, or if neutrons are removed.
-This is usually the sign of either overlapping components 
+are not reached by any neutron rays, or if neutrons are removed.
+This is usually the sign of either overlapping components
 or a very low intensity.\index{Removed neutron events}
 
 \section{Component source code}
-Source code for all components may be found in the \verb+lib/mcstas/+
+Source code for all components may be found in the \verb+MCSTAS+ library
 subdirectory of the McStas installation;
 the default is \verb+/usr/local/lib/mcstas/+
-on Unix-like systems and \verb+C:\mcstas\lib+ on Windows systems, but it can be
+on Unix-like systems and \verb+C:\mcstas\lib+ on Windows systems, but it may be
 changed using the \verb+MCSTAS+ environment variable.
 \index{Environment variable!MCSTAS}
 
 For temporary modification of a component, it is advised to make a copy
 of the component file into the working directory.
-A component file in the local directory will in \MCS\ take precedence over 
-a library component of the same name.   
+A component file in the local directory will in \MCS\ take precedence over
+a library component of the same name. In case users only require to add new features, preserving the existing features of a component, it is recommanded to make use of the \verb+EXTEND+ keyword\index{Keyword!EXTEND}, as documented in the User Manual.
 
 \section{Documentation}
 As a complement to this Component Manual, we encourage users to use
 the \verb+mcdoc+ front-end which enables to display both the
 catalog of the \MCS\ library, e.g using: \index{Tools!mcdoc}
 \begin{quote}
-  \verb|mcdoc --show|
+  \verb|mcdoc|
 \end{quote}
 as well as the documentation of specific components, e.g with:
 \begin{quote}
   \verb|mcdoc --text| {\it name} \\
-  \verb|mcdoc --show| {\it file.comp}
+  \verb|mcdoc| {\it file.comp}
 \end{quote}
 The first line will search for all components matching the {\it name},
 and display their help section as text,
@@ -109,22 +109,22 @@ the {\it file.comp} component, using your
 BROWSER\index{Environment variable!BROWSER} setting, or as text if unset.
 The \verb+--help+ option will display the command help, as usual.
 
-An overview of the component library is also given 
+An overview of the component library is also given
 in chapter \ref{s:components} and at the \MCS\ home page \cite{mcstas_webpage}.
 
 \subsubsection{About data files}\index{Data files}\index{Library!read\_table-lib (Read\_Table)}
-Some components require external data files, 
+Some components require external data files,
 e.g. lattice crystallographic definitions for Laue and powder pattern diffraction,
-$S(q,\omega)$ tables for inelastic scattering, 
-neutron events files for virtual sources, 
+$S(q,\omega)$ tables for inelastic scattering,
+neutron events files for virtual sources,
 transmission and reflectivity files, etc.
 
-Such files distributed with \MCS\ are located in the 
-\verb+data+ sub-directory of the \verb+MCSTAS+ library. 
-Components that make use of the \MCS\ file system, 
-including the \verb+read-table+ library (see section \ref{s:read-table}) 
-may access all \MCS\ data files without making local copies. 
-Of course, you are welcome to define your own data files, 
+Such files distributed with \MCS\ are located in the
+\verb+data+ sub-directory of the \verb+MCSTAS+ library.
+Components that make use of the \MCS\ file system,
+including the \verb+read-table+ library (see section \ref{s:read-table})
+may access all \MCS\ data files without making local copies.
+Of course, you are welcome to define your own data files,
 and eventually contribute to \MCS\ if you find them useful.
 
 

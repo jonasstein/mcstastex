@@ -1,5 +1,6 @@
 \chapter{Samples}
 \index{Library!Components!samples}
+\index{Samples|textbf}
 \label{c:samples}
 
 This class of components models the sample of the experiment.
@@ -15,9 +16,9 @@ We first consider incoherent scattering. The simple component {\bf Vanadium}
 performs both incoherent scattering and absorption.
 
 An important component class is elastic Bragg scattering from an ideal powder.
-The component {\bf PowderN} models a powder scatterer with reflections 
+The component {\bf PowderN} models a powder scatterer with reflections
 given in a LAZY/Crystallographica file.
-The component includes absorption and incoherent scattering. 
+The component includes absorption and incoherent scattering.
 
 Next type is Bragg scattering from single crystals.
 The simplest single crystals are in fact the monochromator components
@@ -28,26 +29,26 @@ with a single scattering vector perpendicular to the surface.
 Much more advanced, the component {\bf Single\_crystal}
 is a general single crystal sample (with multiple scattering) that allows
 the input of an arbitrary unit cell and a list of structure factors, read
-from a LAZY/Crystallographica file.
-This component also allows anisotropic mosaicity 
+from a LAZY / Crystallographica file.
+This component also allows anisotropic mosaicity
 and $\Delta d/d$ lattice space variation.
 
 Isotropoic small-angle scattering is simulated in {\bf Sans\_Spheres},
 which models scattering from a collection of hard spheres. A more general
-SANS sample is under development. 
+SANS sample is under development.
 In addition, a reflectometry sample will soon be developed.
 
 Inelastic scattering from a dispersion is exemplified by
 the component {\bf Phonon\_simple}, which models a single phonon dispersion.
 
-For a more general sample model, the {\bf Isotropic\_Sqw} component 
-is able to simulate all kinds of isotropic materials: 
+For a more general sample model, the {\bf Isotropic\_Sqw} component
+is able to simulate all kinds of isotropic materials:
 Liquids, glasses, polymers, powders, etc, with $S(q,\omega)$ table
 specified by an input file.
-Physical processes include coherent/incoherent scattering, 
-both elastic and inelastic, with absorption and multiple scattering. 
-Moreover, this component may be used concentrically, 
-to model a sample environment. 
+Physical processes include coherent/incoherent scattering,
+both elastic and inelastic, with absorption and multiple scattering.
+Moreover, this component may be used concentrically,
+to model a sample environment.
 Thus it may handle most samples except single crystals.
 
 In general, all samples are assumed to be homogeneous. There would also be
@@ -85,4 +86,4 @@ of the samples.
 \input{sans.tex}             \newpage
 \input{phonon.tex}           \newpage
 %\input{LSCO.tex}            \newpage
-\input{isotropic_sqw.tex}    
+\input{isotropic_sqw.tex}

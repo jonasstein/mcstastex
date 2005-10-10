@@ -1,9 +1,10 @@
 \section{Source\_Maxwell\_3: A continuous source
 with a Maxwellian spectrum}
 \label{source-maxwell}
-\index{Sources!Source\_Maxwell\_3}
+\index{Sources!Continuous source
+with a Maxwellian spectrum}
 
-\component{Source\_Maxwell\_3}{System}{ $h$, $w$, $d_{\rm foc}$, $xw$, $yh$, $\lambda_{\rm low}$, $\lambda_{\rm high}$, $I_1$, $T_1$}{$I_2$, $T_2$, $I_3$, $T_3$}{Validated}
+\component{Source\_Maxwell\_3}{System}{ $h$, $w$, $d_{\rm foc}$, $xw$, $yh$, $\lambda_{\rm low}$, $\lambda_{\rm high}$, $I_1$, $T_1$}{$I_2$, $T_2$, $I_3$, $T_3$}{Validated. t=0}
 
 This component is a source with a Maxwellian energy/wavelength distribution
 sampled in the range $\lambda_{\rm low}$ to $\lambda_{\rm high}$.
@@ -21,7 +22,7 @@ calculated in the following way for one single Maxwellian:
 The intensity in a small wavelength interval $[\lambda, \lambda+d\lambda]$ is
 $ I_1 M(\lambda,T_1) d\lambda $
 where
-$M(\lambda,T_1) = 2 \alpha^2 \exp(-\alpha/\lambda^2) / \lambda^5 $ 
+$M(\lambda,T_1) = 2 \alpha^2 \exp(-\alpha/\lambda^2) / \lambda^5 $
 is the normalized Maxwell distribution ($\alpha=949.0$~K \AA$^2/T_1$).
 The number of neutrons per second through a focusing window
 of solid angle $\Omega$
@@ -46,7 +47,7 @@ To fulfill $I_{\rm tot} = I_{\rm MC}$ we need to have
 %see also the discussion on focusing in section \ref{s:focus}.
 The expression is easily generalized to a general number of Maxwellians.
 
-The component {\bf Source\_gen} (see section \ref{source-gen}) 
-works on the same principle, but provides more options concerning 
+The component {\bf Source\_gen} (see section \ref{source-gen})
+works on the same principle, but provides more options concerning
 wavelength/energy range specifications, shape, etc.
 
