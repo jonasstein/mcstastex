@@ -8,11 +8,12 @@
 
 The textbook expression for the scattering cross-section of a crystal
 is~\cite{squires}:
-$$
+\begin{equation}
+\label{eq:sigma_coh_el}
 \left(\frac{d\sigma}{d\Omega}\right)_{\rm coh.el.} =
         N\frac{(2\pi)^3}{V_0}\sum_{\boldsymbol{\tau}}
         \delta(\boldsymbol{\tau} - \boldsymbol{\kappa})|F_{\boldsymbol{\tau}}|^2
-$$
+\end{equation}
 Here $|F_{\boldsymbol{\tau}}|^2$ is the structure factor, $N$ is the
 number of unit cells, $V_0$ is the volume of an
 individual unit cell, and $\boldsymbol{\kappa} = {\bf k}_i - {\bf
@@ -416,7 +417,7 @@ $$
 
 \subsection{The implementation}
 
-\component{Single\_crystal}{Kristian Nielsen}{$x_{width}, y_{height}, z_{thick}$,$\vec a, \vec b, \vec c, \Delta d/d$, mosaic, reflections}{$\sigma_{abs}, \sigma_{inc}$, ...}{not fully validated, centered}
+\component{Single\_crystal}{Kristian Nielsen}{$x_{width}, y_{height}, z_{thick}$,$\vec a, \vec b, \vec c, \Delta d/d$, mosaic, reflections}{$\sigma_{abs}, \sigma_{inc}$, ...}{partially validated, centered}
 
 The equations describing the Single\_crystal simulation are quite
 complex, and consequently the code is fairly sizeable. Most of it is

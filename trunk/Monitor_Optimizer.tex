@@ -4,7 +4,7 @@
   Source\_Optimizer}
 \label{monitor-optimizer}
 \index{Sources!Optimization location|see{Sources/Optimizer}}\index{Optimization}
-\component{Source\_Optimizer}{E. Farhi, ILL}{optim\_comp}{$x_{min}$, $x_{max}$, $y_{min}$,$y_{max}$}{not fully validated}
+\component{Source\_Optimizer}{E. Farhi, ILL}{optim\_comp}{$x_{min}$, $x_{max}$, $y_{min}$,$y_{max}$}{partially validated}
 
 The {\bf Monitor\_Optimizer} component works with the {\bf
   Source\_Optimizer} component. See section~\ref{source-optimizer}
@@ -15,3 +15,5 @@ shaped opening coordinates $x_{min}$, $x_{max}$, $y_{min}$,
 $y_{max}$, and the name of the associated instance of
 {\bf Source\_Optimizer} used in the instrument description file (one word,
 without quotes).
+
+As many Monitor\_Optimizer instances as required may be used in an instrument, for possibly more than one optimization location. Multiple instances may have an effect on the total intensity.

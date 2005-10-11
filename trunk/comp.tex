@@ -50,11 +50,11 @@ and are used in connection with the neutron state before and after
 an interaction with the component in question.
 This is of particular importance in sample components, where the
 wave vector change is denoted the {\em scattering vector}
-\begin{equation}
+\begin{equation}\label{eq:q-transfert}
 {\bf q} \equiv {\bf k}_{\rm i} - {\bf k}_{\rm f} .
 \end{equation}
 In analogy, the {\em energy transfer} is given by
-\begin{equation}
+\begin{equation}\label{eq:w-transfert}
 \hbar \omega \equiv E_{\rm i}-E_{\rm f} =
 \frac{\hbar^2}{2 m_{\rm n}} \left( k_{\rm i}^2 - k_{\rm f}^2 \right).
 \end{equation}
@@ -109,8 +109,7 @@ the {\it file.comp} component, using your
 BROWSER\index{Environment variable!BROWSER} setting, or as text if unset.
 The \verb+--help+ option will display the command help, as usual.
 
-An overview of the component library is also given
-in chapter \ref{s:components} and at the \MCS\ home page \cite{mcstas_webpage}.
+An overview of the component library is also given at the \MCS\ home page \cite{mcstas_webpage}.
 
 \subsubsection{About data files}\index{Data files}\index{Library!read\_table-lib (Read\_Table)}
 Some components require external data files,
