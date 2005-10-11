@@ -4,7 +4,7 @@
 \index{Coherent and incoherent isotropic scatterer}
 \index{Inelastic scattering}
 
-\component{Isotropic\_Sqw}{V. Hugouvieux, E. Farhi}{Sqw$\_{coh}$, $\sigma_{coh}$, Sqw$\_{inc}$, $\sigma_{inc}, V_\rho, \sigma_{abs}, T$}{$q_{min}, q_{max}, \omega_{min}, \omega_{max}, d\phi$, order}{not fully validated}
+\component{Isotropic\_Sqw}{V. Hugouvieux, E. Farhi}{Sqw$\_{coh}$, $\sigma_{coh}$, Sqw$\_{inc}$, $\sigma_{inc}, V_\rho, \sigma_{abs}, T$,$x_{width},y_{height},z_{thich},r_o, r_i$, thickness}{$q_{min}, q_{max}, \omega_{min}, \omega_{max}, d\phi$, order}{not fully validated}
 
 \begin{figure}
   \begin{center}
@@ -71,7 +71,7 @@ $P(q \mid \omega)$ is the probability for an excitation to have a wavevector low
 \end{figure}
 
 
-\subsection{The implementation}
+\subsection{The method}
 
 \subsubsection{Choosing the interaction type}
 
@@ -167,4 +167,27 @@ then a new $(q, \omega)$ set is drawn, and the process is iterated until sucess 
 A way to avoid this is to focus the $q,\omega$ range from the $S(q, \omega)$ data file to the actual beam characteristics. This is done by setting the component parameter $wmax$ to the maximum energy of the incoming beam.
 
 Selecting the whole $q$ and $\omega$ range, to the one being able to scatter the incoming beam, when using the component does improve significantly the speed of the computation. Additionally, if you restrict the scattering the first order only (parameter order=1), then you may specify the angular vertical extension $d\phi$ of the scattering area to gain optimized focusing. This option does not apply when handling multiple scattering (which emits in $4\pi$ many times before exiting the sample).
+
+\subsection{The implementation}
+
+\subsubsection{Geometry}
+
+The geometry for the component may be box, cylinder and sphere shaped, either filled or hollow. Relevant parameters for this purpose are as follow:
+\begin{itemize}
+\item {\bf box}: dimensions are $x_{width} \times y_{height} \times z_{thick}$.
+\item {\bf box, hollow}: \emph{idem}, and the side wall thickness is set with $thickness$.
+\item {\bf cylinder}: dimensions are $r_o$ for the radius and $y_{height}$ for the heigh.
+\item {\bf cylinder, hollow}: \emph{idem}, and hollow part is set with either $r_i$ internal radius, or $thickness$.
+\item {\bf sphere}: dimension is $r_o$ for the radius.
+\item {\bf sphere, hollow}: \emph{idem}, and hollow part is set with either $r_i$ internal radius, or $thickness$.
+\end{itemize}
+The AT position corresponds to the center of the sample.
+
+\subsubsection{Dynamical structure factor}
+
+The material behaviour is specified through the total scattering cross-sections $\sigma_{coh}$, $\sigma_{inc}$, $\sigma_{abs}$, and the $S(q, \omega)$ data files. If you are lucky enough to have access to separated coherent and incoherent contributions, simply set Sqw$_{coh}$ and Sqw$_{inc}$ paremeter to the files names. If on the other hand you have access to a global data set, use Sqw$_{coh}$, set the $\sigma_{coh}$ parameter to the sum of both contributions $\sigma_{coh}+\sigma_{inc}$, and set $\sigma_{inc}=0$. This way we only use one of the two implemented  scattering channels. Such global data sets may originate from previous experiments, as far as you have applyied all known corrections (multiple scattering, geometry, ...).
+
+If the Sqw$_{inc}$ parameter is left unset but the $\sigma_{inc}$ is not zero, an isotropic incoherent elastic scattering is used, just like the V\_sample component (see section \ref{s:v_sample}).
+
+\subsubsection{Files formats}
 
