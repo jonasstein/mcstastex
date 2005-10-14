@@ -1,5 +1,3 @@
-% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
-
 \chapter{Monte Carlo Techniques and simulation strategy}
 \label{s:MCtechniques}
 
@@ -108,7 +106,7 @@ weight factor for the neutron ray after passage of the whole instrument
 becomes the product of all contributions
 \begin{equation}
 \label{e:probprod}
-p = p_0 \prod_{j=1}^n \pi_j .
+p = p_n = p_0 \prod_{j=1}^n \pi_j .
 \end{equation}
 For convenience, the value of $p$ is updated (within each component) 
 during the simulation.
@@ -202,41 +200,37 @@ effect of neutron weight change and Monte Carlo probability
 of making this particular choice
 equals the actual physical properties we like to model.
 
-Let us follow up on the example of a source.
-In the ``real'' semi-classical world, there is a distribution
-(probability density) for the neutrons in the six dimensional
-(energy, direction, position) space of
-$\Pi(E,\Ombold,{\bf r}) = dP/(dE d\Ombold d^3{\bf r})$ depending upon
-the source temperature, geometry {\em etc.}\ In the
-Monte Carlo simulations, the six coordinates are for efficiency reasons
-in general picked from another distribution:
-$f_{\rm MC}(E,\Ombold,{\bf r}) \neq \Pi(E, \Ombold,{\bf r})$,
-since one would {\em e.g.} often generate
-only neutrons within a certain parameter interval.
-However, we must then require that the weights are adjusted
-by a factor $\pi_j$ (in this case: $j=1$) so that
+Let us follow up on the simple example of transmission.
+The probability of transmitting the real neutron is $T$, but we make
+the Monte Carlo choice of transmitting the neutron ray each time:
+$f_{\rm MC}=1$. This must be reflected on the choice of weight multiplier
+$\pi_j$ gven by the master equation
+%In the ``real'' semi-classical world, there is a distribution
+%(probability density) for the neutrons in the six dimensional
+%(energy, direction, position) space of
+%$\Pi(E,\Ombold,{\bf r}) = dP/(dE d\Ombold d^3{\bf r})$ depending upon
+%the source temperature, geometry {\em etc.}\ In the
+%Monte Carlo simulations, the six coordinates are for efficiency reasons
+%in general picked from another distribution:
+%$f_{\rm MC}(E,\Ombold,{\bf r}) \neq \Pi(E, \Ombold,{\bf r})$,
+%since one would {\em e.g.} often generate
+%only neutrons within a certain parameter interval.
+%However, we must then require that the weights are adjusted
+%by a factor $\pi_j$ (in this case: $j=1$) so that
 \begin{equation} \label{probrule}
-f_{\rm MC}(E,\Ombold,{\bf r}) \pi_j(E,\Ombold,{\bf r})
- = \Pi(E,\Ombold,{\bf r}) .
+f_{\rm MC} \pi_j = P .
 \end{equation}
 %For the sources present in version \version,
 %only the $(\Ombold, {\bf r})$ dependence of the correction factors
 %are taken into account.
 
-The weight factor transformation rule Eq.~(\ref{probrule})
-is equally valid for other types of Monte Carlo choices,
-although the probability distributions may depend upon
-different parameters. An important example
+This probability rule is general, and holds also if, e.g., it is decided to 
+transmit only half of the rays $(f_{\rm MC}=0.5)$.
+An important different example
 is elastic scattering from a powder sample,
 where the Monte-Carlo choices are the particular powder line to scatter from,
 the scattering position within the sample and the final neutron direction
 within the Debye-Scherrer cone.
-
-It should be noted that the $\pi_j$'s found in the weight factor
-transformation are multiplied by the $\pi_j$'s found by the
-weight adjustments described in
-subsection \ref{s:probweight} to yield the final neutron
-weight given by Eq.~(\ref{e:probprod}).
 
 \subsection{Direction focusing}
 \label{s:focus}
@@ -263,7 +257,7 @@ during a "correct" direction focusing, while a too narrow focusing will
 result in a lower (\textit{i.e.} wrong) intensity, since 
 we cut neutrons rays that should have counted.
 
-\subsection{Adaptive sampling}
+\section{Adaptive sampling}
 Another strategy to improve sampling in simulations
 is adaptive importance sampling, % \cite{importance},
 where \MCS\ during the simulations will determine
