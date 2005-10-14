@@ -4,12 +4,15 @@
 \label{c:components}
 This \MCS\ Component Manual consists of the following major parts:
 \begin{itemize}
+\item An introduction to the use of Monte Carlo methods in \MCS .
 \item A thorough description of system components,
 with one chapter per major category: Sources, optics (two chapters),
 monochromators, samples, monitors, and other components.
 \item The \MCS\ library functions and definitions
   that aid in the writing of simulations and components in
   Appendix~\ref{c:kernelcalls}.
+\item A detailed explanation of the use of random numbers 
+   in Appendix~\ref{s:random}.
 \item An explanation of the \MCS\ terminology in Appendix~\ref{s:terminology}.
 \end{itemize}
 Additionally, you may refer to the list of example instruments
@@ -27,12 +30,13 @@ they contribute as well as in this manual.
 \MCS\ users are encouraged to send their
 contributions to us for inclusion in future releases.
 
-Some contributed components have later been taken over by the \MCS\ system
+Some contributed components have later been taken over 
+for further development by the \MCS\ system
 group, with permission from the original authors.
-The original author will still appear both in the component code and in the
+The original authors will still appear both in the component code and in the
 \MCS\ manual.
 
-\subsection{Symbols for neutron scattering and simulation}
+\section{Symbols for neutron scattering and simulation}
 In the description of the theory behind the component functionality
 we will use the usual symbols {\bf r} for the position
 $(x,y,z)$ of the particle (unit m), and {\bf v} for
@@ -48,16 +52,25 @@ In general, vectors are denoted by boldface symbols.
 Subscripts "i" and "f" denotes ``initial'' and ``final'', respectively,
 and are used in connection with the neutron state before and after
 an interaction with the component in question.
-This is of particular importance in sample components, where the
-wave vector change is denoted the {\em scattering vector}
-\begin{equation}\label{eq:q-transfert}
-{\bf q} \equiv {\bf k}_{\rm i} - {\bf k}_{\rm f} .
-\end{equation}
-In analogy, the {\em energy transfer} is given by
-\begin{equation}\label{eq:w-transfert}
-\hbar \omega \equiv E_{\rm i}-E_{\rm f} =
-\frac{\hbar^2}{2 m_{\rm n}} \left( k_{\rm i}^2 - k_{\rm f}^2 \right).
-\end{equation}
+%This is of particular importance in sample components, where the
+%wave vector change is denoted the {\em scattering vector}
+%\begin{equation}\label{eq:q-transfert}
+%{\bf q} \equiv {\bf k}_{\rm i} - {\bf k}_{\rm f} .
+%\end{equation}
+%In analogy, the {\em energy transfer} is given by
+%\begin{equation}\label{eq:w-transfert}
+%\hbar \omega \equiv E_{\rm i}-E_{\rm f} =
+%\frac{\hbar^2}{2 m_{\rm n}} \left( k_{\rm i}^2 - k_{\rm f}^2 \right).
+%\end{equation}
+
+The spin of the neutron is given a special treatment. Despite
+the fact that each physical neutron has a well defined spin value, 
+the \MCS\ spin vector
+{\bf s} can have any length between zero (unpolarized beam) and unity
+(totally polarized beam). Further, all three cartesian components of
+the spin vector are present simultaneously, although this is physically
+not permitted by quantum mechanics.
+Presently, no official \MCS\ component utilize the neutron spin. 
 
 \section{Component coordinate system}
 All mentioning of component geometry refer to
@@ -67,11 +80,13 @@ the neutron propagation axis, the $y$ axis is vertical up,
 and the $x$ axis points left when looking along the $z$-axis,
 completing a right-handed coordinate system.
 Most components 'position' (as specified in the instrument description
-with the \verb+AT+ keyword) corresponds to their input side.
-Some components are centered (e.g. radial components).
+with the \verb+AT+ keyword) corresponds to their input side at the nominal
+beam position.
+However, a few components are radial and thus positioned in their centre.
 \index{Symbols}\index{Coordinates system}
 
 Components are usually not designed to overlap.
+This may lead to loss of neutron rays.
 Warnings will be issued during simulation if sections of the instrument
 are not reached by any neutron rays, or if neutrons are removed.
 This is usually the sign of either overlapping components
