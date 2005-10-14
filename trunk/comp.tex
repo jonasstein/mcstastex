@@ -124,9 +124,9 @@ the {\it file.comp} component, using your
 BROWSER\index{Environment variable!BROWSER} setting, or as text if unset.
 The \verb+--help+ option will display the command help, as usual.
 
-An overview of the component library is also given at the \MCS\ home page \cite{mcstas_webpage}.
+An overview of the component library is also given at the \MCS\ home page \cite{mcstas_webpage} and in the User Manual \cite{mcstasmanual}.
 
-\subsubsection{About data files}\index{Data files}\index{Library!read\_table-lib (Read\_Table)}
+\subsection{About data files}\index{Data files}\index{Library!read\_table-lib (Read\_Table)}
 Some components require external data files,
 e.g. lattice crystallographic definitions for Laue and powder pattern diffraction,
 $S(q,\omega)$ tables for inelastic scattering,
@@ -141,6 +141,35 @@ may access all \MCS\ data files without making local copies.
 Of course, you are welcome to define your own data files,
 and eventually contribute to \MCS\ if you find them useful.
 
+File extensions are not compulsory but help in identifying relevant files per application.
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+      \hline
+       {\bf MCSTAS/data} & Description \\
+       \hline
+ *.lau & Laue pattern file, as issued from Crystallographica or FullProf.
+       Data: [ h   k   l Mult. d-space 2Theta   F-squared ] \\
+ *.trm & transmission file, typically for monochromator crystals and filters.
+       Data: [ k (Angs-1) , Transmission (0-1) ] \\
+ *.rfl & reflectivity file, typically for mirrors and monochromator crystals.
+       Data: [ k (Angs-1) , Reflectivity (0-1) ] \\
+ *.sqw & $S(q,\omega)$ files for Isotropic\_sqw component. \\
+      \hline
+    \end{tabular}
+    \caption{Data files of the \MCS\ library.}
+    \label{t:comp-data}
+    \index{Library!Components!data}
+    }
+  \end{center}
+\end{table}
 
 \section{Component validation}
 
+\section{Disclaimer, bugs}\index{Bugs}
+
+We would like to emphasize that the usage of both the \MCS\ software, as well as its components are the responsability of the users. Indeed, obtaining accurate and reliable results requires a substantial work when writing instrument descriptions. This also means that users should read carefully both the documentation from the manuals \cite{mcstasmanual} and from the component itself (using \verb+mcdoc+ {\it comp}) before reporting errors. Most anomalous results often originate from a wrong usage of some part of the package.
+
+Anyway, if you find that either the documentation is not clear, or the behavior of the simulation is undoubtedly anomalous, you should report this to us at \verb+mcstas@risoe.dk+ and refer to our special bug/request reporting service \cite{mczilla_webpage}.

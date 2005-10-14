@@ -441,9 +441,16 @@ file. Each line contains seven numbers, separated by white space. The
 first three numbers are the $(h,k,l)$ indices of the reciprocal lattice
 point, and the last number is the value of the structure factor
 $|F_{\boldsymbol{\tau}}|^2$, in barns. The middle three numbers are not
-used; they are nevertheless required since this makes the file format
-compatible with the output from the Crystallographica
+used and may be omitted; they are nevertheless recommanded since this makes
+the file format compatible with the output from the Crystallographica
 program~\cite{crystallographica}.
+Any line beginning with any character of \verb+#;/%+ is considered to be a
+comment, and lines which can not be read as vectors/matrices are ignored.
+Example data \verb+*.lau+ files are given in directory \verb+MCSTAS/data+.
+Powder files from ICSD/LAZY \cite{icsd_ill} and Fullprof \cite{Fullprof}
+may also be used, but as the equivalent $\vec q$ vectors are superposed, not
+all Bragg spots will be simulated, and the intensity will be scaled by the
+multiplicity for each the spot.
 
 The input parameters for the component are \textit{xwidth},
 \textit{yheight}, and \textit{zthick} to define the dimensions of the
@@ -454,7 +461,8 @@ $(\textit{ax}, \textit{ay}, \textit{az})$, $(\textit{bx}, \textit{by},
 the axes of the direct lattice of the crystal (the sides of the unit
 cell) in units of {\AA}ngstr{\o}m; and \textit{reflections}, a string
 giving the name of the file with the list of structure factors to
-consider. The mosaic is specified \emph{either} isotropically as
+consider.
+The mosaic is specified \emph{either} isotropically as
 \textit{mosaic}, \emph{or} anisotropically as \textit{mosaic\_h}
 (rotation around the $Y$ axis), \textit{mosaic\_v} (rotation around the
 $Z$ axis), and \textit{mosaic\_n} (rotation around the $X$ axis); in all

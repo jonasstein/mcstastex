@@ -2,6 +2,7 @@
 \label{sans}
 \index{Samples!Dilute colloid medium}
 \index{Diffraction}
+\index{Small angle scattering}
 
 \component{Sans\_spheres}{(System); Lise Arleth, Veterinary University of Denmark}{$R$, $x_w$, $y_h$, $z_t$, $r$, $\sigma_a$}{$phi$, $q_{max}$, $\Delta \rho$}{}
 
@@ -18,7 +19,7 @@ The difference in scattering length density
 $q_{\rm max}$ denotes the maximum scattered $q$-value that is probed
 in the simulation.
 
-\section{Small-angle scattering cross section}
+\subsection{Small-angle scattering cross section}
 The neutron intensity scattered in a solid angle $\Delta \Omega$
 for a flat transmission isotropic SANS sample is given by \cite{ILLblue}:
 \begin{equation}
@@ -38,7 +39,7 @@ scattering cross section is given by \cite{ILLblue}
 Here, $n$ is the number density of spheres, and $V$ is the
 sphere volume. Their product gives the input parameter, $\phi=nV$.
 
-\section{Algorithm}
+\subsection{Algorithm}
 All neutrons, which hit the sample volume, are scattered.
 (Hence, no direct beam is simulated.)
 For scattred neutrons, the following steps are taken:

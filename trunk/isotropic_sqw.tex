@@ -3,6 +3,7 @@
 \index{Samples!Coherent and incoherent isotropic scatterer}
 \index{Coherent and incoherent isotropic scatterer}
 \index{Inelastic scattering}
+\index{Sample environments}
 
 \component{Isotropic\_Sqw}{V. Hugouvieux, E. Farhi}{Sqw$\_{coh}$, $\sigma_{coh}$, Sqw$\_{inc}$, $\sigma_{inc}, V_\rho, \sigma_{abs}, T$,$x_{width},y_{height},z_{thich},r_o, r_i$, thickness}{$q_{min}, q_{max}, \omega_{min}, \omega_{max}, d\phi$, order}{not fully validated}
 
@@ -27,15 +28,18 @@ The neutron leaves the scattering point when a suitable $(q, \omega)$ choice has
 \subsection{Theoretical side}
 
 Following Squires (\cite{squires}, p63), the neutron differential scattering cross section for both coherent and incoherent processes is
-\begin{equation}
+\begin{equation}\label{eq:d2sigma}
 \frac{d^2\sigma}{d\Omega dE_f} = \frac{\sigma}{4\pi}\frac{k_f}{k_i} N S(q, \omega)
 \end{equation}
-with usual notations: $N=\rho V$ is the number of atoms in the scattering volume $V$ with density $\rho$, $E_f, E_i, k_f, k_i$ are the energy and wavevectors of final and initial states respectively, and $\sigma$ is the total scattering cross-section. The unit of the dynamical structure factor $S(q,\omega)$ is an inverse energy.
+with usual notations: $N=\rho V$ is the number of atoms in the scattering volume $V$ with density $\rho$, $E_f, E_i, k_f, k_i$ are the energy and wavevectors of final and initial states respectively, and $\sigma$ is the total scattering cross-section. The unit of the dynamical structure factor $S(q,\omega)$ is an inverse energy. We define its norm
+\begin{equation}
+|S| = \iint S(q,\omega) dq d\omega .
+\end{equation}
 
 Some easely measureable quantities in a liquid are the \emph{static pair correlation function} $g(r)$ and the \emph{structure factor} $S(q)$, defined as:
 \begin{eqnarray}
 \rho g(\vec{r}) &=& \frac{1}{N} \sum_{i=1}^N \sum_{j \neq i} \langle \delta(\vec{r}+\vec{r}_i-\vec{r}_j) \rangle \\
-S(\vec{q}) &=&\int S(\vec q,\omega) d\omega \\
+S(\vec{q}) &=&\int S(\vec q,\omega) d\omega \label{eq:sq} \\
            &=&1 + \rho \int_V [g(\vec{r})-1] e^{i\vec{q}.\vec{r}} d\vec{r} \\
            &=&1 + \rho \int_{0}^{\infty} [g(r)-1] \frac{\sin(qr)}{qr} 4 \pi r^2 dr {\rm\ in\ isotropic\ materials.}
 \end{eqnarray}
@@ -43,7 +47,7 @@ Both $g(r)$ and $S(q)$ converge to unity for large $r$ and $q$ values respective
 
 On the other hand, we may measure, usually with time-of-flight instruments, the \emph{density of states} $g(\omega)$  which is the fraction of modes whose energy lie between $\omega$ and $\omega+d\omega$ \cite{lovesey84}
 \begin{equation}
-g(\omega) = \frac{\int S(q,\omega) dq}{\iint S(q,w) dq, d\omega} .
+g(\omega) = \frac{\int S(q,\omega) dq}{|S|} .
 \end{equation}
 This function is normalized to unity, $\int g(\omega) d\omega = 1$ and is a probability distribution of mode energies in the material.
 
@@ -53,13 +57,18 @@ The main idea to implement the scattering from $S(q, \omega)$ is to basically ma
 P(q \cap \omega) = P(\omega).P(q \mid \omega) .
 \end{equation}
 
-Thus we define $P(\omega)$ as the cumulated distribution of the density of states $g(\omega)$.  $P(\omega)$ is the probability for an excitation to have an energy lower than $\omega$.
+Thus we define $P(\omega)$ as the \emph{cumulated distribution} (primitive) of the density of states $g(\omega)$:
+\begin{equation}\label{eq:Pw}
+P(\omega) = \int_0^\omega g(\omega') d\omega'
+\end{equation}
+$P(\omega)$ is the probability for an excitation to have an energy lower than $\omega$.
 
 Similarly, we define the conditional probability $P(q \mid \omega)$ to be, for each energy lying between $\omega$ and $\omega+d\omega$, the cumulated distribution of
-\begin{equation}
-\hat g(q\mid\omega) = \frac{S(q, \omega)}{\int S(q,\omega) dq} .
-\end{equation}
-This latter is the density of wavevector transfers for a selected energy transfer, and
+\begin{eqnarray}\label{eq:Pqw}
+\hat g(q\mid\omega) &=& \frac{S(q, \omega)}{\int S(q,\omega) dq} \\
+P(q \mid \omega)    &=& \int_0^q \hat g(q'\mid\omega) dq'
+\end{eqnarray}
+This former is the density of wavevector transfers for a selected energy transfer, and
 $P(q \mid \omega)$ is the probability for an excitation to have a wavevector lower than $q$, for a given energy transfer $\omega$.
 
 \begin{figure}
@@ -102,10 +111,10 @@ d_{scatt} = -\frac{1}{\mu} \ln(1 - \xi[1 -e^{-\mu d_{out}}]).
 
 If no $S(q, \omega)$ data is available and the scattering process has been chosen as incoherent, we set $\omega=0$ and select randomly an outgoing wave vector $\boldsymbol{k}_f$.
 
-In case the $S(q, \omega)$ data is available for the scattering process (coherent or incoherent), a random choice is made to select the energy transfert using $P(\omega)$ with the $g(\omega)$ probability distribution.
-Similarly, we use $P(q \mid \omega)$ to select a wavevector transfer.
+In case the $S(q, \omega)$ data is available for the scattering process (coherent or incoherent), a random choice is made to select the energy transfert using $P(\omega)$ with the $g(\omega)$ probability distribution (Eq. \ref{eq:Pw}).
+Similarly, we use $P(q \mid \omega)$ to select a wavevector transfer (Eq. \ref{eq:Pqw}).
 
-Chosing a $(q, \omega)$ set and applying Eq. (\ref{eq:jointproba}), we have obtained a probabilistic nomalized evaluation of the dynamical structure factor, which we multiply by the norm $|S| = \iint S(q,\omega) dq d\omega$ to obtain $S(q, \omega)$:
+Chosing a $(q, \omega)$ set and applying Eq. (\ref{eq:jointproba}), we have obtained a probabilistic nomalized evaluation of the dynamical structure factor, which we multiply by the norm $|S|$ to obtain $S(q, \omega)$:
 \begin{equation}
 S(q, \omega) = |S|. P(\omega).P(q \mid \omega) .
 \end{equation}
@@ -114,7 +123,12 @@ Then a selection between energy gain and loss is done with the detailed balance 
 
 \subsubsection{Choosing the scattered wave vector}
 
-The next step is to check that conservation laws (\ref{eq:q-transfert}) and (\ref{eq:w-transfert}) can be satisfied. These conditions are closely related to the method for selecting the outgoing wave vector direction.
+The next step is to check that conservation laws
+\begin{eqnarray}
+\hbar \omega &=& E_i - E_f = \frac{\hbar^2}{2m}(k_i^2 - k_f^2) \label{eq:q-transfert} \\
+\vec q &=& \vec k_i - \vec k_f \label{eq:w-transfert}
+\end{eqnarray}
+can be satisfied. These conditions are closely related to the method for selecting the outgoing wave vector direction.
 
 When the final wave vector has to be computed, the quantities $\vec{k}_i$, $\hbar \omega$ and $q = |\vec{q}|$ are known.
 From the energy conservation law Eq. (\ref{eq:w-transfert}), we select ramdomly one of the two roots, $k_f^+$ and $k_f^-$.
@@ -155,18 +169,33 @@ Finally, we obtain :
 \vec{\hat k}_s = \frac{C^2}{k_i^2} \vec{k}_i + R (\cos \theta \vec{u}_1 + \sin \theta \vec{u}_2)
 \end{align}
 
-\subsubsection{Important remarks}
+\subsubsection{Extension to powder elastic scattering}
+
+In principle, the component can work in purtely elastic mode if only the $\omega = 0$ column is available in $S$.
+Anyway, in the diffractionists world, people do not usually define scattering with $S(q)$ (Eq. \ref{eq:sq}), but through the scattering vector $\boldsymbol{\tau}$, multiplicity $z(\tau)$ (for powders), and $|F^2|$ structure factors including Debye-Waller factors, as in Eq. \ref{eq:sigma_coh_el}.
+
+When doing diffraction, and neglecting inelastic contribution as first approximation, we may integrate Eq. \ref{eq:d2sigma}, keeping $k_i = k_f$.
+\begin{eqnarray}
+\left(\frac{d\sigma}{d\Omega}\right)_{\rm coh.el.}(|q|) &=& \int_0^\infty \frac{d^2\sigma_{coh}}{d\Omega dE_f} dE_f = \frac{N \sigma_{coh}}{4\pi} S_{coh}(q) \\
+& = & N\frac{(2\pi)^3}{V_0}\sum_{\boldsymbol{\tau}} \delta(\boldsymbol{\tau} - \boldsymbol{q})|F_{\boldsymbol{\tau}}|^2 {\rm\ from\ Eq.\ (\ref{eq:sigma_coh_el})}
+\end{eqnarray}
+with $V_0 = 1/\rho$ being the volume of a lattice unit cell. Then we may write the formal equivalence:
+\begin{eqnarray}
+S_{coh}(q) = \frac{2(2\pi)^4\rho}{\sigma_{coh}} \sum_{|\tau|} z(q) \delta(\tau - q) |F_\tau)|^2 {\rm\ in\ a\ powder.}
+\end{eqnarray}
+
+\subsubsection{Important remarks and limitations}
 
 Since the choice of the interaction type, we know that the neutron \emph{must} scatter, with an appropriate $\vec k_f$ outgoing wave vector. If any of the choices in the method fails:
 \begin{enumerate}
 \item the roots $k_f^+$ and $k_f^-$ are imaginary, which means that conservation laws can not be satisfied and for instance the selected energy transfert is higher than the incoming neutron energy
 \item the radius of the target circle $R$ is imaginary
 \end{enumerate}
-then a new $(q, \omega)$ set is drawn, and the process is iterated until sucess or - at last - removal of the neutron event. This latter absorption is then reported at the end of the simulation, as it never occurs in reality (neutrons that scatter do find a suitable $(q, \omega)$ set).\index{Removed neutron events}
+then a new $(q, \omega)$ set is drawn, and the process is iterated until sucess or - at last - removal of the neutron event. This latter absorption is then reported at the end of the simulation, as it never occurs in reality - neutrons that scatter do find a suitable $(q, \omega)$ set.\index{Removed neutron events}
 
-A way to avoid this is to focus the $q,\omega$ range from the $S(q, \omega)$ data file to the actual beam characteristics. This is done by setting the component parameter $wmax$ to the maximum energy of the incoming beam.
+A way to avoid this is to focus the $q,\omega$ range from the $S(q, \omega)$ data file to the actual beam characteristics (matching instrument dynamical range). This is done by setting the component parameter $wmax$ to the maximum energy of the incoming beam. In a few words, the $S(q,\omega)$ data set extension in $Q$ and $\omega$ should preferably be smaller than the extension of the incoming beam and the scattered beam of interest for the experiment. Otherwise some Monte carlo choices lead to scattering in non usefull regions of $S$, which reduces dramatically the algorithm efficiency, possibly removing neutrons.\index{Bugs}
 
-Selecting the whole $q$ and $\omega$ range, to the one being able to scatter the incoming beam, when using the component does improve significantly the speed of the computation. Additionally, if you restrict the scattering the first order only (parameter order=1), then you may specify the angular vertical extension $d\phi$ of the scattering area to gain optimized focusing. This option does not apply when handling multiple scattering (which emits in $4\pi$ many times before exiting the sample).
+Focusing the $q$ and $\omega$ range, to the one being able to scatter the incoming beam, when using the component does improve significantly the speed of the computation. Additionally, if you restrict the scattering the first order only (parameter order=1), then you may specify the angular vertical extension $d\phi$ of the scattering area to gain optimized focusing. This option does not apply when handling multiple scattering (which emits in $4\pi$ many times before exiting the sample).
 
 \subsection{The implementation}
 
@@ -183,11 +212,65 @@ The geometry for the component may be box, cylinder and sphere shaped, either fi
 \end{itemize}
 The AT position corresponds to the center of the sample.
 
+Hollow shapes are particularly useful to model complex sample environments. Refer to section below for more details on this topic.
+
 \subsubsection{Dynamical structure factor}
 
-The material behaviour is specified through the total scattering cross-sections $\sigma_{coh}$, $\sigma_{inc}$, $\sigma_{abs}$, and the $S(q, \omega)$ data files. If you are lucky enough to have access to separated coherent and incoherent contributions, simply set Sqw$_{coh}$ and Sqw$_{inc}$ paremeter to the files names. If on the other hand you have access to a global data set, use Sqw$_{coh}$, set the $\sigma_{coh}$ parameter to the sum of both contributions $\sigma_{coh}+\sigma_{inc}$, and set $\sigma_{inc}=0$. This way we only use one of the two implemented  scattering channels. Such global data sets may originate from previous experiments, as far as you have applyied all known corrections (multiple scattering, geometry, ...).
+The material behaviour is specified through the total scattering cross-sections $\sigma_{coh}$, $\sigma_{inc}$, $\sigma_{abs}$, and the $S(q, \omega)$ data files.
 
-If the Sqw$_{inc}$ parameter is left unset but the $\sigma_{inc}$ is not zero, an isotropic incoherent elastic scattering is used, just like the V\_sample component (see section \ref{s:v_sample}).
+If you are lucky enough to have access to separated coherent and incoherent contributions, simply set Sqw\_coh and Sqw\_inc paremeter to the files names. If on the other hand you have access to a global data set, use Sqw\_coh, set the $\sigma_{coh}$ parameter to the sum of both contributions $\sigma_{coh}+\sigma_{inc}$, and set $\sigma_{inc}=0$. This way we only use one of the two implemented  scattering channels. Such global data sets may originate from previous experiments, as far as you have applyied all known corrections (multiple scattering, geometry, ...).
 
-\subsubsection{Files formats}
+In any case, the accuracy of the $S(q, \omega)$ data limits the $Q$ and $\omega$ resolution of the simulation. The sampling of data files should then be as thin as possible.
 
+If the Sqw\_inc parameter is left unset but the $\sigma_{inc}$ is \emph{not} zero, an isotropic incoherent elastic scattering is used, just like the V\_sample component (see section \ref{s:v_sample}).
+
+\subsubsection{Files formats: $S(q,\omega)$}
+
+The format of the data files is free text, consisting of three numerical block, separated by empty lines or comments, in the following order
+\begin{enumerate}
+\item A vector of length $m$ containing wavevector $q$ values, in \AA$^{-1}$.
+\item A vector of length $n$ containing energy $\omega$ values, in meV.
+\item A matrix of size $m$ rows by $n$ columns, of $S(q, \omega)$ values, in meV$^{-1}$.
+\end{enumerate}
+Any line beginning with any character of \verb+#;/%+ is considered to be a comment, and lines which can not be read as vectors/matrices are ignored.
+Example files are listed as \verb+*.sqw+ files in directory \verb+MCSTAS/data+.
+
+The file header may optionally contain parameter settings for the material, as comments, with keywords as is the following example:
+\begin{verbatim}
+  #V_0         0.07
+  #sigma_abs   5
+  #sigma_inc   4.8
+  #sigma_coh   1
+  #Temperature 10
+\end{verbatim}
+
+\subsubsection{Files formats: $S(q)$}
+
+This file format provides a mean to import directly an $S(q)$ data set, when setting parameters:
+\begin{verbatim}
+  powder_format=qSq
+\end{verbatim}
+The 'Sqw\_coh' file should contains a single numerical block, which column assignment is defaulted as $q$ and $S(q)$ being the first and second columns respectively. This may be overridden from the file header with '\#column' keywords, as in the example:
+\begin{verbatim}
+  #column_q  2
+  #column_Sq 1
+\end{verbatim}
+
+\subsubsection{Files formats: powder structures (LAZY, Fullprof, Crystallographica)}
+
+Data files as used by the component PowderN may also be read other column-based file formats as in PowderN, e.g. with parameters such as:
+\begin{verbatim}
+  powder_format=Crystallographica
+  powder_format=Fullprof
+  powder_Dd    =0
+  powder_DW    =1
+\end{verbatim}
+The last two parameters may as well be specified in the data file header with lines:
+\begin{verbatim}
+  #Debye_Waller 1
+  #Detla_d/d    1e-3
+\end{verbatim}
+
+\subsubsection{Concentric geometries, sample environment}
+
+Central component may be of any type, not specifically an Isotropic\_sqw instance.

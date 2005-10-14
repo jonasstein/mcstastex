@@ -2,11 +2,11 @@
 \label{s:components}
 \index{Library!Components|textbf}
 
-This chapter presents an abstract of existing components. 
+This chapter presents an abstract of existing components.
 As a complement to this chapter and the
-detailed description in the \MCS\ component manual, 
-you may use the \verb+mcdoc -s+ command to obtain the on-line 
-component documentation and refer to the McStas web-page~\cite{mcstas_webpage} 
+detailed description in the \MCS\ component manual,
+you may use the \verb+mcdoc -s+ command to obtain the on-line
+component documentation and refer to the McStas web-page~\cite{mcstas_webpage}
 where all components are documented using the McDoc system.
 
 \section{A short overview of the \MCS\ component library}
@@ -14,17 +14,17 @@ where all components are documented using the McDoc system.
 
 The table in this section gives a quick overview of available \MCS\ components
 provided with the distribution, in the \verb+MCSTAS+ library. The
-location of this library is detailed in section~\ref{s:files}. 
+location of this library is detailed in section~\ref{s:files}.
 All of them are believed to be reliable, and some amount of systematic
-tests have been carried out. 
+tests have been carried out.
 However, no absolute guaranty may be given concerning their accuracy.\index{Environment variable!MCSTAS}
 
-The \verb+contrib+ directory of the library contains components 
-that were given by \MCS\ users, 
+The \verb+contrib+ directory of the library contains components
+that were given by \MCS\ users,
 but where responsibility has not (yet) been taken by the \MCS\ core team. \index{Library!Components!contrib}
 
-Additionally the \verb+obsolete+ directory of the library gathers components that were renamed, or considered to be outdated. 
-These component are kept for backwards compatibility and 
+Additionally the \verb+obsolete+ directory of the library gathers components that were renamed, or considered to be outdated.
+These component are kept for backwards compatibility and
 they still all work as before.\index{Library!Components!obsolete}
 
 The \verb+mcdoc+ front-end (section~\ref{s:mcdoc-run}) enables to display both the
@@ -102,7 +102,7 @@ Arm                &  Arm/optical bench. \\
  Slit                & Rectangular/circular
                       slit. \\
  V\_selector          & Velocity selector. \\
- Vitess\_ChopperFermi & Curved Fermi chopper (slower than FermiChopper). 
+ Vitess\_ChopperFermi & Curved Fermi chopper (slower than FermiChopper).
                      From the Vitess package.\\ \hline
     \end{tabular}
     \caption{Optics components of the \MCS\ library.}
@@ -191,16 +191,16 @@ TOF\_monitor     &    Rectangular Time-of-flight monitor. \\
       \hline
        {\bf MCSTAS/misc} & Description \\
        \hline
- Progress\_bar     &  Displays status of a running simulation. 
+ Progress\_bar     &  Displays status of a running simulation.
                       May also trigger intermediate SAVE.\\
   Res\_sample   & Sample-like component for resolution function calculation. \\
   TOF\_Res\_sample   & Sample-like component for resolution function calculation in TOF instruments. \\
 Res\_monitor      &   Monitor for resolution function calculations \\
 TOF\_Res\_monitor      &   Monitor for resolution function calculations
                         for TOF instruments \\
-Virtual\_input &  Source-like component that reads neutron events 
+Virtual\_input &  Source-like component that reads neutron events
                   from an ascii/binary 'virtual source' file (recorded by Virtual\_output). \\
-Virtual\_output &  Detector-like component that writes neutron state 
+Virtual\_output &  Detector-like component that writes neutron state
                    (for use in Virtual\_input). \\
  Vitess\_input     &   Read neutron state parameters from a VITESS neutron file.\\
  Vitess\_output    &  Write neutron state parameters to a VITESS neutron file.\\
@@ -286,6 +286,7 @@ Virtual\_output &  Detector-like component that writes neutron state
        Data: [ k (Angs-1) , Transmission (0-1) ] \\
  *.rfl & reflectivity file, typically for mirrors and monochromator crystals.
        Data: [ k (Angs-1) , Reflectivity (0-1) ] \\
+ *.sqw & $S(q,\omega)$ files for Isotropic\_sqw component. \\
       \hline
     \end{tabular}
     \caption{Data files of the \MCS\ library.}
