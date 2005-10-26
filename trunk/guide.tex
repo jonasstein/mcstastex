@@ -36,7 +36,7 @@ and the values of $R_0, m, Q_c, W$, and $\alpha$ for the mirror.
 As a special case, if $m=0$ then the reflectivity is zero for all $Q$,
 \textit{i.e.}\ the surface is completely absorbing.
 
-This component may produce wrong results with gravitation support.
+This component may produce wrong results with gravitation.
 
 \subsection{Mirror reflectivity}
 \label{ss:mirrorreflect}
@@ -69,6 +69,7 @@ material. At higher values of $Q$, the reflectivity starts falling
 linearly with a slope $\alpha$ until a "soft cut-off" at $Q = m Q_{\rm c}$.
 The width of this cut-off is denoted $W$. See the example reflection curve in
 figure~\ref{f:reflectivity}.
+It is important to notice that when $m < 1$, the reflectivity remains constant at $R=R_0$ up to $q=Qc$, and \emph{not} $m.Q_c$. This means that $m < 1$ parameters behave like $m=1$ materials.
 
 \subsection{Algorithm}
 In the components, the neutron weight is adjusted with the amount $\pi_i = R$.
@@ -197,7 +198,7 @@ components of {\bf n} and {\bf O} are zero.
 
 \section{Guide\_channeled: A guide section component with multiple channels}
 \label{s:channeled_guide}
-\index{Optics!Guide with channels (non focusing)}
+\index{Optics!Guide with channels (straight, non focusing)}
 
 \component{Guide\_channeled}{System}{$w_1, h_1$, $w_2, h_2$, $l$, $k$, $m_x, m_y$}{$d, R_0, Q_{cx}, Q_{cy}, W, \alpha_x, \alpha_y$}{partly validated, no gravitation support}
 
@@ -235,7 +236,7 @@ values of $w_1$ and $w_2$) is buggy
 
 \section{Guide\_gravity: A guide with multiple channels and gravitation handling}
 \label{s:guide_gravity}
-\index{Optics!Guide with channels and gravitation handling}
+\index{Optics!Guide with channels and gravitation handling (straight)}
 
 \component{Guide\_gravity}{System}{$w_1, h_1$, $w_2, h_2$, $l$, $k$, $m$}{$d, R_0, Q_c, W, \alpha$, wavy, chamfers, $k_h$, $n$, $G$}{fully validated, {\bf with} gravitation support}
 
@@ -256,4 +257,48 @@ within which chamfers are taken into account.
 
 To activate gravitation support, either select the \MCS\ gravitation support,
 or set the gravitation field strength $G$ (e.g. -9.81 on Earth).
+
+\section{Bender: a bender model (non polarizing)}
+\index{Optics!Bender (non polarizing)}
+
+\component{Bender}{Philipp Bernhardt}{$r, W_{in},l,w,h $}{$k,d,R_{0[a,i,s]},\alpha_{[a,i,s]},m_{[a,i,s]},Q_{c[a,i,s]},W_{[a,i,s]}$}{partly validated, no gravitation support}
+
+The Bender component is simulating an ideal curved neutron guide (bender). It is bent to the negative X-axis and behaves like a parallel guide in the Y axis. Opposite curvature may be achieved by a $(0,0,180)$ rotation (along Z-axis).
+
+Bender radius $r$, entrance width $w$ and height $h$ are required parameters. To define the length, you may either enter the deviation angle $W_{in}$ or the length $l$. Three different reflectivity profiles $R_0,Q_c,W,m,\alpha$ can be given (see section~\ref{s:mirror}): for outer
+walls (index $a$), for inner walls (index $i$) and for the top and bottom walls (index $s$).
+
+To get a better transmission coefficient, it is possible to split the bender into $k$ channels which are separated by partitions with the thickness of $d$. The partitioning walls have the same coating as the exterior walls.
+
+Because the angle of reflection doesn't change, the routine
+calculates the reflection coefficent for the concave and, if necessary, for the convex wall only onces, together with the number of reflections.
+Nevertheless the exact position, the time, and the divergence is calculated at the end of the bender, so there aren't any approximations.
+
+The component is shown \emph{straight} on geometrical views (mcdisplay/Trace), and the next component may be placed directly at distance $r.W_{in} = l$ \emph{without} rotation.
+
+Results have been compared succesfully with analytical formula in the case of an ideal reflection and cross-checked with the program \verb+haupt+.
+
+An other implementation of the Bender is available as the contributed component Guide\_curved.
+
+\section{Curved guides}
+\index{Optics!Curved guides (polygonal model)}
+
+Real curved guides are usually made of many straight elements (about 1 m long) separated with small gaps (e.g. 1 mm). Sections of about 10 m long are separated with bigger gaps for accessibility and pumping purposes.
+
+We give here an example description of such a section. Let us have a curved guide of total length $L$, made of $n$ elements with a curvature radius $R$. Gaps of size $d$ separate elements from each other. The rotation angle of individual straight guide elements is $\alpha_z = (L+d)/R*180/\pi$ in degrees.
+
+In order to build an independent curved guide section, we define \verb+Arm+ components at the begining and end of it.
+\begin{verbatim}
+COMPONENT CG_In = Arm() AT (...)
+
+COMPONENT CG_1  = Guide_gravity(l=L/n, ...)
+AT (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT CG_2  = Guide_gravity(l=L/n, ...)
+AT (0,0,L/n+d) RELATIVE PREVIOUS
+ROTATED (0, (L/n+d)/R*180/PI, 0) RELATIVE PREVIOUS
+...
+COMPONENT CG_Out = Arm() AT (0,0,L/n) RELATIVE PREVIOUS
+\end{verbatim}
+The \verb+Guide+ component should be duplicated $n$ times by copy-paste, but changing the instance name, e.g. CG\_1, CG\_2, ..., CG\_n.
 

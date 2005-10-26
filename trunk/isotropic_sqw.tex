@@ -4,6 +4,7 @@
 \index{Coherent and incoherent isotropic scatterer}
 \index{Inelastic scattering}
 \index{Sample environments}
+\index{Multiple scattering}
 
 \component{Isotropic\_Sqw}{V. Hugouvieux, E. Farhi}{Sqw$\_{coh}$, $\sigma_{coh}$, Sqw$\_{inc}$, $\sigma_{inc}, V_\rho, \sigma_{abs}, T$,$x_{width},y_{height},z_{thich},r_o, r_i$, thickness}{$q_{min}, q_{max}, \omega_{min}, \omega_{max}, d\phi$, order}{not fully validated}
 
@@ -15,7 +16,7 @@
 \label{f:isotropic-sqw}
 \end{figure}
 
-The component assumes that the sample has the structure of an isotropic material. This stands for liquids, glasses (amorphous systems), polymers, gaz, and may be extended to powders.
+The component assumes that the sample has the structure of an isotropic material. This stands for liquids, glasses (amorphous systems), polymers, gaz, and may be extended to powders. It simulates coherent and incoherent neutron scattering, and may be used to model isotropic samples, but also sample environments as concentric geometries are possible. The may input for the component is $S(q,\omega)$ tables, or powder structure files.
 
 \subsection{Neutron interaction with matter}
 
@@ -274,6 +275,8 @@ The last two parameters may as well be specified in the data file header with li
 \end{verbatim}
 The powder description is then translated into $S(q)$ by using Eq. (\ref{eq:sq-F2}).
 In this case, the density $\rho = 1/V_0$ is the inverse volume of the unit cell.
+
+As the component builds an $S(q)$ from the powder structure description, the accuracy of the Isotropic\_sqw component is limited by the binning during that conversion. This is usually enough to describe sample environments including powders (aluminium, copper, ...), but it is recommanded to rather use PowderN for accurate powder diffraction, eventthough this latter does not implement multiple scattering.
 
 \subsubsection{Concentric geometries, sample environment}
 \index{Sample environments}
