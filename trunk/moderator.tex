@@ -6,8 +6,9 @@
 
 The simple time-of-flight source component {\bf Moderator} resembles
 the source component {\bf Source\_simple} described in \ref{source-simple}.
-{\bf Moderator} is circular and focuses
-on a rectangular target. Further, the initial velocity is chosen
+{\bf Moderator} is circular with radius $r_s$ and focuses
+on a rectangular target of area $w \times h$ in a distance $z_f$. 
+The initial velocity is chosen
 with a linear distribution within an interval, defined by the
 minimum and maximum energies, $E_0$ and $E_1$, respectively.
 
@@ -28,8 +29,5 @@ where the decay constant is given by
 \right.
 \end{equation}
 
-The input parameters for {\bf Moderator} are the source radius, $r_{\rm s}$,
-the minimum and maximum energies, $E_0$ and $E_1$ (in meV),
-the distance to the target, $z_{\rm f}$, the dimensions of the target,
-$w$ and $h$, and the decay parameters
+The decay parameters are
 $\tau_0$ (in $\mu$s), $E_c$, and $\gamma$ (both in meV).

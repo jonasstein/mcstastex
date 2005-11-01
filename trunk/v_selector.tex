@@ -2,7 +2,7 @@
 \label{vselector}
 \index{Optics!Velocity selector}
 
-\component{V\_selector}{System}{$L_0$, $L_1$, $\omega$, $r_0$, $\phi$, $N$}{}{validated, position is center of input aperture}
+\component{V\_selector}{System}{$L_0$, $L_1$, $\omega$, $r_0$, $\phi$, $N$, height, width}{}{validated, position is center of input aperture}
 
 \begin{figure}
   \begin{center}
@@ -27,18 +27,20 @@ collimator blades, $L_1$, the height from rotation axix to the slit
 centre, $r_0$, the rotation speed $\omega$ (in rpm), 
 and the blade thickness $t$.
 
-The local coordinate system is centered at the slit centre.
+The local coordinate system has its Origo at the slit centre.
 
 The component {\rm Selector} produces equivalent results.
 
 \subsection{Velocity selector transmission}
+
 By rotating the selector you allow
-transmittance of neutrons rays with velocities around a mean value, given by
+transmittance of neutrons rays with velocities around a nominal value, given by
 \begin{equation}
 V_0 = \omega L / \phi ,
 \end{equation}
 which means that the selector has turned the twist angle
-$\phi$ during the typical neutron flight time $L/V_0$.
+$\phi$ during the typical neutron flight time $L/V_0$. The actual twist angle
+is $\phi' = \omega t = \omega L / V$.
 
 Neutrons having a velocity slightly different from $V_0$
 will either be transmitted or absorbed depending on the exact position

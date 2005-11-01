@@ -1,10 +1,8 @@
-% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
-
 \chapter{Advanced optical components: mirrors, guides, and choppers}
 \index{Optics|textbf}
 
 This section describes advanced neutron optical
-components such as supermirrors and guides as well as various rotating choppers.
+components such as supermirrors and guides.
 A description of the reflectivity of a supermirror is found
 in section~\ref{s:mirror}.
 
@@ -14,25 +12,18 @@ in section~\ref{s:mirror}.
 \component{Mirror}{System}{$l$, $h$, $m$}{$R_0, Q_c, W, \alpha$}{validated, no gravitation support}
 
 The component {\bf Mirror}
-models a single rectangular neutron mirror plate. It can
-be used to \textit{e.g.}~assemble a complete neutron guide by putting multiple
+models a single rectangular neutron mirror plate. It can be used 
+as a sample component or to \textit{e.g.}~assemble a complete neutron guide by putting multiple
 mirror components at appropriate locations and orientations in the
 instrument definition, much like a real guide is build from individual
 mirrors.
 
-The mirror is assumed to lie in the first quadrant of the
+In the local coordinate system, the mirror lies in the first quadrant of the
 $x$-$y$ plane, with one corner at $(0,0,0)$.
-If the neutron trajectory intersects the mirror plate, it is
-reflected, otherwise it is left untouched. Since the mirror lies in the
-$x$-$y$ plane, an incoming neutron with velocity
-${\bf v}_{\rm i} = (v_x,v_y,v_z)$
-is reflected with velocity ${\bf v}_{\rm f} = (v_x,v_y,-v_z)$.
-The computation of the reflectivity is handled as detailed in
-section~\ref{ss:mirrorreflect}.
 
 The input parameters of this component are
 the rectangular mirror dimensions $(l, h)$
-and the values of $R_0, m, Q_c, W$, and $\alpha$ for the mirror.
+and the values of $R_0, m, Q_c, W$, and $\alpha$ for the mirror reflectivity.
 As a special case, if $m=0$ then the reflectivity is zero for all $Q$,
 \textit{i.e.}\ the surface is completely absorbing.
 
@@ -72,10 +63,20 @@ figure~\ref{f:reflectivity}.
 It is important to notice that when $m < 1$, the reflectivity remains constant at $R=R_0$ up to $q=Qc$, and \emph{not} $m.Q_c$. This means that $m < 1$ parameters behave like $m=1$ materials.
 
 \subsection{Algorithm}
-In the components, the neutron weight is adjusted with the amount $\pi_i = R$.
-To avoid spending large amounts of computation time on very low-weight
+The function of the component can be described as
+\begin{enumerate}
+\item Propagate the neutron ray to the plane of the mirror.
+\item If the neutron trajectory intersects the mirror plate, it is
+reflected, otherwise it is left untouched. 
+\item Reflection of the incident velocity
+${\bf v}_{\rm i} = (v_x,v_y,v_z)$
+gives the final velocity ${\bf v}_{\rm f} = (v_x,v_y,-v_z)$.
+\item Calculate $Q=2 m_{\rm n} v_z / \hbar$. 
+\item The neutron weight is adjusted with the amount $\pi_i = R(Q)$.
+\item  To avoid spending large amounts of computation time on very low-weight
 neutrons, neutrons for which the reflectivity is lower than about
 $10^{-10}$ are ABSORB'ed.
+\end{enumerate}
 
 \begin{figure}
   \begin{center}
@@ -102,15 +103,14 @@ guide is centered on the $z$ axis with rectangular entrance and exit
 openings parallel to the $x$-$y$ plane. The entrance has the dimensions
 $(w_1,h_1)$ and placed at $z=0$. The exit is of dimensions $(w_2,h_2)$
 and is placed at $z=l$ where $l$ is the guide length. See
-figure~\ref{f:guide}. Neutrons not clearing the guide entrance are
-ABSORB'ed. For a more general guide simulation, see {\bf Channeled\_guide}
-in section~\ref{s:channeled_guide}.
-
-Further input parameters are the values of $R_0, m, Q_c, W$, and $\alpha$
-as for {\bf Mirror}.
+figure~\ref{f:guide}.
+The reflecting properties are given by the values of 
+$R_0, m, Q_c, W$, and $\alpha$, as for {\bf Mirror}.
 
 {\bf Guide} may produce wrong results with gravitation support.
 Use {\bf Guide\_gravity} (section \ref{s:guide_gravity}) in this case.
+For a more general guide simulation, see {\bf Channeled\_guide}
+in section~\ref{s:channeled_guide}.
 
 \begin{figure}
   \begin{center}
@@ -153,17 +153,6 @@ For a neutron that leaves the guide directly through the guide exit we have
 t_{\rm exit} = \frac{l - z_0}{v_z}
 \end{equation}
 
-\subsection{Algorithm}
-To compute the interaction of the neutron
-with the guide, the neutron is initially propagated to the $z = 0$ plane of the
-guide entrance. If it misses the entrance, it is ABSORB'ed. Otherwise,
-we repeatedly compute the time of intersection with the
-four mirror sides and the guide exit. The smallest positive $t$ thus
-found gives the time of the next intersection with the guide (or in the
-case of the guide exit, the time when the neutron leaves the guide). The
-neutron is propagated to this point, the reflection from the side is
-computed and the process is repeated until the neutron leaves the guide.
-
 The reflected velocity ${\bf v}_{\rm f}$ of the neutron with incoming velocity
 ${\bf v}_{\rm i}$ is computed by the formula
 \begin{equation}
@@ -184,6 +173,22 @@ ${\bf v}_{\rm f}$ are the initial and final velocities, respectively,
 and {\bf n} is a vector normal to the mirror surface.}
 \label{f:guidereflect}
 \end{figure}
+
+\subsection{Algorithm}
+\begin{enumerate}
+\item The neutron is initially propagated to the $z = 0$ plane of the
+guide entrance. 
+\item If it misses the entrance, it is ABSORB'ed. 
+\item Otherwise, repeatedly compute the time of intersection with the
+four mirror sides and the guide exit. 
+\item The smallest positive $t$ thus
+found gives the time of the next intersection with the guide (or in the
+case of the guide exit, the time when the neutron leaves the guide). 
+\item Propagated the neutron ray to this point. 
+\item Compute the reflection from the side.
+\item Update the neutron weight factor by the amount $\pi_i = R(Q)$.
+\item Repeat this process until the neutron leaves the guide.
+\end{enumerate}
 
 There are a few optimizations possible here to avoid redundant
 computations. Since the neutron is always inside the guide during the
@@ -207,8 +212,9 @@ described in the previous section. It allows the specification
 of different supermirror parameters for the horizontal and vertical
 mirrors, and also implements guides with multiple channels as used in
 neutron bender devices. By setting the $m$ value of the supermirror
-coatings to zero, nonreflecting walls are
-simulated; this may be used to simulate a Soller collimator.
+coatings to zero, nonreflecting walls are simulated; 
+this may be used for a very detailed simulation of a Soller collimator,
+see section~\ref{s:coll_linear}.
 
 The input parameters are $w_1$, $h_1$, $w_2$, $h_2$, and $l$
 to set the guide dimensions as for {\bf Guide}
@@ -220,18 +226,24 @@ $m_x$, and $m_y$ to set the supermirror parameters as described under {\bf Guide
 and those with \textit{y} denote the horizontal ones).
 
 \subsection{Algorithm}
-The implementation is based on that of {\bf Guide}. Initially, the
-channel which the neutron will enter is computed. The $x$ coordinate is
-then shifted so that the channel can be simulated as a single instance
-of the Guide component. Finally the coordinates are restored when the
+The implementation is based on that of {\bf Guide}. 
+\begin{enumerate}
+\item Calculate the channel which the neutron will enter.
+\item Shift the $x$ coordinate so that the channel can be simulated 
+as a single instance of the {\bf Guide} component. 
+\item (do the same as in {\bf Guide}.) 
+\item Restore the coordinates when the
 neutron exits the guide or is absorbed.
+\end{enumerate}
 
 \subsection{Known problems}\index{Bugs}
-This component may produce wrong results with gravitation support. Use Guide\_gravity (section \ref{s:guide_gravity}) in this case.
-Additionally, the focusing channeled geometry (for $k > 1$ and different
+\begin{itemize}
+\item This component may produce wrong results with gravitation support. 
+Use Guide\_gravity (section \ref{s:guide_gravity}) in this case.
+\item The focusing channeled geometry (for $k > 1$ and different
 values of $w_1$ and $w_2$) is buggy
 (wall slopes are not computed correctly, and the component 'leaks' neutrons).
-
+\end{itemize}
 \newpage
 
 \section{Guide\_gravity: A guide with multiple channels and gravitation handling}
