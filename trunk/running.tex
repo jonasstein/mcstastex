@@ -1384,12 +1384,29 @@ To use the \verb+mcdoc+ front-end, the program Perl should be available.
 \label{s:mcstas2vitess}
 \index{Tools!mcstas2vitess|textbf}
 \index{Library!vitess-lib}
+\index{Vitess}
 
-Any \MCS\ component may be translated for usage with Vitess (starting from version 2.3). The syntax is simply \index{Library!Components}
+Any \MCS\ component may be translated for usage with Vitess (starting from Vitess version 2.3). The syntax is simply \index{Library!Components}
 \begin{quote}
-  \texttt{mcstas2vitess {\it file.comp\/}}
+  \texttt{mcstas2vitess {\it Compo.comp\/}}
 \end{quote}
 This will create a Vitess module of the given component.
+
+Let us assume the component \verb+Compo+ shall be transferred. The tool first creates a small instrument called \verb+McStas_Compo.instr+ consisting of
+\begin{enumerate}
+\item component Vitess\_input
+\item component \verb+Compo+
+\item component Vitess\_output
+\end{enumerate}
+
+This file is parsed to generate the C file \verb+McStas_Compo.c+. The last step is to compile the C-file and build the executable \verb'McStas_compo'. For both steps \MCS\ is used as for any other instrument. \verb'McStas_compo' has to be moved to the directory 'MODULES' that contains all VITESS executables.
+
+Additionally, a file \verb'McStas_compo.tcl' is created that contains (most of) what is needed to get a GUI window in VITESS. To obtain that, the content of this file has to added into 'vitess.tcl'. To make it accessible within the given GUI structure of VITESS, it is necessary to add the name 'compo' - NO capital letters ! - to one of the folders in 'proc makeModuleSets{}' (beginning of 'vitess.tcl').
+
+The component Virtual\_input transfers all neutron parameters to the \MCS\ definition of the co-ordinate system and the units used. (Of course Virtual\_output transfers it back.) This means that 'Compo' works with the McStas definition of co-ordinate system and units, while it is used as a VITESS module. Be careful with axis labeling.
+
+The original parameters of the component and its position have to be given. The origin of this shift is the centre of the end of the previous module, (as it is always the case in VITESS).
+
 To use the \verb+mcstas2vitess+ front-end, the program Perl should be available.
 
 \subsection{Translating \MCS\ results files between Matlab and Scilab formats}

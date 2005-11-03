@@ -1,6 +1,6 @@
 \section{FermiChopper:The Fermi-chopper}
 
-\component{FermiChopper}{M. Poehlmann, C. Carbogno, H. Schober, E. Farhi}{$R,y_{min} y_{max}, \nu,w,length$,Nslit,phase}{$m,Q_c,R_0,\alpha, W$,zero\_time}{validated}
+\component{FermiChopper}{M. Poehlmann, C. Carbogno, H. Schober, E. Farhi}{$R,y_{min} y_{max}, \nu,w,length$,Nslit,phase}{$m,Q_c,R_0,\alpha, W, R_{slit}$,zero\_time}{validated}
 \index{Optics!Fermi Chopper}
 
 \begin{figure}
@@ -23,9 +23,9 @@ In this implementation, the slits are straight, but may be coated with super-mir
 
 The angular speed of the chopper is $\omega = 2\pi \nu$, where $\nu$ is the rotation frequency. The angle $phase$ for which the chopper is in the 'open' state for most of the neutrons coming in (z' axis of the rotating frame parallel to the z axis of the static frame) is also an input parameter. The time window may optionally be shifted to zero when setting the \verb+zero_time=1+ option.
 
-The curvature of the slit channels is specified with the $R_{slit}$ parameter. Positive sign indicates that the deviation 'bump' due to curvature is in the positive side, and the center of curvature is in the $x'$ negative side.
+The curvature of the slit channels is specified with the $R_{slit}$ parameter. Positive sign indicates that the deviation 'bump' due to curvature is in the $x'$ positive side, and the center of curvature is in the $x'$ negative side.
 
-The component was validated extensivelly by K. Lieutenant. As an alternative, and for curved slit packages, one may use the {\bf Vitess\_ChopperFermi} component.
+The component was validated extensivelly by K. Lieutenant. As an alternative, one may use the {\bf Vitess\_ChopperFermi} component (eventhough slower and without super-mirror support).
 
 \subsection{Propagation in the Fermi-chopper}
 
@@ -125,7 +125,7 @@ The propagation is finalized when determining the intersection of the neutron tr
 
 \subsubsection{Curved slit packages}
 
-The effect of curvature can significantly improve the flux and energy resolution shape for thermal and hot neutrons.
+The effect of curvature can significantly improve the flux and energy resolution shape.
 
 As all $(xz)$ cordinates are transformed into $(x'z')$, the most efficient way to take into account the curvature is to include it in the transformation by 'morphing' the curved rotating real space to a straight still frame. Then instead of solving
 \begin{equation}x'(t) = d +\Delta_{x'}(z') {\rm\ where\ } \Delta_{x'}(z')=R_{slit}.(1-\sqrt{1-(z'/R_{slit})^2})

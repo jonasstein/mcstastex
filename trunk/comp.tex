@@ -11,7 +11,7 @@ monochromators, samples, monitors, and other components.
 \item The \MCS\ library functions and definitions
   that aid in the writing of simulations and components in
   Appendix~\ref{c:kernelcalls}.
-\item A detailed explanation of the use of random numbers 
+\item A detailed explanation of the use of random numbers
    in Appendix~\ref{s:random}.
 \item An explanation of the \MCS\ terminology in Appendix~\ref{s:terminology}.
 \end{itemize}
@@ -30,7 +30,7 @@ they contribute as well as in this manual.
 \MCS\ users are encouraged to send their
 contributions to us for inclusion in future releases.
 
-Some contributed components have later been taken over 
+Some contributed components have later been taken over
 for further development by the \MCS\ system
 group, with permission from the original authors.
 The original authors will still appear both in the component code and in the
@@ -64,13 +64,13 @@ an interaction with the component in question.
 %\end{equation}
 
 The spin of the neutron is given a special treatment. Despite
-the fact that each physical neutron has a well defined spin value, 
+the fact that each physical neutron has a well defined spin value,
 the \MCS\ spin vector
 {\bf s} can have any length between zero (unpolarized beam) and unity
 (totally polarized beam). Further, all three cartesian components of
 the spin vector are present simultaneously, although this is physically
 not permitted by quantum mechanics.
-Presently, no official \MCS\ component utilize the neutron spin. 
+Presently, no official \MCS\ component utilize the neutron spin.
 
 \section{Component coordinate system}
 All mentioning of component geometry refer to
@@ -167,6 +167,17 @@ File extensions are not compulsory but help in identifying relevant files per ap
 \end{table}
 
 \section{Component validation}
+
+Some components were checked for release 1.9: the Fermi choppers, the velocity selectors, 2 of the guide components and Source\_gen. The results are summarized in a talk available online (\verb+http://www.ill.fr/tas/mcstas/doc/ValMcStas.pdf+).
+
+Velocity selector and Fermi chopper were treated as black boxes and the resulting line shapes cross-checked against analytical functions for some cases.
+The component 'Selector' showed no dependence on the distance between guide and selector axe. This is corrected at the moment. Apart from that the component yielded correct results.
+That was different with the Fermi chopper components. The component 'Chopper\_Fermi', which has been part of the \MCS\ distribution for a long time, gave wrong results and was removed from the package. The new 'Vitess\_ChopperFermi' (transferred from the VITESS package) showed mainly correct behaviour. Little bugs were corrected after the first tests. At the moment, there is only the problem left that it underestimates the influence of a shadowing cylinder. With the contributed 'FermiChopper' component, there were also minor problems, which are all corrected in the meantime.
+
+For the guides, several trajectories through different kinds of guides (straight, convergent, divergent) were calculated analytically and positions, directions and losses of reflections compared to the values calculated in the components. This was done for 'Guide' and 'Guide\_gravity'; in the latter case calculations were performed with and without gravity. Additionally a cross-check against the VITESS guide module was performed. Waviness, chamfers and channels were not checked.
+After correction of a bug in 'Guide\_gravity', both components worked perfectly (within the conditions tested.)
+
+'Source\_gen' was cross-checked against the VITESS source module for the case of 3 Maxwellians describing the moderator characteristic and typical sizes the guide and its distance to the moderator. It showed the same line shape as a functions of wavelength and divergence and the same absolute values.
 
 \section{Disclaimer, bugs}\index{Bugs}
 
