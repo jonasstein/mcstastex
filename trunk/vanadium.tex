@@ -25,14 +25,17 @@ outer radius $r_{\rm o}$, and height $h$, see figure \ref{f:v-sample}.
 \label{f:v-sample}
 \end{figure}
 
-%When calculating the neutron path length within
-%the cylinder, the kernel function
-%\verb+cylinder_intersect+
-%is used twice, once for the outer radius and once
-%for the inner radius.
-
 Alternatively, the sample geometry can be made rectangular 
 by specifying the width, $w_x$, the height, $h_y$, and the thickness, $t_z$.
+
+The incoherent and absorption cross sections for V are default
+for the component. For other choices, the
+parameters $\sigma_{\rm inc}$, $\sigma_{\rm abs}$,
+and the unit cell volume $V_0$ should be specified.
+For a loosely packed sample, also the packing factor, $f_{\rm pack}$
+can be specified (default value of 1).
+
+\subsection{Physics and algorithm}
 
 The incoherent scattering gives
 a uniform angular distribution of the scattered
@@ -47,6 +50,7 @@ of
 g(\Omega) = \frac{1}{4\pi}
   \frac{x_{\rm t}^2+y_{\rm t}^2+z_{\rm t}^2}{(\pi r_{\rm t}^2)}.
 \end{equation}
+*** Move this to general Sample section ??? ***
 
 The focusing can alternatively be performed on a rectangle with dimensions
 $w_{\rm focus}$, $h_{\rm focus}$, or uniformly in angular space
@@ -55,21 +59,21 @@ using $w_{\rm foc, angle}$, $h_{\rm foc, angle}$.
 The focusing location can be picked to be a downstream component by
 specifying \verb+target_index+.
 
-The incoherent and absorption cross sections for V are default
-for the component. For other choices, the
-parameters $\sigma_{\rm inc}$, $\sigma_{\rm abs}$,
-and the unit cell volume $V_0$ should be specified.
-For a loosely packed sample, also the packing factor, $f_{\rm pack}$
-can be specified (default value of 1).
-
-Note: When simulating a realistic incoherent hollow cylinder sample
-one finds that  the resulting direction dependence
-of the scattered intensity is {\em not} isotropic.
-This is explained by the variation of attenuation with
-scattering angle.
-One test result is shown in the instrument example chapter of the \MCS\ User Manual.
+When calculating the neutron path length within
+the cylinder, the kernel function
+\verb+cylinder_intersect+
+is used twice, once for the outer radius and once
+for the inner radius.
 
 Multiple scattering is not inlcuded in this component. To obtain
 intensities similar to real measured ones, we therefore do not 
 take attenuation from scattering into account for the outgoing
 neutron ray.
+
+\subsection{Remark on functionality}
+When simulating a realistic incoherent hollow cylinder sample
+one finds that  the resulting direction dependence
+of the scattered intensity is {\em not} isotropic.
+This is explained by the variation of attenuation with
+scattering angle.
+One test result is shown in the instrument example chapter of the \MCS\ User Manual.
