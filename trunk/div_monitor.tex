@@ -1,6 +1,7 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
 \section{Divergence\_monitor: A divergence sensitive monitor}
+\label{s:div-monitor}
 \index{Monitors!Divergence monitor}
 \component{Divergence\_monitor}{System}{$x_{\rm min}$, $x_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, $n_{\rm v}$, $n_{\rm h}$, $\eta_{\rm v,max}$, $\eta_{\rm h,max}$, filename}{}{}
 
@@ -15,7 +16,7 @@ $\eta_{\rm h} = \tan^{-1}(v_x/v_z)$ and $\eta_{\rm v} = \tan^{-1}(v_y/v_z)$.
 The neutron counts are being histogrammed
 into $n_{\rm v} \times n_{\rm h}$ pixels. 
 The divergence range accepted is in the vertical direction
-$[-\eta_{\rm v,max}; \eta_{\rm v,max}]$, and simular for the horizontal
+$[-\eta_{\rm v,max}; \eta_{\rm v,max}]$, and similar for the horizontal
 direction.
 
 The output from {\bf PSD\_monitor} is the integrated counts, $n, I, M_2$,
