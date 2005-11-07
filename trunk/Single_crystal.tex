@@ -5,30 +5,75 @@
 \index{Incoherent elastic scattering}
 \index{Multiple scattering}
 
-The Single\_crystal component models a thick, flat single crystal with multiple scattering and absorption with elastic coherent scattering. An elastic incoherent background may also be simulated. It may be used to describe samples for diffraction, but also for accurate monochromator descriptions.
+\component{Single\_crystal}{Kristian Nielsen}{$x_{width}, y_{height}, z_{thick}$,$\vec a, \vec b, \vec c, \Delta d/d$, mosaic, reflections}{$\sigma_{abs}, \sigma_{inc}$, ...}{partially validated, centered}
+
+The {\bf Single\_crystal} component models a thick, flat single crystal 
+with multiple scattering and absorption with elastic coherent scattering. 
+An elastic incoherent background may also be simulated. 
+It may be used to describe samples for diffraction, 
+but also for accurate monochromator descriptions.
+
+The input parameters for the component are \textit{xwidth},
+\textit{yheight}, and \textit{zthick} to define the dimensions of the
+crystal in meters (area is centered); \textit{delta\_d\_d} to give the
+value of $\Delta d/d$ (no unit);
+$(\textit{ax}, \textit{ay}, \textit{az})$, $(\textit{bx}, \textit{by},
+\textit{bz})$, and $(\textit{cx}, \textit{cy}, \textit{cz})$ to define
+the axes of the direct lattice of the crystal (the sides of the unit
+cell) in units of {\AA}ngstr{\o}m; and \textit{reflections}, a string
+giving the name of the file with the list of structure factors to
+consider.
+The mosaic is specified \emph{either} isotropically as
+\textit{mosaic}, \emph{or} anisotropically as \textit{mosaic\_h}
+(rotation around the $Y$ axis), \textit{mosaic\_v} (rotation around the
+$Z$ axis), and \textit{mosaic\_n} (rotation around the $X$ axis); in all
+cases in units of full-width-half-maximum minutes of arc.
+
+Optionally, the absorption cross-section at 2200 m/s and the incoherent
+cross-section may be given as \textit{absorbtion} and
+\textit{incoherent} (in barns), with default of zero; and
+\textit{p\_transmit} may be assigned a fixed Monte Carlo probability for
+transmission through the crystal without any interaction.
+
+The user must specify a list of reciprocal lattice vectors
+$\boldsymbol{\tau}$ to consider along with their structure factors
+$|F_{\boldsymbol{\tau}}|^2$. The user must also specify the coordinates
+(in direct space) of the unit cell axes $\boldsymbol{a}$,
+$\boldsymbol{b}$, and $\boldsymbol{c}$, from which the reciprocal lattice
+will be computed.
+
+In addition to coherent scattering, {\bf Single\_crystal} also
+handles incoherent scattering amd absorption. The incoherent scattering
+cross-section is supplied by the user as a constant 
+$\sigma_{\rm inc}$. The absorption cross-section is supplied by the user at
+2200~m/s, so the actual cross-section for a neutron of velocity $v$ is
+$\sigma_{\rm abs} = \sigma_{2200} \frac{\rm 2200~m/s}{v}$.
 
 \subsection{The physical model}
 
 The textbook expression for the scattering cross-section of a crystal
-is~\cite{squires}:
+is~\cite[ch.3]{squires}:
 \begin{equation}
 \label{eq:sigma_coh_el}
 \left(\frac{d\sigma}{d\Omega}\right)_{\rm coh.el.} =
         N\frac{(2\pi)^3}{V_0}\sum_{\boldsymbol{\tau}}
         \delta(\boldsymbol{\tau} - \boldsymbol{\kappa})|F_{\boldsymbol{\tau}}|^2
 \end{equation}
-Here $|F_{\boldsymbol{\tau}}|^2$ is the structure factor, $N$ is the
+Here $|F_{\boldsymbol{\tau}}|^2$ is the structure factor 
+(defined in section~\ref{s:powder}), $N$ is the
 number of unit cells, $V_0$ is the volume of an
-individual unit cell, and $\boldsymbol{\kappa} = {\bf k}_i - {\bf
-  k}_f$ is the scattering vector. $\delta(\boldsymbol{x})$ is a 3-dimensional delta
+individual unit cell, and $\boldsymbol{\kappa} (= {\bf k}_i - {\bf k}_f)$ 
+is the scattering vector. $\delta(\boldsymbol{x})$ is a 3-dimensional delta
 function in reciprocal space,
 so for given incoming wave vector ${\bf k}_i$ and lattice vector
 ${\boldsymbol{\tau}}$, only a single final wave vector ${\bf k}_f$ is allowed.
+In general, this wavevector will not fulfill the conditions for elastic
+scattering $(k_f = k_i)$.
 In a real crystal, however, reflections are not perfectly sharp. Because
 of imperfection and finite-size effects, there will be a small region
 around $\boldsymbol{\tau}$ in reciprocal space of possible scattering vectors.
 
-The Single\_crystal component simulates a crystal with a mosaic spread
+{\bf Single\_crystal} simulates a crystal with a mosaic spread
 $\eta$ and a lattice plane spacing uncertainty $\Delta d/d$. In such
 crystals the reflections will not be completely sharp;
 there will be a small region around each reciprocal lattice point of the
@@ -64,8 +109,8 @@ If the mosaic is isotropic (the same in all directions), the two
 Gaussian axes perpendicular to $\boldsymbol{\tau}$ are simply arbitrary
 normal vectors of equal length given by the mosaic. But if the mosaic
 is anisotropic, the two perpendicular axes will in general be different
-for each scattering vector. In the absence of anything better, the
-Single\_crystal component uses a model which is at least mathematically
+for each scattering vector. In the absence of anything better, 
+{\bf Single\_crystal} uses a model which is at least mathematically
 plausible and which works as expected in the two common cases:
 (1)~isotropic mosaic, and (2)~two mosaic directions (``horizontal and
 vertical mosaic'') perpendicular to a scattering vector.
@@ -161,20 +206,6 @@ The elastic coherent cross-section is then given by
          |F_{\boldsymbol{\tau}}|^2
 \end{equation}
 
-The user must specify a list of reciprocal lattice vectors
-$\boldsymbol{\tau}$ to consider along with their structure factors
-$|F_{\boldsymbol{\tau}}|^2$. The user must also specify the coordinates
-(in direct space) of the unit cell axes $\boldsymbol{a}$,
-$\boldsymbol{b}$, and $\boldsymbol{c}$, from which the reciprocal lattice
-will be computed.
-
-In addition to coherent scattering, the Single\_crystal component also
-handles incoherent scattering amd absorption. The incoherent scattering
-cross-section is supplied by the user as a constant $\sigma_{\rm
-  inc}$. The absorption cross-section is supplied by the user at
-2200~m/s, so the actual cross-section for a neutron of velocity $v$ is
-$\sigma_{\rm abs} = \sigma_{2200} \frac{\rm 2200~m/s}{v}$.
-
 \subsection{The algorithm}
 
 The overview of the algorithm used in the Single\_crystal component is
@@ -190,9 +221,10 @@ as follows:
   2200} \frac{{\rm 2200~m/s}}{v}$, and the total cross-section
   $\sigma_{\rm tot} = \sigma_{\rm coh}+\sigma_{\rm inc}+\sigma_{\rm abs}$.
 \item\label{enum:crystal-3} The transmission probability is
-  $\exp(\frac{\sigma_{\rm tot}}{V_0}\ell)$ where $\ell$ is the length of
-  the flight path through the crystal. A Monte Carlo choice is made
-  whether the neutron is transmitted or not. Optionally, the user may
+  $\exp(- \frac{\sigma_{\rm tot}}{V_0}\ell)$ where $\ell$ is the length of
+  the flight path through the crystal. A Monte Carlo choice is 
+  performed to determine
+  whether the neutron is transmitted. Optionally, the user may
   set a fixed Monte Carlo probability for the first scattering event,
   for example to boost the statistics for a weak reflection.
 \item\label{enum:crystal-4} For non-transmission, the position at which
@@ -203,7 +235,7 @@ as follows:
 \item\label{enum:crystal-5} For incoherent scattering, the outgoing wave
   vector $\boldsymbol{k}_{\rm f}$ is selected with a random direction.
 \item\label{enum:crystal-6} For coherent scattering, a reciprocal
-  lattice vector is selected by Monte Carlo choice, and
+  lattice vector is selected by a Monte Carlo choice, and
   $\boldsymbol{k}_{\rm f}$ is found (see below).
 \item\label{enum:crystal-7} Adjust the neutron weight as dictated by the
   Monte Carlo choices made.
@@ -217,7 +249,7 @@ considered small enough to allow scattering if it is less than five
 times the maximum axis of the Gaussian, $\textit{dist} \leq
 5\max(\sigma_1,\sigma_2,\sigma_3)$.
 
-\paragraph{Choosing the outgoing wave vector}
+\subsection{Choosing the outgoing wave vector}
 
 The final wave vector $\boldsymbol{k}_{\rm f}$ must lie on the
 intersection between the Ewald sphere and the Gaussian ellipsoid. Since
@@ -334,9 +366,9 @@ $\boldsymbol{k}_{\rm f} = (k_{\rm i}/k'_f)\boldsymbol{k}'_{\rm f}$ to
 normalize the length of $\boldsymbol{k}_{\rm f}$ to correct for the
 (small) error introduced by approximating the Ewald sphere with a plane.
 
-\paragraph{Computing the total coherent cross-section}
+\subsection{Computing the total coherent cross-section}
 
-To get the total coherent scattering cross-section, the differential
+To determine the total coherent scattering cross-section, the differential
 cross-section must be integrated over the Ewald sphere:
 $$
 \sigma_{\rm coh} = \int_{\rm Ewald}
@@ -372,7 +404,7 @@ and~(\ref{eq:crystal-gauss-2}):
 As before, we let $\boldsymbol{g} = L^{-1}(\boldsymbol{t} -
 \boldsymbol{t}_0)$ so that $d\boldsymbol{t} = \det(L) d\boldsymbol{g}$.
 
-\paragraph{Adjusting the neutron weight}
+\paragraph{Neutron weight factor adjustment}
 
 We now calculate the correct neutron weight adjustment for the Monte
 Carlo choices made. In three cases is a Monte Carlo choice made with a
@@ -383,18 +415,19 @@ $\boldsymbol{\tau}$ to scatter from.
 
 If the user has choosen a fixed transmission probability $f({\rm
   transmit}) = p_{\rm transmit}$, the neutron weight must be adjusted by
-$$ \pi({\rm transmit}) = \frac{\Pi({\rm transmit})}{f({\rm transmit})}
+$$ \pi({\rm transmit}) = \frac{P({\rm transmit})}{f({\rm transmit})}
 $$
-where $\Pi({\rm transmit}) = \exp(\frac{\sigma_{\rm tot}}{V_0}\ell)$ is
+where $\P({\rm transmit}) = \exp(-\frac{\sigma_{\rm tot}}{V_0}\ell)$ is
 the physical transmission probability. Likewise, for non-transmission
 the adjustment is
-$$ \pi({\rm no~transmission}) = \frac{1-\Pi({\rm transmit})}{1-f({\rm transmit})}.
+$$ \pi({\rm no~transmission}) = \frac{1-P({\rm transmit})}{1-f({\rm transmit})}.
 $$
 
 Absorption is never explicitly simulated, so the Monte Carlo probability
-of coherent or incoherent scattering is $f({\rm coh}|{\rm inc}) =
-1$. The physical probability of coherent or incoherent scattering is
-$$ \Pi({\rm coh}|{\rm inc}) = \frac{\sigma_{\rm coh} + \sigma_{\rm
+of coherent or incoherent scattering is 
+$f({\rm coh})+f({\rm inc}) = 1$. 
+The physical probability of coherent or incoherent scattering is
+$$ P({\rm coh})+P({\rm inc}) = \frac{\sigma_{\rm coh} + \sigma_{\rm
     inc}}{\sigma_{\rm tot}}, $$
 so again a weight adjustment $\pi({\rm coh}|{\rm inc}) = \Pi({\rm
     coh}|{\rm inc})/f({\rm coh}|{\rm inc})$ is needed.
@@ -408,21 +441,21 @@ for the reciprocal lattice vector $\boldsymbol{\tau}$ is thus
 $$ f(\boldsymbol{\tau}) =
 \frac{r_{\boldsymbol{\tau}}}{\sum_{\boldsymbol{\tau}} r_{\boldsymbol{\tau}}}
 $$
-whereas the physical probability is $\Pi(\boldsymbol{\tau}) = \sigma_{{\rm
+whereas the physical probability is $P(\boldsymbol{\tau}) = \sigma_{{\rm
     coh},\boldsymbol{\tau}}/\sigma_{\rm coh}$. A weight adjustment is
 thus needed of
 $$
 \pi(\boldsymbol{\tau}) =
- \frac{\Pi(\boldsymbol{\tau})}{f(\boldsymbol{\tau})} =
+ \frac{P(\boldsymbol{\tau})}{f(\boldsymbol{\tau})} =
  \frac{\sigma_{{\rm coh},\boldsymbol{\tau}}
-  \sum_{\boldsymbol{\tau}} r_{\boldsymbol{\tau}}}{\sigma_{\rm coh}
-  r_{\boldsymbol{\tau}}}.$$
+  \sum_{\boldsymbol{\tau}} r_{\boldsymbol{\tau}}}
+ {\sigma_{\rm coh} \; r_{\boldsymbol{\tau}}}.$$
 
-\subsection{The implementation}
+In most cases, however, only one reflection is possible, whence $\pi=1$.
 
-\component{Single\_crystal}{Kristian Nielsen}{$x_{width}, y_{height}, z_{thick}$,$\vec a, \vec b, \vec c, \Delta d/d$, mosaic, reflections}{$\sigma_{abs}, \sigma_{inc}$, ...}{partially validated, centered}
+\subsection{Implementation details}
 
-The equations describing the Single\_crystal simulation are quite
+The equations describing {\bf Single\_crystal} are quite
 complex, and consequently the code is fairly sizeable. Most of it is
 just the expansion of the vector and matrix equations in individual
 coordinates, and should thus be straightforward to follow.
@@ -455,24 +488,3 @@ may also be used, but as the equivalent $\vec q$ vectors are superposed, not
 all Bragg spots will be simulated, and the intensity will be scaled by the
 multiplicity for each the spot.
 
-The input parameters for the component are \textit{xwidth},
-\textit{yheight}, and \textit{zthick} to define the dimensions of the
-crystal in meters (area is centered); \textit{delta\_d\_d} to give the
-value of $\Delta d/d$ (no unit);
-$(\textit{ax}, \textit{ay}, \textit{az})$, $(\textit{bx}, \textit{by},
-\textit{bz})$, and $(\textit{cx}, \textit{cy}, \textit{cz})$ to define
-the axes of the direct lattice of the crystal (the sides of the unit
-cell) in units of {\AA}ngstr{\o}m; and \textit{reflections}, a string
-giving the name of the file with the list of structure factors to
-consider.
-The mosaic is specified \emph{either} isotropically as
-\textit{mosaic}, \emph{or} anisotropically as \textit{mosaic\_h}
-(rotation around the $Y$ axis), \textit{mosaic\_v} (rotation around the
-$Z$ axis), and \textit{mosaic\_n} (rotation around the $X$ axis); in all
-cases in units of full-width-half-maximum minutes of arc.
-
-Optionally, the absorption cross-section at 2200 m/s and the incoherent
-cross-section may be given as \textit{absorbtion} and
-\textit{incoherent} (in barns), with default of zero; and
-\textit{p\_transmit} may be assigned a fixed Monte Carlo probability for
-transmission through the crystal without any interaction.
