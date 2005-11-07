@@ -5,10 +5,12 @@
 \component{Res\_sample}{(System); Alan Tennant, HMI}{$r_{\rm i}$, $r_{\rm o}$, $h$, $r_{\rm focus}$, $x_{\rm target}$, $y_{\rm target}$, $z_{\rm target}$, $E_0$, $\Delta E$ }{$x_w$, $y_h$, $z_t$, $x_{\rm focus}$, $y_{\rm focus}$, $a_{\rm v, focus}$, $a_{\rm h, focus}$, target index}{}
 
 The component \textbf{Res\_sample} scatters neutron rays isotropically
-in position and uniformly in energy, within specified intervals. 
+in direction and uniformly in energy.
 Regardless of the state of the incoming neutron ray, 
-all directions and energies for the
-scattered ray have the same probability. The component is meant
+all directions and energies for the scattered ray have the same probability,
+within specified intervals. 
+
+The component is meant
 for computation of the resolution function, but may also be used
 for test and debugging purposes. For actual calculations of the resolution
 function, {\bf Res\_sample} should be used

@@ -6,8 +6,8 @@
 
 The component {\bf Res\_monitor} is used for calculating the
 resolution function of a particular instrument with detector of the
-shape, size, and position as {\bf Res\_monitor}.
-The shape of {\rm Res\_monitor} is by default rectangular,
+given shape, size, and position.
+The shape of {\bf Res\_monitor} is by default rectangular,
 but can be a box, a sphere, a disk, or a cylinder,
 depending on the parameter ``options''.
 The component works like a normal monitor, but
@@ -33,7 +33,7 @@ input parameter to \textbf{Res\_monitor}. For example
 
 The output file is in ASCII format, one line per scattering event, with
 the following columns:
-\begin{enumerate}
+\begin{itemize}
 \item ${\bf k}_{\rm i}$, the three components of the initial wave vector.
 \item ${\bf k}_{\rm f}$, the three components of the final wave vector.
 \item ${\bf r}$, the three components of the position of the scattering
@@ -41,10 +41,10 @@ the following columns:
 \item $p_{\rm i}$, the neutron weight just after the scattering event.
 \item $p_{\rm f}$, the relative neutron weight adjustment from sample to
   detector (so the total weight in the detector is $p_{\rm i}p_{\rm f}$).
-\end{enumerate}
+\end{itemize}
 From ${\bf k}_{\rm i}$ and ${\bf k}_{\rm f}$, we may compute 
 the scattering parameters 
-${\bf Q} = {\bf k}_{\rm i} - {\bf k}_{\rm f}$ and 
+$\kappa = {\bf k}_{\rm i} - {\bf k}_{\rm f}$ and 
 $\hbar \omega = \hbar^2/(2 m_{\rm n})({\bf k}_{\rm i}^2 - {\bf k}_{\rm f}^2)$.
 The vectors are given in the local coordinate system of the resolution
 sample component. The wave vectors are in units of $\mbox{\AA}^{-1}$, the
