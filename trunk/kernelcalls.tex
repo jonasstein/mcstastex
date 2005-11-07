@@ -13,8 +13,9 @@ the \verb+MCSTAS+ library. \index{Library!Components!share}
 \index{Environment variable!MCSTAS}
 
 Within these functions, the 'Run-time' part is available for all
-component/instrument descriptions. The other parts (see
-table~\ref{t:comp-share}) are dynamic, that is they are not
+component/instrument descriptions. The other parts 
+% (see table~\ref{t:comp-share}) 
+are dynamic, that is they are not
 pre-loaded, but only imported once when a component requests it
 using the \verb+%include+ \MCS\ keyword. For instance, within a
 component C code block, (usually SHARE or DECLARE):
@@ -30,9 +31,11 @@ Similarly,
 \end{verbatim}
 will \emph{only} include the 'read\_table-lib.h'.
 The library embedding is done only once for all components (like the
- SHARE section). \index{Keyword!SHARE} For an example of implementation, see the Res\_monitor component.
+ SHARE section). \index{Keyword!SHARE} For an example 
+of implementation, see ´{\bf Res\_monitor}.
 
-Here, we present a short list of both each of the library contents and the run-time features.
+In this Appendix, we present a short list of both each of the library contents 
+and the run-time features.
 
 \section{Run-time calls and functions (\texttt{mcstas-r})}
 \label{s:calls:run-time}
@@ -57,13 +60,16 @@ the neutron rays which have negative propagation times are removed automatically
   \MCS\ simulator to interrupt the simulation of the current neutron
   history and to start a new one.
 \item {\bf PROP\_Z0}. Propagates the neutron to the $z=0$ plane,
-  by adjusting $(x,y,z)$ and $t$ accordingly.
+  by adjusting $(x,y,z)$ and $t$ accordingly from knowledge of the
+  neutron velocity $(vx,vy,vz)$.
   If the propagation time is negative, the neutron ray is absorbed.
+
   For components that are centered along the $z$-axis,
   use the \verb+_intersect+ functions to determine intersection time(s),
   and then a \verb+PROP_DT+ call.
 \item {\bf PROP\_DT}$(dt)$. Propagates the neutron through the
-  time interval $dt$, adjusting $(x,y,z)$ and $t$ accordingly.
+  time interval $dt$, adjusting $(x,y,z)$ and $t$ accordingly
+  from knowledge of the neutron velocity.
 \item {\bf PROP\_GRAV\_DT}$(dt,Ax,Ay,Az)$. Like {\bf PROP\_DT}, but it also
   includes gravity using the acceleration $(Ax,Ay,Az)$. In addition
   to adjusting $(x,y,z)$ and $t$, also $(vx,vy,vz)$ is modified.
@@ -76,7 +82,8 @@ the neutron rays which have negative propagation times are removed automatically
   It should be used e.g
   to indicate that a component has interacted with the neutron ray
   (e.g. scattered or detected).
-  This does not affect the simulation at all, and is mainly used by the
+  This does not affect the simulation (see, however, {\bf Beamstop}), 
+  and it is mainly used by the
   \verb+MCDISPLAY+ section and the \verb+GROUP+ modifier
 %(see~\ref{s:trace} and \ref{s:comp-mcdisplay}).
   See also the SCATTERED variable (below).
@@ -94,7 +101,7 @@ the neutron rays which have negative propagation times are removed automatically
 \index{Library!Run-time!RESTORE\_NEUTRON}
 \index{Library!Run-time!SCATTERED}
 \begin{itemize}
-\item {\bf MC\_GETPAR}(). This may be used in the finally section of an
+\item {\bf MC\_GETPAR}(). This may be used in the FINALLY section of an
   instrument definition to reference the output parameters of a
   component.
 % See page~\pageref{mcgetpar} for details.
@@ -198,7 +205,7 @@ resulting Coord structure.
   Computes a unit vector $(n_x, n_y, n_z)$ normal to the vector
   $(x,y,z)$.
 \item {\bf solve\_2nd\_order}(*$t$, $A$,  $B$,  $C$).
-  Solves the 2$^{nd}$ order equation $At^2 + Bt = C = 0$ and returns
+  Solves the 2$^{nd}$ order equation $At^2 + Bt + C = 0$ and returns
   the smallest positive solution into pointer *$t$.
 \end{itemize}
 
@@ -223,7 +230,7 @@ resulting Coord structure.
   specified in the $type$ field.
 \item {\bf mcinfo\_simulation}{\it (FILE *f, mcformat,
   char *pre, char *name)} is used to append the simulation parameters into file $f$
-  (see for instance the Res\_monitor component).
+  (see for instance {\bf Res\_monitor}).
   Internal variable $mcformat$ should be used as specified.
   Please contact the authors for further information.
 \end{itemize}
@@ -252,7 +259,7 @@ resulting Coord structure.
 \item {\bf rand01}(). Returns a random number distributed uniformly between 0 and 1.
 \item {\bf randnorm}(). Returns a random number from a normal
   distribution centered around 0 and with $\sigma=1$. The algorithm used to
-  get the normal distribution is explained in~\cite{num_rep}, chapter~7.
+  get the normal distribution is explained in Ref.~\cite[ch.7]{num_rep}.
 \item {\bf randpm1}(). Returns a random number distributed uniformly between -1 and 1.
 \item {\bf randvec\_target\_circle}(\&$v_x$, \&$v_y$, \&$v_z$, \&$d\Omega$,
   aim$_x$, aim$_y$, aim$_z$, $r_f$). Generates a random vector $(v_x, v_y,
@@ -272,7 +279,8 @@ resulting Coord structure.
 \item {\bf randvec\_target\_rect}(\&$v_x$, \&$v_y$, \&$v_z$,
   \&$d\Omega$, aim$_x$, aim$_y$, aim$_z$,$height, width, Rot$) is the same as
   randvec\_target\_rect\_angular but $height$ and $width$ dimensions are given
-  in meters. This function is useful to e.g. target at a guide entry window.
+  in meters. This function is useful to e.g. target at a guide entry window
+  or analyzer blade.
 \end{itemize}
 
 \section{Reading a data file into a vector/matrix (Table input, \texttt{read\_table-lib})}
@@ -300,7 +308,16 @@ Available functions to read \emph{a single} vector/matrix are:
   Table structure. Use $rows=columns=0$ not to allocate memory.
   Calls to Table\_Init are optional, since initialization is being
   performed by other functions already.
-\item {\bf Table\_Read}(\&$Table$, $filename$, $block$) reads numerical block number $block$ (0 to catenate all) data from \emph{text} file $filename$ into $Table$, which is as well initialized in the process. The block number changes when the numerical data changes its size, or a comment is encoutered (lines starting by '\verb+# ; % /+'). If the data could not be read, then $Table.data$ is NULL and $Table.rows = 0$. You may then try to read it using Table\_Read\_Offset\_Binary. Return value is the number of read elements.
+\item {\bf Table\_Read}(\&$Table$, $filename$, $block$) 
+  reads numerical block number 
+  $block$ (0 to catenate all) data from \emph{text} file $filename$ into $Table$, 
+  which is as well initialized in the process. 
+  The block number changes when the numerical data changes its size, 
+  or a comment is encoutered (lines starting 
+  by '\verb+# ; % /+'). If the data could not be read, 
+  then $Table.data$ is NULL and $Table.rows = 0$. 
+  You may then try to read it using Table\_Read\_Offset\_Binary. 
+  Return value is the number of elements read.
 \item {\bf Table\_Read\_Offset}(\&$Table$, $filename$, $block$, \&\textit{offset}, $n_{rows}$)
   does the same as Table\_Read except that it starts at offset \textit{offset}
   (0 means begining of file) and reads $n_{rows}$ lines (0 for all).
@@ -382,7 +399,9 @@ This other example for text files shows how to read many data blocks:
   Table_Free_Array(Table);         // free allocated memory for Table
 \end{verbatim}
 
-You may look into, for instance, the Monochromator\_curved component, or the Virtual\_input component for other implementation examples.
+You may look into, for instance, the source files for
+{\bf Monochromator\_curved} or {\bf Virtual\_input}
+for other implementation examples.
 
 \section{Monitor\_nD Library}
 \index{Library!monitor\_nd-lib}
