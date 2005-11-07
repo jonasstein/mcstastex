@@ -22,7 +22,7 @@ The component includes absorption and incoherent scattering.
 
 Next type is Bragg scattering from single crystals.
 The simplest single crystals are in fact the monochromator components
-like {\bf Monochromator\_flat}, presented in section \ref{s:monochromator}.
+like {\bf Monochromator\_flat}, presented in section \ref{s:monochromator_flat}.
 The monochromators are models of a thin mosaic crystal
 with a single scattering vector perpendicular to the surface.
 Much more advanced, the component {\bf Single\_crystal}
@@ -33,10 +33,10 @@ This component also allows anisotropic mosaicity
 and $\Delta d/d$ lattice space variation.
 
 Isotropic small-angle scattering is simulated in {\bf Sans\_Spheres},
-which models scattering from a collection of hard spheres. 
+which models scattering from a collection of hard spheres.
 
 Inelastic scattering from a dispersion is exemplified by
-the component {\bf Phonon\_simple}, which models 
+the component {\bf Phonon\_simple}, which models
 scattering from a single acoustic phonon branch.
 
 For a more general sample model, the {\bf Isotropic\_Sqw} component
@@ -79,7 +79,7 @@ where the wave vector transfer os denoted the {\em scattering vector}
 In analygo, the {\em energy transfer} is given by
 \begin{equation} \label{eq:w-transfer}
 \hbar \omega \equiv E_{\rm i} - E_{\rm f} =
-\frac{\hbar^2}{2 m_{\rm n}} \left( k_{\rm i}^2 - k_{\rm f}^2 \right) . 
+\frac{\hbar^2}{2 m_{\rm n}} \left( k_{\rm i}^2 - k_{\rm f}^2 \right) .
 \end{equation}
 
 \subsection{Weight transformation in samples; focusing}
@@ -137,8 +137,8 @@ P(l_1,\Omega) dl d\Omega =
   \mu^s f_{\rm att}(l_1) f_{\rm att}(l_2) \gamma(\Omega) d\Omega dl ,
 \end{equation}
 where $\gamma(\Omega)$ is the directional distribution
-of the scattered neutrons, and $l_2$ is determined by 
-Monte Carlo chocies of $l_1$, $\Omega$, 
+of the scattered neutrons, and $l_2$ is determined by
+Monte Carlo chocies of $l_1$, $\Omega$,
 and from the sample geometry, see e.g. figure \ref{powderFig}.
 
 In our Monte-Carlo simulations, we may choose the scattering
@@ -182,7 +182,7 @@ There is still room for much more development of functionality in
 \MCS\ samples.
 
 A more general SANS sample is under development.
-In addition, a reflectometry sample will soon be developed.
+In addition, a reflectometry sample will soon be developed. In the mean time, you may use the \verb+SiC+ contributed component.
 
 In general, all samples are assumed to be homogeneous. There would also be
 potential in developing an inhomogeneous sample, e.g. with

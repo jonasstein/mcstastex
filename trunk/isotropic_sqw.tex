@@ -28,11 +28,13 @@ The neutron leaves the scattering point when a suitable $(q, \omega)$ choice has
 
 \subsection{Theoretical side}
 
+\subsubsection{Pair correlation function $g(r)$ and Dynamic structure factor $S(q,\omega)$}
+
 Following Squires (\cite{squires}, p63), the neutron differential scattering cross section for both coherent and incoherent processes is
 \begin{equation}\label{eq:d2sigma}
 \frac{d^2\sigma}{d\Omega dE_f} = \frac{\sigma}{4\pi}\frac{k_f}{k_i} N S(q, \omega)
 \end{equation}
-with usual notations: $N=\rho V$ is the number of atoms in the scattering volume $V$ with density $\rho$, $E_f, E_i, k_f, k_i$ are the energy and wavevectors of final and initial states respectively, and $\sigma$ is the total scattering cross-section. The unit of the dynamical structure factor $S(q,\omega)$ is an inverse energy. We define its norm
+with usual notations: $N=\rho V$ is the number of atoms in the scattering volume $V$ with atomic number density $\rho$, $E_f, E_i, k_f, k_i$ are the energy and wavevectors of final and initial states respectively, and $\sigma$ is the total scattering cross-section. The unit of the dynamical structure factor $S(q,\omega)$ is an inverse energy. We define its norm
 \begin{equation}
 |S| = \iint S(q,\omega) dq d\omega .
 \end{equation}
@@ -44,13 +46,33 @@ S(\vec{q}) &=&\int S(\vec q,\omega) d\omega \label{eq:sq} \\
            &=&1 + \rho \int_V [g(\vec{r})-1] e^{i\vec{q}.\vec{r}} d\vec{r} \\
            &=&1 + \rho \int_{0}^{\infty} [g(r)-1] \frac{\sin(qr)}{qr} 4 \pi r^2 dr {\rm\ in\ isotropic\ materials.}
 \end{eqnarray}
-Both $g(r)$ and $S(q)$ converge to unity for large $r$ and $q$ values respectively, and they are representative of the atoms spatial distribution. Moreover in a liquid $\lim_{q \rightarrow 0} S(q) = \rho k_B T \chi_T$ where $\chi_T=\frac{\partial \rho}{\partial P}_{V,T}$ is the compressibility \cite{Egelstaff67}. These quantities are obtained experimentaly from diffractometers.
-
-On the other hand, we may measure, usually with time-of-flight instruments, the \emph{density of states} $g(\omega)$  which is the fraction of modes whose energy lie between $\omega$ and $\omega+d\omega$ \cite{lovesey84}
+The latter expression, in isotropic materials, may be Fourier transformed as:
 \begin{equation}
-g(\omega) = \frac{\int S(q,\omega) dq}{|S|} .
+\label{eq:gr-sq}
+g(r)-1 =\frac{1}{2\pi^2 \rho} \int_0^\infty q^2 [S(q) -1] \frac{sin(qr)}{qr} dq
 \end{equation}
-This function is normalized to unity, $\int g(\omega) d\omega = 1$ and is a probability distribution of mode energies in the material.
+Both $g(r)$ and $S(q)$ converge to unity for large $r$ and $q$ values respectively, and they are representative of the atoms spatial distribution. In a liquid $\lim_{q \rightarrow 0} S(q) = \rho k_B T \chi_T$ where $\chi_T=(\frac{\partial \rho}{\partial P})_{V,T}$ is the compressibility \cite{Egelstaff67}. In perfect gases, $S(q) = 1$ for all $q$. These quantities are obtained experimentaly from diffractometers.
+
+The static pair correlation function $g(r)$ is the probability to find a neighbouring atom at a given distance (unitless). Since $g(0) = 0$, Eq. (\ref{eq:gr-sq}) provides a useful normalization sum-rule for $S(q)$:
+\begin{equation}
+\label{eq:sq-nomr1}
+\int_0^\infty q^2 [S(q) - 1] dq = -2\pi^2\rho
+\end{equation}
+This means that the integrated oscilations (around 1) of $S(q)$ are directly related to the density of the material $\rho$.
+In practice, the function $S(q)$ is often known on a restricted range $q \in [0, q_{max} ]$, due to either limitations in the sample molecular dynamics simulation, or the measurement itself.
+In first approximation we consider that Eq. (\ref{eq:sq-nomr1}) can be applied in this range, i.e. we neglect the large $q$ contributions. Then, for any non-normnalized data set $S_{raw}$, we may obtain the normalized $S = \alpha S_{raw}$ with
+\begin{equation}
+\label{eq:sq-nomr2}
+\alpha \simeq \frac{q^3_{max}/3 - 2\pi^2 \rho}{\int_0^{q_{max}} q^2 S_{raw}(q) dq }
+\end{equation}
+
+We may measure, e.g. with time-of-flight instruments, the \emph{density of states} $g_{\omega}(\omega)$  which is the fraction of modes whose energy lie between $\omega$ and $\omega+d\omega$ \cite{lovesey84}
+\begin{equation}
+g_{\omega}(\omega) = \frac{\int S(q,\omega) dq}{|S|} .
+\end{equation}
+This function is normalized to unity, $\int g_{\omega}(\omega) d\omega = 1$ and is a probability distribution of mode energies in the material.
+
+\subsubsection{Drawing probabilities from $S(q, \omega)$}
 
 The main idea to implement the scattering from $S(q, \omega)$ is to basically make two consecutive Monte Carlo choices, applying the well known \emph{joint probability} theorem:
 \begin{equation}
@@ -58,25 +80,24 @@ The main idea to implement the scattering from $S(q, \omega)$ is to basically ma
 P(q \cap \omega) = P(\omega).P(q \mid \omega) .
 \end{equation}
 
-Thus we define $P(\omega)$ as the \emph{cumulated distribution} (primitive) of the density of states $g(\omega)$:
+Thus we define $P(\omega)$ as the \emph{cumulated distribution} (primitive) of the density of states $g_{\omega}(\omega)$:
 \begin{equation}\label{eq:Pw}
-P(\omega) = \int_0^\omega g(\omega') d\omega'
+P(\omega) = \int_0^\omega g_{\omega}(\omega') d\omega'
 \end{equation}
-$P(\omega)$ is the probability for an excitation to have an energy lower than $\omega$.
+The function $P(\omega)$ is the probability for an excitation to have an energy lower than $\omega$.
 
-Similarly, we define the conditional probability $P(q \mid \omega)$ to be, for each energy lying between $\omega$ and $\omega+d\omega$, the cumulated distribution of
+Similarly, we define the conditional probability $P(q \mid \omega)$ to be, for each energy lying between $\omega$ and $\omega+d\omega$:
 \begin{eqnarray}\label{eq:Pqw}
-\hat g(q\mid\omega) &=& \frac{S(q, \omega)}{\int S(q,\omega) dq} \\
-P(q \mid \omega)    &=& \int_0^q \hat g(q'\mid\omega) dq'
+\hat g_q(q\mid\omega) &=& \frac{S(q, \omega)}{\int S(q,\omega) dq} \\
+P(q \mid \omega)    &=& \int_0^q \hat g_q(q'\mid\omega) dq'
 \end{eqnarray}
-This former is the density of wavevector transfers for a selected energy transfer, and
-$P(q \mid \omega)$ is the probability for an excitation to have a wavevector lower than $q$, for a given energy transfer $\omega$.
+The former $\hat g_q$ is the density of wavevector transfers for a selected energy transfer, and the latter $P(q \mid \omega)$ is the probability for an excitation to have a wavevector lower than $q$, for a given energy transfer $\omega$.
 
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.9\textwidth]{figures/Sqw_sampling.eps}
   \end{center}
-\caption{The probability functions extracted from $S(q,\omega)$. The energy transfer is first selected from the density of states, then the wavevector is obtained from $\hat g$.}
+\caption{The probability functions extracted from $S(q,\omega)$. The energy transfer is first selected from the density of states, then the wavevector is obtained from $\hat g_q$.}
 \label{f:isotropic-sqw}
 \end{figure}
 
@@ -184,6 +205,7 @@ with $V_0 = 1/\rho$ being the volume of a lattice unit cell. Then we may write t
 \begin{eqnarray}\label{eq:sq-F2}
 S_{coh}(q) = \frac{2(2\pi)^4\rho}{\sigma_{coh}} \sum_{|\tau|} z(q) \delta(\tau - q) |F_\tau)|^2 {\rm\ in\ a\ powder.}
 \end{eqnarray}
+The normalization rule Eq. (\ref{eq:sq-nomr2}) is then applied.
 
 \subsubsection{Important remarks and limitations}
 
@@ -194,7 +216,7 @@ Since the choice of the interaction type, we know that the neutron \emph{must} s
 \end{enumerate}
 then a new $(q, \omega)$ set is drawn, and the process is iterated until sucess or - at last - removal of the neutron event. This latter absorption is then reported at the end of the simulation, as it never occurs in reality - neutrons that scatter do find a suitable $(q, \omega)$ set.\index{Removed neutron events}
 
-A way to avoid this is to focus the $q,\omega$ range from the $S(q, \omega)$ data file to the actual beam characteristics (matching instrument dynamical range). This is done by setting the component parameter $wmax$ to the maximum energy of the incoming beam. In a few words, the $S(q,\omega)$ data set extension in $Q$ and $\omega$ should preferably be smaller than the extension of the incoming beam and the scattered beam of interest for the experiment. Otherwise some Monte carlo choices lead to scattering in non usefull regions of $S$, which reduces dramatically the algorithm efficiency, possibly removing neutrons by underestimating intensity.\index{Bugs}
+A way to avoid this is to focus the $q,\omega$ range from the $S(q, \omega)$ data file to the actual beam characteristics (matching instrument dynamical range). This is done by setting the component parameter $wmax$ to the maximum energy of the incoming beam. In a few words, the $S(q,\omega)$ data set extension in $Q$ and $\omega$ should preferably be smaller than the extension of the incoming beam and the scattered beam of interest for the experiment. Otherwise some Monte carlo choices lead to scattering in non useful regions of $S$, which reduces dramatically the algorithm efficiency, possibly removing neutrons by underestimating intensity.\index{Bugs}
 
 Focusing the $q$ and $\omega$ range, to the one being able to scatter the incoming beam, when using the component does improve significantly the speed of the computation. Additionally, if you restrict the scattering the first order only (parameter order=1), then you may specify the angular vertical extension $d\phi$ of the scattering area to gain optimized focusing. This option does not apply when handling multiple scattering (which emits in $4\pi$ many times before exiting the sample).
 
