@@ -27,7 +27,12 @@
  \par\noindent\mbox{\includegraphics[width=0.27\textwidth]{figures/risoe-logo.eps}} \par
  \vskip 1.5cm
  {\twfvbf \noindent \@title \par} \vskip 20dd \baselineskip 16dd
- {\frtnbf\noindent\@author \par} \par \vfill \baselineskip 12dd
+ {\frtnbf\noindent\@author \par} 
+ \vskip 1.0cm
+   \begin{flushright}
+     \includegraphics[width=0.95\textwidth]{figures/frontpage.ps}
+   \end{flushright}
+   \par \vfill \baselineskip 12dd
  \frtnbf\noindent Ris{\o} National Laboratory, Roskilde, Denmark \par
  \vskip 4dd \noindent\ifcase\month\or
  January\or February\or March\or April\or May\or June\or
@@ -35,12 +40,13 @@
  \space\number\year }
 
 \let\reportlan=\relax
-\def\month{5}                   % Released in May
+\def\month{11}                   % Released in November 2005
 % Need to match front page line breaking.
 \title{User~and~Programmers~Guide~to~\rlap{the}\\ % Avoid overfull message.
  Neutron~Ray-Tracing~Package\\
  \MCS, Version \version\ }
 \author{Peter Willendrup, Emmanuel Farhi, Kim Lefmann,\\
 Klaus Lieutenant and Kristian Nielsen}
+
 \maketitle
 \endgroup
