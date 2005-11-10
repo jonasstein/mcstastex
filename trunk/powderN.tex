@@ -1,30 +1,24 @@
-\section{Powder sample components}
-\label{powder}
-In this section, we consider elastic coherent and incoherent
-scattering from polycrystalline samples. We have chosen to
-simulate the correct physical processes within the powder
-samples on a quite detailed level.
-
 \section{PowderN: A general powder sample}
 \index{Samples!Powder, multiple diffraction line}
 \index{Diffraction}
+\label{powder}
 
 \component{Powder\_N}{System}{$r$, $h$, $\sigma_{\rm abs}$, $\sigma_{\rm inc}$, $V_0$, $f_{\rm pack}$, filename, DW}{}{validation in progress}
 
 The powder diffraction component {\bf PowderN} models a powder sample
-with background coming only from incoherent scattering and and no
-multiple scattering. The description of the powder comes from a 
+with background coming only from incoherent scattering and no
+multiple scattering. The description of the powder comes from a
 file in one of the standard output formats LAZY, FULLPROF, or CRYSTALLOGRAPHICA.
 
 The sample has the shape of a solid cylinder, radius $r$ and height $h$.
-The absorption and incoherent cross sections are given by 
-$\sigma_c^a$ $\sigma_i,c^s$. 
+The absorption and incoherent cross sections are given by
+$\sigma_c^a$ $\sigma_i,c^s$.
 
 The Bragg scattering from the powder,
 $\sigma_c,c^a$ is calculated from the input file, with the parameters
 $Q$, $|F(Q)|^2$, and $j$ for the scattering vector, structure factor, and
 multiplicity, respectively. The volume of the unit cell is denoted $V_0$,
-while the sample packing factor is $f_{\rm pack}$. 
+while the sample packing factor is $f_{\rm pack}$.
 
 %Further, the incoherent scattering is only taken into account
 %by the attenuation of the beam, given by (\ref{e:attenu})
@@ -104,13 +98,13 @@ The strength of the Bragg reflections is given by their structure factors
 where the sum runs over all atoms in one unit cell. This structure factor is
 non-zero only when $Q$ equals a reciprocal lattice vector.
 
-The textbook expression for the scattering cross section 
-corresponding to one Debye-Scherrer cone reads \cite[ch.3.6]{squires}:
+The textbook expression for the scattering cross section
+corresponding to one Debye-Scherrer cone reads \cite[ch.3.6]{squires}, with $V$ being the total sample volume:
 \begin{equation}
-\sigma_{\rm cone} 
+\sigma_{\rm cone}
   = \frac{V}{V_0^2} \frac{\lambda^3}{4 \sin \theta} \sum_Q |F(Q)|^2 .
 \end{equation}
-For our purpose, this expression should be changed slightly. 
+For our purpose, this expression should be changed slightly.
 Firstly, the sum over structure factors for a particular $Q$ is replaced
 by the sum over essentially different reflections multiplied by their
 multiplicity, $j$. Then, a finite packing factor, $f$, is defined for the powder,
@@ -118,10 +112,10 @@ and finally, the Debye-Waller factor is multiplied on the elastic cross section
 to take lattice vibrations into account (no inelastic background is simulated,
 however). We then reach
 \begin{equation}
-\sigma_{\rm cone, Q} 
+\sigma_{\rm cone, Q}
   = j_Q f \exp(-2W) \frac{V}{V_0^2} \frac{\lambda^3}{4 \sin \theta} |F(Q)|^2 ,
 \end{equation}
-in the thin sample approximation. For samples of finite thickness, the 
+in the thin sample approximation. For samples of finite thickness, the
 beam is being attenuated by the attenuation coefficient
 \begin{equation}
 \label{e:attenu}
@@ -136,7 +130,7 @@ circle is $r \sin(2\theta)$. Thus, the detector (in a small angle
 approximation) counts a fraction $h / (2 \pi r \sin(2 \theta))$
 of the scattered neutrons, giving a resulting count intensity:
 \begin{equation}
-I = \Psi \sigma_{\rm cone,Q} \frac{h}{2 \pi r \sin(2\theta)} , 
+I = \Psi \sigma_{\rm cone,Q} \frac{h}{2 \pi r \sin(2\theta)} ,
 \end{equation}
 where $\Psi$ is the flux at the sample position.
 
@@ -179,7 +173,7 @@ The algorithm of {\bf PowderN} can be summarized as
 the following).
 \item Calculate the attenuation coefficients for scattering and absorption.
 \item Perform Monte Carlo choices to determine the scattering position,
-scattering type (coherent/incoherent), and the outgoing direction. 
+scattering type (coherent/incoherent), and the outgoing direction.
 \item Perform the necessary weight factor transformation.
 \end{itemize}
 

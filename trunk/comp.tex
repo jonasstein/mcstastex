@@ -92,41 +92,7 @@ are not reached by any neutron rays, or if neutrons are removed.
 This is usually the sign of either overlapping components
 or a very low intensity.\index{Removed neutron events}
 
-\section{Component source code}
-Source code for all components may be found in the \verb+MCSTAS+ library
-subdirectory of the McStas installation;
-the default is \verb+/usr/local/lib/mcstas/+
-on Unix-like systems and \verb+C:\mcstas\lib+ on Windows systems, but it may be
-changed using the \verb+MCSTAS+ environment variable.
-\index{Environment variable!MCSTAS}
-
-For temporary modification of a component, it is advised to make a copy
-of the component file into the working directory.
-A component file in the local directory will in \MCS\ take precedence over
-a library component of the same name. In case users only require to add new features, preserving the existing features of a component, it is recommanded to make use of the \verb+EXTEND+ keyword\index{Keyword!EXTEND}, as documented in the User Manual.
-
-\section{Documentation}
-As a complement to this Component Manual, we encourage users to use
-the \verb+mcdoc+ front-end which enables to display both the
-catalog of the \MCS\ library, e.g using: \index{Tools!mcdoc}
-\begin{quote}
-  \verb|mcdoc|
-\end{quote}
-as well as the documentation of specific components, e.g with:
-\begin{quote}
-  \verb|mcdoc --text| {\it name} \\
-  \verb|mcdoc| {\it file.comp}
-\end{quote}
-The first line will search for all components matching the {\it name},
-and display their help section as text,
-whereas the second example will display the help corresponding to
-the {\it file.comp} component, using your
-BROWSER\index{Environment variable!BROWSER} setting, or as text if unset.
-The \verb+--help+ option will display the command help, as usual.
-
-An overview of the component library is also given at the \MCS\ home page \cite{mcstas_webpage} and in the User Manual \cite{mcstasmanual}.
-
-\subsection{About data files}\index{Data files}\index{Library!read\_table-lib (Read\_Table)}
+\section{About data files}\index{Data files}\index{Library!read\_table-lib (Read\_Table)}
 Some components require external data files,
 e.g. lattice crystallographic definitions for Laue and powder pattern diffraction,
 $S(q,\omega)$ tables for inelastic scattering,
@@ -150,13 +116,17 @@ File extensions are not compulsory but help in identifying relevant files per ap
       \hline
        {\bf MCSTAS/data} & Description \\
        \hline
- *.lau & Laue pattern file, as issued from Crystallographica or FullProf.
+ *.lau & Laue pattern file, as issued from Crystallographica.
+       For use with Single\_crystal, PowderN, and Isotropic\_Sqw.
        Data: [ h   k   l Mult. d-space 2Theta   F-squared ] \\
+ *.laz & Powder pattern file, as obtained from Lazy/ICSD.
+       For use with PowderN, Isotropic\_Sqw and possibly Single\_crystal.\\
  *.trm & transmission file, typically for monochromator crystals and filters.
        Data: [ k (Angs-1) , Transmission (0-1) ] \\
  *.rfl & reflectivity file, typically for mirrors and monochromator crystals.
        Data: [ k (Angs-1) , Reflectivity (0-1) ] \\
- *.sqw & $S(q,\omega)$ files for Isotropic\_sqw component. \\
+ *.sqw & $S(q,\omega)$ files for Isotropic\_Sqw component.
+       Data: [q] [$\omega$] [$S(q,\omega)$]\\
       \hline
     \end{tabular}
     \caption{Data files of the \MCS\ library.}
@@ -165,6 +135,42 @@ File extensions are not compulsory but help in identifying relevant files per ap
     }
   \end{center}
 \end{table}
+
+\MCS\ itself generates both simulation and monitor data files, which structure is explained in the User Manual (see end of chapter 'Running \MCS\ ').
+
+\section{Component source code}
+Source code for all components may be found in the \verb+MCSTAS+ library
+subdirectory of the McStas installation;
+the default is \verb+/usr/local/lib/mcstas/+
+on Unix-like systems and \verb+C:\mcstas\lib+ on Windows systems, but it may be
+changed using the \verb+MCSTAS+ environment variable.
+\index{Environment variable!MCSTAS}
+
+In case users only require to add new features, preserving the existing features of a component, it is recommanded to make use of the \verb+EXTEND+ keyword\index{Keyword!EXTEND} in the instrument description itself, as documented in the User Manual. For larger modification of a component, it is advised to make a copy
+of the component file into the working directory.
+A component file in the local directory will in \MCS\ take precedence over
+a library component of the same name.
+
+\section{Documentation}
+As a complement to this Component Manual, we encourage users to use
+the \verb+mcdoc+ front-end which enables to display both the
+catalog of the \MCS\ library, e.g using: \index{Tools!mcdoc}
+\begin{quote}
+  \verb|mcdoc|
+\end{quote}
+as well as the documentation of specific components, e.g with:
+\begin{quote}
+  \verb|mcdoc --text| {\it name} \\
+  \verb|mcdoc| {\it file.comp}
+\end{quote}
+The first line will search for all components matching the {\it name},
+and display their help section as text. For instance, \verb+mcdoc .laz+ will list all available Lazy data files, whereas \verb+mcdoc --text Monitor+ will list most Monitors.
+The second example will display the help corresponding to
+the {\it file.comp} component, using your
+BROWSER\index{Environment variable!BROWSER} setting, or as text if unset.
+The \verb+--help+ option will display the command help, as usual.
+
+An overview of the component library is also given at the \MCS\ home page \cite{mcstas_webpage} and in the User Manual \cite{mcstasmanual}.
 
 \section{Component validation}
 

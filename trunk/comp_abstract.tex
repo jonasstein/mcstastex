@@ -280,13 +280,17 @@ Virtual\_output &  Detector-like component that writes neutron state
       \hline
        {\bf MCSTAS/data} & Description \\
        \hline
- *.lau & Laue pattern file, as issued from Crystallographica or FullProf.
+ *.lau & Laue pattern file, as issued from Crystallographica.
+       For use with Single\_crystal, PowderN, and Isotropic\_Sqw.
        Data: [ h   k   l Mult. d-space 2Theta   F-squared ] \\
+ *.laz & Powder pattern file, as obtained from Lazy/ICSD.
+       For use with PowderN, Isotropic\_Sqw and possibly Single\_crystal.\\
  *.trm & transmission file, typically for monochromator crystals and filters.
        Data: [ k (Angs-1) , Transmission (0-1) ] \\
  *.rfl & reflectivity file, typically for mirrors and monochromator crystals.
        Data: [ k (Angs-1) , Reflectivity (0-1) ] \\
- *.sqw & $S(q,\omega)$ files for Isotropic\_sqw component. \\
+ *.sqw & $S(q,\omega)$ files for Isotropic\_Sqw component.
+       Data: [q] [$\omega$] [$S(q,\omega)$]\\
       \hline
     \end{tabular}
     \caption{Data files of the \MCS\ library.}

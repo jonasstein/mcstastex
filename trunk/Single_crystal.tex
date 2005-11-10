@@ -7,10 +7,10 @@
 
 \component{Single\_crystal}{Kristian Nielsen}{$x_{width}, y_{height}, z_{thick}$,$\vec a, \vec b, \vec c, \Delta d/d$, mosaic, reflections}{$\sigma_{abs}, \sigma_{inc}$, ...}{partially validated, centered}
 
-The {\bf Single\_crystal} component models a thick, flat single crystal 
-with multiple scattering and absorption with elastic coherent scattering. 
-An elastic incoherent background may also be simulated. 
-It may be used to describe samples for diffraction, 
+The {\bf Single\_crystal} component models a thick, flat single crystal
+with multiple scattering and absorption with elastic coherent scattering.
+An elastic incoherent background may also be simulated.
+It may be used to describe samples for diffraction,
 but also for accurate monochromator descriptions.
 
 The input parameters for the component are \textit{xwidth},
@@ -44,7 +44,7 @@ will be computed.
 
 In addition to coherent scattering, {\bf Single\_crystal} also
 handles incoherent scattering amd absorption. The incoherent scattering
-cross-section is supplied by the user as a constant 
+cross-section is supplied by the user as a constant
 $\sigma_{\rm inc}$. The absorption cross-section is supplied by the user at
 2200~m/s, so the actual cross-section for a neutron of velocity $v$ is
 $\sigma_{\rm abs} = \sigma_{2200} \frac{\rm 2200~m/s}{v}$.
@@ -59,10 +59,10 @@ is~\cite[ch.3]{squires}:
         N\frac{(2\pi)^3}{V_0}\sum_{\boldsymbol{\tau}}
         \delta(\boldsymbol{\tau} - \boldsymbol{\kappa})|F_{\boldsymbol{\tau}}|^2
 \end{equation}
-Here $|F_{\boldsymbol{\tau}}|^2$ is the structure factor 
-(defined in section~\ref{s:powder}), $N$ is the
+Here $|F_{\boldsymbol{\tau}}|^2$ is the structure factor
+(defined in section~\ref{powder}), $N$ is the
 number of unit cells, $V_0$ is the volume of an
-individual unit cell, and $\boldsymbol{\kappa} (= {\bf k}_i - {\bf k}_f)$ 
+individual unit cell, and $\boldsymbol{\kappa} (= {\bf k}_i - {\bf k}_f)$
 is the scattering vector. $\delta(\boldsymbol{x})$ is a 3-dimensional delta
 function in reciprocal space,
 so for given incoming wave vector ${\bf k}_i$ and lattice vector
@@ -109,7 +109,7 @@ If the mosaic is isotropic (the same in all directions), the two
 Gaussian axes perpendicular to $\boldsymbol{\tau}$ are simply arbitrary
 normal vectors of equal length given by the mosaic. But if the mosaic
 is anisotropic, the two perpendicular axes will in general be different
-for each scattering vector. In the absence of anything better, 
+for each scattering vector. In the absence of anything better,
 {\bf Single\_crystal} uses a model which is at least mathematically
 plausible and which works as expected in the two common cases:
 (1)~isotropic mosaic, and (2)~two mosaic directions (``horizontal and
@@ -222,7 +222,7 @@ as follows:
   $\sigma_{\rm tot} = \sigma_{\rm coh}+\sigma_{\rm inc}+\sigma_{\rm abs}$.
 \item\label{enum:crystal-3} The transmission probability is
   $\exp(- \frac{\sigma_{\rm tot}}{V_0}\ell)$ where $\ell$ is the length of
-  the flight path through the crystal. A Monte Carlo choice is 
+  the flight path through the crystal. A Monte Carlo choice is
   performed to determine
   whether the neutron is transmitted. Optionally, the user may
   set a fixed Monte Carlo probability for the first scattering event,
@@ -424,8 +424,8 @@ $$ \pi({\rm no~transmission}) = \frac{1-P({\rm transmit})}{1-f({\rm transmit})}.
 $$
 
 Absorption is never explicitly simulated, so the Monte Carlo probability
-of coherent or incoherent scattering is 
-$f({\rm coh})+f({\rm inc}) = 1$. 
+of coherent or incoherent scattering is
+$f({\rm coh})+f({\rm inc}) = 1$.
 The physical probability of coherent or incoherent scattering is
 $$ P({\rm coh})+P({\rm inc}) = \frac{\sigma_{\rm coh} + \sigma_{\rm
     inc}}{\sigma_{\rm tot}}, $$

@@ -6,7 +6,7 @@
 \index{Sample environments}
 \index{Multiple scattering}
 
-\component{Isotropic\_Sqw}{V. Hugouvieux, E. Farhi}{Sqw$\_{coh}$, $\sigma_{coh}$, Sqw$\_{inc}$, $\sigma_{inc}, V_\rho, \sigma_{abs}, T$,$x_{width},y_{height},z_{thich},r_o, r_i$, thickness}{$q_{min}, q_{max}, \omega_{min}, \omega_{max}, d\phi$, order}{not fully validated}
+\component{Isotropic\_Sqw}{V. Hugouvieux, E. Farhi}{Sqw$\_{coh}$, $\sigma_{coh}$, Sqw$\_{inc}$, $\sigma_{inc}, V_\rho, \sigma_{abs}, T$,$x_{width},y_{height},z_{thich},r_o, r_i$, thickness}{$q_{min}, q_{max}, \omega_{min}, \omega_{max}, d\phi$, order}{partly validated}
 
 \begin{figure}
   \begin{center}
@@ -65,6 +65,7 @@ In first approximation we consider that Eq. (\ref{eq:sq-nomr1}) can be applied i
 \label{eq:sq-nomr2}
 \alpha \simeq \frac{q^3_{max}/3 - 2\pi^2 \rho}{\int_0^{q_{max}} q^2 S_{raw}(q) dq }
 \end{equation}
+This normalization rule is only applied when parameter \verb+norm_sqw=1+.
 
 We may measure, e.g. with time-of-flight instruments, the \emph{density of states} $g_{\omega}(\omega)$  which is the fraction of modes whose energy lie between $\omega$ and $\omega+d\omega$ \cite{lovesey84}
 \begin{equation}
@@ -110,7 +111,7 @@ The method used is similar to the one adopted in the \verb+Single_crystal+ compo
 
 We first compute the absorption and total cross-section
 \begin{eqnarray}
-\sigma_{abs} &=& \sigma_{abs}^{{\rm 2200~m/s}}\frac{2200 m/s}{v} \\
+\sigma_{abs} &=& \sigma_{abs}^{{\rm 2200}}\frac{2200 m/s}{v} \\
 \sigma_{tot} &=& \sigma_{abs} + \sigma_{coh} + \sigma_{inc}
 \end{eqnarray}
 as well as the neutron trajectory intersection with the geometry. This provides the total path length in the sample $d_{out}$ to the exit.
@@ -124,7 +125,7 @@ If the straight path to the sample volume exit is $d_{out}$, the probability tha
 \begin{equation}
 P(d_{scatt} < d_{out}) = \int_0^{d_{out}} \mu e^{-\mu x}dx = 1 - e^{-\mu d_{out}}. \\
 \end{equation}
-Form that law, we may compute the cumulated distribution, which gives the probability for scattering to occur at a distance lower than $d_{scatt}$, knowing that the neutron interacts before $d_{out}$. This law may be analytically inverted so that the path length $d_{scatt}$ may be obtained directly from a uniform distribution random number $\xi$
+From that law, we may compute the cumulated distribution, which gives the probability for scattering to occur at a distance lower than $d_{scatt}$, knowing that the neutron interacts before $d_{out}$. This law may be analytically inverted so that the path length $d_{scatt}$ may be obtained directly from a uniform distribution random number $\xi$
 \begin{equation}
 d_{scatt} = -\frac{1}{\mu} \ln(1 - \xi[1 -e^{-\mu d_{out}}]).
 \end{equation}
@@ -207,6 +208,8 @@ S_{coh}(q) = \frac{2(2\pi)^4\rho}{\sigma_{coh}} \sum_{|\tau|} z(q) \delta(\tau -
 \end{eqnarray}
 The normalization rule Eq. (\ref{eq:sq-nomr2}) is then applied.
 
+Of course, the component PowderN (see section \ref{powder}) can handle powder samples more efficiently (faster, better accuracy), but can not be used currently in concentric geometry, nor handle multiple scattering.
+
 \subsubsection{Important remarks and limitations}
 
 Since the choice of the interaction type, we know that the neutron \emph{must} scatter, with an appropriate $\vec k_f$ outgoing wave vector. If any of the choices in the method fails:
@@ -217,6 +220,7 @@ Since the choice of the interaction type, we know that the neutron \emph{must} s
 then a new $(q, \omega)$ set is drawn, and the process is iterated until sucess or - at last - removal of the neutron event. This latter absorption is then reported at the end of the simulation, as it never occurs in reality - neutrons that scatter do find a suitable $(q, \omega)$ set.\index{Removed neutron events}
 
 A way to avoid this is to focus the $q,\omega$ range from the $S(q, \omega)$ data file to the actual beam characteristics (matching instrument dynamical range). This is done by setting the component parameter $wmax$ to the maximum energy of the incoming beam. In a few words, the $S(q,\omega)$ data set extension in $Q$ and $\omega$ should preferably be smaller than the extension of the incoming beam and the scattered beam of interest for the experiment. Otherwise some Monte carlo choices lead to scattering in non useful regions of $S$, which reduces dramatically the algorithm efficiency, possibly removing neutrons by underestimating intensity.\index{Bugs}
+An automatic such process may be activated when setting parameter \verb+autoqw=1+. This is higly recommanded, but may sometimes miss a few neutrons if the $q,\omega$ beam range has been guessed too small.
 
 Focusing the $q$ and $\omega$ range, to the one being able to scatter the incoming beam, when using the component does improve significantly the speed of the computation. Additionally, if you restrict the scattering the first order only (parameter order=1), then you may specify the angular vertical extension $d\phi$ of the scattering area to gain optimized focusing. This option does not apply when handling multiple scattering (which emits in $4\pi$ many times before exiting the sample).
 
@@ -241,7 +245,7 @@ Hollow shapes are particularly useful to model complex sample environments. Refe
 
 The material behaviour is specified through the total scattering cross-sections $\sigma_{coh}$, $\sigma_{inc}$, $\sigma_{abs}$, and the $S(q, \omega)$ data files.
 
-If you are lucky enough to have access to separated coherent and incoherent contributions, simply set Sqw\_coh and Sqw\_inc paremeter to the files names. If on the other hand you have access to a global data set, use Sqw\_coh, set the $\sigma_{coh}$ parameter to the sum of both contributions $\sigma_{coh}+\sigma_{inc}$, and set $\sigma_{inc}=0$. This way we only use one of the two implemented  scattering channels. Such global data sets may originate from previous experiments, as far as you have applyied all known corrections (multiple scattering, geometry, ...).
+If you are lucky enough to have access to separated coherent and incoherent contributions, simply set Sqw\_coh and Sqw\_inc paremeter to the files names. If on the other hand you have access to a global data set, use Sqw\_coh, set the $\sigma_{coh}$ parameter to the sum of both contributions $\sigma_{coh}+\sigma_{inc}$, and set $\sigma_{inc}=0$. This way we only use one of the two implemented  scattering channels. Such global data sets may originate from previous experiments, as far as you have applied all known corrections (multiple scattering, geometry, ...).
 
 In any case, the accuracy of the $S(q, \omega)$ data limits the $Q$ and $\omega$ resolution of the simulation. The sampling of data files should then be as thin as possible.
 
@@ -268,6 +272,10 @@ The file header may optionally contain parameter settings for the material, as c
   #sigma_coh   1
   #Temperature 10
 \end{verbatim}
+Some \verb+sqw+ data files are included in the \MCS\ distribution data directory, and they contain material parameter settings in their header, so that you may use:
+\begin{verbatim}
+Isotropic_Sqw(<geometry parameters>, Sqw_coh="He4.sqw", T=10)
+\end{verbatim}
 
 \subsubsection{Files formats: $S(q)$}
 
@@ -280,10 +288,15 @@ The 'Sqw\_coh' (or 'Sqw\_inc') file should contains a single numerical block, wh
   #column_q  2
   #column_Sq 1
 \end{verbatim}
+Such files can only handle elastic scattering.
 
 \subsubsection{Files formats: powder structures (LAZY, Fullprof, Crystallographica)}
 
-Data files as used by the component PowderN may also be read other column-based file formats as in PowderN, e.g. with parameters such as:
+Data files as used by the component PowderN may also be read. Data files of type \verb'lau' and \verb'laz' in the \MCS\ distribution data directory are self-documented in their header. They do not need any additional parameters to be used, as in the example:
+\begin{verbatim}
+  Isotropic_Sqw(<geometry parameters>, Sqw_coh="Al.laz")
+\end{verbatim}
+Other column-based file formats may also be imported e.g. with parameters such as:
 \begin{verbatim}
   powder_format=Crystallographica
   powder_format=Fullprof
@@ -296,9 +309,11 @@ The last two parameters may as well be specified in the data file header with li
   #Detla_d/d    1e-3
 \end{verbatim}
 The powder description is then translated into $S(q)$ by using Eq. (\ref{eq:sq-F2}).
-In this case, the density $\rho = 1/V_0$ is the inverse volume of the unit cell.
+In this case, the density $\rho = n/V_0$ is the number of atoms in the inverse volume of the unit cell.
 
-As the component builds an $S(q)$ from the powder structure description, the accuracy of the Isotropic\_sqw component is limited by the binning during that conversion. This is usually enough to describe sample environments including powders (aluminium, copper, ...), but it is recommanded to rather use PowderN for accurate powder diffraction, eventthough this latter does not implement multiple scattering.
+As the component builds an $S(q)$ from the powder structure description, the accuracy of the Isotropic\_sqw component is limited by the binning during that conversion. This is usually enough to describe sample environments including powders (aluminium, copper, ...), but it is recommanded to rather use PowderN for faster and accurate powder diffraction, eventthough this latter does not implement multiple scattering.
+
+Such files can only handle elastic scattering.
 
 \subsubsection{Concentric geometries, sample environment}
 \index{Sample environments}
@@ -306,24 +321,21 @@ As the component builds an $S(q)$ from the powder structure description, the acc
 The component has been designed in a way which enables to describe complex imbricated set-ups, i.e. what you need to simulate sample environments. To do so, one has first to use hollow shapes, they keep in mind that each surrounding geometry should be first declared before the central position (usially the sample) with the \verb+concentric=1+ parameter, but also duplicated (with an other instance name) at a symetric position with regards to the centre as in the example (shown in Fig. \ref{f:isotropic-sqw}):
 \begin{verbatim}
 COMPONENT s_in=Isotropic_Sqw(
-  thickness=0.001, radius_o=0.02, yheight=0.015, concentric=1,
-  V_rho=0.015, Sqw_coh="Aluminium.pow",
-  sigma_coh=1.45,sigma_abs=0.23, sigma_inc=8e-3)
+  thickness=0.001, radius_o=0.02, yheight=0.015,
+  Sqw_coh="Al.laz", concentric=1)
 AT (0,0,1) RELATIVE a
 
 COMPONENT sample=Isotropic_Sqw(
   xwidth=0.01, yheight=0.01, zthick=0.01,
-  V_rho=0.072, Sqw_coh="He4_coh.sqw", T=10,
-  sigma_abs=0.00747, sigma_inc=0, sigma_coh=1.34)
+  Sqw_coh="He4_coh.sqw")
 AT (0,0,1) RELATIVE a
 
 COMPONENT s_out=Isotropic_Sqw(
   thickness=0.001, radius_o=0.02, yheight=0.015,
-  V_rho=0.015, Sqw_coh="Aluminium.pow",
-  sigma_coh=1.45,sigma_abs=0.23, sigma_inc=8e-3)
+  Sqw_coh="Al.laz")
 AT (0,0,1) RELATIVE a
 \end{verbatim}
-Central component may be of any type, not specifically an Isotropic\_sqw instance. It could be for instance a Single\_crystal.
+Central component may be of any type, not specifically an Isotropic\_sqw instance. It could be for instance a Single\_crystal or a PowderN..
 In principle, the number of surrounding shells is not restricted.
 The only restriction is that neutrons that scatter (in $4\pi$) can not come back in the instrument description, so that some of the multiple scattering events are lost. namely, in the previous example, neutrons scattered by the outer wall of the cryostat \verb+s_out+ can not come back to the sample or to the other cryostat wall \verb+s_in+. As these neutrons have usually few chances to reach the rest of the simulation, we expect that the approximation is fair.
 

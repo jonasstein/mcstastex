@@ -1,4 +1,5 @@
 \chapter{Random numbers in \MCS}
+\label{s:random}
 
 \section{Transformation of random numbers}
 In order to perform the Monte Carlo choices, one needs to be able to
@@ -33,7 +34,7 @@ Let us illustrate with a few examples of transformations relevant for the
 
 \paragraph{The circle}
 For finding a random point within the
-circle of radius $R$, one would like to choose the polar angle, $\phi$, 
+circle of radius $R$, one would like to choose the polar angle, $\phi$,
 from a uniform
 distribution in $[0; 2\pi]$, giving $\Psi_\phi = 1/(2\pi)$.
 and the radius from the (normalised) distribution $\Psi_r=2r/R^2$.
@@ -41,10 +42,10 @@ and the radius from the (normalised) distribution $\Psi_r=2r/R^2$.
 For the radial part,
 eq.~(\ref{e:randtrans}) becomes $y/(2 \pi) = x$, whence
 $\phi$ is found simply by multiplying a random number ($x$)
-with $2\pi$. 
+with $2\pi$.
 
 For the radial part, the left side of eq.~(\ref{e:randtrans}), gives
-$\int \Psi(r) dr = \int 2 r/R^2 dr = r^2/R^2$, 
+$\int \Psi(r) dr = \int 2 r/R^2 dr = r^2/R^2$,
 which from (\ref{e:randtrans}) should equal $x$.
 Hence we reach the wanted transformation $r = R\sqrt{x}$.
 
@@ -66,11 +67,16 @@ neutron emission time from the normalised distribution
 $\Psi(t) = \exp(-t/\tau) / \tau$.
 Use of Eq.~(\ref{e:randtrans}) gives
 $x = 1 - \exp(-t/\tau)$. For convenience we now use the random variable
-$x_1 = 1-x$ (with the same distributions as $x$), 
+$x_1 = 1-x$ (with the same distributions as $x$),
 giving the simple expression $t = - \tau \ln (x_1)$.
 
 \paragraph{Normal distributions}
 The important normal distribution can not be reached as a simple
-transformation of a uniform distribution. 
+transformation of a uniform distribution.
 In stead, we rely on a specific algorithm for selecting random
-numbers with this distribution. 
+numbers with this distribution.
+
+\section{Random generators}
+Eventhough there is the possibility to use the system random generator, as well as ther initial \MCS\ version 1.1 random generator, the default algorithm is the so-called "Mersenne Twister", by Makoto Matsumoto and Takuji Nishimura. See \verb+http://www.math.keio.ac.jp/~matumoto/emt.html+ for original source.
+
+It is considered today to be by far the best random generator, which means that both its period is extremely large, and cross-correlations are negligible.
