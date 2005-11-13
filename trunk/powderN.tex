@@ -3,13 +3,42 @@
 \index{Diffraction}
 \label{powder}
 
-\component{Powder\_N}{System}{$r$, $h$, $\sigma_{\rm abs}$, $\sigma_{\rm inc}$, $V_0$, $f_{\rm pack}$, filename, DW}{}{validation in progress}
+\component{Powder\_N}{System}{$r$, $h$, $\sigma_{\rm abs}$,
+  $\sigma_{\rm inc}$, $V_0$, $f_{\rm pack}$, filename, format, DW}{}{validation in progress}
 
 The powder diffraction component {\bf PowderN} models a powder sample
 with background coming only from incoherent scattering and no
 multiple scattering. The description of the powder comes from a
 file in one of the standard output formats LAZY, FULLPROF, or CRYSTALLOGRAPHICA.
+\subsection{Files formats: powder structures}
 
+Data files of type \verb'lau' and \verb'laz' in the \MCS\ distribution data directory are self-documented in their header. They do not need any additional parameters to be used, as in the example:
+\begin{verbatim}
+  PowderN(<geometry parameters>, filename="Al.laz")
+\end{verbatim}
+Other column-based file formats may also be imported e.g. with parameters such as:
+\begin{verbatim}
+  format=Crystallographica
+  format=Fullprof
+  format={1,2,3,4,0,0,0,0}
+\end{verbatim}
+In the latter case, the indices define order of columns parameters
+multiplicity, lattice spacing, $F^2$, Debye-Waller factor and intrinsic line width.
+
+Other component parameters may as well be specified in the data file
+header with lines e.g.:
+\begin{verbatim}
+  #Vc 
+  #sigma_abs 
+  #sigma_inc 
+  #Debye_Waller 
+  #Delta_d/d 
+\end{verbatim}
+
+Further details on file formats are available in the \verb+mcdoc+ page
+of the component.
+
+\subsection{Geometry and physical properties}
 The sample has the shape of a solid cylinder, radius $r$ and height $h$.
 The absorption and incoherent cross sections are given by
 $\sigma_c^a$ $\sigma_i,c^s$.
@@ -177,4 +206,4 @@ scattering type (coherent/incoherent), and the outgoing direction.
 \item Perform the necessary weight factor transformation.
 \end{itemize}
 
-\subsection{Calculating the weight factor}
+%\subsection{Calculating the weight factor}
