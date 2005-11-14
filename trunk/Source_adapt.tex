@@ -14,7 +14,7 @@ contribute much to the accuracy of the overall result are preferred over
 samples that contribute little. The method can achieve improvements of a
 factor of ten or sometimes several hundred in simulations where only a
 small part of the initial phase space contains useful neutrons.
-This component uses the correlation between neutron energy, 
+This component uses the correlation between neutron energy,
 initial direction and initial position.
 
 The physical characteristics of the source are similar to those of
@@ -23,13 +23,8 @@ rectangle in the $x$-$y$ plane with a flat energy spectrum in a
 user-specified range. The flux, $\Phi$, per area per steradian per
 {\AA}ngstr{\o}m per second is specified by the user.
 
-The initial neutron weight is given by
-(see section~\ref{s:neutron-flux} for details)
-\begin{equation}
-    p_0 = \frac{N_{\rm total}}{N_{\rm sim}} =
-    \frac{\Phi}{N_{\rm sim}} A \Delta\Omega \Delta\lambda .
-\end{equation}
-Here $\Delta\lambda$ is the total wavelength range of the source.
+The initial neutron weight is given by Eq. (\ref{proprule}) using
+$\Delta\lambda$ as the total wavelength range of the source.
 A later version of this component will probably include a
 $\lambda$-dependence of the flux.
 
@@ -38,7 +33,7 @@ to set the focusing as for Source\_simple (section~\ref{source-simple}).
 The energy range will be from $E_0 - dE$ to $E_0 + dE$.
 \textit{filename} is used to give the name of a file in which to
 output the final sampling destribution, see below.
-$N_{\rm eng}$, $N_{\rm pos}$, and $N_{\rm div}$ 
+$N_{\rm eng}$, $N_{\rm pos}$, and $N_{\rm div}$
 are used to set the number of bins in each dimensions.
 Good general-purpose values for the optimization parameters are
 $\alpha = \beta = 0.25$. The number of bins to choose will depend on the

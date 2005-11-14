@@ -67,8 +67,9 @@ PowderN
 
 \section{Documentation}
 \label{s:new-features:documentation}
+
 As of \MCS\ \version\ an improved and updated tutorial has been integrated
-into to the graphical user interface of \MCS . 
+into to the graphical user interface of \MCS .
 
 The long awaited Component Manual has finally been written.
 
@@ -93,6 +94,7 @@ The long awaited Component Manual has finally been written.
 \begin{itemize}
 \item Windows support improved (bugs \#3, 4, 51)
 \item {\bf Installation on Windows} systems \emph{requires} to use exclusively {\bf Perl 5.6}. Earlier versions will fail (bug \#3).
+\item The most recent Scilab plotter (3.1) has some compatibility issues. \MCS\ currently requires Scilab <= 3.0 (Unix and Windows)
 \item Many small bug corrections related to Matlab/Scilab capabilities (bugs \#6, 7, 15, 16, 22, 24).
 \end{itemize}
 
@@ -100,10 +102,11 @@ The long awaited Component Manual has finally been written.
 \label{s:future}
 The following features are planned for the oncoming releases of \MCS :
 \begin{itemize}
-\item Support for Matlab and Scilab in \verb+mcresplot+.
 \item Language extension 'JUMP' for enabeling loops, 'teleporting'
   etc. in instrument descriptions.
 \item Polarised components and magnetic field computation components.
+\item Optimize a set of parameters for a better flux and/or resolution on a given monitor.
+\item Better support for heterogeneous grid computing.
 \item Tools to optimize a set of parameters for a better flux and/or
   resolution on a given monitor.
 \item Concentric components (on the meta language level, currently the

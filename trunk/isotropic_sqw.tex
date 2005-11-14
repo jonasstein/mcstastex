@@ -65,7 +65,7 @@ In first approximation we consider that Eq. (\ref{eq:sq-nomr1}) can be applied i
 \label{eq:sq-nomr2}
 \alpha \simeq \frac{q^3_{max}/3 - 2\pi^2 \rho}{\int_0^{q_{max}} q^2 S_{raw}(q) dq }
 \end{equation}
-This normalization rule is only applied when parameter \verb+norm_sqw=1+.
+This normalization rule is only applied when parameter \verb+norm_sqw=-1+.
 
 We may measure, e.g. with time-of-flight instruments, the \emph{density of states} $g_{\omega}(\omega)$  which is the fraction of modes whose energy lie between $\omega$ and $\omega+d\omega$ \cite{lovesey84}
 \begin{equation}
@@ -219,12 +219,45 @@ Since the choice of the interaction type, we know that the neutron \emph{must} s
 \end{enumerate}
 then a new $(q, \omega)$ set is drawn, and the process is iterated until sucess or - at last - removal of the neutron event. This latter absorption is then reported at the end of the simulation, as it never occurs in reality - neutrons that scatter do find a suitable $(q, \omega)$ set.\index{Removed neutron events}
 
-A way to avoid this is to focus the $q,\omega$ range from the $S(q, \omega)$ data file to the actual beam characteristics (matching instrument dynamical range). This is done by setting the component parameter $wmax$ to the maximum energy of the incoming beam. In a few words, the $S(q,\omega)$ data set extension in $Q$ and $\omega$ should preferably be smaller than the extension of the incoming beam and the scattered beam of interest for the experiment. Otherwise some Monte carlo choices lead to scattering in non useful regions of $S$, which reduces dramatically the algorithm efficiency, possibly removing neutrons by underestimating intensity.\index{Bugs}
-An automatic such process may be activated when setting parameter \verb+autoqw=1+. This is higly recommanded, but may sometimes miss a few neutrons if the $q,\omega$ beam range has been guessed too small.
+A way to avoid this is to focus the $q,\omega$ range from the $S(q, \omega)$ data file to the actual beam characteristics (matching instrument dynamical range). This is done e.g. by setting the component parameter $wmax$ to the maximum energy of the incoming beam. In a few words, the $S(q,\omega)$ data set extension in $Q$ and $\omega$ should preferably be smaller than the extension of the incoming beam and the scattered beam of interest for the experiment. Otherwise some Monte carlo choices lead to scattering in non useful regions of $S$, which reduces dramatically the algorithm efficiency, possibly removing neutrons by underestimating intensity.\index{Bugs} An automatic probability table optimization may be activated when setting parameter \verb+auto_qw=1+. This is higly recommanded, but may sometimes miss a few neutrons if the $q,\omega$ beam range has been guessed too small.
 
 Focusing the $q$ and $\omega$ range, to the one being able to scatter the incoming beam, when using the component does improve significantly the speed of the computation. Additionally, if you restrict the scattering the first order only (parameter order=1), then you may specify the angular vertical extension $d\phi$ of the scattering area to gain optimized focusing. This option does not apply when handling multiple scattering (which emits in $4\pi$ many times before exiting the sample).
 
 \subsection{The implementation}
+
+\begin{table}
+  \begin{center}
+  {\let\my=\\
+    \begin{tabular}{|lr|p{0.6\textwidth}|}
+    \hline
+Parameter & type & meaning \\
+    \hline
+Sqw\_coh   & string              & Coherent scattering data file name. Use 0 or "" to disable  \\
+Sqw\_inc   & string              & Incoherent scattering data file name. Use 0 or "" to scatter isotropically (Vanadium like)  \\
+sigma\_coh & [barns]      & Coherent scattering cross-section. 0 to disable \\
+sigma\_inc & [barns]      & Incoherent scattering cross-section. 0 to disable \\
+sigma\_abs & [barns]      & Absorption cross-section. 0 to disable  \\
+V\_rho     & [\AA$^{-3}$] & atomic number density. May also be specified with molar weight \emph{weight} in [g/mol] and material \emph{density} in [g/cm$^3$] \\
+T          & [K]          & Temperature. 0 disables detailed balance \\
+    \hline
+xwidth   & [m] & \\
+yheight  & [m] & dimensions of a box shaped geometry \\
+zthick   & [m] & \\
+radius\_o & [m] & dimensions of a cylinder shaped geometry  \\
+radius\_i & [m] & sphere geometry if radius\_i=0  \\
+thickness& [m] & thickness of hollow shape  \\
+    \hline
+norm\_sqw & number  & When positive, the value is used as the integral of S(q,w). Null value uses computed integral. Any negative value will normalize on the density (recommanded) \\
+auto\_qw  & boolean & Automatically optimize probability tables during simulation (recommanded)  \\
+order     & integer & Limit multiple scattering up to given order. 0 means no limitations  \\
+concentric& boolean & Enables to 'enter' inside concentric hollow geometries  \\
+    \hline
+    \end{tabular}
+    \caption{Main Isotropic\_Sqw component parameters}
+    \label{t:sqw-param}
+  }
+  \end{center}
+\end{table}
 
 \subsubsection{Geometry}
 

@@ -27,6 +27,38 @@ The curvature of the slit channels is specified with the $R_{slit}$ parameter. P
 
 The component was validated extensivelly by K. Lieutenant. As an alternative, one may use the {\bf Vitess\_ChopperFermi} component (eventhough slower and without super-mirror support).
 
+\begin{table}
+  \begin{center}
+  {\let\my=\\
+    \begin{tabular}{|lr|p{0.6\textwidth}|}
+    \hline
+Parameter & unit & meaning \\
+    \hline
+radius & [m] & chopper cylinder radius \\
+ymin   & [m] &   lower y bound of cylinder \\
+ymax   & [m] &   upper y bound of cylinder \\
+Nslit  & [1] &   number of chopper slits \\
+length & [m] &   channel length of the Fermi chopper \\
+w      & [m] &   width of one chopper slit. May also be specified as \emph{width}=w*Nslit for total width of slit package. \\
+nu & [Hz] &  chopper frequency \\
+phase     & [deg] &   chopper phase at t=0 \\
+zero\_time & [1] & shit time window around 0 if true \\
+curvature & [m$^{-1}$] & Curvature of slits (1/radius of curvature) \\
+    \hline
+m     & [1] & \\
+alpha & [\AA] & \\
+Qc    & [\AA$^{-1}$] & slit coating parameters. See section \ref{ss:mirrorreflect} \\
+W     & [\AA$^{-1}$] & \\
+R0    & [1] & \\
+    \hline
+    \end{tabular}
+    \caption{FermiChopper component parameters}
+    \label{t:fc-param}
+  }
+  \end{center}
+\end{table}
+
+
 \subsection{Propagation in the Fermi-chopper}
 
 As can be seen in figure \ref{fig:Overview.eps}, neutrons first propagate onto the cylinder surface of the chopper (yellow curve). Then the program checks the interaction with the entrance of the slit package (orange line) and calculates which slit is hit. If the slit coating is reflecting ($m > 0$), multiple reflections are calculated (green, blue and maroon circles), otherwise the neutrons are absorbed as soon as they interact with the blades. Finally the remaining neutrons propagate to the exit of the chopper (red curve).
@@ -127,12 +159,12 @@ The propagation is finalized when determining the intersection of the neutron tr
 
 The effect of curvature can significantly improve the flux and energy resolution shape.
 
-As all $(xz)$ cordinates are transformed into $(x'z')$, the most efficient way to take into account the curvature is to include it in the transformation by 'morphing' the curved rotating real space to a straight still frame. Then instead of solving
-\begin{equation}x'(t) = d +\Delta_{x'}(z') {\rm\ where\ } \Delta_{x'}(z')=R_{slit}.(1-\sqrt{1-(z'/R_{slit})^2})
+As all $(xz)$ cordinates are transformed into $(x'z')$, the most efficient way to take into account the curvature is to include it in the transformation Eq. (\ref{eq:Txz}) by 'morphing' the curved rotating real space to a straight still frame. Then instead of solving
+\begin{equation}x'(t) = d - \Delta_{x'}(z') {\rm\ where\ } \Delta_{x'}(z')=R_{slit}.(1-\sqrt{1-(z'/R_{slit})^2})
 \end{equation}
 with $\Delta$ being the gap between the straight tangent line at the slit center and the real slit shape, we perform the additional transformation
 \begin{equation}
-x' \rightarrow x' - \Delta_{x'}(z')
+x' \rightarrow x' + \Delta_{x'}(z')
 \end{equation}
 The additional transformation counter-balance the real curvature so that the rest of the algorithm is written as if slits were straight.
 This applies to all computations in the rotating frame, and thus as well to reflections on super mirror coatings.
