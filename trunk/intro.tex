@@ -16,7 +16,7 @@ simulation. Specifications are written in this language by users and
 automatically translated into efficient simulation codes in ANSI-C.
 The present version supports both continuous and pulsed source instru-
 ments, and includes a library of standard
-components with in total around 90 components. These enable to simulate all kinds of neutron scattering instruments (diffractometers, triple-axis, reflectometers, small-angle, back-scattering,...) for both continuous and pulsed sources.
+components with in total around 100 components. These enable to simulate all kinds of neutron scattering instruments (diffractometers, spectrometers, reflectometers, small-angle, back-scattering,...) for both continuous and pulsed sources.
 
 The \MCS\ package is written in ANSI-C and is freely available for down-load
 from the \MCS\ web-page~\cite{mcstas_webpage}. The package is actively
@@ -39,7 +39,7 @@ and the planned European Spallation Source, ESS~\cite{ess_webpage}).
 Writing programs in C or Fortran for
 each of the different cases involves a huge effort, with debugging presenting
 particularly difficult problems. A higher level tool specially designed
-for the needs of simulating neutron instruments is needed. As there was
+for simulating neutron instruments was needed. As there was
 no existing simulation software that would fulfill our needs, the \MCS\
 project was initiated.
 In addition, the ILL required an efficient and general simulation
@@ -191,10 +191,12 @@ parts:
   and install the \MCS\ compiler, associated files and supportive software
 \item Chapter~\ref{s:MCtechniques} concerns Monte Carlo techniques
   and simulation strategies in general
-\item Chapter~\ref{c:running} includes a brief introduction
+\item Chapter~\ref{c:running} includes a brief introduction to the
+  \MCS\ system 
   (section~\ref{s:brief}) as well a section (\ref{s:running}) on running the compiler to produce
   simulations. Section~\ref{s:run-sim} explains how to run the generated
-  simulations. A number of front-end programs are used to run the
+  simulations. Running \MCS\ on parallel computers require special
+  attention and is discussed in section~\ref{s:run-mpi}. A number of front-end programs are used to run the
   simulations and to aid in the data collection and analysis of the
   results. These user interfaces are described in section~\ref{s:frontends}.
 \item The \MCS\ meta-language is described in chapter~\ref{s:kernel}. This
@@ -205,7 +207,7 @@ parts:
   well-tested, as well as user contributed, beam components that can be used in simulations.
   The \MCS\ component library is documented in a separate manual
   and on the \MCS\ web-page~\cite{mcstas_webpage}, but a short overview of these
-  components is given in chapter~\ref{s:comp-overview} of the Manual.
+  components is given in chapter~\ref{s:components} of the Manual.
   %This
   %library is documented in detail in chapter~\ref{s:components}. Code
   %for the components can be found in appendix~\ref{compcode}.
@@ -221,7 +223,7 @@ A list of library calls that may be used in component definitions
 appears in appendix~\ref{c:kernelcalls}, and
 an explanation of the \MCS\ terminology can be
 found in appendix~\ref{s:terminology} of the Manual..
-Plans for future extensions are presented on the \MCS\ web-page~\cite{mcstas_webpage} as well as in section~\ref{c:future}.
+Plans for future extensions are presented on the \MCS\ web-page~\cite{mcstas_webpage} as well as in section~\ref{s:future}.
 
 
 %The \MCS\ package consists of four levels:

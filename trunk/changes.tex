@@ -9,8 +9,7 @@ Of course, we can not garranty that the sofware is bullet proof, but we do our b
 
 \section{General}
 \label{s:new-features:general}
-As of \MCS\ version \version\, the license covering the \MCS\ package
-is the GNU General Pubclic License. See \verb+http://www.gnu.org+ for details.
+The license covering the \MCS\ package is the GNU General Pubclic License. See \verb+http://www.gnu.org+ for details.
 
 \section{Kernel}
 \label{s:new-features:kernel}
@@ -19,7 +18,8 @@ is the GNU General Pubclic License. See \verb+http://www.gnu.org+ for details.
 The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and program). See the dedicated chapter in the {\it User manual} for more details.
 
 \begin{itemize}
-\item Instrument description files exchanged between Unix and Windows platefroms could not be compiled occasionally. This has been solved (bug \#28).
+\item Instrument description files exchanged between Unix and Windows
+  platforms could not always be compiled. This has been solved (bug \#28).
 \end{itemize}
 
 \section{Run-time}
@@ -34,7 +34,9 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
 \item Alternatively, a basic 'grid' computing may be used to split scan steps onto a list of machines.
 
 \item Plenty of warning messages to guide the user in interpreting possibly wrong results have been added in the simulation output messages (bug \#29, 43).
-\item Support for sample environments is now possible using the Isotropic\_Sqw in Concentric mode. Refer to that component help.
+\item Support for sample environments is now possible using the
+  Isotropic\_Sqw in Concentric mode. Refer to the \verb+mcdoc+ help
+  page of the component.
 
 \end{itemize}
 
@@ -65,11 +67,10 @@ PowderN
 
 \section{Documentation}
 \label{s:new-features:documentation}
-As of \MCS\ \version\ an improved tutorial has been integrated
-into to the graphical user interface of \MCS\. The content of the
-tutorial is also available in appendix \ref{tutorial}.
+As of \MCS\ \version\ an improved and updated tutorial has been integrated
+into to the graphical user interface of \MCS . 
 
-The Component Manual support has been 'restarted'.
+The long awaited Component Manual has finally been written.
 
 \section{Tools, installation}
 \label{s:new-features:tools}
@@ -87,7 +88,7 @@ The Component Manual support has been 'restarted'.
 
   This has improved significantly the portability of \MCS\ and thus simplified
   the installation of the package. Details about the installation and the
-  available tools are given in the {\it Installing \MCS} chapter of the {\it User Manual}.
+  available tools are given in chapter \ref{installing}.
 
 \begin{itemize}
 \item Windows support improved (bugs \#3, 4, 51)
@@ -103,7 +104,13 @@ The following features are planned for the oncoming releases of \MCS :
 \item Language extension 'JUMP' for enabeling loops, 'teleporting'
   etc. in instrument descriptions.
 \item Polarised components and magnetic field computation components.
-\item Optimize a set of parameters for a better flux and/or resolution on a given monitor.
+\item Tools to optimize a set of parameters for a better flux and/or
+  resolution on a given monitor.
+\item Concentric components (on the meta language level, currently the
+  Isotropic\_Sqw component has support for concentricness).
+\item Improvements to the NeXus data format (initial support is
+  already included).
+\item Updates to mcresplot to support the Matlab and Scilab backends.
 \end{itemize}
 
 
