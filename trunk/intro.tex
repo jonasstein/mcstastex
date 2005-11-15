@@ -27,7 +27,7 @@ is supplied with several examples and with an extensive documentation.
 Besides this manual, a separate component manual exists.
 
 
-\section{Background}
+\section{Historical background}
 
 In the late 90'ies at Ris\o\ National Laboratory,
 simulation tools were urgently needed,
@@ -47,6 +47,34 @@ package in order to achieve renewal of its instruments and guides.
 A significant contribution to both the component library and the \MCS\
 kernel itself was early performed at the ILL and included in the package.
 ILL later became a part of the core \MCS\ team.
+
+\section{Scientific background}
+What makes scientists happy? Probably collect good quality data, pushing the instruments to their limits, and fit that data to physical models.
+Among available measurement techniques, neutron scattering provides a
+large variety of spectrometers to probe structure and dynamics of all
+kinds of materials. 
+
+Unfortunately the neutron flux is often a limitation in the
+experiments. This then motivates instrument responsibles to improve
+the flux and the overall efficiency at the spectrometer positions, and
+even to design new machines. Using both analytical and numerical
+methods, optimal configurations may be found. 
+
+But achieving a satisfactory experiment on the best neutron
+spectrometer is not all. Once collected, the data analysis process
+raises some questions concerning the signal: what is the background
+signal ? What proportion of coherent and incoherent scattering has
+been measured ? Is is possible to identify clearly the purely elastic
+(structure) contribution from the quasi-elastic and inelastic one
+(dynamics) ? What are the contributions from the sample geometry, the
+container, the sample environment, and generally the instrument itself
+? And last but not least, how does multiple scattering affect the
+signal ? Most of the time, the physicist will elude these questions
+using rough approximations, or applying analytical corrections
+\cite{Copley86}. Monte-Carlo techniques provide a mean to evaluate
+some of these quantities. The techincalities of Monte-Carlo simulation
+techniques are explained in detail in Chapter \ref{c:MCtechniques}.
+
 
 \subsection{The goals of \MCS}
 \label{s:goals}
