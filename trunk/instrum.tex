@@ -16,17 +16,16 @@ test instrument: the instrument to test the component
 These instrument files are included in the \MCS\ distribution
 in the \verb+examples/+ directory.
 All the instrument examples there-in may be executed automatically throught the \MCS\ self-test procedure (see section~\ref{s:testing}).
-It is also our intention to extend the list of instrument examples extensively
+It is our intention to extend the list of instrument examples extensively
 and perhaps publish them in a separate report.
 
 \section{A test instrument for the component V\_sample}
 \label{s:V-instr}
-This instrument is one of many test instruments written with the
+This is one of many test instruments written with the
 purpose of testing the individual components. We have picked 
-this instrument both because we would like to present an
+this instrument both to present an
 example test instrument and because it despite its simplicity
-has produced quite non-trivial results, also giving rise to 
-the \MCS\ logo.%, see Appendix~\ref{testresults}.
+has produced quite non-trivial results.
 
 The instrument consists of a narrow source, 
 a 60' collimator, a V-sample shaped as a hollow cylinder
@@ -65,8 +64,7 @@ of attenuation of the beam in the cylindrical sample.
   \end{center}
 \caption{Scattering from a V-sample, measured by a spherical
   PSD. The sphere has been transformed onto a plane and the intensity is
-  plotted as the third dimension. A colour version of this picture is
-  found on the title page of this manual.}
+  plotted as the third dimension. }
 \label{f:V-results}
 \end{figure}
 
@@ -76,16 +74,13 @@ of attenuation of the beam in the cylindrical sample.
 \label{s:TAS1}
 With this instrument definition, we have tried to create
 a very detailed model of the conventional cold-source
-triple-axis spectrometer TAS1 at Ris\o\ National Laboratory.
-Unfortunately, no neutron scattering is performed at Ris\o\
-anymore, but it still serves as a good example.
+triple-axis spectrometer TAS1 at the now closed source of Ris\o\ National Laboratory.
 Except for the cold source itself, all components 
 used have quite realistic properties. Furthermore, the overall
 geometry of the instrument has been adapted from
 the detailed technical drawings of the real spectrometer.
-The TAS 1 simulation is the first detailed work
-performed with the \MCS\ package.%, and a few of the simulation
-%results are shown in Appendix \ref{testresults}.
+The TAS 1 simulation was the first detailed work
+performed with the \MCS\ package. 
 For further details see reference~\cite{tas1_report}.
 
 At the spectrometer, the channel from the cold source 
@@ -115,7 +110,7 @@ angle corresponding to 5.0~meV in order to test the simulations against
 measurements performed on the spectrometer.
 
 The exit channel from the monochromator may 
-on the spectrometer be narrowed down from initially 40~mm
+be narrowed down from initially 40~mm
 to 20~mm by an insert piece. In the simulations, we have chosen
 the 20~mm option and modeled the channel with two slits to match
 the experimental set-up.
@@ -132,8 +127,7 @@ were used in the experiments.
 The analyser of the spectrometer is flat and made from 
 pyrolytic graphite. It is placed between an entry and 
 an exit channel, the latter leading to a single detector.
-All this has been copied into the instrument definition,
-where the graphite mosaicity has been set to 45'.
+All this has been copied into the instrument definition.
 
 On the spectrometer, Soller collimators may be inserted
 at three positions: Between monochromator and sample,
@@ -158,17 +152,12 @@ in Appendix~\ref{data:TAS1}.
 \label{data:TAS1}
 
 In order to test the \MCS\ package on a qualitative level,
-we have performed a very detailed simulation of the conventional
-triple axis spectrometer TAS1, Ris\o . The measurement series
+we have performed a very detailed comparison of a simulation with a
+standard experiment from TAS1, Ris\o . The measurement series
 constitutes a complete alignment of the spectrometer,
 using the direct beam and scattering from V and Al$_2$O$_3$
 samples at an incoming energy of 20.0~meV, using the second order
 scattering from the monochromator. 
-In the instrument definitions, we have used all available
-information about the spectrometer. However, the
-mosaicities of the monochromator and analyser are set
-to 45' in stead of the quoted 30', since we from our
-analysis believe this to be much closer to the truth.
 
 In these simulations, we have tried to reproduce
 every alignment scan with respect to position and width
@@ -178,7 +167,7 @@ of the simulations and the measurements.
 
 Figure \ref{f:2t_direct} shows a scan of 
 $2\theta_s$ on the collimated direct beam in two-axis mode.
-A 1 mm slit is placed on the sample position.
+A \hbox{1 mm} slit is placed on the sample position.
 Both the measured width and non-Gaussian peak shape
 are well reproduced by the \MCS\ simulations.
 
@@ -186,15 +175,15 @@ are well reproduced by the \MCS\ simulations.
   \begin{center}
     \includegraphics[width=0.6\textwidth]{figures/tas1-2T.eps}
   \end{center}
-\caption{Scans of $2\theta_s$ in the direct beam with 1 mm slit on the
+\caption{TAS1: Scans of $2\theta_s$ in the direct beam with 1 mm slit on the
   sample position.
-"$\times$": measurements, "o": simulations  
+"$\times$": measurements, "o": simulations, scaled to the same intensity  
 Collimations: open-30'-open-open.}
 \label{f:2t_direct}
 \end{figure}
 
 In contrast, a simulated $2\theta_a$ scan in triple-axis 
-mode on a V-sample showed a surprising offset from zero, see
+mode on a V-sample showed a surprising offset from 0 degrees, see
 Figure \ref{f:v_2ta_offset}. However, a simulation with a PSD
 on the sample position showed that the beam center was 1.5~mm
 off from the center of the sample, and this was important
@@ -205,20 +194,20 @@ For a comparison on a slightly different instrument
 (analyser-detector collimator inserted), 
 see Figure~\ref{f:v_2ta_zero}.
 
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=0.6\textwidth]{figures/vanadium-plot-1.eps}
-  \end{center}
-\caption{First simulated $2\theta_a$ scan on a vanadium sample.
-Collimations: open-30'-28'-open.}
-\label{f:v_2ta_offset}
-\end{figure}
+%\begin{figure}
+%  \begin{center}
+%    \includegraphics[width=0.6\textwidth]{figures/vanadium-plot-1.eps}
+%  \end{center}
+%\caption{First simulated $2\theta_a$ scan on a vanadium sample.
+%Collimations: open-30'-28'-open.}
+%\label{f:v_2ta_offset}
+%\end{figure}
 
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.6\textwidth]{figures/vanadium-plot-2.eps}
   \end{center}
-\caption{Corrected $2\theta_a$ scan on a V-sample.
+\caption{TAS1: Corrected $2\theta_a$ scan on a V-sample.
 Collimations: open-30'-28'-67'.
 "$\times$": measurements, "o": simulations.}
 \label{f:v_2ta_zero}
@@ -234,7 +223,7 @@ the agreement between simulation and experiment is excellent.
   \begin{center}
     \includegraphics[width=0.6\textwidth]{figures/al2o3-focus.eps}
   \end{center}
-\caption{$2\theta_s$ scans on Al$_2$O$_3$ in two-axis, focusing mode.
+\caption{TAS1: $2\theta_s$ scans on Al$_2$O$_3$ in two-axis, focusing mode.
 Collimations: open-30'-28'-67'.
 "$\times$": measurements, "o": simulations.  
 A constant background is added to the simulated data.}
@@ -249,7 +238,7 @@ The data are shown in Figure \ref{f:v_ea}.
   \begin{center}
     \includegraphics[width=0.6\textwidth]{figures/ea-scan.eps}
   \end{center}
-\caption{Scans of the analyser energy on a V-sample.
+\caption{TAS1: Scans of the analyser energy on a V-sample.
 Collimations: open-30'-28'-67'.
 "$\times$": measurements, "o": simulations.}
 \label{f:v_ea}
@@ -260,7 +249,7 @@ Collimations: open-30'-28'-67'.
 \label{s:PRISMA} 
 
 In order to test the time-of-flight aspect of \MCS, we have
-in collaboration with Mark Hagen, ISIS, written a simple
+in collaboration with Mark Hagen, now at SNS, written a simple
 simulation of a time-of-flight instrument loosely based on the ISIS
 spectrometer PRISMA. The simulation was used to investigate the effect
 of using a RITA-style analyser instead of the normal PRISMA backend.
@@ -279,8 +268,8 @@ discriminates between
 the scattering off each individual analyser crystal 
 when the neutron hits the detector. The
 analyser component is modified so that a global variable 
-\verb+neu_color+ keeps track of which
-crystal scatters the neutron. The detector component
+\verb+neu_color+ registers which 
+crystal scatters the neutron ray. The detector component
 is then modified to construct seven different time-of-flight histograms,
 one for each crystal (see the source code for the instrument  
 for details). One way to think of this is that
@@ -305,14 +294,13 @@ A plot from the detector in the PRISMA simulation is shown in Figure
 rotated one degree relative to the previous one. The separation of the
 spectra of the different analyser blades is caused by different energy
 of scattered neutrons and different flight path length from source to
-detector.  We have not performed any quantitative analysis of the data at this
-time.
+detector.  We have not performed any quantitative analysis of the data.
 
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.6\textwidth]{figures/prisma2-a.eps}
   \end{center}
-\caption{Test result from PRISMA instrument using ``coloured
+\caption{Test result from PRISMA instrument using ``colored
   neutrons''. Each graph shows the neutrons scattered from one analyser blade.}
 \label{f:PRISMAdata}
 \end{figure}
