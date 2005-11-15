@@ -1524,8 +1524,6 @@ every node.
 \subsection{McStas/MPI Bugs and limitations}\index{Bugs}
 
 \begin{itemize}
-\item when simulating $N$ neutrons with $p$ machines, the effective
-  number of neutrons simulated is $p \cdot \frac{N}{p}$
 \item signals are \emph{not} supported while simulating with MPI (since
   asynchroneous events cannot be easily transmitted to all nodes). Anyway,
   depending on the MPI implementation, you may force all nodes to synchronize
