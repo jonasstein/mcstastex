@@ -25,18 +25,18 @@ meta-language and are edited either by using your favourite editor
 or by using the built in editor of the graphical user interface
 (\texttt{mcgui}).
 
-Next, the instrument and component files are compiled using the \MCS\ compiler
-using the FLEX and Bison facilities to produce a C program\footnote{Note that
-since release 1.7 of \MCS, FLEX and Bison need not be installed
-on your computer.}.
+Next, the instrument and component files are compiled using the \MCS\
+compiler, relying on built in features from the FLEX and Bison facilities to produce a C program.
 
 The resulting C program can then be
 compiled with a C compiler and run in combination with various
 front-end programs for example to present the intensity at the
 detector as a motor position is varied.
 
-The output data may be analyzed in the same way as regular experiments
-are analyzed by using Matlab, Scilab~\cite{scilab_webpage} or IDL or by using the Perl routines included in \MCS .\index{Tools}
+The output data may be analyzed and visualized in the same way as
+regular experiments by using the data handeling and visualisation tools in \MCS based on
+Perl and Matlab, Scilab~\cite{scilab_webpage} or PGPLOT. Further data
+output formats including IDL and XML are available, see section \ref{s:analyze}.\index{Tools}
 
 \begin{figure}[htb!]
 \begin{center}
@@ -57,7 +57,8 @@ the following sections. This section uses the
 directory of the \MCS\ distribution. %, see appendix~\ref{a:vanadium_example.instr}.
 
 To start the graphical user interface of McStas, run the command
-\verb+mcgui+ (\verb+mcgui.pl+ on Windows). This will open a window with some menus etc.,
+\verb+mcgui+ (\verb+mcgui.pl+ on Windows). This will open a window
+with a number of menus,
 see figure~\ref{fig:mcgui}. \index{Tools!mcgui}
 \begin{figure}[htb!]
   \begin{center}
@@ -101,7 +102,7 @@ explanatory. For other options, execute \verb+mcplot --help+
 (\verb+mcplot.pl --help+ on windows) to get help.
 
 
-To debug the simulation graphically, repeat the
+To visualize or debug the simulation graphically, repeat the
 steps but check the ``Trace'' option instead of the ``Simulate'' option.
 A window will pop up showing a sketch of the instrument.
 Depending on your
@@ -112,7 +113,7 @@ those shown in figures \ref{fig:mcdisp_PGPLOT}-\ref{fig:mcdisp_Matlab}.
     \includegraphics[width=0.55\textwidth]{figures/mcdisplay_PGPLOT.ps}
   \end{center}
 \caption{Output from \texttt{mcdisplay} with PGPLOT backend.
-  The left mouse button starts a new neutron, the middle button zooms, and
+  The left mouse button starts a new neutron ray, the middle button zooms, and
   the right button resets the zoom. The Q key quits the program.}
 \label{fig:mcdisp_PGPLOT}
 \end{figure}
@@ -140,18 +141,18 @@ tutorial (available from~\cite{mcstas_webpage}), and as of version
 details, read on from section~\ref{s:running}
 
 \subsection{New releases of \MCS}
-Releases of new versions of a software can today be carried out more or less
+Releases of new versions of a software package can today be carried out more or less
 continuously. However, users do not update their software on a daily basis,
 and as a compromise we have adopted the following policy of \MCS\ .
 
 \begin{itemize}
-\item A version {\version}.x will possibly contain bug fixes and minor new functionality. A new manual
+\item The versions {\version}.x will possibly contain bug fixes and minor new functionality. A new manual
 will, however, not be released and the modifications are documented on the
 \MCS\ web-page. The extensions of the forthcoming version {\version}.x are also listed
 on the web, and new versions may be released quite frequently when it is requested
 by the user community.
-\item A version 1.10 will contain important new features and an updated manual. It will typically be released
-once or twice a year in connection to for example a \MCS\ workshop.
+\item The version 1.10 will contain important new features and an
+  updated manual. It will be released in 2006. 
 \end{itemize}
 
 \section{Running the instrument compiler}
@@ -195,7 +196,7 @@ the cost of some slight reduction in capabilities.
 
 The \verb+-t+ or \verb+--trace+ option puts special ``trace'' code in
 the output. This code makes it possible to get a complete trace of the
-path of every neutron through the instrument, as well as the position
+path of every neutron ray through the instrument, as well as the position
 and orientation of every component. This option is mainly used with the
 \verb+mcdisplay+ front-end as described in section~\ref{s:mcdisplay}.
 
@@ -340,13 +341,13 @@ command line or shell:
 \begin{verbatim}
     ./name.out
 \end{verbatim}
-Note the leading dot, which is needed if the current directory is not in
+Note the leading ``.'', which is needed if the current directory is not in
 the path searched by the shell. When used in this way, the simulation
 will prompt for the values of any instrument parameters such as motor
 positions, and then run the simulation. Default instrument parameter values (see section~\ref{s:instrdefs}), if any, will be indicated and entered when hitting the \verb+Return+ key.\index{Parameters!Optional, default value}
 This way of running \MCS\ will only give data for one spectrometer
-setting which is normally sufficient {\em e.g.} for a time-of-flight
-spectrometer, but not for a triple-axis spectrometer where a scan over
+setting which is normally sufficient for {\em e.g.}, time-of-flight,
+SANS or powder instruments, but not for {\em e.g.} reflectometers or triple-axis spectrometers where a scan over
 various spectrometer settings is required.
 Often the simulation will be run using one of several
 available front-ends, as described in the next section. These front-ends
@@ -385,7 +386,7 @@ probably be avoided when saving in binary format, see below).
 
 The complete list of options
 and arguments accepted by \MCS\ simulations appears in
-table~\ref{f:simoptions}.
+Table~\ref{f:simoptions}.
 
 \subsection{Choosing an output data file format}
 
@@ -397,7 +398,7 @@ turned off using the \verb+--data-only+ or \verb+-a+ option.
 
 The format of the output files from \MCS\ simulations is described in
 more detail in section~\ref{s:analyze}. It may be chosen either with \verb+--format=FORMAT+ for each simulation or globally by setting the MCSTAS\_FORMAT environment variable. \index{Environment variable!MCSTAS\_FORMAT}
-The available format list is obtained using the \verb+name.out --help+ option, and shown in table~\ref{t:formatoptions}.
+The available format list is obtained using the \verb+name.out --help+ option, and shown in Table~\ref{t:formatoptions}.
 \MCS\ can presently generate many formats, including the original \MCS /PGPLOT and the new Scilab and Matlab formats. All formats, except the \MCS /PGPLOT, may eventually support binary files, which are much smaller and faster to import, but are platform dependent. The simulation data file extensions are appended automatically, depending on the format, if the file names do not contain any. Binary files are particularly recommanded for the IDL format (e.g. \verb+--format=IDL_binary+), and the Matlab and Scilab format when handling large detectors (e.g. more than 50x50 bins). For example:
 \begin{verbatim}
     ./vanadium_example.out ROT=90 --format="Scilab_binary"
@@ -408,7 +409,12 @@ or more generally (for bash/Bourne shell users)
     ./vanadium_example.out ROT=90
 \end{verbatim}
 
-It is also possible to create \textit{Vitess} and \textit{Tripoli4} neutron event files using the \verb+Vitess_input+/\verb+Vitess_output+ and \verb+Tripoli_input+/\verb+Tripoli_output+ components respectively. \index{Vitess} \index{Tripoli}
+It is also possible to create and read \textit{Vitess} and \textit{Tripoli4}
+neutron event files using components
+\begin{itemize}
+\item \verb+Vitess_input+ and \verb+Vitess_output+
+\item \verb+Tripoli_input+ and \verb+Tripoli_output+ 
+\end{itemize}\index{Vitess} \index{Tripoli}
 
 Additionally, adding the \texttt{raw} keyword to the FORMAT will produce raw $[N, p, p^2]$ data sets instead of $[N, p, \sigma]$ (see Section \ref{s:staterror}). The former representation is fully additive, and thus enables to add results from separate simulations (e.g. when using a computer Grid).
 
@@ -432,7 +438,7 @@ and for IDL
 \end{verbatim} \index{Tools!IDL}
 See section~\ref{s:mcplot} for an other way of plotting simulation results using the \verb+mcplot+ front-end. \index{Tools!mcplot}
 
-When choosing the HTML format, the simulation results are save as a web page, whereas the monitor data files are saved as VRML files, displayed within the web page.
+When choosing the HTML format, the simulation results are saved as a web page, whereas the monitor data files are saved as VRML files, displayed within the web page.
 
 \begin{table}
   \begin{center}
@@ -446,7 +452,7 @@ When choosing the HTML format, the simulation results are save as a web page, wh
       \hline
       \texttt{-n {\it count}} \my \texttt{--ncount={\it count}}
         & Set the number of neutron histories to simulate. The default
-      is 1,000,000. \\
+      is 1,000,000. (1e6)\\
       \hline
       \texttt{-d {\it dir}} \my \texttt{--dir={\it dir}}
         & Create a new directory {\it dir\/} and put all data files in
@@ -482,7 +488,7 @@ When choosing the HTML format, the simulation results are save as a web page, wh
       \texttt{--format={\it FORMAT}}
         & This option sets the file format for result simulation and data files. \\
       \hline
-      \texttt{--format\_data={\it FORMAT}}
+      \texttt{--format\_data= {\it FORMAT}}
         & This option sets the file format for result data files from monitors. This enables to have simulation files in one format (e.g. HTML), and monitor files in an other format (e.g. VRML).\\
       \hline
       \texttt{{\it param}{\texttt =}{\it value}}
@@ -490,7 +496,8 @@ When choosing the HTML format, the simulation results are save as a web page, wh
         to prompt for each one. \\
       \hline
     \end{tabular}
-    \caption{Options accepted by \MCS\ simulations}
+    \caption{Options accepted by \MCS\ simulations. For options
+      specific to MPI and parallel computing, see section \ref{s:run-mpi}.}
     \label{f:simoptions}
     }
   \end{center}
@@ -503,19 +510,23 @@ When choosing the HTML format, the simulation results are save as a web page, wh
       \hline
       \texttt{\MCS} \my \texttt{PGPLOT} & .sim & Original format for PGPLOT plotter (may be used with -f and -d options) \\
       \texttt{Scilab} & .sci & Scilab format (may be used with -f and -d options) \\
-      \texttt{Scilab\_binary} & & Scilab format with external binary files (may be used with -d option). Also toggles -a option. \\
+      \texttt{Scilab\_binary} & & Scilab format with external binary files (may be used with -d option). (-a option implicitly set) \\
       \texttt{Matlab} & .m & Matlab format (may be used with -f and -d options) \\
-      \texttt{Matlab\_binary} & & Matlab format with external binary files (may be used with -d option). Also toggles -a option. \\
+      \texttt{Matlab\_binary} & & Matlab format with external binary files (may be used with -d option). (-a option implicitly set) \\
       \texttt{Octave} & .m & Octave format (may be used with -f and -d options) \\
-      \texttt{Octave\_binary} & & Octave format with external binary files (may be used with -d option). Also toggles -a option. \\
+      \texttt{Octave\_binary} & & Octave format with external binary files (may be used with -d option). (-a option implicitly set) \\
       \texttt{IDL} & .pro & IDL format. {\em Must} be used with -f option. \\
-      \texttt{IDL\_binary} & & IDL format with external binary files (may be used with -d option). Also toggles -a option. \\
+      \texttt{IDL\_binary} & & IDL format with external binary files (may be used with -d option). (-a option implicitly set) \\
       \texttt{XML} & .xml & XML/NeXus format (may be used with -f and -d options). \\
       \texttt{HTML} & .html & HTML format (generates a web page, may be used with -f and -d options). Data files are saved as VRML objects. \\
       \texttt{VRML} & .wrl & Virtual Reality file format for data files. Simulation files are not saved properly, and the HTML format should be used preferably. \\
-      {\it Tripoli} &  & Tripoli 4 neutron events file format. Use \verb+Virtual_tripoli4_input+/\verb+Virtual_tripoli4_output+ components. \\
-      {\it Vitess} &  & Vitess neutron events file format. Use \verb+Vitess_input+/\verb+Vitess_output+ components. \\
-      {\it McStas events} & & McStas event files in text or binary format. Use \verb+Virtual_input+/\verb+Virtual_output+ components. \\
+      {\it Tripoli} &  & \hbox{Tripoli 4 neutron events file
+      format.} \hbox{Use
+        \verb+Virtual_tripoli4_input+/\verb+Virtual_tripoli4_output+}
+      components. \\ 
+      {\it Vitess} &  & \hbox{Vitess neutron events file format.} \hbox{Use \verb+Vitess_input+/\verb+Vitess_output+ components. }\\
+      {\it McStas events} & & \hbox{McStas event files in text or binary
+      format.} \hbox{Use \verb+Virtual_input+/\verb+Virtual_output+ components.} \\
       \hline
     \end{tabular}
     \caption{Available formats supported by \MCS\ simulations.}
@@ -534,9 +545,9 @@ If a {\it file.out} simulation obtained from \MCS\ is running, the process statu
 \begin{quote}
   \verb|<user>| {\it 13277} \verb|7140 99 23:52 pts/2    00:00:13 | {\it file.out}\\
 \end{quote}
-where \verb+user+ is your loggin name. The {\it pid} is there '13277'.
+where \verb+user+ is your Unix login. The {\it pid} is there '13277'.
 
-Once known, it is possible to send one of the signals listed in table~\ref{t:signals} using the 'kill' unix command (or the functionalities of your process manager), e.g.
+Once known, it is possible to send one of the signals listed in Table~\ref{t:signals} using the 'kill' unix command (or the functionalities of your process manager), e.g.
 \begin{verbatim}
     kill -USR2 13277
 \end{verbatim}
@@ -556,7 +567,10 @@ earlier if the desired statistics has been achieved. This may be done automatica
 
 Whenever simulation data is generated before end (or the simulation is interupted), the 'ratio' field of the monitored data will provide the level of achievement of the computation (for instance '3.33e+05/1e+06'). Intensities are then usually to be scaled accordingly.
 
-Additionally, any system error will result in similar messages, giving indication about the occurence of the error (in which component ? in which section ?). Whenever possible, the simulation will {\em try} to save the data before ending. Most errors appear when writing a new component, in the \texttt{INITIALIZE}, \texttt{TRACE} or \texttt{FINALLY} sections. Memory errors usually show up when C pointers have not been allocated/unallocated before usage, whereas mathematical errors are set when, for instance, dividing per zero.
+Additionally, any system error will result in similar messages, giving
+indication about the occurence of the error (component and
+section). Whenever possible, the simulation will {\em try} to save the
+data before ending. Most errors appear when using a newly written component, in the \texttt{INITIALIZE}, \texttt{TRACE} or \texttt{FINALLY} sections. Memory errors usually show up when C pointers have not been allocated/unallocated before usage, whereas mathematical errors are found when, for instance, dividing by zero.
 
 \begin{table}
   \begin{center}
@@ -574,10 +588,10 @@ Additionally, any system error will result in similar messages, giving indicatio
   \end{center}
 \end{table}
 
-\subsection{Optimizing a simulation}
+\subsection{Optimizing simulations}
 \index{Optimization|textbf}
 \label{s:optim}
-There are various other ways to speed-up a simulation
+There are various ways to speedup simulations
 \begin{itemize}
 \item Optimize the compilation of the instrument, as explained in section~\ref{s:compile}.
 \item Execute the simulation in parallel on a computer grid or a cluster (with MPI) as explained in section~\ref{s:run-mpi}.
@@ -588,7 +602,8 @@ There are various other ways to speed-up a simulation
 \item Use source optimizers like the components Source\_adapt or
       Source\_Optimizer. Such component may sometimes not be very efficient, when no
       neutron importance sampling can be achieved, or may even sometimes alter the
-      simulation results. Be careful and always check results with a non-optimized
+      simulation results. Be careful and always check results with a
+      (shorter) non-optimized
       computation.
 \item Complex components usually take into account additional small effects in a simulation,
       but are much longer to execute. Thus, simple components should be prefered
@@ -625,215 +640,10 @@ Then a numerical optimization should be available, such as those provided with M
 \end{verbatim}
 will determine the best value of TT, starting from -25 estimate, in order to minimize function \verb+instr_value+, and thus maximize the mean detector counts.
 
-The choice of the optimization routine, of the simulation quality value to optimize
-and the initial parameter guess all may have a large influence on the results.
+The choice of the optimization routine, of the simulation quality
+value to optimize, the initial parameter guess and the simulation
+length all have a large influence on the results.
 Be cautious and wise when interpreting the optimal guess.
-
-\section{Using computer Grids and Clusters}
-\label{s:run-mpi}
-\index{Parallel computing|textbf}
-\index{MPI|textbf}\index{Grid computing|textbf}\index{mcstas-hosts}
-
-Parallelizing a computation is possible when dependencies between
-  each computation are not too strong. The situation of \MCS\ is
-  ideal since each neutron can be simulated without interfering with
-  other simulated neutrons. Therefore each neutron can be simulated
-  independently on a set of computer.
-
-\MCS\ provides two methods in order to distribute computations on many computers.
-\begin{itemize}
-\item when scanning instrument parameters (using \texttt{mcrun --multi -N}),
-  it is possible to distribute each scan step on a list of computers.
-\item when using an homogeneous computer cluster, each simulation (including scan
-  steps) may be computed in parallel using MPI (using \texttt{mcrun --mpi=Nb\_Nodes}).
-\end{itemize}
-
-\subsection{Distribute mcrun scans (grid)}
-  This is an experimental option to
-  distribute scan steps on a set of machines using \emph{ssh}
-  connexions. To use this option you will need
-  \begin{itemize}
-  \item{A set of unix machines of the same architecture (binary compatible). All
-      machines should have the same \MCS\ distribution installed.}
-  \item{ \texttt{ssh} access from the master node (where McStas is
-      installed) to the slaves through e.g. DSA keys \emph{without} a
-      password. These keys should be generated using the command
-      \texttt{ssh-keygen}. Run \emph{e.g.} \texttt{ssh-keygen -t dsa} on
-      master node, enter no passphrase and add resulting
-      \texttt{.ssh/id\_dsa.pub} to \texttt{.ssh/authorized\_keys}
-      on all the slave nodes.}
-  \item{The machine names listed in the file \texttt{.mcstas-hosts} in
-      your home directory or in the \texttt{MCSTAS/tools/perl/mcstas-hosts} on
-      the master node, one node per line. The \verb'--machines=<file>' option
-      enables to specify the hosts file to use.}
-  \item{Execute \texttt{mcrun} as normally, appending \texttt{--multi} or
-      \texttt{-M} will divide the $N$ scanpoints across the machines in
-      \texttt{.mcstas-hosts $+$ localhost}.}
-  \end{itemize}
-  Each of the scan steps is executed on distant machines, sending the executable
-  with \emph{scp}, executing single simulations, and then retrieving individual
-  scan steps on the master machine.
-  {\bf Warning:} This option is considered \emph{experimental} - i.e.,
-  you are welcome to use it, but be ready for trouble. Note also that
-  this is a unix only option in \texttt{mcgui} and \texttt{mcrun}, it
-  {\bf does not} work on windows.
-
-\subsection{Parallel computing (MPI)}
-
-When computing $N$ neutrons with
-$p$ computers, each computer will simulate $\frac{N}{p}$
-neutrons. As a result there will be $p \cdot \frac{N}{p} \leq N$
-neutrons simulated. As a result, \MCS\ generates two kinds of data sets:
-\begin{itemize}
-\item intensity measurements, internally represented by three
-  values $(p_0, p_1, p_2)$ where $p_0$, $p_1$, $p_2$ are
-  additive. Therefore the final value of $p_0$ is the sum of all
-  local value of  $p_0$ computed on each node. The same rule applies
-  for $p_1$ and $p_2$. The evaluation of the intensity errors $\sigma$
-  is performed using the final $p_0$, $p_1$, and $p_2$ arrays (see Section \ref{s:staterror}).
-\item event lists: the merge of events is done by concatenation
-\end{itemize}
-The MPI support requires to have MPICH, or alternatively LAM-MPI, installed on a set of nodes.
-This usually also requires to setup properly the \texttt{ssh} connections and keys.
-
-\subsubsection{MPI Basic usage}
-
-To enable parallel computation, compile McStas output C-source file
-with \verb'mpicc' with the flag \verb'-DUSE_MPI' and run it using the
-wrapper of your MPI implementation (\verb'mpirun' for mpich or lammpi) :
-\begin{verbatim}
-  # generate a C-source file [sim.c]
-  mcstas sim.instr
-
-  # generate an executable with MPI support [sim.mpi]
-  mpicc -DUSE_MPI -o sim.mpi sim.c
-
-  # execute with parallel processing over <N> computers
-  # here you have to list the computers you want to use
-  # in a file [machines.list] (using mpich implementation)
-  # (refer to MPI documentation for a complete description)
-  mpirun -machinefile machines.list -n <N> \
-         ./sim.mpi <instrument parameters>
-  ...
-\end{verbatim}
-
-If you don't want to spread the simulation, run it as usual :
-\begin{verbatim}
-  ./sim.mpi <instrument parameters>
-\end{verbatim}
-
-If you want to disable MPI support (for example if you do not have MPI
-installed), just compile the C-source file generated by \verb'mcstas'
-  without \verb'mpicc' and without the \verb'-DUSE_MPI' flag :
-\begin{verbatim}
-  # generate a C-source file [sim.c]
-  mcstas sim.instr
-
-  # generate an executable without MPI support [sim.no_mpi]
-  cc -o sim.no_mpi sim.c
-
-  # execute on a single computer
-  ./sim.no_mpi <instrument parameters>
-  ...
-\end{verbatim}
-
-\subsection{McRun script with MPI support}
-
-The \verb'mcrun' script has been adapted to use MPICH implementation
-of MPI. Two new options have been added:
-\begin{itemize}
-\item \verb'--mpi=<number>': tells \verb'mcrun' to use MPI, and to
-  spread the simulation over \verb'<number>' nodes
-\item \verb'--machines=<file>': defines a text file where the
-  nodes which are to be used for parallel computation are listed; by
-  default, \verb'mcrun' will look at \verb'$HOME/.mcstas-hosts' and
-  \verb'MCSTAS/tools/perl/mcstas-hosts'.
-\end{itemize}
-
-Suppose you have four machines named \verb'node1' to \verb'node4'.
-A typical machine list file, \verb'machines.list' looks like :
-\begin{verbatim}
-node1
-node2
-node3
-node4
-\end{verbatim}
-
-You can then spread a simulation \verb'sim.instr' using \verb'mcrun' :
-\begin{verbatim}
-  mcrun -c --mpi=4 --machines=machines.list \
-        sim.instr <instrument parameters>
-\end{verbatim}
-
-\begin{paragraph}{Warning:} when using \verb'mcrun' with MPI, be sure
-  to recompile your simulation with MPI support (see \verb'-c' flag of
-  \verb'mcrun'): a simulation compiled without MPI support cannot be
-  used with MPI, whereas a simulation compiled with MPI support can be
-  used without MPI.
-\end{paragraph}
-
-\subsection{McStas/MPI Performance}
-
-Theorically, a computation which lasts $T$ seconds on a single computer,
-should lasts at least $\frac{T}{p}$ seconds when it is distributed
-over $p$ computers. There is a eventually overhead due to the split
-and merge operations.
-\begin{itemize}
-\item the split is immediate: constant time cost ${\cal O}(1)$
-\item the merge is at worst linear against the number of computers:
-  \begin{itemize}
-  \item linear time cost~: ${\cal O}(p)$ when saving an event list
-  \item logarithmic time cost: ${\cal O}(\log{p})$ when not saving an
-  event list
-  \end{itemize}
-\end{itemize}
-
-Here is a table showing some comparison between MPI and no-MPI
-simulations. The cluster is built with 2 bi-xeon 2GHz, resulting in 4
-nodes.
-\begin{center}
-  \begin{tabular}{|c|c|l|}
-    \hline
-    \# nodes & duration (seconds) & notes \\
-    \hline
-    1 & 622 & without MPI support \\
-    1 & 630 & with MPI support, run without MPI \\
-    1 & 620 & with MPI support, run with MPI \\
-    \hline
-    2 & 316 & \\
-    3 & 210 & \\
-    4 & 158 & \\
-    \hline
-  \end{tabular}
-\end{center}
-
-These benchmarks are consistent~: there is a really small overhead
-when computing using MPI. This overhead comes from the spread and the
-fusion of the computations. For instance, spreading a computation
-implies either an \verb'rsh' or and \verb'ssh' session to be opened on
-every node.
-
-\subsection{McStas/MPI Bugs and limitations}\index{Bugs}
-
-\begin{itemize}
-\item when simulating $N$ neutrons with $p$ machines, the effective
-  number of neutrons simulated is $p \cdot \frac{N}{p}$
-\item signals are \emph{not} supported while simulating with MPI (since
-  asynchrone events cannot be easily transmitted to all nodes). Anyway,
-  depending on the MPI implementation, you may force all nodes to synchronize
-  and save data using the HUP signal (\verb'kill -HUP mcstasPID').
-\item some header of output files might contain minor errors
-\item the computation split doesn't take into account the speed or the
-  load of nodes: the overall time of a distributed computation is
-  forced by the slowest node; the ``cluster'' is supposed to be
-  homogeneous
-\item forcing the random seed while spreading the computation doesn't
-  work since every node will use identical seeds and will then
-  generate identical pseudo-random values
-\item MPI must be correctly configured: if using \verb'ssh', you
-  have to set ssh keys so as not to have to enter any password; if
-  using \verb'rsh', you have to set a \verb'.rhosts' file
-\end{itemize}
 
 \section{Using simulation front-ends}
 \label{s:frontends}
@@ -857,7 +667,7 @@ The list of available \MCS\ front-end programs may be obtained from the \verb+mc
        mcconvert     Matlab <-> Scilab script conversion tool
     When used with the -h flag, all tools display a specific help.
     SEE ALSO: mcstas, mcdoc, mcplot, mcrun, mcgui, mcresplot, mcstas2vitess
-    DOC:      Please visit http://neutron.risoe.dk/mcstas/
+    DOC:      Please visit http://www.mcstas.org
 \end{verbatim}
 An extended set of front-end programs is planned for future versions of
 \MCS, including a NeXus data format option~\cite{nexus_webpage}.
@@ -883,12 +693,13 @@ visualize the results.
 
 \subsubsection{The menus}
 
-The ``File'' menu has the following features:
+The {\bf File} menu has the following features:
 \begin{description}
 \item[Open instrument] selects the name of an instrument file to be used.
-\item[Edit current] opens a simple editor window for editing the
+\item[Edit current] opens a simple editor window with McStas syntax
+  highlighting for editing the
   current instrument definition. This function is also available from
-  the ``Edit'' button to the right of the name of the instrument definition in
+  the {\bf Edit} button to the right of the name of the instrument definition in
   the main window.
 \item[Spawn editor] This starts the editor defined in the environment
   variable \verb+VISUAL+ or \verb+EDITOR+ on the current instrument
@@ -906,7 +717,7 @@ The ``File'' menu has the following features:
 \item[Quit] exits the graphical user interface front-end.
 \end{description}
 
-\noindent The ``Simulation'' menu has the following features:
+\noindent The {\bf Simulation} menu has the following features:
 \begin{description}
 \item[Read old simulation] prompts for the name of a file
   from a previous run of a McStas simulation (usually called
@@ -918,13 +729,17 @@ The ``File'' menu has the following features:
 \item[Run simulation] opens the run dialog window, explained
   further below.
 \item[Plot results] plots (using \verb+mcplot+) the results of the
-  last simulation run or loaded.
+  last simulation run or spawns a load dialogue to load a set of results.
 \item[Configuration options] selection of plotting backend
   (PGPLOT/Matlab/Scilab). Opens the choose backend dialog shown in
   figure~\ref{fig:mcgui-choose}. All formats are chosen as full text, but a 'Use binary files' option is possible. Additionally, the editor to use to list instrument descriptions can be chosen. The HTML/VRML data files save results as a web-page document requiring a VRML viewer to display the data files as a 3D surface.
 \end{description}
 
-\noindent The ``Neutron Site'' menu contains a list of template/example instruments as found in the \MCS\ library, sorted by neutron site. When selecting one of these, a local copy of the instrument description is transfered to the active directory (so that users have modification rights). One may then view its source (Edit) and use it directly for simulations/trace (3D View).
+\noindent The {\bf Neutron Site} menu contains a list of
+template/example instruments as found in the \MCS\ library, sorted by
+neutron site. When selecting one of these, a local copy of the
+instrument description is transfered to the active directory (so that
+users have modification rights) and loaded. One may then view its source (Edit) and use it directly for simulations/trace (3D View).
  \begin{figure}[htb!]
   \begin{center}
     \includegraphics[width=0.3\textwidth]{figures/choose_backend.eps}
@@ -933,7 +748,7 @@ The ``File'' menu has the following features:
 \label{fig:mcgui-choose}
 \end{figure}
 
-The ``Help'' menu has the following features, through use of
+The {\bf Help} menu has the following features, through use of
 \verb+mcdoc+ and a web browser. To customize the used web browser, set
 the \verb+BROWSER+ environment variable. If \verb+BROWSER+ is not set,
 \verb+mcgui+ uses \verb+netscape+ on Unix and the default browser on
@@ -977,13 +792,13 @@ The meaning of the different fields is as follows:
   the input parameters of the instrument. The type of each instrument
   parameter is given in parenthesis after each name. Floating point
   numbers are denoted by (D) (for the C type ``\verb+double+''), (I)
-  denotes integer parameters, and (S) denotes strings. For parameter scans, enter the minimum and maximum values to scan, separated by a coma, e.g. \verb+1,10+ and do not forget to set the {\bf \# Scanpoints} to more than 1.
-\item[Output to] allows the entry of a directory to store the
+  denotes integer parameters, and (S) denotes strings. For parameter scans, enter the minimum and maximum values to scan, separated by a comma, e.g. \verb+1,10+ and do not forget to set the {\bf \# Scanpoints} to more than 1.
+\item[Output to] allows the entry of a directory for storage of the
   resulting data files in (like the \verb+--dir+ option). If no name is
-  given, the results are put in the current directory, to be overwritten
+  given, the results are stored in the current directory, to be overwritten
   by the next simulation.
 \item[Force] Forces to overwrite existing data files
-\item[Neutron count] sets the number of neutron histories to
+\item[Neutron count] sets the number of neutron rays to
   simulate (the \verb+--ncount+ option).
   \item[Gravity] Activates gravitation handling. Some components may not handle it properly, and produce wrong results.
 \item[Distribute mcrun scans (grid)] activates the distribution of the scan
@@ -991,7 +806,7 @@ The meaning of the different fields is as follows:
   See section~\ref{s:run-mpi} on parallel computing for more informations
   about how to define and access the grid. This options is only visible if MPI/ssh is available.
 \item[Plot results] -- if checked, the \verb+mcplot+ front-end will be run
-  after the simulation has finished, and the plot dialog will pop up
+  after the simulation has finished, and the plot dialog will appear
   (see below).
 \item[Format] The data file format can be changed the same way as in the ``Simulation/Configuration options''.
 \item[Random seed/Set seed to] selects between using a random seed (different
@@ -1000,7 +815,7 @@ The meaning of the different fields is as follows:
 \item[Simulate/Trace (3D)] selects between running the simulation
   normally, or using the \verb+mcdisplay+ front-end to view the instrument in 3D and trace the neutrons individually inside components.
 \item[\# Scanpoints] sets the number of times the simulation has to repeated to cover a parameter scan. If no parameter scan is specified, the simulation is just repeated.
-\item[Inspect component] will trace neutron trajectories that only reach a given component (e.g. sample or detector).
+\item[Inspect component] will trace only neutron trajectories that reach a given component (e.g. sample or detector).
 \item[First component] seletcs the first component to plot (default is first) in order to define a region of interest.
 \item[Last component] seletcs the last component to plot (default is first) in order to define a region of interest.
 \item[Start] runs the simulation.
@@ -1019,8 +834,8 @@ This dialog only shows-up when using the \MCS/PGPLOT plotter. Other plotters hav
 \item[Monitors and detectors] lists all the one- and
   two-dimensional detectors in the instrument. By double-clicking, one plots
   the data in the plot window.
-\item[Plot] plots the selected detector in the plot window, just
-  like double-clicking its name.
+\item[Plot] plots the selected detector in the plot window. Has the
+  same effect as double-clicking its name.
 \item[Overview plot] plots all the detectors together in the plot
   window.
 \item[B\&W postscript] prompts for a file name and saves the
@@ -1066,14 +881,14 @@ The dialog will also pick up those of the users own components that are
 \end{figure}
 
 
-To use the \verb+mcgui+ front-end, the programs Perl and Perl/Tk must be properly installed on the system.
-
-Additionally, if the \MCS /PGPLOT back-end is used for data format, PGPLOT,
-PgPerl, and PDL will be required. \index{Tools!Perl libraries} It may be
-necessary to set the \verb+PGPLOT_DIR+ and \verb+PGPLOT_DEV+ environment
-variable; consult the documentation for PGPLOT on the local system in case of
-difficulty. \index{Environment variable!PGPLOT\_DIR} \index{Environment
-variable!PGPLOT\_DEV}
+To use the \verb+mcgui+ front-end, the programs Perl and Perl/Tk must
+be properly installed on the system. Additionally, if the \MCS /PGPLOT
+back-end is used for data format, PGPLOT, PgPerl, and PDL will be
+required. \index{Tools!Perl libraries} It may be necessary to set the
+\verb+PGPLOT_DIR+ and \verb+PGPLOT_DEV+ environment variable; consult
+the documentation for PGPLOT on the local system in case of
+difficulty. \index{Environment variable!PGPLOT\_DIR}
+\index{Environment variable!PGPLOT\_DEV}
 
 \subsection{Running simulations with automatic compilation (mcrun)}
 \label{s:mcrun}
@@ -1085,7 +900,7 @@ The \verb+mcrun+ front-end (mcrun.pl on Windows) provides a convenient command-l
 interface for running simulations with the same automatic compilation
 features available in the \verb+mcgui+ front-end. It also provides a
 facility for running a series of simulations while varying an input
-parameter, thereby replacing the old \verb+gscan+ front-end.
+parameter.
 
 The command
 \begin{quote}
@@ -1118,7 +933,7 @@ extensions:
   varying one or more parameters within specified intervals. Such a
   series of simulations is called a \emph{scan}. To specify
   an interval for a parameter \textit{X}, it should be assigned two
-  values separated with a comma. For example, the command
+  values separated by a comma. For example, the command
 \begin{verbatim}
     mcrun sim.instr -N4 X=2,8 Y=1
 \end{verbatim}
@@ -1128,7 +943,7 @@ would run the simulation defined in \verb+sim.instr+ four times, with
 After running the simulation, the results will be written to the file
 \verb+mcstas.dat+ by default. This file contains one line for each
 simulation run giving the values of the scanned input variables along
-with the intensity and estimated error in all detectors. Additionally, a
+with the integrated intensity and estimated error in all monitors. Additionally, a
 file \verb+mcstas.sci+ (when using Scialb format) is written that can be read by the \verb+mcplot+
 front-end to plot the results on the screen or in a Postscript file, see
 section~\ref{s:mcplot}. \index{Tools!mcplot}
@@ -1147,16 +962,6 @@ section~\ref{s:mcplot}. \index{Tools!mcplot}
 \end{itemize}
 
 The \verb+-h+ option will list valid options. The \verb+mcrun+ front-end requires a working installation of Perl to run.
-
-
-\subsection{The \texttt{gscan} front-end}
-\label{gscan}
-\index{Tools!gscan (obsolete)}
-
-The front-end \verb+gscan+ is obsolete from version~1.3 of McStas, and
-is included only for backwards compatibility. The front-end~\verb+mcrun+
-(section~\ref{s:mcrun}) includes all the functionality of the old
-\verb+gscan+ front-end and should be used instead.
 
 
 \subsection{Graphical display of simulations (mcdisplay)}
@@ -1250,8 +1055,6 @@ The \verb+--inspect+ option may be used (see previous paragraph), as well as the
 The \verb+mcdisplay+ front-end will then
 require the Perl+PGPLOT, and either Scilab or Matlab to be installed. \index{Tools!Matlab} \index{Tools!Scilab}
 
-See section~\ref{s:comp-mcdisplay} for how to make new components work
-with the \verb+mcdisplay+ front-end.
 
 \subsection{Plotting the results of a simulation (mcplot)}
 \label{s:mcplot}
@@ -1273,7 +1076,7 @@ passed to mcplot, {\em e.g.} ``\texttt{mcplot {\it dir}}'' or ``\texttt{mcplot
   {\it file}}''.
 It is also possible to plot one single text (not binary) data file from a given monitor, passing its name to mcplot.
 
-The drawing back-end program may be selected among PGPLOT, Matlab and Scilab using either the -p{\it PLOTTER} option (e.g. \verb+mcplot -pScilab file+) or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT} Moreover, the drawing back-end program will also be set depending on the {\it file} extension (see table~\ref{t:formatoptions}).
+The drawing back-end program may be selected among PGPLOT, Matlab and Scilab using either the -p{\it PLOTTER} option (e.g. \verb+mcplot -pScilab file+) or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT} Moreover, the drawing back-end program will also be set depending on the {\it file} extension (see Table~\ref{t:formatoptions}).
 
 It should be emphasized that \verb+mcplot+ may \emph{only} display simulation results with the format that was chosen during the computation. Indeed, if you request data in a given format from a simulation, you will only be able to display results using that same drawing back-end. Anyway, the \verb+mcconvert+ utility may convert a \MCS\ data file between Matlab and Scilab formats (see section \ref{s:mcconvert}).
 
@@ -1333,7 +1136,8 @@ To use the \verb+mcplot+ front-end, the programs Perl, and either Scilab or Matl
 The \verb+mcresplot+ front-end is used to plot the resolution function, particularly for triple-axis
 %or inverse geometry time-of-flight
 spectrometers, as
-calculated by the Res\_sample component. It requires to have a Res\_monitor component further in the instrument description (at the detector position).
+calculated by the Res\_sample component or TOF\_res\_sample for
+time-of-flight instruments. It requires to have a Res\_monitor component further in the instrument description (at the detector position).
 %(see section~\ref{s:res_sample}).
 This front-end
 has been included in the release since it may be useful
@@ -1353,7 +1157,7 @@ The front-end will open a window displaying projections of the 4-dimensional
 resolution function $R(\boldsymbol{Q}, \omega)$. The covariance matrix of the
 resolution function, the resolution along each projection axis and the resulting
 resolution matrix are also shown, as well as the instrument name and parameters
-used for the simulation. This is mainly useful for triple-axis spectrometers.
+used for the simulation. 
 
 To use the \verb+mcresplot+ front-end, the programs Perl, PGPLOT, PgPerl,
 and PDL must all be properly installed on the system.
@@ -1418,7 +1222,7 @@ If you have been running a \MCS\ simulation with Scilab output, but finally plan
 \begin{quote}
   \texttt{mcconvert {\it file.{m|sci}\/}}
 \end{quote}
-to simply translate one file format the other. This works only for the text files of course. The binary files need not be translated.
+to simply translate one file format to the other. This works only for text files of course. The binary files need not be translated.
 
 \section{Analyzing and visualizing the simulation results}
 \label{s:analyze}
@@ -1428,7 +1232,7 @@ To analyze simulation results, one uses the same tools as for analyzing
 experimental data, \textit{i.e}. programs such as IDL, Matlab and Scilab.
 The output files from simulations are usually simple text files containing headers and data blocks. If data blocks are empty they may be accessed refering to an external file indicated in the header. This file may also be a binary file (except with the original \MCS /PGPLOT format), which does not contain any header (except if simulation is launched with \verb|+a| option), but are in turn smaller in size and faster to import.
 
-In order for the user to choose the data format, we recommand to set it {\it via} the MCSTAS\_FORMAT environment variable, which will also make the front-end programs able to import and plot data and instrument consistently. The available format list is shown in table~\ref{t:formatoptions}. \index{Environment variable!MCSTAS\_FORMAT}
+In order for the user to choose the data format, we recommand to set it {\it via} the MCSTAS\_FORMAT environment variable, which will also make the front-end programs able to import and plot data and instrument consistently. The available format list is shown in Table~\ref{t:formatoptions}. \index{Environment variable!MCSTAS\_FORMAT}
 
 
 Note that the neutron event counts in detectors is typically not very
@@ -1441,42 +1245,42 @@ simulation data.
 The \MCS\ original format, which is equivalent to the PGPLOT format, is simply columns of ASCII text that most programs should
 be able to read.
 
-One-dimensional histogram detectors (time-of-flight, energy-sensitive)
+One-dimensional histogram monitors (time-of-flight, energy-sensitive)
 write one line for each histogram bin. Each line contains a number
 identifying the bin (\textit{i.e}.\ the time-of-flight) followed by
 three numbers: the simulated intensity, an estimate of the statistical
 error as explained in section~\ref{s:staterror}, and the number of
 neutron events for this bin.
 
-Two-dimensional histogram detectors (position sensitive detectors)
+Two-dimensional histogram monitors (position sensitive detectors)
 output $M$ lines of $N$ numbers representing neutron intensities, where
 $M$ and $N$ are the number of bins in the two dimensions. The
-two-dimentional detectors also store the error estimates and event counts as additional matrices.
+two-dimentional monitors also store the error estimates and event counts as additional matrices.
 
-Single-point detectors output the neutron intensity, the estimated
+Single-point monitors output the neutron intensity, the estimated
 error, and the neutron event count as numbers on the
 terminal. (The results from a series of simulations may be combined in a
 data file using the \verb+mcrun+ front-end as explained in
 section~\ref{s:mcrun}).
 
-Both one- and two-dimentional detector output by default start with a
+Both one- and two-dimentional monitor output by default start with a
 header of comment lines, all beginning with the `\verb+#+' character.
 This header gives such information as the name of the instrument used in
 the simulation, the values of any instrument parameters, the name of the
-detector component for this data file, \textit{etc}. The headers may be
+monitor component for this data file, \textit{etc}. The headers may be
 disabled using the \verb+--data-only+ option in case the file must be
 read by a program that cannot handle the headers.
 
 In addition to the files written for each one- and two-dimensional
-detector component, another file (by default named \verb+mcstas.sim+) is
+monitor component, another file (by default named \verb+mcstas.sim+) is
 also created. This file is in a special \MCS\ ASCII format. It contains
 all available information about the instrument definition used for the
 simulation, the parameters and options used to run the simulation, and
-the detector components present in the instrument. It is read by the
+the monitor components present in the instrument. It is read by the
 \verb+mcplot+ front-end (see section~\ref{s:mcplot}). This file stores
-the results from single detectors, but by default contains only pointers
+the results from single monitors, but by default contains only pointers
 (in the form of file names) to data for one- and two-dimensional
-detectors. By storing data in separate files, reading the data with
+monitors. By storing data in separate files, reading the data with
 programs that do not know the special \MCS\ file format is
 simplified. The \verb+--file+ option may be used to store all data
 inside the \verb+mcstas.sim+ file instead of in separate files.
@@ -1484,10 +1288,10 @@ inside the \verb+mcstas.sim+ file instead of in separate files.
 \paragraph{Matlab, Scilab and IDL formats}
 \index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!IDL} \index{Data format}
 
-These formats write automatically scripts containing the data as a structure, as well as in-line import and plot functions for the selected language. Usage examples are given in section~\ref{s:run-sim}.
+With these formats \MCS\ automatically writes scripts containing the data as a structure, as well as in-line import and plot functions for the selected language. Usage examples are given in section~\ref{s:run-sim}.
 Thus, it is not necessary to write a load routine for each format, as the script is itself a program that knows how to handle the data. Alternatively, using \verb+mcplot+ with Matlab and Scilab plotters provide additional functionalities from menus and dialogs (see section~\ref{s:mcplot}).
 
-When imported through the data generated script (see section~\ref{s:run-sim}), or using \verb+mcplot+ (see section~\ref{s:mcplot}), a single variable may be created into the Matlab, Scilab or IDL base workspace. This variable is a \emph{structure} constituting a data tree containing many fields, some of them being themselves structures. Field names are the initial names from the instrument (components, files, \ldots), transformed into valid variable names, e.g containing only letters, digits and the '\_' character, except for the first character which may only be a letter, or the 'm' letter\footnote{For instance in most case, the simulation location is './mcstas.m' which turns into field 'm\_mcstas'.}.
+When imported through the data generated script (see section~\ref{s:run-sim}), or using \verb+mcplot+ (see section~\ref{s:mcplot}), a single variable may be created into the Matlab, Scilab or IDL base workspace. This variable is a \emph{structure} constituting a data tree containing many fields, some being themselves structures. Field names are the initial names from the instrument (components, files, \ldots), transformed into valid variable names, e.g containing only letters, digits and the '\_' character, except for the first character which may only be a letter\footnote{For instance in most case, the simulation location is './mcstas.m' which turns into field 'm\_mcstas'.}.
 In this tree, you will find the monitor names, which fields contain the monitored data. The usual structure is
 \begin{quote}
   \texttt{s.{\it instrument}.{\it simulation}.{\it comp\_name}.{\it file\_name}}
@@ -1501,7 +1305,7 @@ s =
      Format: 'Matlab with text headers'
         URL: 'http://neutron.risoe.dk'
      Editor: 'farhi on pcfarhi'
-    Creator: 'test (test.instr) McStas 1.7 - May. 14, 2003 simulation'
+    Creator: 'test (test.instr) McStas 1.9 - Nov. 15, 2005 simulation'
        Date: 1.0529e+09
        File: './mcstas'
        test: [1x1 struct]
@@ -1529,5 +1333,213 @@ The latter example accesses the data from the 'monitor1.y\_kz' file written by t
 
 Both HTML and XML/NeXus formats are available. The former may be viewed using any web browser (Netscape, Internet Explorer, Nautilus), while the latter may be browsed for instance using Internet Explorer (Windows and Mac OS) or GXMLViewer and KXMLEditor (under Linux).
 
-A future version of \MCS\ will support output in the NeXus
-format~\cite{nexus_webpage}.
+The support for NeXus in \MCS\ is prelimminary as NeXus is not fully
+laid out. A future version of \MCS\ will fully support output in the
+final NeXus format~\cite{nexus_webpage}.
+
+\section{Using computer Grids and Clusters}
+\label{s:run-mpi}
+\index{Parallel computing|textbf}
+\index{MPI|textbf}\index{Grid computing|textbf}\index{mcstas-hosts}
+
+Parallelizing a computation is possible when dependencies between
+  each computation are not too strong. The situation of \MCS\ is
+  ideal since each neutron ray can be simulated without interfering with
+  other simulated neutron rays. Therefore each neutron ray can be simulated
+  independently on a set of computer.
+
+\MCS\ provides two methods in order to distribute computations on many computers.
+\begin{itemize}
+\item when scanning instrument parameters (using \texttt{mcrun --multi -N}),
+  it is possible to distribute each scan step on a list of computers.
+\item when using an homogeneous computer cluster, each simulation (including scan
+  steps) may be computed in parallel using MPI (using \texttt{mcrun --mpi=Nb\_Nodes}).
+\end{itemize}
+
+\subsection{Distribute mcrun scans (grid) - Unix only}
+  This is an experimental option to
+  distribute scan steps on a set of machines using \emph{ssh}
+  connections. To use this option you will need
+  \begin{enumerate}
+  \item{A set of unix machines of the same architecture (binary compatible). All
+      machines should have the same \MCS\ distribution installed.}
+  \item{ \texttt{ssh} access from the master node (where McStas is
+      installed) to the slaves through e.g. DSA keys \emph{without} a
+      password. These keys should be generated using the command
+      \texttt{ssh-keygen}. Run \emph{e.g.} \texttt{ssh-keygen -t dsa} on
+      master node, enter no passphrase and add resulting
+      \texttt{.ssh/id\_dsa.pub} to \texttt{.ssh/authorized\_keys}
+      on all the slave nodes.}
+  \item{The machine names listed in the file \texttt{.mcstas-hosts} in
+      your home directory or in the \texttt{MCSTAS/tools/perl/mcstas-hosts} on
+      the master node, one node per line. The \verb'--machines=<file>' option
+      enables to specify the hosts file to use.}
+  \item{Execute \texttt{mcrun} as normally, appending \texttt{--multi} or
+      \texttt{-M} will divide the $N$ scanpoints across the machines in
+      \texttt{.mcstas-hosts $+$ localhost}.}
+  \end{enumerate}
+  Each of the scan steps is executed on distant machines, sending the executable
+  with \emph{scp}, executing single simulations, and then retrieving individual
+  scan steps on the master machine.
+  {\bf Warning:} This option is considered \emph{experimental} - i.e.,
+  you are welcome to use it, but be ready for trouble. Note also that
+  this is a unix only option in \texttt{mcgui} and \texttt{mcrun}, it
+  {\bf does not} work on windows.
+
+\subsection{Parallel computing (MPI)}
+
+When computing $N$ neutron rays with
+$p$ computers, each computer will simulate $\frac{N}{p}$
+neutrons. As a result there will be $p \cdot \frac{N}{p} = N$
+neutrons simulated. As a result, \MCS\ generates two kinds of data sets:
+\begin{itemize}
+\item intensity measurements, internally represented by three
+  values $(p_0, p_1, p_2)$ where $p_0$, $p_1$, $p_2$ are
+  additive. Therefore the final value of $p_0$ is the sum of all
+  local value of  $p_0$ computed on each node. The same rule applies
+  for $p_1$ and $p_2$. The evaluation of the intensity errors $\sigma$
+  is performed using the final $p_0$, $p_1$, and $p_2$ arrays (see Section \ref{s:staterror}).
+\item event lists: the merge of events is done by concatenation
+\end{itemize}
+The MPI support requires to have MPICH, or alternatively LAM-MPI, installed on a set of nodes.
+This usually also requires to setup properly the \texttt{ssh} connections and keys.
+
+\subsubsection{MPI Basic usage}
+
+To enable parallel computation, compile McStas output C-source file
+with \verb'mpicc' with the flag \verb'-DUSE_MPI' and run it using the
+wrapper of your MPI implementation (\verb'mpirun' for mpich or lammpi) :
+\begin{verbatim}
+  # generate a C-source file [sim.c]
+  mcstas sim.instr
+
+  # generate an executable with MPI support [sim.mpi]
+  mpicc -DUSE_MPI -o sim.mpi sim.c
+
+  # execute with parallel processing over <N> computers
+  # here you have to list the computers you want to use
+  # in a file [machines.list] (using mpich implementation)
+  # (refer to MPI documentation for a complete description)
+  mpirun -machinefile machines.list -n <N> \
+         ./sim.mpi <instrument parameters>
+  ...
+\end{verbatim}
+
+If you don't want to spread the simulation, run it as usual :
+\begin{verbatim}
+  ./sim.mpi <instrument parameters>
+\end{verbatim}
+
+If you want to disable MPI support (for example if you do not have MPI
+installed), just compile the C-source file generated by \verb'mcstas'
+  without \verb'mpicc' and without the \verb'-DUSE_MPI' flag :
+\begin{verbatim}
+  # generate a C-source file [sim.c]
+  mcstas sim.instr
+
+  # generate an executable without MPI support [sim.no_mpi]
+  cc -o sim.no_mpi sim.c
+
+  # execute on a single computer
+  ./sim.no_mpi <instrument parameters>
+  ...
+\end{verbatim}
+
+\subsection{McRun script with MPI support}
+
+The \verb'mcrun' script has been adapted to use MPICH implementation
+of MPI. Two new options have been added:
+\begin{itemize}
+\item \verb'--mpi=<number>': tells \verb'mcrun' to use MPI, and to
+  spread the simulation over \verb'<number>' nodes
+\item \verb'--machines=<file>': defines a text file where the
+  nodes which are to be used for parallel computation are listed; by
+  default, \verb'mcrun' will look at \verb'$HOME/.mcstas-hosts' and
+  \verb'MCSTAS/tools/perl/mcstas-hosts'.
+\end{itemize}
+
+Suppose you have four machines named \verb'node1' to \verb'node4'.
+A typical machine list file, \verb'machines.list' looks like :
+\begin{verbatim}
+node1
+node2
+node3
+node4
+\end{verbatim}
+
+You can then spread a simulation \verb'sim.instr' using \verb'mcrun' :
+\begin{verbatim}
+  mcrun -c --mpi=4 --machines=machines.list \
+        sim.instr <instrument parameters>
+\end{verbatim}
+
+\begin{paragraph}{Warning:} when using \verb'mcrun' with MPI, be sure
+  to recompile your simulation with MPI support (see \verb'-c' flag of
+  \verb'mcrun'): a simulation compiled without MPI support cannot be
+  used with MPI, whereas a simulation compiled with MPI support can be
+  used without MPI.
+\end{paragraph}
+
+\subsection{McStas/MPI Performance}
+
+Theorically, a computation which lasts $T$ seconds on a single computer,
+should lasts at least $\frac{T}{p}$ seconds when it is distributed
+over $p$ computers. In practice, there will be overhead time due to the split
+and merge operations.
+\begin{itemize}
+\item the split is immediate: constant time cost ${\cal O}(1)$
+\item the merge is at worst linear against the number of computers:
+  \begin{itemize}
+  \item linear time cost~: ${\cal O}(p)$ when saving an event list
+  \item logarithmic time cost: ${\cal O}(\log{p})$ when not saving an
+  event list
+  \end{itemize}
+\end{itemize}
+
+Here is a table showing some comparison between MPI and no-MPI
+simulations. The cluster is built with 2 bi-xeon 2GHz machines,
+resulting in 4 processors.
+\begin{center}
+  \begin{tabular}{|c|c|l|}
+    \hline
+    \# processors p & duration T (seconds)& notes \\
+    \hline
+    1 & 622 & without MPI support \\
+    1 & 630 & with MPI support, run without MPI \\
+    1 & 620 & with MPI support, run with MPI \\
+    \hline
+    2 & 316 & Overhead 6 seconds, $T_{p=1}/2 = 310$\\
+    3 & 210 & Overhead 3 seconds, $T_{p=1}/3 = 207$\\
+    4 & 158 & Overhead 3 seconds, $T_{p=1}/4 = 155$\\
+    \hline
+  \end{tabular}
+\end{center}
+
+The results consistently show that there is a very small overhead
+when computing using MPI. This overhead comes from the spread and the
+fusion of the computations. For instance, spreading a computation
+implies either an \verb'rsh' or and \verb'ssh' session to be opened on
+every node.
+
+\subsection{McStas/MPI Bugs and limitations}\index{Bugs}
+
+\begin{itemize}
+\item when simulating $N$ neutrons with $p$ machines, the effective
+  number of neutrons simulated is $p \cdot \frac{N}{p}$
+\item signals are \emph{not} supported while simulating with MPI (since
+  asynchroneous events cannot be easily transmitted to all nodes). Anyway,
+  depending on the MPI implementation, you may force all nodes to synchronize
+  and save data using the HUP signal (\verb'kill -HUP mcstasPID').
+\item some header of output files might contain minor errors
+\item the computation split does not take into account the speed or the
+  load of nodes: the overall time of a distributed computation is
+  forced by the slowest node; for optimal performance, the ``cluster''
+  should be homogeneous
+\item forcing the random seed while spreading the computation doesn't
+  work since every node will use identical seeds and will then
+  generate identical pseudo-random values
+\item MPI must be correctly configured: if using \verb'ssh', you
+  have to set ssh keys to avoid use of passwords; if
+  using \verb'rsh', you have to set a \verb'.rhosts' file
+\end{itemize}
+
