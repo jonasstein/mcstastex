@@ -39,7 +39,7 @@ with usual notations: $N=\rho V$ is the number of atoms in the scattering volume
 |S| = \iint S(q,\omega) dq d\omega .
 \end{equation}
 
-Some easely measureable quantities in a liquid are the \emph{static pair correlation function} $g(r)$ and the \emph{structure factor} $S(q)$, defined as:
+Some easely measureable coherent quantities in a liquid are the \emph{static pair correlation function} $g(r)$ and the \emph{structure factor} $S(q)$, defined as:
 \begin{eqnarray}
 \rho g(\vec{r}) &=& \frac{1}{N} \sum_{i=1}^N \sum_{j \neq i} \langle \delta(\vec{r}+\vec{r}_i-\vec{r}_j) \rangle \\
 S(\vec{q}) &=&\int S(\vec q,\omega) d\omega \label{eq:sq} \\
@@ -51,16 +51,17 @@ The latter expression, in isotropic materials, may be Fourier transformed as:
 \label{eq:gr-sq}
 g(r)-1 =\frac{1}{2\pi^2 \rho} \int_0^\infty q^2 [S(q) -1] \frac{sin(qr)}{qr} dq
 \end{equation}
-Both $g(r)$ and $S(q)$ converge to unity for large $r$ and $q$ values respectively, and they are representative of the atoms spatial distribution. In a liquid $\lim_{q \rightarrow 0} S(q) = \rho k_B T \chi_T$ where $\chi_T=(\frac{\partial \rho}{\partial P})_{V,T}$ is the compressibility \cite{Egelstaff67}. In perfect gases, $S(q) = 1$ for all $q$. These quantities are obtained experimentaly from diffractometers.
+Both $g(r)$ and $S(q)$ converge to unity for large $r$ and $q$ values respectively, and they are representative of the atoms spatial distribution. In a liquid $\lim_{q \rightarrow 0} S(q) = \rho k_B T \chi_T$ where $\chi_T=(\frac{\partial \rho}{\partial P})_{V,T}$ is the compressibility \cite{Egelstaff67,fischer05}. In perfect gases, $S(q) = 1$ for all $q$. These quantities are obtained experimentaly from diffractometers.
+In principle, $S_{inc}(q) = 1$, but a $q$ dependence may sometimes be reported due to the Debye-Waller factor $exp(-q^2<u^2>)$. Anyway, $S(q)$ converges to unity at high $q$.
 
-The static pair correlation function $g(r)$ is the probability to find a neighbouring atom at a given distance (unitless). Since $g(0) = 0$, Eq. (\ref{eq:gr-sq}) provides a useful normalization sum-rule for $S(q)$:
+The static pair correlation function $g(r)$ is the probability to find a neighbouring atom at a given distance (unitless). Since $g(0) = 0$, Eq. (\ref{eq:gr-sq}) provides a useful normalization sum-rule for coherent $S(q)$:
 \begin{equation}
 \label{eq:sq-nomr1}
 \int_0^\infty q^2 [S(q) - 1] dq = -2\pi^2\rho
 \end{equation}
 This means that the integrated oscilations (around 1) of $S(q)$ are directly related to the density of the material $\rho$.
 In practice, the function $S(q)$ is often known on a restricted range $q \in [0, q_{max} ]$, due to either limitations in the sample molecular dynamics simulation, or the measurement itself.
-In first approximation we consider that Eq. (\ref{eq:sq-nomr1}) can be applied in this range, i.e. we neglect the large $q$ contributions. Then, for any non-normnalized data set $S_{raw}$, we may obtain the normalized $S = \alpha S_{raw}$ with
+In first approximation we consider that Eq. (\ref{eq:sq-nomr1}) can be applied in this range, i.e. we neglect the large $q$ contributions. Then, for any non-normalized data set $S_{raw}$, we may obtain the normalized $S = \alpha S_{raw}$ with \cite{fischer05}
 \begin{equation}
 \label{eq:sq-nomr2}
 \alpha \simeq \frac{q^3_{max}/3 - 2\pi^2 \rho}{\int_0^{q_{max}} q^2 S_{raw}(q) dq }
@@ -278,9 +279,9 @@ Hollow shapes are particularly useful to model complex sample environments. Refe
 
 The material behaviour is specified through the total scattering cross-sections $\sigma_{coh}$, $\sigma_{inc}$, $\sigma_{abs}$, and the $S(q, \omega)$ data files.
 
-If you are lucky enough to have access to separated coherent and incoherent contributions, simply set Sqw\_coh and Sqw\_inc paremeter to the files names. If on the other hand you have access to a global data set, use Sqw\_coh, set the $\sigma_{coh}$ parameter to the sum of both contributions $\sigma_{coh}+\sigma_{inc}$, and set $\sigma_{inc}=0$. This way we only use one of the two implemented  scattering channels. Such global data sets may originate from previous experiments, as far as you have applied all known corrections (multiple scattering, geometry, ...).
+If you are lucky enough to have access to separated coherent and incoherent contributions (e.g. from material simulation), simply set Sqw\_coh and Sqw\_inc paremeter to the files names. If on the other hand you have access to a global data set containing incoherent scattering as well (e.g. the result of a previous experiment), use Sqw\_coh parameter, set the $\sigma_{coh}$ parameter to the sum of both contributions $\sigma_{coh}+\sigma_{inc}$, and set $\sigma_{inc}=0$. This way we only use one of the two implemented  scattering channels. Such global data sets may originate from previous experiments, as far as you have applied all known corrections (multiple scattering, geometry, ...).
 
-In any case, the accuracy of the $S(q, \omega)$ data limits the $Q$ and $\omega$ resolution of the simulation. The sampling of data files should then be as thin as possible.
+In any case, the accuracy of the $S(q, \omega)$ data limits the $Q$ and $\omega$ resolution of the simulation, eventhough a bilinear interpolation is performed in order to smooth a too coarse binning. The sampling of data files should then be as thin as possible.
 
 If the Sqw\_inc parameter is left unset but the $\sigma_{inc}$ is \emph{not} zero, an isotropic incoherent elastic scattering is used, just like the V\_sample component (see section \ref{s:v_sample}).
 
