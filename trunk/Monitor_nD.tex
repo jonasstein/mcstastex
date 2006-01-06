@@ -237,8 +237,27 @@ will monitor all theses neutron variables in one long list, one row per neutron 
 \label{s:monnd:user}
 \index{Monitors!Custom monitoring (user variables, Monitor\_nD)}
 
-There is a simple way to monitor any quantity with Monitor\_nD. This may be e.g. the number of neutron bounces in a guide, or the wavevector and energy transfert at a sample. The only requirement is to define the \verb+user1+ (and optionally \verb+user2+) variables of a given Monitor\_nD instance. This is performed in a 4 steps process:
-\begin{itemize}
+There are two ways to monitor any quantity with Monitor\_nD. This may be e.g. the number of neutron bounces in a guide, or the wavevector and energy transfert at a sample. The only requirement is to define the \verb+user1+ (and optionally \verb+user2+) variables of a given Monitor\_nD instance.
+
+\subsubsection{Setting directly the user variables (simple)}
+
+The first method uses directly the \verb+user1+ and \verb+username1+ component parameters to transfert directly the value and label, such as in the following example:
+\begin{verbatim}
+TRACE
+(...)
+COMPONENT UserMonitor = Monitor_nD(
+  user1    = log(t), username1="Log(time)",
+  options  ="auto user1")
+\end{verbatim}
+The values to assign to \verb+user2+ and \verb+user2+ must be global instrument variables, or a component output variables as in \verb+user1=MC_GETPAR(some_comp, outpar)+.
+Similarly, the \verb+user2+ and \verb+username2+ parameters may be used to control the second user variable, to produce eventually 2D user variable correlation data.
+
+\subsubsection{Setting indirectly the user variables (only for professionals)}
+
+It is possible to control the user variables of a given Monitor\_nD instance anywhere in the instrument description. This method requires more coding, but has the advantage that a variable may be defined to store the result of a computation locally, and then transfert it into the UserMonitor, all fitting in an EXTEND block.
+
+This is performed in a 4 steps process:
+\begin{enumerate}
 \item Declare that you intend to monitor user variables in a Monitor\_nD instance (defined in TRACE):
 \begin{verbatim}
 DECLARE
@@ -262,7 +281,7 @@ TRACE
 (...)
 COMPONENT blah = blah_comp(...)
 EXTEND
-%{  // attach a value to user1 in UserMonitor
+%{  // attach a value to user1 in UserMonitor, could be much more comlex here.
   MONND_USER_VALUE(UserMonitor, 1, log(t));
 %}
 (...)
@@ -274,9 +293,11 @@ TRACE
 COMPONENT UserMonitor = Monitor_nD(options="auto user1")
 (...)
 \end{verbatim}
-\end{itemize}
-Setting the user variable values may either make use of the neutron parameters (x,y,z, vx,vy,vz, t, sx,sy,sz, p), access the internal variables of the component that sets the user variables (in this example, those from the \verb+blah+ instance), and access any component OUTPUT parameter \index{Keyword!OUTPUT PARAMETERS} using the \verb+MC_GETPAR+ C macro(see chapter \ref{c:kernelcalls}).
+\end{enumerate}
+Setting the user variable values may either make use of the neutron parameters (x,y,z, vx,vy,vz, t, sx,sy,sz, p), access the internal variables of the component that sets the user variables (in this example, those from the \verb+blah+ instance), access any component OUTPUT parameter \index{Keyword!OUTPUT PARAMETERS} using the \verb+MC_GETPAR+ C macro(see chapter \ref{c:kernelcalls}), or simply use a global instrument variable.
 \index{Library!Run-time!MC\_GETPAR}
+
+\subsubsection{Example: Number of neutron bounces in a guide}
 
 \index{Monitors!Number of neutron bounces in a guide}
 In the following example, we show how the number of bounces in a polygonal guide may be monitored. Let us have a guide made of many Guide\_gravity instances. We declare a global simulation variable \verb+nbounces+, set it to 0 for each neutron entering the guide, and sum-up all bounces from each section, accessing the \verb+Gvars+ OUTPUT variable of component Guide\_gravity. Then we ask Monitor\_nD to look at that value.
@@ -285,16 +306,12 @@ DECLARE
 %{
   double nbounces;
 %}
-INITIALIZE
-%{
-  MONND_USER_TITLE(UserMonitor, 1, "Number of bounces");
-%}
 TRACE
 (...)
 COMPONENT Guide_in = Arm() AT (...)
 EXTEND
 %{
-  nbouces = 0;
+  nbounces = 0;
 %}
 
 COMPONENT Guide1 = Guide_gravity(...) AT (...) RELATIVE PREVIOUS
@@ -309,14 +326,10 @@ EXTEND
   if (SCATTERED) nbounces += GVars.N_reflection[0];
 %}
 
-COMPONENT Guide_out = Arm() AT (...) RELATIVE PREVIOUS
-EXTEND
-%{ // set value to monitor
-  MONND_USER_VALUE(UserMonitor, 1, nbounces);
-%}
-
 // monitor nbounces
-COMPONENT UserMonitor = Monitor_nD(options="auto user1") AT (...)
+COMPONENT UserMonitor = Monitor_nD(
+  user1=nbounces, username1="Number of bounces",
+  options="auto user1") AT (...)
 (...)
 \end{verbatim}
 
