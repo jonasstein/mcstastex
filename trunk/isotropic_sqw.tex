@@ -6,7 +6,7 @@
 \index{Sample environments}
 \index{Multiple scattering}
 
-\component{Isotropic\_Sqw}{V. Hugouvieux, E. Farhi}{Sqw$\_{coh}$, $\sigma_{coh}$, Sqw$\_{inc}$, $\sigma_{inc}, V_\rho, \sigma_{abs}, T$,$x_{width},y_{height},z_{thich},r_o, r_i$, thickness}{$q_{min}, q_{max}, \omega_{min}, \omega_{max}, d\phi$, order}{partly validated}
+\component{Isotropic\_Sqw}{V. Hugouvieux, E. Farhi}{Sqw$\_{coh}$, $\sigma_{coh}$, Sqw$\_{inc}$, $\sigma_{inc}, V_\rho, \sigma_{abs}, T$,$x_{width},y_{height},z_{thich},r_o, r_i$, thickness}{$q_{min}, q_{max}, \omega_{min}, \omega_{max}, d\phi$, order}{partly validated (Vanadium OK, PowderN more accurate for powders) }
 
 \begin{figure}
   \begin{center}
@@ -358,7 +358,7 @@ The last two parameters may as well be specified in the data file header with li
 The powder description is then translated into $S(q)$ by using Eq. (\ref{eq:sq-F2}).
 In this case, the density $\rho = n/V_0$ is the number of atoms in the inverse volume of the unit cell.
 
-As the component builds an $S(q)$ from the powder structure description, the accuracy of the Isotropic\_sqw component is limited by the binning during that conversion. This is usually enough to describe sample environments including powders (aluminium, copper, ...), but it is recommanded to rather use PowderN for faster and accurate powder diffraction, eventthough this latter does not implement multiple scattering.
+As the component builds an $S(q)$ from the powder structure description, the accuracy of the Isotropic\_Sqw component is limited by the binning during that conversion. This is usually enough to describe sample environments including powders (aluminium, copper, ...), but it is recommanded to rather use PowderN for faster and accurate powder diffraction, eventthough this latter does not implement multiple scattering.
 
 Such files can only handle elastic scattering.
 
@@ -382,9 +382,14 @@ COMPONENT s_out=Isotropic_Sqw(
   Sqw_coh="Al.laz")
 AT (0,0,1) RELATIVE a
 \end{verbatim}
-Central component may be of any type, not specifically an Isotropic\_sqw instance. It could be for instance a Single\_crystal or a PowderN.
+Central component may be of any type, not specifically an Isotropic\_Sqw instance. It could be for instance a Single\_crystal or a PowderN.
 In principle, the number of surrounding shells is not restricted.
 The only restriction is that neutrons that scatter (in $4\pi$) can not come back in the instrument description, so that some of the multiple scattering events are lost. Namely, in the previous example, neutrons scattered by the outer wall of the cryostat \verb+s_out+ can not come back to the sample or to the other cryostat wall \verb+s_in+. As these neutrons have usually few chances to reach the rest of the simulation, we expect that the approximation is fair.
+
+\subsection{Validation}
+For Vanadium incoherent scattering mode, V_sample, PowderN, Single_crystal and Isotropic\_Sqw produce equivalent results, eventhough the two later are more accurate (geometry, multiple scattering). Execution times are equivalent.
+
+Compared to the PowderN component, the $S(q)$ method is twice slower in computation time (but often bring more statistics), and intensity is usually lower by a factor 1 to 2. The PowderN component is intrinsically more accurate as each Bragg peak is handled separately as an exact Dirac peak, with optional $\Deltaq$ spreading. In Isotropic\_Sqw, an approximated $S(q)$ table is built from the $F^2$ data, and is coarser. Unfortunately, the PowderN component can hardly be made to support concentric geometries.
 
 
 

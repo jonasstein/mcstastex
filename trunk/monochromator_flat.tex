@@ -3,7 +3,7 @@ a single scattering vector}
 \label{s:monochromator_flat}
 \index{Optics!Monochromator}
 
-\component{Monochromator\_flat}{System}{$z_{\rm min}$, $z_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, $\eta_{\rm h}$, $\eta_{\rm v}$, $R_0$, $Q_0$}{$d_{\rm m}$}{}
+\component{Monochromator\_flat}{System}{$z_{\rm min}$, $z_{\rm max}$, $y_{\rm min}$, $y_{\rm max}$, $\eta_{\rm h}$, $\eta_{\rm v}$, $R_0$, $Q_0$}{$d_{\rm m}$}{In reflecting geometry, non polarized}
 
 This component simulates an infinitely thin single
 crystal with a single scattering vector, $Q_0=2\pi / d_m$, perpendicular to the
@@ -12,12 +12,12 @@ use for this component is to simulate a simple monochromator or analyzer.
 
 The monochromator dimensions are given by the length, $z_{\rm w}$, and
 the height, $y_{\rm h}$. As the parameter names indicate, the
-monochromator is placed in the $z-y$ plane of the local coordinate system. 
-This definition is made to ensure that the physical monochromator angle 
-(often denoted \verb+A1+) will equal the \MCS\ rotation angle 
+monochromator is placed in the $z-y$ plane of the local coordinate system.
+This definition is made to ensure that the physical monochromator angle
+(often denoted \verb+A1+) will equal the \MCS\ rotation angle
 of the Monochromator component around the $y$-axis.
 $R_0$ is the maximal reflectivity and
-$\eta_{\rm h}$ and $\eta_{\rm v}$ are the horizontal and vertical mosaicities, 
+$\eta_{\rm h}$ and $\eta_{\rm v}$ are the horizontal and vertical mosaicities,
 respectively, see explanation below.
 
 \subsection{Monochromator physics and algorithm}
@@ -32,8 +32,8 @@ width of the Gaussian is given by the mosaic spread, $\eta$, of the crystal
 $\eta$ is assumed to be large compared to the inherent Bragg width of the
 scattering vector (often a few arc seconds).
 (The mosaicity gives rise to a Gaussian reflectivity profile of width
-similar to - but not equal - the intrinsic mosaicity. 
-In this component, and in real life, the mosaicity given is that of the 
+similar to - but not equal - the intrinsic mosaicity.
+In this component, and in real life, the mosaicity given is that of the
 reflectivity signal.)
 
 As a further simplification, the crystal is assumed to be infinitely
@@ -52,18 +52,18 @@ computation is to determine the probability of scattering. This
 probability is then used in a Monte Carlo choice deciding whether to
 scatter or transmit the neutron. The physical scattering probability is the sum
 of the probabilities of first- second-, and higher-order scattering -
-up to the highest order possible for the given neutron wavelength. 
+up to the highest order possible for the given neutron wavelength.
 However, in most cases at most one order will have a
 significant scattering probability, and the computation thus considers
-only the order that best matches the neutron wavelength. 
+only the order that best matches the neutron wavelength.
 
 The scattering of neutrons from a crystal is governed by Bragg's law:
 \begin{equation}
-n{\bf Q}_0 = 2{\bf k}_i\sin\theta 
+n{\bf Q}_0 = 2{\bf k}_i\sin\theta
 \end{equation}
 The scattering order is specified by the integer $n$. We seek only one
 value of $n$, namely the one which makes
-$n {\bf Q}_0$ closest to the projection of $2{\bf k}_i$ onto ${\bf Q}_0$ 
+$n {\bf Q}_0$ closest to the projection of $2{\bf k}_i$ onto ${\bf Q}_0$
 (see figure~\ref{f:mosaic_order}).
 %  k=2PI/lambda
 %  q=2k sin(theta)
@@ -91,11 +91,11 @@ $n {\bf Q}_0$ closest to the projection of $2{\bf k}_i$ onto ${\bf Q}_0$
 
 Once $n$ has been determined, the Bragg angle $\theta$ can be
 computed. The angle $\alpha$ is the amount one would need to
-turn the nominal scattering vector ${\bf Q}_0$ for the monochromator 
+turn the nominal scattering vector ${\bf Q}_0$ for the monochromator
 to be in Bragg scattering condition.
 We now used $\alpha$ to compute the probability of reflection from
 the mosaic crystal
-\begin{equation} 
+\begin{equation}
 p_{\rm reflect} = R_0 e^{-\alpha^2/2\eta^2},
 \end{equation}
 The probability $p_{\rm reflect}$ is used
@@ -128,7 +128,7 @@ by the equation
 \end{equation}
 where ${\bf b}$ is a vector perpendicular to ${\bf k}_{\rm i}$ and ${\bf
 Q}_0$, ${\bf c}$ is perpendicular to ${\bf k}_{\rm i}$ and ${\bf b}$,
-and both ${\bf b}$ and ${\bf c}$ have the same length as ${\bf k}_{\rm i}$ 
+and both ${\bf b}$ and ${\bf c}$ have the same length as ${\bf k}_{\rm i}$
 (see figure~\ref{f:mosaic_cone}). When choosing $\varphi$ (and
 thereby ${\bf k}_{\rm f}$), only a small part of the full $[-\pi; \pi]$
 range will have appreciable scattering probability in non-backscattering
@@ -137,8 +137,8 @@ $\varphi$ only from a suitably narrow range.
 
 The (small) deviation angle $\alpha$ of the nominal
 scattering vector $n{\bf Q}_0$ corresponds to a $\Delta q$ of
-\begin{equation} 
-\Delta q \approx \alpha 2k\sin\theta. 
+\begin{equation}
+\Delta q \approx \alpha 2k\sin\theta.
 \end{equation}
 The angle $\varphi$ corresponds to a $\Delta k_{\rm f}$ (and hence
 $\Delta q$) of
@@ -147,7 +147,7 @@ $\Delta q$) of
 \end{equation}
 (see figure~\ref{f:mosaic_cone}).
 Hence we may sample $\varphi$ from a Gaussian with standard deviation
-\begin{equation} 
+\begin{equation}
 \alpha\frac{2k\sin\theta}{k\sin(2\theta)} =
 \alpha\frac{2k\sin\theta}{2k\sin\theta\cos\theta} =
 \frac{\alpha}{\cos\theta}
@@ -172,7 +172,7 @@ to get good statistics.
 What remains is to determine the neutron weight. The distribution from
 which the scattering event is sampled is a Gaussian in $\varphi$ of
 width $\frac{\alpha}{\cos\theta}$,
-\begin{equation} 
+\begin{equation}
     f_{\rm MC}(\varphi) = \frac{1}{\sqrt{2\pi}(\sigma/\cos\theta)}
             e^{-\varphi^2/2(\sigma/\cos\theta)^2}
 \end{equation}
@@ -191,7 +191,7 @@ where $d(\varphi)$ denotes the angle between the nominal scattering
 vector and the actual scattering vector corresponding to $\varphi$.
 According to equation~(\ref{probrule}), the weight adjustment $\pi_j$ is
 then given by
-\begin{equation} 
+\begin{equation}
 \pi_j = \Pi(\varphi) / f_{\rm MC}(\varphi).
 \end{equation}
 In the implementation, the integral in~(\ref{eq:mosaic_integral}) is computed
