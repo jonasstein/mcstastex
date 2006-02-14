@@ -16,11 +16,11 @@
 \label{f:isotropic-sqw}
 \end{figure}
 
-The component assumes that the sample has the structure of an isotropic material. This stands for liquids, glasses (amorphous systems), polymers, gaz, and may be extended to powders. It simulates coherent and incoherent neutron scattering, and may be used to model isotropic samples, but also sample environments as concentric geometries are possible. The may input for the component is $S(q,\omega)$ tables, or powder structure files.
+The component assumes that the sample has the structure of an isotropic material. This stands for liquids, glasses (amorphous systems), polymers, gaz, and may be extended to powders. It simulates coherent and incoherent neutron scattering, and may be used to model isotropic samples, but also sample environments as concentric geometries are possible. The main input for the component is $S(q,\omega)$ tables, or powder structure files.
 
 \subsection{Neutron interaction with matter}
 
-When a neutron enters a material, according to usual models and letting the absorption aside to begin with, it 'sees' atoms as disks with a surface equal to the total scattering cross section of material $\sigma$. Each coherent and incoherent process is associated with a given probability to hit these cross-sections, according to $\sigma_{coh}$ or $\sigma_{inc}$. We may choose randomly a scattering position along the path, using e.g. an expeonential decay probability. If the scattering condition is not satisfied, the neutron is transmitted, and leaves the sample. In any case, the absorption lowers the intensity according to an $e^{-\rho \sigma_{abs}d}$ absorption law along the propagation path $d$. In this process, the neutron is considered to be a particule.
+When a neutron enters a material, according to usual models and letting the absorption aside to begin with, it 'sees' atoms as disks with a surface equal to the total scattering cross section of material $\sigma$. Each coherent and incoherent process is associated with a given probability to hit these cross-sections, according to $\sigma_{coh}$ or $\sigma_{inc}$. We may choose randomly a scattering position along the path, using e.g. an exponential decay probability. If the scattering condition is not satisfied, the neutron is transmitted, and leaves the sample. In any case, the absorption lowers the intensity according to an $e^{-\rho \sigma_{abs}d}$ absorption law along the propagation path $d$. In this process, the neutron is considered to be a particule.
 
 Once the neutron 'knows' that something (terrible) is going to occur, it looks for a possible excitation to interact with. Then we turn to the wave description of the neutron, which interacts with the whole volume. The distribution of excitations, from which derives their relative intensity in the scattered beam, is simply the dynamic structre factor - or scattering law - $S(q,\omega)$. According to the definition of the density of states, we may use $g(\omega)$ as the probability law to scatter at a given energy transfer.
 
@@ -34,7 +34,7 @@ Following Squires (\cite{squires}, p63), the neutron differential scattering cro
 \begin{equation}\label{eq:d2sigma}
 \frac{d^2\sigma}{d\Omega dE_f} = \frac{\sigma}{4\pi}\frac{k_f}{k_i} N S(q, \omega)
 \end{equation}
-with usual notations: $N=\rho V$ is the number of atoms in the scattering volume $V$ with atomic number density $\rho$, $E_f, E_i, k_f, k_i$ are the energy and wavevectors of final and initial states respectively, and $\sigma$ is the total scattering cross-section. The unit of the dynamical structure factor $S(q,\omega)$ is an inverse energy. We define its norm
+with usual notations: $N=\rho V$ is the number of atoms in the scattering volume $V$ with atomic number density $\rho$, $E_f, E_i, k_f, k_i$ are the energy and wavevectors of final and initial states respectively, $\sigma$ is the scattering cross-section, and $q,\omega$ are the wave-vector and energy transfer at the sample. The unit of the dynamical structure factor $S(q,\omega)$ is an inverse energy. We define its norm
 \begin{equation}
 |S| = \iint S(q,\omega) dq d\omega .
 \end{equation}
@@ -52,21 +52,21 @@ The latter expression, in isotropic materials, may be Fourier transformed as:
 g(r)-1 =\frac{1}{2\pi^2 \rho} \int_0^\infty q^2 [S(q) -1] \frac{sin(qr)}{qr} dq
 \end{equation}
 Both $g(r)$ and $S(q)$ converge to unity for large $r$ and $q$ values respectively, and they are representative of the atoms spatial distribution. In a liquid $\lim_{q \rightarrow 0} S(q) = \rho k_B T \chi_T$ where $\chi_T=(\frac{\partial \rho}{\partial P})_{V,T}$ is the compressibility \cite{Egelstaff67,fischer05}. In perfect gases, $S(q) = 1$ for all $q$. These quantities are obtained experimentaly from diffractometers.
-In principle, $S_{inc}(q) = 1$, but a $q$ dependence may sometimes be reported due to the Debye-Waller factor $exp(-q^2<u^2>)$. Anyway, $S(q)$ converges to unity at high $q$.
+In principle, $S_{inc}(q) = 1$, but a $q$ dependence is rather usual, partly due to the Debye-Waller factor $e^{-q^2 \langle u^2 \rangle}$. Anyway, $S(q)$ converges to unity at high $q$.
 
 The static pair correlation function $g(r)$ is the probability to find a neighbouring atom at a given distance (unitless). Since $g(0) = 0$, Eq. (\ref{eq:gr-sq}) provides a useful normalization sum-rule for coherent $S(q)$:
 \begin{equation}
 \label{eq:sq-nomr1}
 \int_0^\infty q^2 [S(q) - 1] dq = -2\pi^2\rho
 \end{equation}
-This means that the integrated oscilations (around 1) of $S(q)$ are directly related to the density of the material $\rho$.
+This means that the integrated oscilations (around 1) of $S_{coh}(q)$ are directly related to the density of the material $\rho$.
 In practice, the function $S(q)$ is often known on a restricted range $q \in [0, q_{max} ]$, due to either limitations in the sample molecular dynamics simulation, or the measurement itself.
-In first approximation we consider that Eq. (\ref{eq:sq-nomr1}) can be applied in this range, i.e. we neglect the large $q$ contributions. Then, for any non-normalized data set $S_{raw}$, we may obtain the normalized $S = \alpha S_{raw}$ with \cite{fischer05}
+In first approximation we consider that Eq. (\ref{eq:sq-nomr1}) can be applied in this range, i.e. we neglect the large $q$ contributions providing $S(q)-1$ converges faster than $1/q^2$. Then, for any non-normalized coherent data set $S_{raw}$, we may obtain the normalized $S = \alpha S_{raw}$ with \cite{fischer05}
 \begin{equation}
 \label{eq:sq-nomr2}
 \alpha \simeq \frac{q^3_{max}/3 - 2\pi^2 \rho}{\int_0^{q_{max}} q^2 S_{raw}(q) dq }
 \end{equation}
-This normalization rule is only applied when parameter \verb+norm_sqw=-1+.
+This coherent normalization rule is only applied when parameter \verb+norm_sqw=-1+, which is recommanded for isotropic liquid-like materials. It is usually not suited for powders (see below).
 
 We may measure, e.g. with time-of-flight instruments, the \emph{density of states} $g_{\omega}(\omega)$  which is the fraction of modes whose energy lie between $\omega$ and $\omega+d\omega$ \cite{lovesey84}
 \begin{equation}
@@ -90,16 +90,16 @@ The function $P(\omega)$ is the probability for an excitation to have an energy 
 
 Similarly, we define the conditional probability $P(q \mid \omega)$ to be, for each energy lying between $\omega$ and $\omega+d\omega$:
 \begin{eqnarray}\label{eq:Pqw}
-\hat g_q(q\mid\omega) &=& \frac{S(q, \omega)}{\int S(q,\omega) dq} \\
-P(q \mid \omega)    &=& \int_0^q \hat g_q(q'\mid\omega) dq'
+g_q(q\mid\omega) &=& \frac{S(q, \omega)}{\int S(q,\omega) dq} \\
+P(q \mid \omega)    &=& \int_0^q g_q(q'\mid\omega) dq'
 \end{eqnarray}
-The former $\hat g_q$ is the density of wavevector transfers for a selected energy transfer, and the latter $P(q \mid \omega)$ is the probability for an excitation to have a wavevector lower than $q$, for a given energy transfer $\omega$.
+The former $g_q$ is the density of wavevector transfers for a selected energy transfer, and the latter $P(q \mid \omega)$ is the probability for an excitation to have a wavevector lower than $q$, for a given energy transfer $\omega$.
 
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.9\textwidth]{figures/Sqw_sampling.eps}
   \end{center}
-\caption{The probability functions extracted from $S(q,\omega)$. The energy transfer is first selected from the density of states, then the wavevector is obtained from $\hat g_q$.}
+\caption{The probability functions extracted from $S(q,\omega)$. The energy transfer is first selected from the density of states $g_\omega$, then the wavevector is obtained from $g_q(\omega)$.}
 \label{f:isotropic-sqw}
 \end{figure}
 
@@ -117,7 +117,11 @@ We first compute the absorption and total cross-section
 \end{eqnarray}
 as well as the neutron trajectory intersection with the geometry. This provides the total path length in the sample $d_{out}$ to the exit.
 Defining the linear attenuation $\mu = \rho\sigma_{tot}$, the probability that the neutron scatters (or be absorbed) along path $d_{out}$ is $e^{-\mu d_{out}}$. If this condition is not satisfied, the neutron leaves the sample unchanged.
-In the other case, we adjust the neutron weight by a factor $\frac{\sigma_{coh} + \sigma_{inc}}{\sigma_{tot}}$ to account for the portion of absorbed neutrons along the path.
+In the other case, we adjust the neutron weight by a factor
+\begin{equation}
+\pi_1 = \frac{\sigma_{coh} + \sigma_{inc}}{\sigma_{tot}}
+\end{equation}
+to account for the portion of absorbed neutrons along the path.
 Additionally, we choose randomly the type of interaction with fractions $\sigma_{coh}$ and $\sigma_{inc}$.
 
 \subsubsection{Choosing the interaction position}
@@ -130,20 +134,27 @@ From that law, we may compute the cumulated distribution, which gives the probab
 \begin{equation}
 d_{scatt} = -\frac{1}{\mu} \ln(1 - \xi[1 -e^{-\mu d_{out}}]).
 \end{equation}
+which then takes into account secondary extinction, originating from the decrease of the beam intensity through the sample (a kind of self shielding).
+The Monte Carlo choice of the scattering position in the sample accounts for the $N \sigma$ factor in Eq. (\ref{eq:d2sigma}).
 
 \subsubsection{Choosing the $q$ and $\omega$ transfer}
 
 If no $S(q, \omega)$ data is available and the scattering process has been chosen as incoherent, we set $\omega=0$ and select randomly an outgoing wave vector $\boldsymbol{k}_f$.
 
-In case the $S(q, \omega)$ data is available for the scattering process (coherent or incoherent), a random choice is made to select the energy transfert using $P(\omega)$ with the $g(\omega)$ probability distribution (Eq. \ref{eq:Pw}).
+In case the $S(q, \omega)$ data is available for the scattering process (coherent or incoherent), a random choice is made to select the energy transfert using $P(\omega)$ with the $g_\omega(\omega)$ probability distribution (Eq. \ref{eq:Pw}).
 Similarly, we use $P(q \mid \omega)$ to select a wavevector transfer (Eq. \ref{eq:Pqw}).
 
-Chosing a $(q, \omega)$ set and applying Eq. (\ref{eq:jointproba}), we have obtained a probabilistic nomalized evaluation of the dynamical structure factor, which we multiply by the norm $|S|$ to obtain $S(q, \omega)$:
+Choosing a $(q, \omega)$ set and applying Eq. (\ref{eq:jointproba}), we have obtained a probabilistic normalized evaluation of the dynamical structure factor, which we multiply by the norm $|S|$ to obtain $S(q, \omega)$:
 \begin{equation}
-S(q, \omega) = |S|. P(\omega).P(q \mid \omega) .
+S(q, \omega) = |S|.g_\omega(\omega).g_q(q \mid \omega) .
 \end{equation}
-
 Then a selection between energy gain and loss is done with the detailed balance ratio $e^{-\hbar \omega / k_B T}$.
+
+Finally, a statistical weightening by a factor:
+\begin{equation}
+\pi_2 = \frac{k_f}{k_i} |S|
+\end{equation}
+is required to account for Eq. (\ref{eq:d2sigma}). The factor $4 \pi$ in this equation originates from the integration of events over space, and is thus implicitely included in the Monte Carlo choice of the scattering direction.
 
 \subsubsection{Choosing the scattered wave vector}
 
@@ -195,7 +206,7 @@ Finally, we obtain :
 
 \subsubsection{Extension to powder elastic scattering}
 
-In principle, the component can work in purtely elastic mode if only the $\omega = 0$ column is available in $S$.
+In principle, the component can work in purely elastic mode if only the $\omega = 0$ column is available in $S$.
 Anyway, in the diffractionists world, people do not usually define scattering with $S(q)$ (Eq. \ref{eq:sq}), but through the scattering vector $\boldsymbol{\tau}$, multiplicity $z(\tau)$ (for powders), and $|F^2|$ structure factors including Debye-Waller factors, as in Eq. \ref{eq:sigma_coh_el}.
 
 When doing diffraction, and neglecting inelastic contribution as first approximation, we may integrate Eq. \ref{eq:d2sigma}, keeping $k_i = k_f$.
@@ -203,11 +214,12 @@ When doing diffraction, and neglecting inelastic contribution as first approxima
 \left(\frac{d\sigma}{d\Omega}\right)_{\rm coh.el.}(|q|) &=& \int_0^\infty \frac{d^2\sigma_{coh}}{d\Omega dE_f} dE_f = \frac{N \sigma_{coh}}{4\pi} S_{coh}(q) \\
 & = & N\frac{(2\pi)^3}{V_0}\sum_{\boldsymbol{\tau}} \delta(\boldsymbol{\tau} - \boldsymbol{q})|F_{\boldsymbol{\tau}}|^2 {\rm\ from\ Eq.\ (\ref{eq:sigma_coh_el})}
 \end{eqnarray}
-with $V_0 = 1/\rho$ being the volume of a lattice unit cell. Then we may write the formal equivalence:
+with $V_0 = 1/\rho$ being the volume of a lattice unit cell. Then we come to the formal equivalence, in the powder case \cite{squires} (integration over Debye-Scherrer cones):
 \begin{eqnarray}\label{eq:sq-F2}
-S_{coh}(q) = \frac{2(2\pi)^4\rho}{\sigma_{coh}} \sum_{|\tau|} z(q) \delta(\tau - q) |F_\tau)|^2 {\rm\ in\ a\ powder.}
+S_{coh}(q) = \frac{4\pi\rho}{\sigma_{coh}} \frac{z(q)}{q} |F_q|^2 {\rm\ in\ a\ powder.}
 \end{eqnarray}
-The normalization rule Eq. (\ref{eq:sq-nomr2}) is then applied.
+for each lattice Bragg peak wave vector $q$.
+The normalization rule Eq. (\ref{eq:sq-nomr2}) can not usually be applied for powders, as the $S(q)$ is a set of Dirac peaks for which the $\int q^2 S(q) dq$ is difficult to compute, and $S(q)$ does not converge to unity for large $q$.
 
 Of course, the component PowderN (see section \ref{powder}) can handle powder samples more efficiently (faster, better accuracy), but can not be used currently in concentric geometry, nor handle multiple scattering.
 
@@ -248,8 +260,9 @@ radius\_o & [m] & dimensions of a cylinder shaped geometry  \\
 radius\_i & [m] & sphere geometry if radius\_i=0  \\
 thickness& [m] & thickness of hollow shape  \\
     \hline
-norm\_sqw & number  & When positive, the value is used as the integral of S(q,w). Null value uses computed integral. Any negative value will normalize on the density (recommanded) \\
+norm\_sqw & number  & When positive, the value is used as the integral of S(q,w). Null value uses computed integral. Any negative value will normalize on the density (for liquids, NOT recommanded for Powders) \\
 auto\_qw  & boolean & Automatically optimize probability tables during simulation (recommanded)  \\
+interpolate & boolean & Smooth $S(q,\omega)$ table (recommanded) \\
 order     & integer & Limit multiple scattering up to given order. 0 means no limitations  \\
 concentric& boolean & Enables to 'enter' inside concentric hollow geometries  \\
     \hline
@@ -287,7 +300,7 @@ If the Sqw\_inc parameter is left unset but the $\sigma_{inc}$ is \emph{not} zer
 
 Anyway, as explained below, it is also possible to only simulate the elastic scattering from a powder file (see below). Moreover, as there are two process channels (coherent and incoherent), it is possible to simulate a mixture of two powders, with fractions proportional to $\sigma_{coh}$ and $\sigma_{inc}$.
 
-\subsubsection{Files formats: $S(q,\omega)$}
+\subsubsection{File formats: $S(q,\omega)$ inelastic scattering}
 
 The format of the data files is free text, consisting of three numerical block, separated by empty lines or comments, in the following order
 \begin{enumerate}
@@ -311,7 +324,7 @@ Some \verb+sqw+ data files are included in the \MCS\ distribution data directory
 Isotropic_Sqw(<geometry parameters>, Sqw_coh="He4.sqw", T=10)
 \end{verbatim}
 
-\subsubsection{Files formats: $S(q)$}
+\subsubsection{File formats: $S(q)$ liquids}
 
 This file format provides a mean to import directly an $S(q)$ data set, when setting parameters:
 \begin{verbatim}
@@ -324,7 +337,7 @@ The 'Sqw\_coh' (or 'Sqw\_inc') file should contains a single numerical block, wh
 \end{verbatim}
 Such files can only handle elastic scattering.
 
-\subsubsection{Files formats: powder structures (LAZY, Fullprof, Crystallographica)}
+\subsubsection{File formats: powder structures (LAZY, Fullprof, Crystallographica)}
 
 Data files as used by the component PowderN may also be read. Data files of type \verb'lau' and \verb'laz' in the \MCS\ distribution data directory are self-documented in their header. They do not need any additional parameters to be used, as in the example:
 \begin{verbatim}
@@ -369,9 +382,9 @@ COMPONENT s_out=Isotropic_Sqw(
   Sqw_coh="Al.laz")
 AT (0,0,1) RELATIVE a
 \end{verbatim}
-Central component may be of any type, not specifically an Isotropic\_sqw instance. It could be for instance a Single\_crystal or a PowderN..
+Central component may be of any type, not specifically an Isotropic\_sqw instance. It could be for instance a Single\_crystal or a PowderN.
 In principle, the number of surrounding shells is not restricted.
-The only restriction is that neutrons that scatter (in $4\pi$) can not come back in the instrument description, so that some of the multiple scattering events are lost. namely, in the previous example, neutrons scattered by the outer wall of the cryostat \verb+s_out+ can not come back to the sample or to the other cryostat wall \verb+s_in+. As these neutrons have usually few chances to reach the rest of the simulation, we expect that the approximation is fair.
+The only restriction is that neutrons that scatter (in $4\pi$) can not come back in the instrument description, so that some of the multiple scattering events are lost. Namely, in the previous example, neutrons scattered by the outer wall of the cryostat \verb+s_out+ can not come back to the sample or to the other cryostat wall \verb+s_in+. As these neutrons have usually few chances to reach the rest of the simulation, we expect that the approximation is fair.
 
 
 
