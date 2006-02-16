@@ -26,6 +26,8 @@ Once the neutron 'knows' that something (terrible) is going to occur, it looks f
 
 The neutron leaves the scattering point when a suitable $(q, \omega)$ choice has been found to satisfy the conservation laws. The process is iterated until the neutron leaves the volume of the material, eventually producing multiple scattering contributions.
 
+The method shown below for multiple scattering handling is quite close in many respects to the earlier MSC \cite{msc}, Discus \cite{discus} and MSCAT \cite{mscat} programs, eventhough this implementation is original.
+
 \subsection{Theoretical side}
 
 \subsubsection{Pair correlation function $g(r)$ and Dynamic structure factor $S(q,\omega)$}
@@ -95,6 +97,8 @@ P(q \mid \omega)    &=& \int_0^q g_q(q'\mid\omega) dq'
 \end{eqnarray}
 The former $g_q$ is the density of wavevector transfers for a selected energy transfer, and the latter $P(q \mid \omega)$ is the probability for an excitation to have a wavevector lower than $q$, for a given energy transfer $\omega$.
 
+These probability distributions $g_\omega$ and $g_q$ implement importance sampling for scattering, 'directing' neutron events to high $S(q,\omega)$ regions.
+
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.9\textwidth]{figures/Sqw_sampling.eps}
@@ -154,7 +158,7 @@ Finally, a statistical weightening by a factor:
 \begin{equation}
 \pi_2 = \frac{k_f}{k_i} |S|
 \end{equation}
-is required to account for Eq. (\ref{eq:d2sigma}). The factor $4 \pi$ in this equation originates from the integration of events over space, and is thus implicitely included in the Monte Carlo choice of the scattering direction.
+is required to account for Eq. (\ref{eq:d2sigma}). The factor $4 \pi$ in Eq. (\ref{eq:d2sigma}) originates from the integration of events over space, and is thus implicitely included in the Monte Carlo choice of the scattering direction.
 
 \subsubsection{Choosing the scattered wave vector}
 
@@ -216,12 +220,12 @@ When doing diffraction, and neglecting inelastic contribution as first approxima
 \end{eqnarray}
 with $V_0 = 1/\rho$ being the volume of a lattice unit cell. Then we come to the formal equivalence, in the powder case \cite{squires} (integration over Debye-Scherrer cones):
 \begin{eqnarray}\label{eq:sq-F2}
-S_{coh}(q) = \frac{4\pi\rho}{\sigma_{coh}} \frac{z(q)}{q} |F_q|^2 {\rm\ in\ a\ powder.}
+S_{coh}(q) = \frac{4 \pi \rho}{\sigma_{coh}} \frac{z(q)}{q} |F_q|^2 {\rm\ in\ a\ powder.}
 \end{eqnarray}
 for each lattice Bragg peak wave vector $q$.
 The normalization rule Eq. (\ref{eq:sq-nomr2}) can not usually be applied for powders, as the $S(q)$ is a set of Dirac peaks for which the $\int q^2 S(q) dq$ is difficult to compute, and $S(q)$ does not converge to unity for large $q$.
 
-Of course, the component PowderN (see section \ref{powder}) can handle powder samples more efficiently (faster, better accuracy), but can not be used currently in concentric geometry, nor handle multiple scattering.
+Of course, the component PowderN (see section \ref{powder}) can handle powder samples more efficiently (faster, better accuracy), but does not take into account multiple scattering.
 
 \subsubsection{Important remarks and limitations}
 
@@ -235,6 +239,10 @@ then a new $(q, \omega)$ set is drawn, and the process is iterated until sucess 
 A way to avoid this is to focus the $q,\omega$ range from the $S(q, \omega)$ data file to the actual beam characteristics (matching instrument dynamical range). This is done e.g. by setting the component parameter $wmax$ to the maximum energy of the incoming beam. In a few words, the $S(q,\omega)$ data set extension in $Q$ and $\omega$ should preferably be smaller than the extension of the incoming beam and the scattered beam of interest for the experiment. Otherwise some Monte carlo choices lead to scattering in non useful regions of $S$, which reduces dramatically the algorithm efficiency, possibly removing neutrons by underestimating intensity.\index{Bugs} An automatic probability table optimization may be activated when setting parameter \verb+auto_qw=1+. This is higly recommanded, but may sometimes miss a few neutrons if the $q,\omega$ beam range has been guessed too small.
 
 Focusing the $q$ and $\omega$ range, to the one being able to scatter the incoming beam, when using the component does improve significantly the speed of the computation. Additionally, if you restrict the scattering the first order only (parameter order=1), then you may specify the angular vertical extension $d\phi$ of the scattering area to gain optimized focusing. This option does not apply when handling multiple scattering (which emits in $4\pi$ many times before exiting the sample).
+
+A bilinear interpolation for the $Q,\omega$ determination is recommanded to improve the accuracy of the scattered intensity, but it may be unactivated when setting parameter \verb+interpolate=0+. This will often result in a discrete $Q,\omega$ sampling.
+
+As indicated in the previous section, the Isotropic\_Sqw component is not as accurate as PowderN for powders scattering for single scattering.
 
 \subsection{The implementation}
 
@@ -360,7 +368,7 @@ In this case, the density $\rho = n/V_0$ is the number of atoms in the inverse v
 
 As the component builds an $S(q)$ from the powder structure description, the accuracy of the Isotropic\_Sqw component is limited by the binning during that conversion. This is usually enough to describe sample environments including powders (aluminium, copper, ...), but it is recommanded to rather use PowderN for faster and accurate powder diffraction, eventthough this latter does not implement multiple scattering.
 
-Such files can only handle elastic scattering.
+Such files can only handle elastic scattering. A list of common powder definition files is available in Table \ref{t:powders-data} (page \pageref{t:powders-data}).
 
 \subsubsection{Concentric geometries, sample environment}
 \index{Sample environments}
@@ -387,9 +395,9 @@ In principle, the number of surrounding shells is not restricted.
 The only restriction is that neutrons that scatter (in $4\pi$) can not come back in the instrument description, so that some of the multiple scattering events are lost. Namely, in the previous example, neutrons scattered by the outer wall of the cryostat \verb+s_out+ can not come back to the sample or to the other cryostat wall \verb+s_in+. As these neutrons have usually few chances to reach the rest of the simulation, we expect that the approximation is fair.
 
 \subsection{Validation}
-For Vanadium incoherent scattering mode, V_sample, PowderN, Single_crystal and Isotropic\_Sqw produce equivalent results, eventhough the two later are more accurate (geometry, multiple scattering). Execution times are equivalent.
+For Vanadium incoherent scattering mode, V\_sample, PowderN, Single\_crystal and Isotropic\_Sqw produce equivalent results, eventhough the two later are more accurate (geometry, multiple scattering). Execution times are equivalent.
 
-Compared to the PowderN component, the $S(q)$ method is twice slower in computation time (but often bring more statistics), and intensity is usually lower by a factor 1 to 2. The PowderN component is intrinsically more accurate as each Bragg peak is handled separately as an exact Dirac peak, with optional $\Deltaq$ spreading. In Isotropic\_Sqw, an approximated $S(q)$ table is built from the $F^2$ data, and is coarser. Unfortunately, the PowderN component can hardly be made to support concentric geometries.
+Compared to the PowderN component, the $S(q)$ method is twice slower in computation time (but often brings more statistics), and intensity is usually lower by a factor 1 to 2. The PowderN component is intrinsically more accurate as each Bragg peak is handled separately as an exact Dirac peak, with optional $\Delta q$ spreading. In Isotropic\_Sqw, an approximated $S(q)$ table is built from the $F^2$ data, and is coarser.
 
 
 

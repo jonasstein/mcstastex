@@ -10,9 +10,10 @@ The powder diffraction component {\bf PowderN} models a powder sample
 with background coming only from incoherent scattering and no
 multiple scattering. The description of the powder comes from a
 file in one of the standard output formats LAZY, FULLPROF, or CRYSTALLOGRAPHICA.
+
 \subsection{Files formats: powder structures}
 
-Data files of type \verb'lau' and \verb'laz' in the \MCS\ distribution data directory are self-documented in their header. They do not need any additional parameters to be used, as in the example:
+Data files of type \verb'lau' and \verb'laz' in the \MCS\ distribution data directory are self-documented in their header. A list of common powder definition files is available in Table \ref{t:powders-data} (page \pageref{t:powders-data}). They do not need any additional parameters to be used, as in the example:
 \begin{verbatim}
   PowderN(<geometry parameters>, filename="Al.laz")
 \end{verbatim}
@@ -28,11 +29,11 @@ multiplicity, lattice spacing, $F^2$, Debye-Waller factor and intrinsic line wid
 Other component parameters may as well be specified in the data file
 header with lines e.g.:
 \begin{verbatim}
-  #Vc 
-  #sigma_abs 
-  #sigma_inc 
-  #Debye_Waller 
-  #Delta_d/d 
+  #Vc
+  #sigma_abs
+  #sigma_inc
+  #Debye_Waller
+  #Delta_d/d
 \end{verbatim}
 
 Further details on file formats are available in the \verb+mcdoc+ page
@@ -128,7 +129,7 @@ where the sum runs over all atoms in one unit cell. This structure factor is
 non-zero only when $Q$ equals a reciprocal lattice vector.
 
 The textbook expression for the scattering cross section
-corresponding to one Debye-Scherrer cone reads \cite[ch.3.6]{squires}, with $V$ being the total sample volume:
+corresponding to one Debye-Scherrer cone reads \cite[ch.3.6]{squires}, with $V=N V_0$ being the total sample volume:
 \begin{equation}
 \sigma_{\rm cone}
   = \frac{V}{V_0^2} \frac{\lambda^3}{4 \sin \theta} \sum_Q |F(Q)|^2 .
@@ -140,10 +141,11 @@ multiplicity, $j$. Then, a finite packing factor, $f$, is defined for the powder
 and finally, the Debye-Waller factor is multiplied on the elastic cross section
 to take lattice vibrations into account (no inelastic background is simulated,
 however). We then reach
-\begin{equation}
+\begin{eqnarray}
 \sigma_{\rm cone, Q}
-  = j_Q f \exp(-2W) \frac{V}{V_0^2} \frac{\lambda^3}{4 \sin \theta} |F(Q)|^2 ,
-\end{equation}
+ & = & j_Q f \exp(-2W) \frac{V}{V_0^2} \frac{\lambda^3}{4 \sin \theta} |F(Q)|^2 \\
+ & = & f \exp(-2W) \frac{N}{V_0} \frac{4\pi^3}{k^2} \frac{j_Q |F(Q)|^2}{Q}
+\end{eqnarray}
 in the thin sample approximation. For samples of finite thickness, the
 beam is being attenuated by the attenuation coefficient
 \begin{equation}
