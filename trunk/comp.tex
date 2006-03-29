@@ -107,7 +107,7 @@ may access all \MCS\ data files without making local copies.
 Of course, you are welcome to define your own data files,
 and eventually contribute to \MCS\ if you find them useful.
 
-File extensions are not compulsory but help in identifying relevant files per application.
+File extensions are not compulsory but help in identifying relevant files per application. We list powder and liquid data files from the \MCS\ library in Tables \ref{t:powders-data} and \ref{t:liquids-data}. These files contain an extensive header describing physical properties with references, and are specially suited for the PowderN (see \ref{powder}) and Isotropic\_Sqw components (see \ref{s:isotropic-sqw}).
 
 \begin{table}
   \begin{center}
@@ -165,9 +165,8 @@ Cu.laz             & 7.485     & 0.55     &3.78      &1357.8    &3570&\\
 Fe.laz             & 11.22     & 0.4      &2.56      &1811      &4910&\\
 Ga.laz             & 6.675     & 0.16     &2.75      &302.91    &2740&\\
 Gd.laz             & 29.3      & 151      &{\bf 49700}     &1585      &2680&\\
-Ge.laz             & 8.42      & 0.18     &2.2       &1211.4    &5400  & Ge\_liq\_coh.sqw and Ge\_liq\_inc.sqw\\
+Ge.laz             & 8.42      & 0.18     &2.2       &1211.4    &5400  & \\
 H2O\_ice\_1h.laz     & 7.75      & 160.52   &0.6652    &273       &     &\\
-He4\_liq\_coh.sqw    & 1.34      & 0        &0.00747   &0         &   & $S(q,\omega)$ data\\
 Hg.laz             & 20.24     & 6.6      &{\bf 372.3}     &234.32    &{\bf 1407}&\\
 I2.laz             & 7.0       & 0.62     &12.3      &386.85    &   &\\
 In.laz             & 2.08      & 0.54     &{\bf 193.8}     &429.75    &{\bf 1215}&\\
@@ -179,7 +178,7 @@ Ni.laz             & 13.3      & 5.2      &4.49      &1728      &4970&\\
 Pb.laz             & 11.115    & 0.003    &0.171     &600.61    &{\bf 1260}&\\
 Pd.laz             & 4.39      & 0.093    &6.9       &1828.05   &3070&\\
 Pt.laz             & 11.58     & 0.13     &10.3      &2041.4    &2680&\\
-Rb.laz             & 6.32      & 0.5      &0.38      &312.46    &{\bf 1300}  & Rb\_liq\_coh.sqw and Rb\_liq\_inc.sqw\\
+Rb.laz             & 6.32      & 0.5      &0.38      &312.46    &{\bf 1300}  & \\
 Se\_alpha.laz       & 7.98      & 0.32     &11.7      &494       &3350&\\
 Se\_beta.laz        & 7.98      & 0.32     &11.7      &494       &3350&\\
 Si.laz             & 2.163     & 0.004    &0.171     &1687      &2200&\\
@@ -194,8 +193,31 @@ Zn.laz             & 4.054     & 0.077    &1.11      &692.68    &3700&\\
 Zr.laz             & 6.44      & 0.02     &0.185     &2128      &3800&\\
       \hline
     \end{tabular}\end{small}
-    \caption{Powders of the \MCS\ library \cite{icsd_ill,ILLblue}. Low $c$ and high $\sigma_{abs}$ materials are highlighted.}
+    \caption{Powders of the \MCS\ library \cite{icsd_ill,ILLblue}. Low $c$ and high $\sigma_{abs}$ materials are highlighted. Files are given in LAZY format, but may exist as well in Crystallographica {\it .lau} format as well.}
     \label{t:powders-data}
+    \index{Library!Components!data}
+    }
+  \end{center}
+\end{table}
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{small}
+    \begin{tabular}{|l|rrr|rr|p{0.2\textwidth}|}
+
+      \hline
+      {\bf MCSTAS/data} & $\sigma_{coh}$&$\sigma_{inc}$&$\sigma_{abs}$&$T_m$       & $c$    & Note \\
+          File name     & [barns]     & [barns]    & [barns]    & [K]        & [m/s] & \\
+      \hline
+Cs\_liq\_tot.sqw                      & 3.69      & 0.21     &29.0      &301.6     &{\bf 1090}  & Measured \\
+Ge\_liq\_coh.sqw and Ge\_liq\_inc.sqw & 8.42      & 0.18     &2.2       &1211.4    &5400  & Ab-initio MD \\
+He4\_liq\_coh.sqw                     & 1.34      & 0        &0.00747   &0         &240   & Measured\\
+Rb\_liq\_coh.sqw and Rb\_liq\_inc.sqw & 6.32      & 0.5      &0.38      &312.46    &{\bf 1300}  & Classical MD \\
+      \hline
+    \end{tabular}\end{small}
+    \caption{Liquids of the \MCS\ library \cite{icsd_ill,ILLblue}. Low $c$ and high $\sigma_{abs}$ materials are highlighted.}
+    \label{t:liquids-data}
     \index{Library!Components!data}
     }
   \end{center}
