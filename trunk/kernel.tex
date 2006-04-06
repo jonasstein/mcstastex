@@ -21,7 +21,7 @@ C embedded in the meta-language description of the
 components. However, it is
 possible to set up an instrument from existing components and
 run a simulation without writing a single line of C code, working
-entirely in the meta-language. 
+entirely in the meta-language.
 
 Apart from the meta-language, \MCS\ also includes a number of C library
 functions and definitions that are useful for neutron ray-tracing
@@ -114,6 +114,7 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \hline
       \texttt{ABSOLUTE} & I & Indicates that the AT and ROTATED keywords are in the absolute coordinate system. \\
       \texttt{AT} & I & Indicates the position of a component in an instrument definition. \\
+      \texttt{COPY}& I,C & copy/duplicate an instance or a component definition with parameters. \\
       \texttt{DECLARE} & I,C & Declares C internal instrument or component variables. \\
       \texttt{DEFINE} & I,C & Starts an instrument or component definition. \\
       \texttt{- INSTRUMENT} & & (each associated parameter may have default values) \\
@@ -124,7 +125,9 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{FINALLY} & I,C & Embeds C code to execute when simulation ends (also executes the SAVE section). \\
       \texttt{GROUP} & I & Defines an exclusive group of components. \\
       \texttt{\%include} & I,C & Imports an instrument part, a component or a piece of C code (when within embedded C). \\
+      \texttt{JUMP} & I & Iterative (loops) and conditional jumps. \\
       \texttt{INITIALIZE} & I,C & Embeds C code to be executed when starting. \\
+      \texttt{ITERATE} & I & Defines iteration counter for JUMP. \\
       \texttt{MCDISPLAY} & C & Embeds C code to display a geometric  representation of a component. \\
       \texttt{OUTPUT} & C & Defines internal variables to be public and protected symbols (usually all global variables and functions of DECLARE).\\
       \texttt{PARAMETERS} & C & Defines a class of component parameter. \\
@@ -138,6 +141,7 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{SHARE} & C & Declares global functions and variables to be used by all components. \\
       \texttt{STATE} & C & Defines neutron state coordinates. \\
       \texttt{TRACE} & I,C & Lists the components or embedded C code to execute during simulation. \\
+      \texttt{WHEN}  & I & Condition for component activation and JUMP.\\
       \hline
     \end{tabular}
     \caption{Reserved \MCS\ keywords.
@@ -280,6 +284,14 @@ optional. Instrument setting parameters (e.g. doing tests or automatic settings)
 \index{Keyword!TRACE}
 \label{s:trace}
 
+
+As a summary, the usual grammar for component instances within the instrument TRACE section is
+\begin{verbatim}
+COMPONENT name = comp(parameters)
+  AT (...) [RELATIVE [reference|PREVIOUS] | ABSOLUTE]
+ {ROTATED  {RELATIVE [reference|PREVIOUS] | ABSOLUTE} }
+\end{verbatim}
+
 The \texttt{TRACE} keyword starts a section giving the list of
 components that constitute the instrument.
 Components are declared like this:
@@ -346,7 +358,7 @@ specification used in the \texttt{AT} modifier. The \emph{position} of
 a component is actually the origin of its local coordinate
 system. Usually, this is used as the input window position (e.g. for
 guide-like components), or the center position for
-cylindrical/spherical components. 
+cylindrical/spherical components.
 
 The \texttt{PREVIOUS} \index{Keyword!PREVIOUS} keyword is a generic name to refer to the previous component in the simulation. Moreover, the \texttt{PREVIOUS(n)} keyword will refer to the $n$-th previous component, starting from the current component, so that \texttt{PREVIOUS} is equivalent to \texttt{PREVIOUS(1)}. This keyword should be used after the \texttt{RELATIVE} keyword, but not for the first component instance of the instrument description.
 \begin{quote}
@@ -368,70 +380,7 @@ simulation, for instance this usually happens after a monochromator,
 as the non-reflected beam is indeed lost. A special warning appears
 when no neutron ray has reached some part of the simulation. This is usually the sign of either overlapping components or a very low intensity. \index{Removed neutron events}
 
-In some experimental configurations it is neccesary to position one or
-more groups of components nested, in parallel, or overlapping. One
-example is a multiple crystal monochromator. One would then like the
-neutron ray to interact with \emph{one of} the components of the group
-and then continue.
-
-In order to handle such arrangements without removing neutrons, groups are defined by the \texttt{GROUP} modifier
-\begin{quote}
-  \texttt{GROUP} \textit{name}
-\end{quote}
-to all involved component declarations. \index{Keyword!GROUP}
-All components of the same named group are tested one after the other,
-until one of them interacts (uses the SCATTER
-macro\index{Library!Run-time!SCATTER}). The selected component acts on
-the neutron ray, and the rest of the group is skipped. Such groups are thus exclusive (only one of the elements is active).
-If no component of the group could intercept the neutron ray, it is
-ABSORBed. If you wish not to absorb these neutrons, you may end each
-group by a large monitor or another dummy component, which will eventually catch neutrons that were not caught by previous components of the group.
-
-It is sometimes desirable to modify an existing component of the \MCS\ library. One would usually make a copy of the component, and extend the code of its \texttt{TRACE} section. \MCS\ provides an easy way to change the behaviour of existing components in an instrument definition without duplicating files, using the \texttt{EXTEND} modifier \index{Keyword!EXTEND}
-\begin{quote}
-  \texttt{EXTEND} \\
-  \verb|%{| \\
-  \hbox to 3em{}\ldots C code executed after the component TRACE section \ldots \\
-  \verb|%}|
-\end{quote} \index{Embedded C code}
-The embeded C code is appended at the end of the component \texttt{TRACE} section, and all its internal variables (as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters) may be used.
-This component declaration modifier is of course optional. In the following, two examples of usage of the \texttt{EXTEND} keyword
-are given.
-
-Sources are special components that set the neutron STATE parameters
-(e.g. position, time, velocity and initial weight) and are usually positioned at the very beginning of the
-TRACE section. As a default, neutrons are defined at the origin, with
-zero time and speed. As a consequence, the time spread is zero. Most sources components only set the position and velocity, but do not set the time of the created neutrons. You may manually set the neutron time spreading (for e.g. Time of Flight instruments) in an \verb+EXTEND+ code section such as:
-\begin{quote}
-  \texttt{COMPONENT} $\textit{MySource} = \textit{source}(\ldots)$ \texttt{AT}(\ldots) \texttt{EXTEND} \\
-  \hbox to 1em{} \verb|%{| \\
-  \hbox to 3em{} \verb+t = randpm1()*10e-6;+ \\
-  \hbox to 1em{} \verb|%}|
-\end{quote}
-This will set the time randomly between -10 and 10 $\mu$-seconds.
-
-
-Within a \texttt{GROUP}, \emph{all} \texttt{EXTEND} sections of the group are executed. In order to discriminate components that are active from those that are skipped, one may use the SCATTERED flag, which is set to zero when entering each component or group, and incremented when the neutron is SCATTERed, as in the following example \index{Library!Run-time!SCATTER} \index{Library!Run-time!SCATTERED}
-\begin{quote}
-  \texttt{COMPONENT} $\textit{name0} =
-    \textit{comp}(p_1 = e_1, p_2 = e_2, \ldots)$ \\
-  \hbox to 1em{} \texttt{AT} $(0,0,0)$ \texttt{ABSOLUTE} \\
-  \texttt{COMPONENT} $\textit{name1} =
-    \textit{comp}(\ldots)$ \\
-  \hbox to 1em{} \texttt{AT} $(x,y,z)$ \texttt{RELATIVE} \textit{name0} \\
-  \hbox to 1em{} \texttt{ROTATED} $(\phi_x,\phi_y,\phi_z)$ \texttt{RELATIVE} \textit{name0} \\
-  \hbox to 1em{} \texttt{GROUP} \textit{GroupName} \texttt{EXTEND} \\
-  \hbox to 1em{} \verb|%{| \\
-  \hbox to 3em{} \verb+if (SCATTERED) printf("I scatter"); else printf("I do not scatter");+\\
-  \hbox to 1em{} \verb|%}| \\
-  \texttt{COMPONENT} $\textit{name2} =
-    \textit{comp}(\ldots)$ \\
-  \hbox to 1em{} \texttt{AT} $(x,y,z)$ \texttt{RELATIVE} \textit{name0} \\
-  \hbox to 1em{} \texttt{ROTATED} $(\phi_x,\phi_y,\phi_z)$ \texttt{RELATIVE} \textit{name0} \\
-  \hbox to 1em{} \texttt{GROUP} \textit{GroupName}
-\end{quote}
-Components \emph{name1} and \emph{name2} are at the same position. If the first one intercepts the neutron (and has a SCATTER within its \texttt{TRACE} section), the SCATTERED variable becomes true, the code extension will result in printing "I scatter", and the second component will be skipped.
-Thus, we recommand to make use of the SCATTER keyword each time a component 'uses' the neutron (scatters, detects, \ldots).
+For experienced users, we recommand as well the usage of the \texttt{WHEN} and \texttt{EXTEND} keywords, as well as other syntax extensions presented in section \ref{s:instrdefs-extend} below.
 
 \subsection{The \texttt{SAVE} section}
 \index{Keyword!SAVE}
@@ -479,6 +428,209 @@ A commented instrument definition taken from the \texttt{examples} directory is
 here shown as an example of the use of \MCS .
  \smallverbatimfile{../mcstas/lib/examples/vanadium_example.instr}
 
+
+
+\section{Writing instrument definitions - complex arrangements}
+\label{s:instrdefs-extend}
+\index{Instruments}
+
+In this section, we describe some additional ways to build instruments using groups, code extension, conditions, loops and duplication of components.
+
+As a summary, the complete grammar definition for component instances within the instrument TRACE section is:
+
+\begin{verbatim}
+COMPONENT name = comp(parameters) {WHEN condition}
+  AT (...) [RELATIVE [reference|PREVIOUS] | ABSOLUTE]
+  {ROTATED {RELATIVE [reference|PREVIOUS] | ABSOLUTE} }
+  {GROUP group_name}
+  {EXTEND C_code}
+  {JUMP [reference|PREVIOUS|MYSELF|NEXT] [ITERATE number_of_times | WHEN condition] }
+\end{verbatim}
+
+\subsection{Groups and component extensions}
+\index{Keyword!GROUP}
+\index{Keyword!EXTEND}
+\label{s:instrdefs-extend-group}
+
+In some peculiar configurations it is neccesary to position one or
+more groups of components, nested, in parallel, or overlapping. One
+example is a multiple crystal monochromator. One would then like the
+neutron ray to interact with \emph{one of} the components of the group
+and then continue.
+
+In order to handle such arrangements without removing neutrons, groups are defined by the \texttt{GROUP} modifier (after the AT-ROTATED positioning):
+\begin{quote}
+  \texttt{GROUP} \textit{name}
+\end{quote}
+to all involved component declarations. \index{Keyword!GROUP}
+All components of the same named group are tested one after the other,
+until one of them interacts (uses the SCATTER
+macro\index{Library!Run-time!SCATTER}). The selected component acts on
+the neutron ray, and the rest of the group is skipped. Such groups are thus exclusive (only one of the elements is active).
+If no component of the group could intercept the neutron ray, it is
+ABSORBed. If you wish not to absorb these neutrons, you may end each
+group by a large monitor or another dummy component, which will eventually catch neutrons that were not caught by previous components of the group.
+
+It is sometimes desirable to modify an existing component of the \MCS\ library. One would usually make a copy of the component, and extend the code of its \texttt{TRACE} section. \MCS\ provides an easy way to change the behaviour of existing components in an instrument definition without duplicating files, using the \texttt{EXTEND} modifier \index{Keyword!EXTEND} (after the AT-ROTATED and optional GROUP)
+\begin{quote}
+  \texttt{EXTEND} \\
+  \verb|%{| \\
+  \hbox to 3em{}\ldots C code executed after the component TRACE section \ldots \\
+  \verb|%}|
+\end{quote} \index{Embedded C code}
+The embeded C code is appended at the end of the component \texttt{TRACE} section, and all its internal variables (as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters) may be used. It thus behave as a 'plug-in' for the component TRACE.
+This component instance modifier is of course optional.
+
+
+As an example for EXTEND, Sources are special components that set the neutron STATE parameters
+(e.g. position, time, velocity and initial weight) and are usually positioned at the very beginning of the
+TRACE section. As a default, neutrons are defined at the origin, with
+zero time and speed. As a consequence, the time spread is zero. Most sources components only set the position and velocity, but do not set the time of the created neutrons. You may manually set the neutron time spreading (for e.g. Time of Flight instruments) in an \verb+EXTEND+ code section such as:
+\begin{quote}
+  \texttt{COMPONENT} $\textit{MySource} = \textit{source}(\ldots)$ \texttt{AT}(\ldots) \texttt{EXTEND} \\
+  \hbox to 1em{} \verb|%{| \\
+  \hbox to 3em{} \verb+t = randpm1()*10e-6;+ \\
+  \hbox to 1em{} \verb|%}|
+\end{quote}
+This will set the time randomly between -10 and 10 $\mu$-seconds.
+
+
+Within a \texttt{GROUP}, \emph{all} \texttt{EXTEND} sections of the group are executed. In order to discriminate components that are active from those that are skipped, one may use the SCATTERED flag, which is set to zero when entering each component or group, and incremented when the neutron is SCATTERed, as in the following example \index{Library!Run-time!SCATTER} \index{Library!Run-time!SCATTERED}
+\begin{quote}
+  \texttt{COMPONENT} $\textit{name0} =
+    \textit{comp}(p_1 = e_1, p_2 = e_2, \ldots)$ \\
+    \hbox to 1em{} \texttt{AT} $(0,0,0)$ \texttt{ABSOLUTE} \\
+  \texttt{COMPONENT} $\textit{name1} =
+    \textit{comp}(\ldots)$ \texttt{AT} $(...)$  \texttt{ROTATED} $(...)$ \\
+  \hbox to 1em{} \texttt{GROUP} \textit{GroupName} \texttt{EXTEND} \\
+  \hbox to 1em{} \verb|%{| \\
+  \hbox to 3em{} \verb+if (SCATTERED) printf("I scatter"); else printf("I do not scatter");+\\
+  \hbox to 1em{} \verb|%}| \\
+  \texttt{COMPONENT} $\textit{name2} =
+    \textit{comp}(\ldots)$ \texttt{AT} $(...)$ \texttt{ROTATED} $(...)$ \\
+  \hbox to 1em{} \texttt{GROUP} \textit{GroupName}
+\end{quote}
+Components \emph{name1} and \emph{name2} are at the same position. If the first one intercepts the neutron (and has a SCATTER within its \texttt{TRACE} section), the SCATTERED variable becomes true, the code extension will result in printing "I scatter", and the second component will be skipped.
+Thus, we recommand to make use of the SCATTER keyword each time a component 'uses' the neutron (scatters, detects, \ldots) within component definitions (see section \ref{s:compdefs}).
+
+\subsection{Duplication of component instances}
+\index{Keyword!COPY}
+\label{s:instrdefs-extend-copy}
+
+Often, one has a set of similar component instances in an instrument. These could be e.g. a set of identical monochromator blades, or a set of detectors or guides.
+Together with JUMPs (see below), there is a way to copy a component instance, duplicating parameter set, as well as any EXTEND, GROUP, JUMP and WHEN keyword.
+Position (AT) and rotation (ROTATED) specification must be explicitely entered in order to avoid component overlaping.
+
+The syntax for instance copy is
+\begin{quote}
+  \texttt{COMPONENT} name = \texttt{COPY}(instance\_name)
+\end{quote}
+where {\it instance\_name} is the name of a preceeding component instance in the instrument. It may be 'PREVIOUS' as well.
+
+In the case where there are many duplicated components all originating from the same instance, there is a mechanism for automating copied instance names:
+\begin{quote}
+  \texttt{COMPONENT} \texttt{COPY}(root\_name) = \texttt{COPY}(instance\_name)
+\end{quote}
+will catenate a unique number to {\it root\_name}, avoiding name conflicts. As a side effect, refering this component instance (for e.g. further positioning) is not straight forward as the name is determined by \MCS\ and does not depend completely on the user's choice, eventhough the PREVIOUS keyword may still be used. We thus recommand to use this naming mechanism only for components which should not be refered to in the instrument.
+
+This automatic naming may be used anywhere in the TRACE section of the instrument, so that all components which do not need further refering may be labeled as COPY(Origin).
+
+As an example, we show how to build a guide made of equivalent elements. Only the first instance of the Guide component is defined, whereas following instances are copies of that definition. The instance name of Guide components is set automatically.
+
+\begin{verbatim}
+COMPONENT CG_In = Arm() AT (...)
+
+COMPONENT CG_1  = Guide_gravity(l=L/n, m=1, ...)
+  AT (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT COPY(CG_1)  = COPY(CG_1)
+  AT (0,0,L/n+d) RELATIVE PREVIOUS
+  ROTATED (0, (L/n+d)/R*180/PI, 0) RELATIVE PREVIOUS
+
+COMPONENT COPY(CG_1)  = COPY(CG_1)
+  AT (0,0,L/n+d) RELATIVE PREVIOUS
+  ROTATED (0, (L/n+d)/R*180/PI, 0) RELATIVE PREVIOUS
+...
+COMPONENT CG_Out = Arm() AT (0,0,L/n) RELATIVE PREVIOUS
+\end{verbatim}
+
+\subsection{Conditional components}
+\index{Keyword!WHEN}
+\label{s:instrdefs-extend-when}
+
+One of the most usefull features of the extended \MCS\ syntax is the conditional \texttt{WHEN} modifier. This optional keyword comes before the AT-ROTATED positioning. It basically enables the component only when a given condition is true (non null).
+
+\begin{quote}
+  \texttt{COMPONENT} $\textit{name} = \textit{comp}(p_1 = e_1, p_2 = e_2, \ldots)$
+  \texttt{WHEN} {\it condition}
+\end{quote}
+The condition has the same scope as the EXTEND modifier, i.e. may use component internal variables as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters.
+
+Usage examples could be to have specific monitors only sensitive to selected processes, or to have components which are only present under given circonstances (e.g. removable guide or radial collimator), or to select a sample among a set of choices.
+
+In the following example, an EXTEND block defines sets a condition when a scattering event is encoutered, and the following monitor is then activated.
+\begin{verbatim}
+COMPONENT Sample = V_sample(...) AT ...
+  EXTEND
+  %{
+    if (SCATTERED) flag=1; else flag=0;
+  %}
+
+COMPONENT MyMon = Monitor(...) WHEN (flag==1)
+  AT ...
+\end{verbatim}
+
+The WHEN keyword only applies to the TRACE section of instruments/components. Other sections (INITIALIZE, SAVE, MCDISPLAY, FINALLY) are exectuted independently of the condition. As a side effetc, the 3D view of the instrument (mcdisplay) will show all components as if all conditions were true.
+
+\subsection{Component loops}
+\index{Keyword!JUMP}
+\index{Keyword!ITERATE}
+\index{Keyword!WHEN}
+\label{s:instrdefs-extend-jump}
+
+There are situations for which one would like to repeat a given component many times, or under a given condition. The JUMP modifier is meant for that and should be mentioned after the positioning, GROUP and EXTEND.
+
+The jump may depend on a condition:
+\begin{quote}
+  \texttt{COMPONENT} $\textit{name} = \textit{comp}(p_1 = e_1, p_2 = e_2, \ldots)$
+  \texttt{AT} (...)
+  \texttt{JUMP} {\it reference} WHEN {\it condition}
+\end{quote}
+in which case the instrument TRACE will jump to the {\it reference} when {\it condition} is true.
+
+The {\it reference} may be an instance name, as well as PREVIOUS, PREVIOUS($n$), MYSELF, NEXT, and NEXT($n$), where $n$ is the index gap to the target either backward (PREVIOUS) or forward (NEXT), so that PREVIOUS(1) is PREVIOUS and NEXT(1) is NEXT. MYSELF means that the component will be iterated as long as the condition is true. This may be a way to handle multiple scattering.
+
+The jump arrives directly inside the target component, in the local coordinate system. In order to control better the target positions, it is required that, except for looping MYSELF, the target component type should be an \emph{Arm}.
+
+There is a more general way to iterate components, which consists in repeating the loop for a given number of times.
+\begin{quote}
+  \texttt{JUMP} {\it reference} ITERATE {\it number\_of\_times}
+\end{quote}
+This method is specially suited for very long curved guides of similar components, but in order to take into account rotation and translation between guide sections, the iterations are performed between Arm's.
+
+In the following example for a curved guide made on $n=500$ elements of length $L$ on a curvature radius $R$, with gaps $d$ between elements, we simply write:
+\begin{verbatim}
+COMPONENT CG_In = Arm() AT (...)
+
+COMPONENT CG_1  = Guide_gravity(l=L/n, m=1, ...)
+  AT (0,0,0) RELATIVE PREVIOUS
+
+COMPONENT CG_2_Position = Arm()
+  AT (0,0,L/n+d) RELATIVE PREVIOUS
+  ROTATED (0, (L/n+d)/R*180/PI, 0) RELATIVE PREVIOUS
+
+COMPONENT CG_2  = Guide_gravity(l=L/n, m=1, ...)
+  AT (0,0,0) RELATIVE PREVIOUS
+  JUMP CG_2_Position ITERATE n
+...
+COMPONENT CG_Out = Arm() AT (0,0,L/n) RELATIVE PREVIOUS
+\end{verbatim}
+
+Similarly to the \texttt{WHEN} modifier (see section \ref{s:instrdefs-extend-when}), \texttt{JUMP} only applies within the TRACE section of the instrument definition. Other sections (INITIALIZE, SAVE, MCDISPLAY, FINALLY) are exectuted independently of the jump. As a side effetc, the 3D view of the instrument (mcdisplay) will show components as if there were no jump. This means that in the following example, the very long guide 3D view only shows a single guide element.
+
+
+We would like to emphasize the potential errors originating from such jumps. Indeed, imbricating many jumps may lead to situations were it is difficult to understand what is going on. We thus recommand the usage of JUMPs only for experienced and cautious users.\index{Bugs}
+
 \section{Writing component definitions}
 \label{s:compdefs}
 
@@ -494,15 +646,15 @@ web-page~\cite{mcstas_webpage} and described in the \MCS\ component manual.
 
 There exists a large number of functions and constants available in
 order to write efficient components. See appendix~\ref{c:kernelcalls}
-for 
+for
 \begin{itemize}
-\item neutron propagation functions 
+\item neutron propagation functions
 \item geometric intersection time computations
 \item mathematical functions
 \item random number generation
 \item physical constants
 \item coordinate retrieval and operations
-\item file generation routines (for monitors), 
+\item file generation routines (for monitors),
 \item data file reading
 \item \ldots
 \end{itemize}
@@ -1016,7 +1168,40 @@ A simple example of the component \texttt{Slit} is given.
 \smallverbatimfile{../mcstas/lib/optics/Slit.comp}
 
 
-\subsection{McDoc, the McStas library documentation tool}
+\section{Extending component definitions}
+\label{s:compdefs-extend}
+
+Suppose you are interested by one component of the \MCS\ library, but you would like to customize it a little. There are different ways to extend an existing component.
+
+\subsection{Extending from the instrument definition}
+\index{Keyword!EXTEND}
+
+If you only want to \emph{add} something on top of the component existing behaviour, the simplest is to work from the instrument definition \texttt{TRACE} section, using the \texttt{EXTEND} modifier (see section \ref{s:instrdefs-extend-group}). You do not need to write a new component definition, but only add a piece of code to execute.
+
+\subsection{Component heritage and duplication}
+\index{Keyword!COPY}
+
+There is a heritage mechanism to create childs of existing components. These are exact duplicates of the parent component, but one may override original definitions of any of section.
+
+The syntax for a full component child is
+\begin{quote}
+  \texttt{DEFINE COMPONENT} {\it child\_name} \texttt{COPY} {\it parent\_name}
+\end{quote}
+This single line will copy all parts of the {\it parent} into the {\it child}, except for the documentation header.
+
+As for normal component definitions, you may write other paremeters, \texttt{DECLARE}, \texttt{TRACE}, ... sections. Each of them will entirely replace the corresponding {\it parent} definition. In practice, you could copy a component and only rewrite some of it.
+
+
+On the other hand, if you do not derive a component as a whole from a parent, you may still use specific parts from any component:
+\begin{quote}
+  \texttt{DEFINE COMPONENT} {\it name} ...
+  \texttt{DECLARE} \texttt{COPY} {\it parent1}
+  \texttt{INITIALIZE} \texttt{COPY} {\it parent2}
+  \texttt{TRACE} \texttt{COPY} {\it parent3}
+\end{quote}
+This may lighter the component code, but a special care should be taken in mixing bits from different sources, specially concerning variables. This may result in difficulties to compile components.\index{Can not compile}
+
+\section{McDoc, the McStas library documentation tool}
 \label{s:mcdoc}
 \index{Tools!mcdoc}
 

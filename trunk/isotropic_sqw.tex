@@ -236,9 +236,16 @@ Since the choice of the interaction type, we know that the neutron \emph{must} s
 \end{enumerate}
 then a new $(q, \omega)$ set is drawn, and the process is iterated until sucess or - at last - removal of the neutron event. This latter absorption is then reported at the end of the simulation, as it never occurs in reality - neutrons that scatter do find a suitable $(q, \omega)$ set.\index{Removed neutron events}
 
-A way to avoid this is to focus the $q,\omega$ range from the $S(q, \omega)$ data file to the actual beam characteristics (matching instrument dynamical range). This is done e.g. by setting the component parameter $wmax$ to the maximum energy of the incoming beam. In a few words, the $S(q,\omega)$ data set extension in $Q$ and $\omega$ should preferably be smaller than the extension of the incoming beam and the scattered beam of interest for the experiment. Otherwise some Monte carlo choices lead to scattering in non useful regions of $S$, which reduces dramatically the algorithm efficiency, possibly removing neutrons by underestimating intensity.\index{Bugs} An automatic probability table optimization may be activated when setting parameter \verb+auto_qw=1+. This is higly recommanded, but may sometimes miss a few neutrons if the $q,\omega$ beam range has been guessed too small.
+The $S(q,\omega)$ data sets should be as wide a possible in $q$ and $\omega$ range, else scattering conditions will be limited by the reduced data set (specially multiple scattering estimates). On the other hand, when $q$ and $\omega$ ranges are too large, some Monte carlo choices lead to scattering temptatives in non useful regions of $S$, which reduces dramatically the algorithm efficiency, possibly removing neutrons by underestimating intensity.\index{Bugs}
 
-Focusing the $q$ and $\omega$ range, to the one being able to scatter the incoming beam, when using the component does improve significantly the speed of the computation. Additionally, if you restrict the scattering the first order only (parameter order=1), then you may specify the angular vertical extension $d\phi$ of the scattering area to gain optimized focusing. This option does not apply when handling multiple scattering (which emits in $4\pi$ many times before exiting the sample).
+The best settings are:
+\begin{enumerate}
+\item to have the widest $q$ and $\omega$ range for $S(q,\omega)$ data sets
+\item to either set $wmax$ and $qmax$ to the maximum scatterable energy and wavevetors (usually those from the incoming beam)
+\item alternatively request the automatic range optimization by setting parameter \verb+auto_qw=1+. This is \emph{higly recommanded}, but may sometimes miss a few neutrons if the $q,\omega$ beam range has been guessed too small.
+\end{enumerate}
+
+Focusing the $q$ and $\omega$ range (e.g. with 'auto\_qw=1'), to the one being able to scatter the incoming beam, when using the component does improve significantly the speed of the computation. Additionally, if you restrict the scattering the first order only (parameter order=1), then you may specify the angular vertical extension $d\phi$ of the scattering area to gain optimized focusing. This option does not apply when handling multiple scattering (which emits in $4\pi$ many times before exiting the sample).
 
 A bilinear interpolation for the $Q,\omega$ determination is recommanded to improve the accuracy of the scattered intensity, but it may be unactivated when setting parameter \verb+interpolate=0+. This will often result in a discrete $Q,\omega$ sampling.
 
