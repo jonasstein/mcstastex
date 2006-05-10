@@ -20,7 +20,7 @@ The component assumes that the sample has the structure of an isotropic material
 
 \subsection{Neutron interaction with matter}
 
-When a neutron enters a material, according to usual models and letting the absorption aside to begin with, it 'sees' atoms as disks with a surface equal to the total scattering cross section of material $\sigma$. Each coherent and incoherent process is associated with a given probability to hit these cross-sections, according to $\sigma_{coh}$ or $\sigma_{inc}$. We may choose randomly a scattering position along the path, using e.g. an exponential decay probability. If the scattering condition is not satisfied, the neutron is transmitted, and leaves the sample. In any case, the absorption lowers the intensity according to an $e^{-\rho \sigma_{abs}d}$ absorption law along the propagation path $d$. In this process, the neutron is considered to be a particle.
+When a neutron enters a material, according to usual models and letting the absorption aside to begin with, it 'sees' atoms as disks with a surface equal to the total scattering cross section of material $\sigma$. Each coherent and incoherent process is associated with a given probability to hit these cross-sections, according to $\sigma_{coh}$ or $\sigma_{inc}$. We may choose randomly a scattering position along the path, using e.g. an exponential decay probability. If the scattering condition is not satisfied, the neutron is transmitted, and leaves the sample. In any case, the absorption lowers the intensity along the propagation path $d$. In this process, the neutron is considered to be a particle.
 
 Once the neutron 'knows' that something (terrible) is going to occur, it looks for a possible excitation to interact with. Then we turn to the wave description of the neutron, which interacts with the whole volume. The distribution of excitations, from which derives their relative intensity in the scattered beam, is simply the dynamic structure factor - or scattering law - $S(q,\omega)$. According to the definition of the density of states, we may use $g(\omega)$ as the probability law to scatter at a given energy transfer.
 
@@ -101,7 +101,7 @@ These probability distributions $g_\omega$ and $g_q$ implement importance sampli
     \includegraphics[width=0.9\textwidth]{figures/Sqw_sampling.eps}
   \end{center}
 \caption{The probability functions extracted from $S(q,\omega)$. The energy transfer is first selected from the density of states $g_\omega$, then the wavevector is obtained from $g_q(\omega)$.}
-\label{f:isotropic-sqw}
+\label{f:isotropic-sqw-proba}
 \end{figure}
 
 
@@ -161,15 +161,15 @@ is required to account for Eq. (\ref{eq:d2sigma}). The factor $4 \pi$ in Eq. (\r
 
 The next step is to check that conservation laws
 \begin{eqnarray}
-\hbar \omega &=& E_i - E_f = \frac{\hbar^2}{2m}(k_i^2 - k_f^2) \label{eq:q-transfert} \\
-\vec q &=& \vec k_i - \vec k_f \label{eq:w-transfert}
+\hbar \omega &=& E_i - E_f = \frac{\hbar^2}{2m}(k_i^2 - k_f^2) \label{eq:q-transfer} \\
+\vec q &=& \vec k_i - \vec k_f \label{eq:w-transfer}
 \end{eqnarray}
 can be satisfied. These conditions are closely related to the method for selecting the outgoing wave vector direction.
 
 When the final wave vector has to be computed, the quantities $\vec{k}_i$, $\hbar \omega$ and $q = |\vec{q}|$ are known.
-From the energy conservation law Eq. (\ref{eq:w-transfert}), we select randomly one of the two roots, $k_f^+$ and $k_f^-$.
+From the energy conservation law Eq. (\ref{eq:w-transfer}), we select randomly one of the two roots, $k_f^+$ and $k_f^-$.
 The scattered wave vector is noted : $\vec{k}_f = k_f \vec{\hat k}_s$ where $\vec{\hat k}_s$ is a unit vector.\\
-Since we only know the norm of the scattering vector $\vec{q}$, the momentum conservation law Eq. (\ref{eq:q-transfert}) may be expressed as
+Since we only know the norm of the scattering vector $\vec{q}$, the momentum conservation law Eq. (\ref{eq:q-transfer}) may be expressed as
 \begin{align}
 q^2 = |\vec{k}_i -\vec{k}_f|^2 = |k_i^2 + k_f^2 - 2 k_f \vec{k}_i \cdot \vec{\hat k}_s
 \end{align}
@@ -325,11 +325,15 @@ Any line beginning with any character of \verb+#;/%+ is considered to be a comme
 
 The file header may optionally contain parameter settings for the material, as comments, with keywords as in the following example:
 \begin{verbatim}
-  #V_0         0.07
-  #sigma_abs   5
-  #sigma_inc   4.8
-  #sigma_coh   1
-  #Temperature 10
+  #V_0         35   cell volume [Angs^3]
+  #V_rho       0.07 atom number density [at/Angs^3]
+  #sigma_abs   5    absorption cross section [barns]
+  #sigma_inc   4.8  incoherent cross section [barns]
+  #sigma_coh   1    coherent cross section  [barns]
+  #Temperature 10   for detailed balance [K]
+  #density     1    material density [g/cm^3]
+  #weight      18   material molar weight [g/mol]
+  #nb_atoms    6    number of atoms per unit cell
 \end{verbatim}
 Some \verb+sqw+ data files are included in the \MCS\ distribution data directory, and they contain material parameter settings in their header, so that you may use:
 \begin{verbatim}

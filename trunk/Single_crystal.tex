@@ -40,7 +40,7 @@ $\boldsymbol{\tau}$ to consider along with their structure factors
 $|F_{\boldsymbol{\tau}}|^2$. The user must also specify the coordinates
 (in direct space) of the unit cell axes $\boldsymbol{a}$,
 $\boldsymbol{b}$, and $\boldsymbol{c}$, from which the reciprocal lattice
-will be computed.
+will be computed. See section \ref{s:Single_crystal_implement} for file format specifications.
 
 In addition to coherent scattering, {\bf Single\_crystal} also
 handles incoherent scattering amd absorption. The incoherent scattering
@@ -454,6 +454,7 @@ $$
 In most cases, however, only one reflection is possible, whence $\pi=1$.
 
 \subsection{Implementation details}
+\label{s:Single_crystal_implement}
 
 The equations describing {\bf Single\_crystal} are quite
 complex, and consequently the code is fairly sizeable. Most of it is
@@ -482,9 +483,41 @@ the file format compatible with the output from the Crystallographica
 program~\cite{crystallographica}.
 Any line beginning with any character of \verb+#;/%+ is considered to be a
 comment, and lines which can not be read as vectors/matrices are ignored.
+
+The column signification may also explicitely be set in the data file header using any of the lines:
+\begin{verbatim}
+  #column_h <index of the Bragg Qh column>
+  #column_k <index of the Bragg Qk column>
+  #column_l <index of the Bragg Ql column>
+  #column_F2 <index of the squared str. factor '|F|^2' column [b]>
+  #column_F  <index of the structure factor norm '|F|' column>
+\end{verbatim}
+
+Other component parameters may as well be specified in the data file
+header with lines e.g.:
+\begin{verbatim}
+  #sigma_abs <value of Absorption cross section [barns]>
+  #sigma_inc <value of Incoherent cross section [barns]>
+  #Delta_d/d <value of Detla_d/d width for all lines>
+  #lattice_a <value of the a lattice parameter [Angs]>
+  #lattice_a <value of the b lattice parameter [Angs]>
+  #lattice_a <value of the c lattice parameter [Angs]>
+  #lattice_aa <value of the alpha lattice angle [deg]>
+  #lattice_bb <value of the beta  lattice angle [deg]>
+  #lattice_cc <value of the gamma lattice angle [deg]>
+\end{verbatim}
+
 Example data \verb+*.lau+ files are given in directory \verb+MCSTAS/data+.
+
+These files contain an extensive self-documented header defining most the sample parameters, so that only the file name and mosaicity should be given to the component:
+\begin{verbatim}
+  Single_crystal(xwidth=0.01, yheight=0.01, zthick=0.01,
+    mosaic = 5, reflections="YBaCuO.lau")
+\end{verbatim}
+
 Powder files from ICSD/LAZY \cite{icsd_ill} and Fullprof \cite{Fullprof}
-may also be used (see Table \ref{t:powders-data}, page \pageref{t:powders-data}), but as the equivalent $\vec q$ vectors are superposed, not
-all Bragg spots will be simulated, and the intensity will be scaled by the
+may also be used (see Table \ref{t:powders-data}, page \pageref{t:powders-data}).
+We do not recommand to use these as the equivalent $\vec q$ vectors are superposed, not
+all Bragg spots will be simulated, and the intensity will not be scaled by the
 multiplicity for each spot.
 
