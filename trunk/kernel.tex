@@ -600,7 +600,7 @@ in which case the instrument TRACE will jump to the {\it reference} when {\it co
 
 The {\it reference} may be an instance name, as well as PREVIOUS, PREVIOUS($n$), MYSELF, NEXT, and NEXT($n$), where $n$ is the index gap to the target either backward (PREVIOUS) or forward (NEXT), so that PREVIOUS(1) is PREVIOUS and NEXT(1) is NEXT. MYSELF means that the component will be iterated as long as the condition is true. This may be a way to handle multiple scattering.
 
-The jump arrives directly inside the target component, in the local coordinate system. In order to control better the target positions, it is required that, except for looping MYSELF, the target component type should be an \emph{Arm}.
+The jump arrives directly inside the target component, in the local coordinate system (i.e. without applying the AT and ROTATED keywords). In order to control better the target positions, it is required that, except for looping MYSELF, the target component type should be an \emph{Arm}.
 
 There is a more general way to iterate components, which consists in repeating the loop for a given number of times.
 \begin{quote}
@@ -621,12 +621,13 @@ COMPONENT CG_2_Position = Arm()
 
 COMPONENT CG_2  = Guide_gravity(l=L/n, m=1, ...)
   AT (0,0,0) RELATIVE PREVIOUS
+  ROTATED (0, (L/n+d)/R*180/PI, 0) RELATIVE PREVIOUS
   JUMP CG_2_Position ITERATE n
 ...
 COMPONENT CG_Out = Arm() AT (0,0,L/n) RELATIVE PREVIOUS
 \end{verbatim}
 
-Similarly to the \texttt{WHEN} modifier (see section \ref{s:instrdefs-extend-when}), \texttt{JUMP} only applies within the TRACE section of the instrument definition. Other sections (INITIALIZE, SAVE, MCDISPLAY, FINALLY) are exectuted independently of the jump. As a side effetc, the 3D view of the instrument (mcdisplay) will show components as if there were no jump. This means that in the following example, the very long guide 3D view only shows a single guide element.
+Similarly to the \texttt{WHEN} modifier (see section \ref{s:instrdefs-extend-when}), \texttt{JUMP} only applies within the TRACE section of the instrument definition. Other sections (INITIALIZE, SAVE, MCDISPLAY, FINALLY) are exectuted independently of the jump. As a side effetc, the 3D view of the instrument (mcdisplay) will show components as if there was no jump. This means that in the following example, the very long guide 3D view only shows a single guide element.
 
 
 We would like to emphasize the potential errors originating from such jumps. Indeed, imbricating many jumps may lead to situations were it is difficult to understand what is going on. We thus recommand the usage of JUMPs only for experienced and cautious users.\index{Bugs}

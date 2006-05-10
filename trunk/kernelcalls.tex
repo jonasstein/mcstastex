@@ -306,8 +306,8 @@ Details about using these functions are given in the \MCS\ User Manual.
 Available functions to read \emph{a single} vector/matrix are:
 \begin{itemize}
 \item {\bf Table\_Init}(\&$Table$, $rows$, $columns$) returns an allocated
-  Table structure. Use $rows=columns=0$ not to allocate memory.
-  Calls to Table\_Init are optional, since initialization is being
+  Table structure. Use $rows=columns=0$ not to allocate memory and return an empty table.
+  Calls to Table\_Init are \emph{optional}, since initialization is being
   performed by other functions already.
 \item {\bf Table\_Read}(\&$Table$, $filename$, $block$)
   reads numerical block number

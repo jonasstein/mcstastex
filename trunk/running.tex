@@ -152,7 +152,7 @@ will, however, not be released and the modifications are documented on the
 on the web, and new versions may be released quite frequently when it is requested
 by the user community.
 \item The version 1.10 will contain important new features and an
-  updated manual. It will be released in 2006. 
+  updated manual. It will be released in 2006.
 \end{itemize}
 
 \section{Running the instrument compiler}
@@ -413,7 +413,7 @@ It is also possible to create and read \textit{Vitess} and \textit{Tripoli4}
 neutron event files using components
 \begin{itemize}
 \item \verb+Vitess_input+ and \verb+Vitess_output+
-\item \verb+Tripoli_input+ and \verb+Tripoli_output+ 
+\item \verb+Tripoli_input+ and \verb+Tripoli_output+
 \end{itemize}\index{Vitess} \index{Tripoli}
 
 Additionally, adding the \texttt{raw} keyword to the FORMAT will produce raw $[N, p, p^2]$ data sets instead of $[N, p, \sigma]$ (see Section \ref{s:staterror}). The former representation is fully additive, and thus enables to add results from separate simulations (e.g. when using a computer Grid).
@@ -523,7 +523,7 @@ When choosing the HTML format, the simulation results are saved as a web page, w
       {\it Tripoli} &  & \hbox{Tripoli 4 neutron events file
       format.} \hbox{Use
         \verb+Virtual_tripoli4_input+/\verb+Virtual_tripoli4_output+}
-      components. \\ 
+      components. \\
       {\it Vitess} &  & \hbox{Vitess neutron events file format.} \hbox{Use \verb+Vitess_input+/\verb+Vitess_output+ components. }\\
       {\it McStas events} & & \hbox{McStas event files in text or binary
       format.} \hbox{Use \verb+Virtual_input+/\verb+Virtual_output+ components.} \\
@@ -1157,7 +1157,7 @@ The front-end will open a window displaying projections of the 4-dimensional
 resolution function $R(\boldsymbol{Q}, \omega)$. The covariance matrix of the
 resolution function, the resolution along each projection axis and the resulting
 resolution matrix are also shown, as well as the instrument name and parameters
-used for the simulation. 
+used for the simulation.
 
 To use the \verb+mcresplot+ front-end, the programs Perl, PGPLOT, PgPerl,
 and PDL must all be properly installed on the system.
@@ -1210,6 +1210,8 @@ Additionally, a file \verb'McStas_compo.tcl' is created that contains (most of) 
 The component Virtual\_input transfers all neutron parameters to the \MCS\ definition of the co-ordinate system and the units used. (Of course Virtual\_output transfers it back.) This means that 'Compo' works with the McStas definition of co-ordinate system and units, while it is used as a VITESS module. Be careful with axis labeling.
 
 The original parameters of the component and its position have to be given. The origin of this shift is the centre of the end of the previous module, (as it is always the case in VITESS).
+
+It is important to notice that, as VITESS uses the standard output stream (\verb+stdout+) to send neutron events, all information printed to screen must use the \emph{error} stream \verb+stderr+, so that \emph{all} \verb+printf(...+ and \verb+fprintf(stdout, ...+ occurencies should be changed manually into \verb+fprintf(stderr, ...+.
 
 To use the \verb+mcstas2vitess+ front-end, the program Perl should be available.
 
