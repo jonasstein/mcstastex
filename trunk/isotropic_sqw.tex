@@ -114,16 +114,34 @@ The method used is similar to the one adopted in the \verb+Single_crystal+ compo
 We first compute the absorption and total cross-section
 \begin{eqnarray}
 \sigma_{abs} &=& \sigma_{abs}^{{\rm 2200}}\frac{2200 m/s}{v} \\
-\sigma_{tot} &=& \sigma_{abs} + \sigma_{coh} + \sigma_{inc}
+\hat{\sigma}_{tot} &=& \sigma_{abs} + \hat{\sigma}_{coh} + \hat{\sigma}_{inc}
 \end{eqnarray}
 as well as the neutron trajectory intersection with the geometry. This provides the total path length in the sample $d_{out}$ to the exit.
-Defining the linear attenuation $\mu = \rho\sigma_{tot}$, the probability that the neutron scatters (or be absorbed) along path $d_{out}$ is $e^{-\mu d_{out}}$. If this condition is not satisfied, the neutron leaves the sample unchanged.
+
+Defining the linear attenuation $\mu = \rho\hat{\sigma}_{tot}$, the probability that the neutron scatters (or be absorbed) along path $d_{out}$ is $e^{-\mu d_{out}}$. If this condition is not satisfied, the neutron leaves the sample unchanged.
+
 In the other case, we adjust the neutron weight by a factor
 \begin{equation}
 \pi_1 = \frac{\sigma_{coh} + \sigma_{inc}}{\sigma_{tot}}
 \end{equation}
 to account for the portion of absorbed neutrons along the path.
-Additionally, we choose randomly the type of interaction with fractions $\sigma_{coh}$ and $\sigma_{inc}$.
+
+It is important to understand that the $\hat{\sigma}_{coh}$ and $\hat{\sigma}_{inc}$ cross sections used here are \emph{not} the usual tabulated values $\sigma_{coh}$ and $\sigma_{inc}$ (see \cite{ILLblue}) but, following Sears \cite{Sears75}, is the \emph{effective} cross section on the available solid angle, which defines the $q$ and $\omega$ range from the incoming neutron energies:
+\begin{equation}
+\hat{\sigma} = \iint \frac{d^2 \sigma}{d\Omega dE_f} d\Omega dE_f
+\end{equation}
+In order to use Eq. (\ref{eq:d2sigma}) in the $q,\omega$ space where the Monte Carlo sampling is performed, a variable change must be inserted, so that using conservation law Eq. (\ref{eq:q-transfer}) and the solid angle relation $\Omega=2\pi(1-cos \theta)$, we draw:
+\begin{eqnarray}\label{eq:dqdw}
+\frac{d\Omega}{d\theta} &=& 2\pi sin \theta \\
+\frac{dq}{d\theta} &=& \frac{k_i k_f sin \theta}{q}
+\end{eqnarray}
+Then we come to the effective cross section definition:
+\begin{equation}
+\hat{\sigma} = \sigma \iint \frac{S(q,\omega) q}{2 k_i^2} dq d\omega
+\end{equation}
+which in turn determines the total scattered intensity. This quantity is usually lower than the tabulated value $\sigma$, which means that most neutronists over-estimate the scattered intensity and multiple scattering.
+
+Finally, we choose randomly the type of interaction with fractions $\sigma_{coh}$ and $\sigma_{inc}$.
 
 \subsubsection{Choosing the interaction position}
 

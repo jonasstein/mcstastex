@@ -458,12 +458,6 @@ When choosing the HTML format, the simulation results are saved as a web page, w
         & Create a new directory {\it dir\/} and put all data files in
       that directory. \\
       \hline
-      \texttt{-f {\it file}} \my \texttt{--file={\it file}}
-        & Write all data into a single file {\it file}. Avoid when using binary formats. \\
-      \hline
-      \texttt{-a} \my \texttt{--data-only}
-        & Do not put any headers in the data files. \\
-      \hline
       \texttt{-h} \my \texttt{--help}
         & Show a short help message with the options accepted, available formats
         and the names of the parameters of the instrument. \\
@@ -488,16 +482,61 @@ When choosing the HTML format, the simulation results are saved as a web page, w
       \texttt{--format={\it FORMAT}}
         & This option sets the file format for result simulation and data files. \\
       \hline
-      \texttt{--format\_data= {\it FORMAT}}
-        & This option sets the file format for result data files from monitors. This enables to have simulation files in one format (e.g. HTML), and monitor files in an other format (e.g. VRML).\\
+      \texttt{-N {\it STEPS}}
+        & Divide simulation into STEPS, varying parameters within given ranges 'min,max'. \\
       \hline
-      \texttt{{\it param}{\texttt =}{\it value}}
+      \texttt{{\it param}{\texttt =}{\it value} \my {\it min,max}}
         & Set the value of an instrument parameter, rather than having
-        to prompt for each one. \\
+        to prompt for each one. Scans ranges are specified as 'min,max'.\\
       \hline
     \end{tabular}
     \caption{Options accepted by \MCS\ simulations. For options
       specific to MPI and parallel computing, see section \ref{s:run-mpi}.}
+    \label{f:simoptions}
+    }
+  \end{center}
+\end{table}
+
+\begin{table}
+  \begin{center}
+    {\let\my=\\
+    \begin{tabular}{|p{0.24\textwidth}|p{0.7\textwidth}|}
+      \hline
+      \texttt{-f {\it file}} \my \texttt{--file={\it file}}
+        & Write all data into a single file {\it file}. Avoid when using binary formats. \\
+      \hline
+      \texttt{-a} \my \texttt{--data-only}
+        & Do not put any headers in the data files. \\
+      \hline
+      \texttt{--format\_data={\it FORMAT}}
+        & This option sets the file format for result data files from monitors. This enables to have simulation files in one format (e.g. HTML), and monitor files in an other format (e.g. VRML).\\
+      \hline
+      \texttt{--mpi={\it NB\_CPU}}
+        & This option will distribute the simulation over NB\_CPU node (requires MPI to be installed). Performances are ideal.\\
+      \hline
+      \texttt{--threads={\it NB\_CPU}}
+        & This option will distribute the simulation over NB\_CPU threads (requires multi threading to be available). Performances are low.\\
+      \hline
+      \texttt{--machines={\it MACHINES}}
+        & Specify a list of distant machines/nodes to be used for MPI and grid clustering. Default is to use local SMP cluster.\\
+      \hline
+      \texttt{--optim}
+        & Run in optimization mode to find best parameters in order to maximize all monitor integral values. Parameters to be varied are given just like scans (min,max).\\
+      \hline
+      \texttt{--optim={\it COMP}}
+        & Same as \verb+--optim+ but for specified monitors. This option may be used more than once.\\
+      \hline
+      \texttt{--optim-prec={\it ACCURACY}}
+        & Sets accuracy criteria to end parameter optimization (default is 10$^{-3}$).\\
+      \hline
+      \texttt{--test}
+        & Run \MCS\ self test.\\
+      \hline
+      \texttt{-c} \my \texttt{--force-compile}
+        & Force to recompile the instrument.\\
+      \hline
+    \end{tabular}
+    \caption{Additional options accepted by \MCS\ simulations.}
     \label{f:simoptions}
     }
   \end{center}
@@ -594,7 +633,7 @@ data before ending. Most errors appear when using a newly written component, in 
 There are various ways to speedup simulations
 \begin{itemize}
 \item Optimize the compilation of the instrument, as explained in section~\ref{s:compile}.
-\item Execute the simulation in parallel on a computer grid or a cluster (with MPI) as explained in section~\ref{s:run-mpi}.
+\item Execute the simulation in parallel on a computer grid or a cluster (with MPI or multi-threading) as explained in section~\ref{s:run-mpi}.
 \item Divide simulation into parts using a file for saving or generating neutron
       events. This way, a guide may be simulated only once, saving the neutron events
       getting out from it as a file, which is being read quickly by the second simulation
@@ -608,9 +647,27 @@ There are various ways to speedup simulations
 \item Complex components usually take into account additional small effects in a simulation,
       but are much longer to execute. Thus, simple components should be prefered
       whenever possible, at least to start with.
+\item Some users may wish to optimize some instrument \emph{parameters} (find best configuration to obtain maximum flux). See below.
 \end{itemize}
 
 Additionally, the user may wish to optimize the parameters of a simulation (e.g. find the optimal curvature of a monochromator, or the best geometry of a given component).
+
+The choice of the optimization routine, of the simulation quality
+value to optimize, the initial parameter guess and the simulation
+length all have a large influence on the results.
+Be cautious and wise when interpreting the optimal guess.
+
+\subsubsection{Using the Simplex method}
+
+The \MCS\ package comes with a Simplex optimization method to find best instrument parameters in order to maximize all or some specified monitor integrated values. It uses the Downhill Simpex Method in Multidimensions (Nelder and Mead) which is a geometric optimization method somewhat similar to genetic algorithms. It is not as fast as the gradient method, but is much more robust.
+
+From \verb+mcgui+, one should choose the 'Optimization' execution mode (instead of the Simulation or Trace mode). Then speficy the instrument parameters to optimize by indicating their variation range 'min,max' (e.g. Lambda=1,4) just like parameter scans. Finally, run the simulation. Best configuration is then printed at the end of the process. Your may ask to maximize only given monitors (instead of all) by selecting their component names in the lower lists in the Run Dialog (up to 3).
+
+When using \verb+mcrun+, the optimization mode is set by using the \verb+--optim+ option or a list of monitors to maximize with as many \verb+--optim=COMP+ as required. The optimization accuracy criteria may be changed with the \verb+--optim-prec=accuracy+ option.
+
+If you would like to maximize the flux at a given monitor, with some divergence constrains, you should for instance simply add a divergence collimator before the monitor.
+
+\subsubsection{Using custom optimization routines}
 The user should write a function script or a program that
 \begin{itemize}
 \item inputs the simulation parameters, which are usually numerical values such as $TT$ in the \verb+prisma2+ instrument from the \verb+examples+ directory of the package.
@@ -639,11 +696,6 @@ Then a numerical optimization should be available, such as those provided with M
     matlab> TT = fminsearch('instr_value', -25)
 \end{verbatim}
 will determine the best value of TT, starting from -25 estimate, in order to minimize function \verb+instr_value+, and thus maximize the mean detector counts.
-
-The choice of the optimization routine, of the simulation quality
-value to optimize, the initial parameter guess and the simulation
-length all have a large influence on the results.
-Be cautious and wise when interpreting the optimal guess.
 
 \section{Using simulation front-ends}
 \label{s:frontends}
@@ -1350,15 +1402,16 @@ Parallelizing a computation is possible when dependencies between
   other simulated neutron rays. Therefore each neutron ray can be simulated
   independently on a set of computer.
 
-\MCS\ provides two methods in order to distribute computations on many computers.
+\MCS\ provides three methods in order to distribute computations on many computers.
 \begin{itemize}
 \item when scanning instrument parameters (using \texttt{mcrun --multi -N}),
   it is possible to distribute each scan step on a list of computers.
 \item when using an homogeneous computer cluster, each simulation (including scan
-  steps) may be computed in parallel using MPI (using \texttt{mcrun --mpi=Nb\_Nodes}).
+  steps) may be computed in parallel using MPI (using \texttt{mcrun --mpi=Nb\_Nodes}). We highly recommand this method which shows excellent performances (but require to install MPI).
+\item when using SMP machines (multi processor machines) \MCS\ may distribute the simulations among CPU's using multi-threading mechanism. Eventhough most systems now support multi-threading (i.e. do not require specific installation), the performances are not as good as with MPI.
 \end{itemize}
 
-\subsection{Distribute mcrun scans (grid) - Unix only}
+\subsection{Distribute mcrun scans (ssh grid) - Unix only}
   This is an experimental option to
   distribute scan steps on a set of machines using \emph{ssh}
   connections. To use this option you will need
@@ -1403,8 +1456,15 @@ neutrons simulated. As a result, \MCS\ generates two kinds of data sets:
   is performed using the final $p_0$, $p_1$, and $p_2$ arrays (see Section \ref{s:staterror}).
 \item event lists: the merge of events is done by concatenation
 \end{itemize}
-The MPI support requires to have MPICH, or alternatively LAM-MPI, installed on a set of nodes.
-This usually also requires to setup properly the \texttt{ssh} connections and keys.
+The MPI support requires to have MPICH (recommanded), or alternatively LAM-MPI, installed on a set of nodes.
+This usually also requires to setup properly the \texttt{ssh} connections and keys. This last step is not required when running on a local SMP machine.
+
+There are 3 methods for using MPI
+\begin{itemize}
+\item Basic usage requires to compile and run the simulation by hand (mpicc, mpirun). This should be used when running LAM-MPI.
+\item A much simpler way is to use \verb+mcrun -c --mpi=NB_CPU ...+ which will recompile and run MPICH.
+\item The McGUI interface supports MPICH from within the Run Dialog.
+\end{itemize}
 
 \subsubsection{MPI Basic usage}
 
@@ -1447,7 +1507,7 @@ installed), just compile the C-source file generated by \verb'mcstas'
   ...
 \end{verbatim}
 
-\subsection{McRun script with MPI support}
+\subsection{McRun script with MPI support (mpich)}
 
 The \verb'mcrun' script has been adapted to use MPICH implementation
 of MPI. Two new options have been added:
@@ -1457,7 +1517,7 @@ of MPI. Two new options have been added:
 \item \verb'--machines=<file>': defines a text file where the
   nodes which are to be used for parallel computation are listed; by
   default, \verb'mcrun' will look at \verb'$HOME/.mcstas-hosts' and
-  \verb'MCSTAS/tools/perl/mcstas-hosts'.
+  \verb'MCSTAS/tools/perl/mcstas-hosts'. When used on a single SMP machine (multi-cpu), this option may be omitted.
 \end{itemize}
 
 Suppose you have four machines named \verb'node1' to \verb'node4'.
@@ -1541,5 +1601,11 @@ every node.
 \item MPI must be correctly configured: if using \verb'ssh', you
   have to set ssh keys to avoid use of passwords; if
   using \verb'rsh', you have to set a \verb'.rhosts' file
+\item When reading external data files during the TRACE (specially virtual sources) all nodes might access the same data, potentially producing wrong results. We do not recommand using MPI when reading virtual sources.
 \end{itemize}
 
+\subsection{Parallel computing (multi-threading)}
+
+Multi-threading is under experimentation. It has been implemented when using \verb+mcrun -c --threads=NB_CPU ...+ and is also available from McGUI Run Dialog.
+
+The method is based on a parallel execution of threads, which require mutexes in order to set rules for global (shared) memory accesses. This introduces quite large overhead and reduces efficiency. We thus do NOT recommand to use it. Further developments are under way.
