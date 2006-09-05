@@ -64,7 +64,7 @@ The static pair correlation function $g(r)$ is the probability to find a neighbo
 \end{equation}
 This means that the integrated oscillations (around 1) of $S_{coh}(q)$ are directly related to the density of the material $\rho$.
 In practice, the function $S(q)$ is often known on a restricted range $q \in [0, q_{max} ]$, due to either limitations in the sample molecular dynamics simulation, or the measurement itself.
-In first approximation we consider that Eq. (\ref{eq:sq-nomr1}) can be applied in this range, i.e. we neglect the large $q$ contributions providing $S(q)-1$ converges faster than $1/q^2$. This is usually true after 2-3 oscillations of $S(q)$ in liquids.
+In first approximation we consider that Eq. (\ref{eq:sq-nomr1}) can be applied in this range, i.e. we neglect the large $q$ contributions provided $S(q)-1$ converges faster than $1/q^2$. This is usually true after 2-3 oscillations of $S(q)$ in liquids.
 Then, in isotropic liquid-like materials, Eq. (\ref{eq:sq-nomr1}) provides a normalisation sum-rule for $S$.
 
 We may measure, e.g. with time-of-flight instruments, the \emph{density of states} $g_{\omega}(\omega)$  which is the fraction of modes whose energy lie between $\omega$ and $\omega+d\omega$ \cite{lovesey84}
@@ -111,7 +111,23 @@ These probability distributions $g_\omega$ and $g_q$ implement importance sampli
 
 The method used is similar to the one adopted in the \verb+Single_crystal+ component (section \ref{s:Single_crystal}).
 
-We first compute the absorption and total cross-section
+In order to estimate the probability of interaction of a neutron through the sample, using the linear attenuation $\mu = \rho \sigma$, we need the scattering cross sections for the scattering range.
+It is important to understand that these cross sections $\hat{\sigma}_{coh}$ and $\hat{\sigma}_{inc}$ to be used here are \emph{not} the usual tabulated values $\sigma_{coh}$ and $\sigma_{inc}$ (see \cite{ILLblue}) but, following Sears \cite{Sears75}, are the \emph{effective} cross sections on the available solid angle, which defines the $q$ and $\omega$ range from the incoming neutron energies:
+\begin{equation}
+\hat{\sigma} = \iint \frac{d^2 \sigma}{d\Omega dE_f} d\Omega dE_f
+\end{equation}
+In order to use Eq. (\ref{eq:d2sigma}) in the $q,\omega$ space where the Monte Carlo integration is performed, a variable change must be inserted, so that using conservation law Eq. (\ref{eq:q-transfer}) and the solid angle relation $\Omega=2\pi(1-cos \theta)$, we draw:
+\begin{eqnarray}\label{eq:dqdw}
+\frac{d\Omega}{d\theta} &=& 2\pi sin \theta \\
+\frac{dq}{d\theta} &=& \frac{k_i k_f sin \theta}{q}
+\end{eqnarray}
+Then we come to the effective cross section definition:
+\begin{equation}
+\hat{\sigma} = \sigma \iint \frac{S(q,\omega) q}{2 k_i^2} dq d\omega
+\end{equation}
+which in turn determines the total scattered intensity. This quantity is usually lower than the tabulated value $\sigma$, which means that most neutronists over-estimate the scattered intensity and multiple scattering.
+
+Then, we compute the absorption and total cross-section
 \begin{eqnarray}
 \sigma_{abs} &=& \sigma_{abs}^{{\rm 2200}}\frac{2200 m/s}{v} \\
 \hat{\sigma}_{tot} &=& \sigma_{abs} + \hat{\sigma}_{coh} + \hat{\sigma}_{inc}
@@ -122,24 +138,9 @@ Defining the linear attenuation $\mu = \rho\hat{\sigma}_{tot}$, the probability 
 
 In the other case, we adjust the neutron weight by a factor
 \begin{equation}
-\pi_1 = \frac{\sigma_{coh} + \sigma_{inc}}{\sigma_{tot}}
+\pi_1 = \frac{\sigma_{coh} + \sigma_{inc}}{\hat{\sigma}_{tot}}
 \end{equation}
 to account for the portion of absorbed neutrons along the path.
-
-It is important to understand that the $\hat{\sigma}_{coh}$ and $\hat{\sigma}_{inc}$ cross sections used here are \emph{not} the usual tabulated values $\sigma_{coh}$ and $\sigma_{inc}$ (see \cite{ILLblue}) but, following Sears \cite{Sears75}, is the \emph{effective} cross section on the available solid angle, which defines the $q$ and $\omega$ range from the incoming neutron energies:
-\begin{equation}
-\hat{\sigma} = \iint \frac{d^2 \sigma}{d\Omega dE_f} d\Omega dE_f
-\end{equation}
-In order to use Eq. (\ref{eq:d2sigma}) in the $q,\omega$ space where the Monte Carlo sampling is performed, a variable change must be inserted, so that using conservation law Eq. (\ref{eq:q-transfer}) and the solid angle relation $\Omega=2\pi(1-cos \theta)$, we draw:
-\begin{eqnarray}\label{eq:dqdw}
-\frac{d\Omega}{d\theta} &=& 2\pi sin \theta \\
-\frac{dq}{d\theta} &=& \frac{k_i k_f sin \theta}{q}
-\end{eqnarray}
-Then we come to the effective cross section definition:
-\begin{equation}
-\hat{\sigma} = \sigma \iint \frac{S(q,\omega) q}{2 k_i^2} dq d\omega
-\end{equation}
-which in turn determines the total scattered intensity. This quantity is usually lower than the tabulated value $\sigma$, which means that most neutronists over-estimate the scattered intensity and multiple scattering.
 
 Finally, we choose randomly the type of interaction with fractions $\sigma_{coh}$ and $\sigma_{inc}$.
 
@@ -169,18 +170,12 @@ S(q, \omega) = |S|.g_\omega(\omega).g_q(q \mid \omega) .
 \end{equation}
 Then a selection between energy gain and loss is done with the detailed balance ratio $e^{-\hbar \omega / k_B T}$. In the case of Stokes processes, neutron can not loose more than its own energy into the sample dynamics, so that $\omega < E_i$. This condition breaks the symmetry between up-scattering and down-scattering.
 
-Finally, a statistical weightening by a factor:
-\begin{equation}
-\pi_2 = \frac{k_f}{k_i}
-\end{equation}
-is required to account for Eq. (\ref{eq:d2sigma}). The factor $4 \pi$ in Eq. (\ref{eq:d2sigma}) originates from the integration of events over space, and is thus implicitly included in the Monte Carlo choice of the scattering direction.
-
 \subsubsection{Choosing the scattered wave vector}
 
 The next step is to check that conservation laws
 \begin{eqnarray}
-\hbar \omega &=& E_i - E_f = \frac{\hbar^2}{2m}(k_i^2 - k_f^2) \label{eq:q-transfer} \\
-\vec q &=& \vec k_i - \vec k_f \label{eq:w-transfer}
+\hbar \omega &=& E_i - E_f = \frac{\hbar^2}{2m}(k_i^2 - k_f^2) \label{eq:w-transfer} \\
+\vec q &=& \vec k_i - \vec k_f \label{eq:q-transfer}
 \end{eqnarray}
 can be satisfied. These conditions are closely related to the method for selecting the outgoing wave vector direction.
 
@@ -188,8 +183,8 @@ When the final wave vector has to be computed, the quantities $\vec{k}_i$, $\hba
 From the energy conservation law Eq. (\ref{eq:w-transfer}), we select randomly one of the two roots, $k_f^+$ and $k_f^-$.
 The scattered wave vector is noted : $\vec{k}_f = k_f \vec{\hat k}_s$ where $\vec{\hat k}_s$ is a unit vector.\\
 Since we only know the norm of the scattering vector $\vec{q}$, the momentum conservation law Eq. (\ref{eq:q-transfer}) may be expressed as
-\begin{align}
-q^2 = |\vec{k}_i -\vec{k}_f|^2 = |k_i^2 + k_f^2 - 2 k_f \vec{k}_i \cdot \vec{\hat k}_s
+\begin{align} \label{eq:q2-transfer}
+q^2 = |\vec{k}_i -\vec{k}_f|^2 = |k_i^2| + |k_f^2| - 2 k_f \vec{k}_i \cdot \vec{\hat k}_s
 \end{align}
 where $\vec{k}_i \cdot \vec{\hat k}_s$ stands for the dot product of the vectors.\\
 Now, we should solve :
