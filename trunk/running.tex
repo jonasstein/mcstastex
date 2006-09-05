@@ -1278,6 +1278,22 @@ If you have been running a \MCS\ simulation with Scilab output, but finally plan
 \end{quote}
 to simply translate one file format to the other. This works only for text files of course. The binary files need not be translated.
 
+\subsection{Translating and merging \MCS\ results files (all formats)}
+\label{s:mcformat}
+\index{Tools!mccformat|textbf}
+\index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!Octave} \index{Tools!IDL} \index{Tools!HTML}
+\index{Grid computing}
+
+If you have been running a \MCS\ simulation with a given text format output, but finally plan to look at the results with an other plotter (e.g. you ran simulation with PGPLOT output and want to view it using Matlab), you may use
+\begin{quote}
+  \texttt{mcformat {\it file \my dir} -d {\it target\_dir} --format=TARGET\_FORMAT}
+\end{quote}
+to translate files into format FORMAT. When given a directory, the translation works recursively. The conversion works only for text files. Some problems may be found when translating from HTML/VRML data files, or from binary files.
+
+An additional \verb+--merge+ options may be used to merge similar files, e.g. obtained from grid systems.
+
+The analysis of data files works by searching keywords inside data files (e.g. 'Source' for the source instrument description file). If some filenames or component names match these keywords (e.g. using a file 'Source.psd'), the extracted information may be wrong.\index{Bugs}
+
 \section{Analyzing and visualizing the simulation results}
 \label{s:analyze}
 \index{Data format}
