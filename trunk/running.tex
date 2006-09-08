@@ -1278,7 +1278,7 @@ If you have been running a \MCS\ simulation with Scilab output, but finally plan
 \end{quote}
 to simply translate one file format to the other. This works only for text files of course. The binary files need not be translated.
 
-\subsection{Translating and merging \MCS\ results files (all formats)}
+\subsection{Translating and merging \MCS\ results files (all text formats)}
 \label{s:mcformat}
 \index{Tools!mccformat|textbf}
 \index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!Octave} \index{Tools!IDL} \index{Tools!HTML}
@@ -1286,7 +1286,7 @@ to simply translate one file format to the other. This works only for text files
 
 If you have been running a \MCS\ simulation with a given text format output, but finally plan to look at the results with an other plotter (e.g. you ran simulation with PGPLOT output and want to view it using Matlab), you may use
 \begin{quote}
-  \texttt{mcformat {\it file \my dir} -d {\it target\_dir} --format=TARGET\_FORMAT}
+  \texttt{mcformat {\it file | dir} -d {\it target\_dir} --format=TARGET\_FORMAT}
 \end{quote}
 to translate files into format FORMAT. When given a directory, the translation works recursively. The conversion works only for text files. Some problems may be found when translating from HTML/VRML data files, or from binary files.
 
