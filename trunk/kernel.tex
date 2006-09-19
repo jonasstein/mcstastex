@@ -1118,6 +1118,15 @@ The {\tt line} command takes the following form:
 It draws a line between the points $(x_1, y_1, z_1)$ and $(x_2, y_2,
 z_2)$.
 
+\paragraph{The {\tt dashed\_line} command}
+
+The {\tt dashed\_line} command takes the following form:
+\begin{quote}
+  \texttt{dashed\_line($x_1$, $y_1$, $z_1$, $x_2$, $y_2$, $z_2$, $n$)}
+\end{quote}
+It draws a dashed line between the points $(x_1, y_1, z_1)$ and $(x_2, y_2,
+z_2)$ with $n$ equidistant spaces.
+
 
 \paragraph{The {\tt multiline} command}
 
@@ -1141,6 +1150,30 @@ written as
     multiline(3, (double)x, (double)y, 0.0, ...)
 \end{verbatim}
 
+\paragraph{The {\tt rectangle} command}
+
+The {\tt rectangle} command takes the following form:
+\begin{quote}
+  \texttt{rectangle({\it plane}, $x$, $y$, $z$, {\it width}, {\it height})}
+\end{quote}
+Here {\it plane} should be either \verb+"xy"+, \verb+"xz"+, or
+\verb+"yz"+. The command draws a rectangle in the specified plane with
+the center at $(x, y, z)$ and the size {\it width} $\times$ {\it
+height}. Depending on {\it plane} the width and height are defined as:\\
+\begin{tabular} {ccc}
+  {\it plane} & {\it width} & {\it height} \\
+  xy & x & y \\
+  xz & x & z \\
+  yz & y & z \\
+ \end{tabular} 
+
+\paragraph{The {\tt box} command}
+
+The {\tt box} command takes the following form:
+\begin{quote}
+  \texttt{box($x$, $y$, $z$, {\it xwidth}, {\it yheight}), {\it zlength})}
+\end{quote}
+The command draws a box with the center at $(x, y, z)$ and the size {\it xwidth} $\times$ {\it yheight} $\times$ {\it zlength}.
 
 \paragraph{The {\tt circle} command}
 
