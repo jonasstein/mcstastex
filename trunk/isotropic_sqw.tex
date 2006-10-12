@@ -118,12 +118,12 @@ It is important to understand that these cross sections $\hat{\sigma}_{coh}$ and
 \end{equation}
 In order to use Eq. (\ref{eq:d2sigma}) in the $q,\omega$ space where the Monte Carlo integration is performed, a variable change must be inserted, so that using conservation law Eq. (\ref{eq:q-transfer}) and the solid angle relation $\Omega=2\pi(1-cos \theta)$, we draw:
 \begin{eqnarray}\label{eq:dqdw}
-\frac{d\Omega}{d\theta} &=& 2\pi sin \theta \\
-\frac{dq}{d\theta} &=& \frac{k_i k_f sin \theta}{q}
+\frac{d\Omega}{d\theta} &=& - 2\pi sin \theta \\
+\frac{dq}{d\theta} &=& - \frac{k_i k_f sin \theta}{q}
 \end{eqnarray}
 Then we come to the effective cross section definition:
 \begin{equation}
-\hat{\sigma} = \sigma \iint \frac{S(q,\omega) q}{2 k_i^2} dq d\omega
+\hat{\sigma} = \sigma \iint \frac{S(q,\omega) q}{2 k_i^2} dq d\omega \simeq \frac{\sigma}{2 k_i^2} \int_0^{2k_i} q S(q) dq
 \end{equation}
 which in turn determines the total scattered intensity. This quantity is usually lower than the tabulated value $\sigma$, which means that most neutronists over-estimate the scattered intensity and multiple scattering.
 
@@ -287,7 +287,7 @@ radius\_o & [m] & dimensions of a cylinder shaped geometry  \\
 radius\_i & [m] & sphere geometry if radius\_i=0  \\
 thickness& [m] & thickness of hollow shape  \\
     \hline
-auto\_qw  & boolean & Automatically optimise probability tables during simulation (recommended)  \\
+auto\_qw  & boolean & Automatically optimise probability tables during simulation  \\
 interpolate & boolean & Smooth $S(q,\omega)$ table (recommended) \\
 order     & integer & Limit multiple scattering up to given order. 0 means no limitations  \\
 concentric& boolean & Enables to 'enter' inside concentric hollow geometries  \\

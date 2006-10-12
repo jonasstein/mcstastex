@@ -85,7 +85,7 @@ up a dialog window. Type a value for the ``ROT'' parameter ({\em e.g.}
 90), check the ``Plot results'' option, and select ``Start''. The
 simulation will run, and when it finishes after a while the results will
 be plotted in a window. Depending on your chosen plotting backend, the
-presented graphics will resemble one of those shown in figure \ref{fig:mcplot_figs}.
+presented graphics will resemble one of those shown in figure \ref{fig:mcplot_figs}.\index{Tools!mcplot}
 \begin{figure}[htb!]
   \begin{center}
     \includegraphics[angle=-90,width=0.49\textwidth]{figures/mcplot_PGPLOT.ps}
@@ -101,7 +101,7 @@ window menus to control these. Features are quite self
 explanatory. For other options, execute \verb+mcplot --help+
 (\verb+mcplot.pl --help+ on windows) to get help.
 
-
+\index{Tools!PGPLOT} \index{Tools!Scilab} \index{Tools!Matlab}
 To visualize or debug the simulation graphically, repeat the
 steps but check the ``Trace'' option instead of the ``Simulate'' option.
 A window will pop up showing a sketch of the instrument.
@@ -394,11 +394,11 @@ Data files contain header lines with information about the
 simulation from which they originate. In case the data must be analyzed
 with programs that cannot read files with such headers, they may be
 turned off using the \verb+--data-only+ or \verb+-a+ option.
-\index{Data format}
+\index{Data formats}
 
 The format of the output files from \MCS\ simulations is described in
 more detail in section~\ref{s:analyze}. It may be chosen either with \verb+--format=FORMAT+ for each simulation or globally by setting the MCSTAS\_FORMAT environment variable. \index{Environment variable!MCSTAS\_FORMAT}
-The available format list is obtained using the \verb+name.out --help+ option, and shown in Table~\ref{t:formatoptions}.
+The available format list is obtained using the \verb+name.out --help+ option, and shown in Table~\ref{t:formatoptions}. \index{Tools!PGPLOT} \index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!VRML/OpenGL} \index{Tools!HTML} \index{Data formats}
 \MCS\ can presently generate many formats, including the original \MCS /PGPLOT and the new Scilab and Matlab formats. All formats, except the \MCS /PGPLOT, may eventually support binary files, which are much smaller and faster to import, but are platform dependent. The simulation data file extensions are appended automatically, depending on the format, if the file names do not contain any. Binary files are particularly recommanded for the IDL format (e.g. \verb+--format=IDL_binary+), and the Matlab and Scilab format when handling large detectors (e.g. more than 50x50 bins). For example:
 \begin{verbatim}
     ./vanadium_example.out ROT=90 --format="Scilab_binary"
@@ -436,9 +436,9 @@ and for IDL
     idl> s=mcstas()
     idl> s=mcstas(/plot)
 \end{verbatim} \index{Tools!IDL}
-See section~\ref{s:mcplot} for an other way of plotting simulation results using the \verb+mcplot+ front-end. \index{Tools!mcplot}
+See section~\ref{s:mcplot} for an other way of plotting simulation results using the \verb+mcplot+ front-end.\index{Tools!mcplot} \index{Tools!mcplot}
 
-When choosing the HTML format, the simulation results are saved as a web page, whereas the monitor data files are saved as VRML files, displayed within the web page.
+When choosing the HTML format, the simulation results are saved as a web page, whereas the monitor data files are saved as VRML files, displayed within the web page.\index{Tools!VRML/openGL}
 
 \begin{table}
   \begin{center}
@@ -542,7 +542,7 @@ When choosing the HTML format, the simulation results are saved as a web page, w
   \end{center}
 \end{table}
 
-\begin{table}
+\begin{table} \index{Data formats}
   \begin{center}
     {\let\my=\\
     \begin{tabular}{|p{0.24\textwidth}|c|p{0.7\textwidth}|}
@@ -557,12 +557,12 @@ When choosing the HTML format, the simulation results are saved as a web page, w
       \texttt{IDL} & .pro & IDL format. {\em Must} be used with -f option. \\
       \texttt{IDL\_binary} & & IDL format with external binary files (may be used with -d option). (-a option implicitly set) \\
       \texttt{XML} & .xml & XML/NeXus format (may be used with -f and -d options). \\
-      \texttt{HTML} & .html & HTML format (generates a web page, may be used with -f and -d options). Data files are saved as VRML objects. \\
+      \texttt{HTML} & .html & HTML format (generates a web page, may be used with -f and -d options). Data files are saved as VRML objects (openGL). \\
       \texttt{VRML} & .wrl & Virtual Reality file format for data files. Simulation files are not saved properly, and the HTML format should be used preferably. \\
-      {\it Tripoli} &  & \hbox{Tripoli 4 neutron events file
-      format.} \hbox{Use
-        \verb+Virtual_tripoli4_input+/\verb+Virtual_tripoli4_output+}
-      components. \\
+      {\it Tripoli} &  & \hbox{Tripoli 4 neutron events file format.} \hbox{Use
+        \verb+Virtual_tripoli4_input+/\verb+Virtual_tripoli4_output+} components. \\
+      {\it MCNP} &  & \hbox{MCNP PTRAC neutron events file format.} \hbox{Use
+        \verb+Virtual_mcnp_input+/\verb+Virtual_mcnp_output+} components. \\
       {\it Vitess} &  & \hbox{Vitess neutron events file format.} \hbox{Use \verb+Vitess_input+/\verb+Vitess_output+ components. }\\
       {\it McStas events} & & \hbox{McStas event files in text or binary
       format.} \hbox{Use \verb+Virtual_input+/\verb+Virtual_output+ components.} \\
@@ -770,7 +770,7 @@ The {\bf File} menu has the following features:
 \end{description}
 
 \noindent The {\bf Simulation} menu has the following features:
-\begin{description}
+\begin{description}\index{Tools!mcplot} \index{Data formats}
 \item[Read old simulation] prompts for the name of a file
   from a previous run of a McStas simulation (usually called
   \verb+mcstas.sim+). The file will be read and any detector data
@@ -784,7 +784,7 @@ The {\bf File} menu has the following features:
   last simulation run or spawns a load dialogue to load a set of results.
 \item[Configuration options] selection of plotting backend
   (PGPLOT/Matlab/Scilab). Opens the choose backend dialog shown in
-  figure~\ref{fig:mcgui-choose}. All formats are chosen as full text, but a 'Use binary files' option is possible. Additionally, the editor to use to list instrument descriptions can be chosen. The HTML/VRML data files save results as a web-page document requiring a VRML viewer to display the data files as a 3D surface.
+  figure~\ref{fig:mcgui-choose}. All formats are chosen as full text, but a 'Use binary files' option is possible. Additionally, the editor to use to list instrument descriptions can be chosen. The HTML/VRML data files save results as a web-page document requiring a VRML viewer to display the data files as a 3D surface (openGL).\index{Tools!VRML/openGL}
 \end{description}
 
 \noindent The {\bf Neutron Site} menu contains a list of
@@ -836,7 +836,7 @@ instrument parameters as well as the specifications of options for
 running the simulation (see section~\ref{s:run-sim} for details). It
 also allows to run the \verb+mcdisplay+ (section~\ref{s:mcdisplay}) and
 \verb+mcplot+ (section~\ref{s:mcplot}) front-ends together with the
-simulation.
+simulation.\index{Tools!mcplot}
 
 The meaning of the different fields is as follows:
 \begin{description}
@@ -880,7 +880,7 @@ is newer than the executable). The executable is
 assumed to have a \verb+.out+ suffix in the filename.
 
 
-\subsubsection{The plot dialog}
+\subsubsection{The plot dialog} \index{Tools!PGPLOT}
 This dialog only shows-up when using the \MCS/PGPLOT plotter. Other plotters have attached menus to control graphics and file exports.
 \begin{description}
 \item[Monitors and detectors] lists all the one- and
@@ -932,7 +932,7 @@ The dialog will also pick up those of the users own components that are
   \end{center}
 \end{figure}
 
-
+\index{Tools!PGPLOT}
 To use the \verb+mcgui+ front-end, the programs Perl and Perl/Tk must
 be properly installed on the system. Additionally, if the \MCS /PGPLOT
 back-end is used for data format, PGPLOT, PgPerl, and PDL will be
@@ -1036,7 +1036,8 @@ where \verb+sim+ is the name of either the instrument source \texttt{{\it sim}.i
 \MCS, and \textit{args \ldots} are the normal command line arguments for
 the simulation, as explained above. The \verb+-h+ option will list valid options.
 
-The drawing back-end program may be selected among PGPLOT, Matlab and Scilab using either the -p{\it PLOTTER} option or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT}
+\index{Tools!PGPLOT} \index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!VRML/OpenGL}
+The drawing back-end program may be selected among PGPLOT, VRML, Matlab and Scilab using either the -p{\it PLOTTER} option or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT}
 For instance, calling
 \begin{quote}
   \verb+mcdisplay -pScilab ./vanadium_example.out ROT=90+
@@ -1092,6 +1093,7 @@ cases, the \verb+--inspect=+\textit{comp\/} option is useful. With this
 option, only neutrons that reach the component named \textit{comp\/} are
 shown in the graphics display.
 
+\index{Tools!PGPLOT}
 The \verb+mcdisplay+ front-end will then require the Perl, the PGPLOT, and the
 PGPerl packages to be installed. It may be necessary to set the
 \verb+PGPLOT_DIR+ and \verb+PGPLOT_DEV+ environment variable; consult the
@@ -1107,6 +1109,9 @@ The \verb+--inspect+ option may be used (see previous paragraph), as well as the
 The \verb+mcdisplay+ front-end will then
 require the Perl+PGPLOT, and either Scilab or Matlab to be installed. \index{Tools!Matlab} \index{Tools!Scilab}
 
+\paragraph{VRML/OpenGL back-ends}
+
+When using the \verb+-pVRML+ option, the instrument is shown in Virtual Reality (using openGL). You may then walk aside instrument, or go inside elements following neutron trajectories.
 
 \subsection{Plotting the results of a simulation (mcplot)}
 \label{s:mcplot}
@@ -1128,9 +1133,11 @@ passed to mcplot, {\em e.g.} ``\texttt{mcplot {\it dir}}'' or ``\texttt{mcplot
   {\it file}}''.
 It is also possible to plot one single text (not binary) data file from a given monitor, passing its name to mcplot.
 
-The drawing back-end program may be selected among PGPLOT, Matlab and Scilab using either the -p{\it PLOTTER} option (e.g. \verb+mcplot -pScilab file+) or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT} Moreover, the drawing back-end program will also be set depending on the {\it file} extension (see Table~\ref{t:formatoptions}).
+The drawing back-end program may be selected among PGPLOT, VRML, Matlab and Scilab using either the -p{\it PLOTTER} option (e.g. \verb+mcplot -pScilab file+) or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT} Moreover, the drawing back-end program will also be set depending on the {\it file} extension (see Table~\ref{t:formatoptions}).
 
-It should be emphasized that \verb+mcplot+ may \emph{only} display simulation results with the format that was chosen during the computation. Indeed, if you request data in a given format from a simulation, you will only be able to display results using that same drawing back-end. Anyway, the \verb+mcconvert+ utility may convert a \MCS\ data file between Matlab and Scilab formats (see section \ref{s:mcconvert}).
+It should be emphasized that \verb+mcplot+ may \emph{only} display simulation results with the format that was chosen during the computation. Indeed, if you request data in a given format from a simulation, you will only be able to display results using that same drawing back-end.
+
+Anyway, the \verb+mcconvert+ utility may convert a \MCS\ data file between Matlab and Scilab formats (see section \ref{s:mcconvert}), also handling binary data sets. Alternatively, the \verb+mcformat+ utility will convert any \MCS\ result into data format (see section \ref{s:mcformat}), but restricting to text data sets. In this case, we recommand to generate data sets using PGPLOT/McStas format, and translate into any other format using \verb+mcformat+.
 
 The \verb+mcplot+ front-end can also be run from the \verb+mcgui+ front-end.
 \index{Tools!mcgui}
@@ -1140,7 +1147,7 @@ Examples of plotter appearence for \verb+mcplot+ is shown in figures
  \ref{fig:mcdisp_PGPLOT}-\ref{fig:mcplot_figs}.
 
 \paragraph{\MCS /PGPLOT back-end}
-
+\index{Tools!PGPLOT}
 Clicking the left mouse button on a plot produces a full-window version
 of that plot. The `P' key saves a postscript file containing the current
 plot that can be sent to the printer to obtain a hardcopy; the `C' key
@@ -1175,6 +1182,7 @@ To use the \verb+mcplot+ front-end, the programs Perl, and either Scilab or Matl
 \subsection{Plotting resolution functions (mcresplot)}
 \label{s:mcresplot}
 \index{Tools!mcresplot|textbf}
+\index{Tools!PGPLOT}
 
 \begin{figure}[htb!]
   \begin{center}
@@ -1215,7 +1223,7 @@ To use the \verb+mcresplot+ front-end, the programs Perl, PGPLOT, PgPerl,
 and PDL must all be properly installed on the system.
 \index{Tools!Perl libraries}
 
-\subsection{Creating and viewing the library and component/instrument help (mcdoc)}
+\subsection{Creating and viewing the library, component/instrument help and Manuals (mcdoc)}
 \label{s:mcdoc-run}
 \index{Tools!mcdoc|textbf}
 
@@ -1280,23 +1288,25 @@ to simply translate one file format to the other. This works only for text files
 
 \subsection{Translating and merging \MCS\ results files (all text formats)}
 \label{s:mcformat}
-\index{Tools!mccformat|textbf}
-\index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!Octave} \index{Tools!IDL} \index{Tools!HTML}
+\index{Tools!mcformat|textbf}
+\index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!Octave} \index{Tools!IDL} \index{Data formats}
 \index{Grid computing}
 
 If you have been running a \MCS\ simulation with a given text format output, but finally plan to look at the results with an other plotter (e.g. you ran simulation with PGPLOT output and want to view it using Matlab), you may use
 \begin{quote}
   \texttt{mcformat {\it file | dir} -d {\it target\_dir} --format=TARGET\_FORMAT}
 \end{quote}
-to translate files into format FORMAT. When given a directory, the translation works recursively. The conversion works only for text files. Some problems may be found when translating from HTML/VRML data files, or from binary files.
+to translate files into format FORMAT. When given a directory, the translation works recursively. The conversion works only for text files. Some problems may be found when translating from HTML/VRML data files, or from binary files.\index{Tools!VRML/openGL}
 
-An additional \verb+--merge+ options may be used to merge similar files, e.g. obtained from grid systems.
+The \verb+--merge+ option may be used to merge similar files, e.g. obtained from grid systems, just as if a longer run was achieved.
 
-The analysis of data files works by searching keywords inside data files (e.g. 'Source' for the source instrument description file). If some filenames or component names match these keywords (e.g. using a file 'Source.psd'), the extracted information may be wrong.\index{Bugs}
+The \verb+--scan+ option may be used to reconstruct the scan data from a set of directories which vary instrument parameters. For instanmce, you ran a scan, but finally realized you should have prolungated it. Then simply simulate the missing bits, and apply \verb+mcformat -d scan_data --format=PGPLOT --scan step0 .. stepN+. The resulting scan data is compatible with \verb+mcplot+ only when generating PGPLOT/McStas format.\index{Tools!mcplot} You may conjugate this option with the \verb+--merge+ in order to add/merge similar data sets before re-building the scan.
+
+The analysis of data files works by searching keywords inside data files (e.g. 'Source' for the source instrument description file). If some filenames or component names match these keywords (e.g. using a file 'Source.psd'), the extracted metadata information may be wrong, eventhough the data itself will be correct.\index{Bugs}
 
 \section{Analyzing and visualizing the simulation results}
 \label{s:analyze}
-\index{Data format}
+\index{Data formats}
 
 To analyze simulation results, one uses the same tools as for analyzing
 experimental data, \textit{i.e}. programs such as IDL, Matlab and Scilab.
@@ -1311,7 +1321,7 @@ simulation. Use the simulated intensity instead whenever analysing
 simulation data.
 
 \paragraph{\MCS\ and PGPLOT format}
-
+\index{Tools!PGPLOT} \index{Data formats}
 The \MCS\ original format, which is equivalent to the PGPLOT format, is simply columns of ASCII text that most programs should
 be able to read.
 
@@ -1356,7 +1366,7 @@ simplified. The \verb+--file+ option may be used to store all data
 inside the \verb+mcstas.sim+ file instead of in separate files.
 
 \paragraph{Matlab, Scilab and IDL formats}
-\index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!IDL} \index{Data format}
+\index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!IDL} \index{Data formats}
 
 With these formats \MCS\ automatically writes scripts containing the data as a structure, as well as in-line import and plot functions for the selected language. Usage examples are given in section~\ref{s:run-sim}.
 Thus, it is not necessary to write a load routine for each format, as the script is itself a program that knows how to handle the data. Alternatively, using \verb+mcplot+ with Matlab and Scilab plotters provide additional functionalities from menus and dialogs (see section~\ref{s:mcplot}).
@@ -1399,9 +1409,9 @@ ans =
 \end{verbatim}
 The latter example accesses the data from the 'monitor1.y\_kz' file written by the 'monitor1' component in the 'test' instrument during the './mcstas' simulation. You may evaluate directly the 'signal' and 'statistics' fields of the structure to obtain useful informations.
 
-\paragraph{HTML, XML/NeXus and NeXus formats}
+\paragraph{HTML/VRML, XML/NeXus and NeXus formats}
 
-Both HTML and XML/NeXus formats are available. The former may be viewed using any web browser (Netscape, Internet Explorer, Nautilus), while the latter may be browsed for instance using Internet Explorer (Windows and Mac OS) or GXMLViewer and KXMLEditor (under Linux).
+Both HTML and XML/NeXus formats are available. The former may be viewed using any web browser (Netscape, Internet Explorer, Nautilus) - showing data sets as VRML objects - while the latter may be browsed for instance using Internet Explorer (Windows and Mac OS) or GXMLViewer and KXMLEditor (under Linux).
 
 The support for NeXus in \MCS\ is prelimminary as NeXus is not fully
 laid out. A future version of \MCS\ will fully support output in the
@@ -1426,6 +1436,8 @@ Parallelizing a computation is possible when dependencies between
   steps) may be computed in parallel using MPI (using \texttt{mcrun --mpi=Nb\_Nodes}). We highly recommand this method which shows excellent performances (but require to install MPI).
 \item when using SMP machines (multi processor machines) \MCS\ may distribute the simulations among CPU's using multi-threading mechanism. Eventhough most systems now support multi-threading (i.e. do not require specific installation), the performances are not as good as with MPI.
 \end{itemize}
+
+Once the distributed simulation has been completed, you may merge their results using the \verb+mcformat+ (see section \ref{s:mcformat}) \index{Tools!mcformat} in order to obtain a set of files just as if it had been executed on a single machine.
 
 \subsection{Distribute mcrun scans (ssh grid) - Unix only}
   This is an experimental option to
@@ -1452,6 +1464,7 @@ Parallelizing a computation is possible when dependencies between
   Each of the scan steps is executed on distant machines, sending the executable
   with \emph{scp}, executing single simulations, and then retrieving individual
   scan steps on the master machine.
+
   {\bf Warning:} This option is considered \emph{experimental} - i.e.,
   you are welcome to use it, but be ready for trouble. Note also that
   this is a unix only option in \texttt{mcgui} and \texttt{mcrun}, it
