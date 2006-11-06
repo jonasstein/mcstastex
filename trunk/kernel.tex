@@ -517,7 +517,7 @@ Thus, we recommand to make use of the SCATTER keyword each time a component 'use
 \index{Keyword!COPY}
 \label{s:instrdefs-extend-copy}
 
-Often, one has a set of similar component instances in an instrument. These could be e.g. a set of identical monochromator blades, or a set of detectors or guides.
+Often, one has a set of similar component instances in an instrument. These could be e.g. a set of identical monochromator blades, or a set of detectors or guide elements.
 Together with JUMPs (see below), there is a way to copy a component instance, duplicating parameter set, as well as any EXTEND, GROUP, JUMP and WHEN keyword.
 Position (AT) and rotation (ROTATED) specification must be explicitely entered in order to avoid component overlaping.
 
@@ -526,6 +526,12 @@ The syntax for instance copy is
   \texttt{COMPONENT} name = \texttt{COPY}(instance\_name)
 \end{quote}
 where {\it instance\_name} is the name of a preceeding component instance in the instrument. It may be 'PREVIOUS' as well.
+
+If you would like to change only some of the parameters in the instance copy, you may write, e.g.:
+\begin{quote}
+  \texttt{COMPONENT} name = \texttt{COPY} instance\_name (par1=0, par2=1)
+\end{quote}
+which will override the original instance parameter values. The EXTEND, GROUP, JUMP and WHEN keywords, if defined for the copied instance, will override the original setting.
 
 In the case where there are many duplicated components all originating from the same instance, there is a mechanism for automating copied instance names:
 \begin{quote}
@@ -582,6 +588,8 @@ COMPONENT MyMon = Monitor(...) WHEN (flag==1)
 
 The WHEN keyword only applies to the TRACE section of instruments/components. Other sections (INITIALIZE, SAVE, MCDISPLAY, FINALLY) are exectuted independently of the condition. As a side effetc, the 3D view of the instrument (mcdisplay) will show all components as if all conditions were true.
 
+Also, the \verb+WHEN+ keyword is a condition for \verb+GROUP+. This means that when the \verb+WHEN+ is false, the component instance is not active in the \verb+GROUP+ it belongs to.\index{Bugs}
+
 \subsection{Component loops}
 \index{Keyword!JUMP}
 \index{Keyword!ITERATE}
@@ -629,6 +637,7 @@ COMPONENT CG_Out = Arm() AT (0,0,L/n) RELATIVE PREVIOUS
 
 Similarly to the \texttt{WHEN} modifier (see section \ref{s:instrdefs-extend-when}), \texttt{JUMP} only applies within the TRACE section of the instrument definition. Other sections (INITIALIZE, SAVE, MCDISPLAY, FINALLY) are exectuted independently of the jump. As a side effetc, the 3D view of the instrument (mcdisplay) will show components as if there was no jump. This means that in the following example, the very long guide 3D view only shows a single guide element.
 
+It is \emph{not} recommanded to use the \verb+JUMP+ inside \verb+GROUP+s, as the JUMP condition/counter applies to the component instance within its group.
 
 We would like to emphasize the potential errors originating from such jumps. Indeed, imbricating many jumps may lead to situations were it is difficult to understand what is going on. We thus recommand the usage of JUMPs only for experienced and cautious users.\index{Bugs}
 
@@ -1165,7 +1174,7 @@ height}. Depending on {\it plane} the width and height are defined as:\\
   xy & x & y \\
   xz & x & z \\
   yz & y & z \\
- \end{tabular} 
+ \end{tabular}
 
 \paragraph{The {\tt box} command}
 
@@ -1215,7 +1224,7 @@ If you only want to \emph{add} something on top of the component existing behavi
 \subsection{Component heritage and duplication}
 \index{Keyword!COPY}
 
-There is a heritage mechanism to create childs of existing components. These are exact duplicates of the parent component, but one may override original definitions of any of section.
+There is a heritage mechanism to create childs of existing components. These are exact duplicates of the parent component, but one may override/extend original definitions of any section.
 
 The syntax for a full component child is
 \begin{quote}
@@ -1223,17 +1232,34 @@ The syntax for a full component child is
 \end{quote}
 This single line will copy all parts of the {\it parent} into the {\it child}, except for the documentation header.
 
-As for normal component definitions, you may write other paremeters, \texttt{DECLARE}, \texttt{TRACE}, ... sections. Each of them will entirely replace the corresponding {\it parent} definition. In practice, you could copy a component and only rewrite some of it.
+As for normal component definitions, you may add other parameters, \texttt{DECLARE}, \texttt{TRACE}, ... sections. Each of them will replace or extend (be catenated to, with the COPY/EXTEND keywords, see example below) the corresponding {\it parent} definition. In practice, you could copy a component and only rewrite some of it, as in the following example:
+\begin{quote}
+  \texttt{DEFINE COMPONENT} {\it child\_name} \texttt{COPY} {\it parent\_name} \\
 
+  \texttt{SETTING PARAMETERS} (newpar1, newpar2) \\
+  \texttt{INITIALIZE} \texttt{COPY} {\it parent\_name} \texttt{EXTEND} \\
+  \verb|%{|  \\
+  \hbox to 3em{}\ldots C code to be catenated to the {\it parent\_name} INITIALIZE \ldots  \\
+  \verb|%}| \\
+  \texttt{SAVE} \\
+  \verb|%{|  \\
+  \hbox to 3em{}\ldots C code to replace the {\it parent\_name} SAVE \ldots  \\
+  \verb|%}| \\
+\end{quote}
+where two additional parameters have been defined, and should be handled in the extension of the original INITIALIZE section.
 
 On the other hand, if you do not derive a component as a whole from a parent, you may still use specific parts from any component:
 \begin{quote}
-  \texttt{DEFINE COMPONENT} {\it name} ...
-  \texttt{DECLARE} \texttt{COPY} {\it parent1}
-  \texttt{INITIALIZE} \texttt{COPY} {\it parent2}
+  \texttt{DEFINE COMPONENT} {\it name} \ldots \\
+  \texttt{DECLARE} \texttt{COPY} {\it parent1} \\
+  \texttt{INITIALIZE} \texttt{COPY} {\it parent2} \texttt{EXTEND} \\
+  \verb|%{|  \\
+  \hbox to 3em{}\ldots C code to be catenated to the {\it parent2} INITIALIZE \ldots  \\
+  \verb|%}| \\
   \texttt{TRACE} \texttt{COPY} {\it parent3}
 \end{quote}
-This may lighter the component code, but a special care should be taken in mixing bits from different sources, specially concerning variables. This may result in difficulties to compile components.\index{Can not compile}
+
+This mechanism may lighter the component code, but a special care should be taken in mixing bits from different sources, specially concerning variables. This may result in difficulties to compile components.\index{Can not compile}
 
 \section{McDoc, the McStas library documentation tool}
 \label{s:mcdoc}

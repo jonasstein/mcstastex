@@ -106,9 +106,9 @@ determine what limits should be used to have a good sampling of signals.
 
 Each monitoring records the flux (sum of weights $p$) versus the
 given variables, except if the \verb+signal=<variable>+ word is used in the \verb+options+.
-The {\it cm2} option will ask to normalize the flux to the monitor section surface, and the \verb+capture+ option uses the gold foil integrated 'capture' flux weightening:\index{Monitors!Capture flux}
+The {\it cm2} option will ask to normalize the flux to the monitor section surface, and the \verb+capture+ option uses the gold foil integrated 'capture' flux weightening (up to the cadmium cut-off):\index{Monitors!Capture flux}
 \begin{equation}
-\Phi_c = \int{\frac{d\Phi}{d\lambda} \frac{\lambda}{\lambda_{2200 m/s}} d\lambda}
+\Phi_c = \int_0^{0.5 eV}{\frac{d\Phi}{d\lambda} \frac{\lambda}{\lambda_{2200 m/s}} d\lambda}
 \end{equation}
 
 The \verb+auto+ option is probably the most useful one: it asks the monitor to determine automatically the best limits for each variable, in order to obtain the most significant monitored histogram. This option should preceed each variable, or be located after all variables in which case they are all affected.
