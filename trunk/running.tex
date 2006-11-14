@@ -1437,6 +1437,7 @@ Parallelizing a computation is possible when dependencies between
 \item when using SMP machines (multi processor machines) \MCS\ may distribute the simulations among CPU's using multi-threading mechanism. Eventhough most systems now support multi-threading (i.e. do not require specific installation), the performances are not as good as with MPI.
 \end{itemize}
 
+Lats but not least, you may run simulations manually on many machines and merge them afterwards.
 Once the distributed simulation has been completed, you may merge their results using the \verb+mcformat+ (see section \ref{s:mcformat}) \index{Tools!mcformat} in order to obtain a set of files just as if it had been executed on a single machine.
 
 \subsection{Distribute mcrun scans (ssh grid) - Unix only}
@@ -1456,7 +1457,7 @@ Once the distributed simulation has been completed, you may merge their results 
   \item{The machine names listed in the file \texttt{.mcstas-hosts} in
       your home directory or in the \texttt{MCSTAS/tools/perl/mcstas-hosts} on
       the master node, one node per line. The \verb'--machines=<file>' option
-      enables to specify the hosts file to use.}
+      enables to specify the hosts file to use. If it does not exist, only the current machine will be used (for multi-processor/core machines).}
   \item{Execute \texttt{mcrun} as normally, appending \texttt{--multi} or
       \texttt{-M} will divide the $N$ scanpoints across the machines in
       \texttt{.mcstas-hosts $+$ localhost}.}
