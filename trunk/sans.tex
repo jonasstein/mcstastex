@@ -12,7 +12,7 @@ in a rectangular volume $x_w \times y_h \times z_t$ with a volume
 fraction $\phi$. The absorption cross section density for the spheres
 (or is it from the solution?)
 is $\sigma_a$ (in units of m$^{-1}$), specified
-for neutrons at 2200 m/s. Absorption and incoherent scattering 
+for neutrons at 2200 m/s. Absorption and incoherent scattering
 from the medium is neglected.
 The difference in scattering length density
 (the contrast) between the hard spheres and the medium is called $\Delta \rho$.
@@ -20,7 +20,7 @@ $d$ denotes the distance to the (presumed circular) SANS detector of radius $R$.
 
 \subsection{Small-angle scattering cross section}
 The neutron intensity scattered into a solid angle $\Delta \Omega$
-for a flat isotropic SANS sample in transmission geometry 
+for a flat isotropic SANS sample in transmission geometry
 is given by \cite{ILLblue}:
 \begin{equation}
 I_s(q) = \Psi \Delta\Omega T A z_{\rm max} \frac{d\sigma_v}{d\Omega}(q) ,
@@ -56,15 +56,20 @@ For scattered neutrons, the following steps are taken:
 
 \subsection{Calculating the weight factor}
 The scattering position is found by a Monte Carlo choice uniformly
-along the whole (unscattered) beam path with the sample, length $l_{\rm full}$, giving 
+along the whole (unscattered) beam path with the sample, length $l_{\rm full}$, giving
 $f_l = 1/l_{\rm full}$. The direction focusing on the detector gives
 (in an small angle approximation) $f_\Omega = d^2 / (\pi R_{\rm det}^2)$.
 
 Hence, the total weight tranformation factor becomes (more explanation to come)
 \begin{equation}
 \pi_j = l_{\rm full} (\pi R_{\rm det}^2 / d^2)/(4 \pi)
-  n (\Delta\rho)^2 V^2 f(q) \exp(-\mu_a l) , 
+  n (\Delta\rho)^2 V^2 f(q) \exp(-\mu_a l) ,
 \end{equation}
 where $\mu_a$ is the linear attenuation factor due to absorption
 and $l$ is the total neutron path length within the sample.
- 
+
+This component does NOT simulate absolute intensities. This latter depends on the detector parameters. \index{Bugs}
+
+Some alternative implementations exist as contributed components.
+
+The \verb+SANS+ test/example instrument exists in the distribution for this component.
