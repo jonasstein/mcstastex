@@ -165,11 +165,11 @@ the magnet is saturated (all spins are parallel or anti-parallel to
 
 \begin{equation}
   \FM =
-  r_0 \sum_\dB \exp(i\Q \cdot \dB)\frac{1}{2}g_d F_d(\Q)\langle
+  \gamma_n r_0 \sum_\dB \exp(i\Q \cdot \dB)\frac{1}{2}g_d F_d(\Q)\langle
   \hat{S}_d\rangle \sigma_d,
 \end{equation}
 
-where $r_0=\gamma_n e^2/m_e c^2 = -0.5391 \times 10^{-12}$, $g=2$ is the
+where $r_0=\frac{\mu_0}{4\pi}\frac{e^2}{m_e} = 2.818 \times 10^{-15}$m, $g=2$ is the
 Land{\'e} splitting factor, and $F_d(\Q)$ is the magnetic form factor, which
 is the Fourier transform of the magnetization density (normalized so that
 $F_d(0) = 1$), and $\langle \hat{S}_d\rangle$ is the thermal average of the
@@ -358,8 +358,8 @@ ends up being (see~\cite{lovesey} p.~159):
   \label{eq:nuclear_sigma}
   \frac{d\sigma}{d\Omega}  = 
   \sum_{\lB, \dB, \lB', \dB'} \exp(i \Q \cdot (\RB_{ld}-\RB_{l'd'}))
-  (\madsq + \delta_{\lB,\lB'}\delta_{\dB,\dB'}\madsq - \sqmad 
-  + \frac{1}{4}\bd)
+  (\madsq + \delta_{\lB,\lB'}\delta_{\dB,\dB'}[\sqmad - \madsq 
+  + \frac{1}{4}\bd])
 \end{equation}
 
 where the first term is the coherent cross-section and the second term is the
@@ -372,8 +372,8 @@ The polarization in the final state is:
   \label{eq:nuclear_pol}
   \PB' \frac{d\sigma}{d\Omega}  = 
   \sum_{\lB, \dB, \lB', \dB'} \exp(i \Q \cdot (\RB_{ld}-\RB_{l'd'}))
-  \PB' (\madsq + \delta_{\lB,\lB'}\delta_{\dB,\dB'}\madsq - \sqmad 
-  - \frac{1}{12}\bd)
+  \PB' (\madsq + \delta_{\lB,\lB'}\delta_{\dB,\dB'}[\sqmad - \madsq
+  - \frac{1}{12}\bd])
 \end{equation}
 
 Comparing Eq.~\ref{eq:nuclear_sigma} and Eq.~\ref{eq:nuclear_pol} we
