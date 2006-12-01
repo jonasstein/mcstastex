@@ -110,11 +110,13 @@ chosen plotting backend, the presented graphics will resemble one of
 those shown in figures \ref{fig:mcdisp_PGPLOT}-\ref{fig:mcdisp_Matlab}.
 \begin{figure}[htb!]
   \begin{center}
-    \includegraphics[width=0.55\textwidth]{figures/mcdisplay_PGPLOT.ps}
+    \includegraphics[width=0.48\textwidth]{figures/mcdisplay_PGPLOT.ps}
+    \includegraphics[width=0.48\textwidth]{figures/mcdisplay_TOF.ps}
   \end{center}
-\caption{Output from \texttt{mcdisplay} with PGPLOT backend.
+\caption{Left: Output from \texttt{mcdisplay} with PGPLOT backend.
   The left mouse button starts a new neutron ray, the middle button zooms, and
-  the right button resets the zoom. The Q key quits the program.}
+  the right button resets the zoom. The Q key quits the
+  program. Right: The new PGPLOT time-of-flight option. See section \ref{s:mcdisplay} for details.}
 \label{fig:mcdisp_PGPLOT}
 \end{figure}
 \begin{figure}[htb!]
@@ -1092,6 +1094,14 @@ the neutrons that are absorbed in the monochromator shielding. For these
 cases, the \verb+--inspect=+\textit{comp\/} option is useful. With this
 option, only neutrons that reach the component named \textit{comp\/} are
 shown in the graphics display.
+
+As of \MCS 1.10, the PGPLOT version has a special mode for time of
+flight applications. Using the new commandline options \verb+--TOF/-T+
+and \verb+--tmax=TMAX+, chopper acceptance diagrams can be generated
+from the statistical information from the simulated neutron rays. As
+the use in non-interactive, please use with a limited number of
+neutron rays (\verb+-n/--ncount+). For export of graphics, combine
+with e.g. \verb+--gif+.
 
 \index{Tools!PGPLOT}
 The \verb+mcdisplay+ front-end will then require the Perl, the PGPLOT, and the
