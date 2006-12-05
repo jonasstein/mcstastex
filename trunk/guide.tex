@@ -250,8 +250,9 @@ values of $w_1$ and $w_2$) is buggy
 \section{Guide\_gravity: A guide with multiple channels and gravitation handling}
 \label{s:guide_gravity}
 \index{Optics!Guide with channels and gravitation handling (straight)}
+\index{Optics!Fermi Chopper}
 
-\component{Guide\_gravity}{System}{$w_1, h_1$, $w_2, h_2$, $l$, $k$, $m$}{$d, R_0, Q_c, W, \alpha$, wavy, chamfers, $k_h$, $n$, $G$}{validated, {\bf with} gravitation support}
+\component{Guide\_gravity}{System}{$w_1, h_1$, $w_2, h_2$, $l$, $k$, $m$}{$d, R_0, Q_c, W, \alpha$, wavy, chamfers, $k_h$, $n$, $G$}{validated, {\bf with} gravitation support, rotating mode}
 
 This component is a variation of {\bf Guide\_channeled}
 (section \ref{s:channeled_guide}) with the ability to handle
@@ -269,8 +270,12 @@ Chamfers originate from the substrate manufacturing, so that operators do not ha
 The straight section of length $l$ may be divided into $n$ bits of same length
 within which chamfers are taken into account.
 
+The component has also the capability to rotate at a given frequenccy in order to approximate a Fermi Chopper, including phase shift. The approximation resides in the fact that the component is considered fixed during neutron propagation inside slits.
+
 To activate gravitation support, either select the \MCS\ gravitation support,
 or set the gravitation field strength $G$ (e.g. -9.81 on Earth).
+
+This component is about 50 \% slower than the \verb+Guide+ component, but has much more capabilities.
 
 \section{Bender: a bender model (non polarizing)}
 \index{Optics!Bender (non polarizing)}
@@ -314,7 +319,7 @@ ROTATED (0, (L/n+d)/R*180/PI, 0) RELATIVE PREVIOUS
 ...
 COMPONENT CG_Out = Arm() AT (0,0,L/n) RELATIVE PREVIOUS
 \end{verbatim}
-The \verb+Guide+ component should be duplicated $n$ times by copy-paste, but changing the instance name, e.g. CG\_1, CG\_2, ..., CG\_n.
+The \verb+Guide+ component should be duplicated $n$ times by copy-paste, but changing the instance name, e.g. CG\_1, CG\_2, ..., CG\_n. This may be automated with the \verb+COPY+ or the \verb+JUMP ITERATE+ mechanisms (see User manual).
 
 An implementation of a continuous curved guide has been contributed as component Guide\_curved.
 

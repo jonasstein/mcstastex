@@ -2,6 +2,7 @@
 
 \section{Vitess\_ChopperFermi: The Fermi Chopper from Vitess}
 \label{s:vit_fc}
+\index{Optics!Fermi Chopper}
 
 \component{Vitess\_ChopperFermi}{Geza Zsigmond}{GeomOption, $N_{\rm chan}$, $f$, $h$, $w_{\rm tot}$, $l$, $r_{\rm curv}$, $d$, $\phi$, $w_{\rm wall}$, GeomFile}{zerotime, $N_{\rm gates}$}{validated}
 
@@ -90,3 +91,7 @@ set to a value between -$T_{\rm p}$/2 and +$T_{\rm p}$/2 (with $T_{\rm p}$ being
 depending on the phase of the chopper at the moment of passing the chopper centre. The
 result is the generation of only 1 pulse instead of several; this is useful for TOF instruments
 on continuous sources.
+
+This component is about twice slower than the \verb+FermiChopper+ component.
+
+The component must be placed after a component which sets a non zero flight path to the Fermi Chopper (e.g. not an Arm).
