@@ -529,7 +529,7 @@ where {\it instance\_name} is the name of a preceeding component instance in the
 
 If you would like to change only some of the parameters in the instance copy, you may write, e.g.:
 \begin{quote}
-  \texttt{COMPONENT} name = \texttt{COPY} instance\_name (par1=0, par2=1)
+  \texttt{COMPONENT} name = \texttt{COPY}(instance\_name)(par1=0, par2=1)
 \end{quote}
 which will override the original instance parameter values. The EXTEND, GROUP, JUMP and WHEN keywords, if defined for the copied instance, will override the original setting.
 
