@@ -13,7 +13,7 @@ use of the C programming language and UNIX/Linux.
 It is a pleasure to thank Prof.~Kurt N.~Clausen, PSI, for his continuous
 support to this project and for having initiated \MCS\ in the first
 place. Essential support has also been given by Prof.~Robert McGreevy, ISIS.
-Apart from the authors of this manual, also Per-Olof \AA strand, NTNU Trondheim,
+Apart from the authors of this manual, also Prof. Per-Olof \AA strand, NTNU Trondheim,
 has contrubuted to the development of the \MCS\ system.
 %Both he and our other collaborators, Henrik M.\ R\o nnow and Mark
 %Hagen have made major contributions to the project.  Also the
@@ -37,13 +37,13 @@ In case of errors, questions, or suggestions,
 %or other need for support should arise,
 do not hesitate to
 contact the authors at \verb+mcstas@risoe.dk+
-or consult the \MCS\ WWW home page~\cite{mcstas_webpage}.
+or consult the \MCS\ home page~\cite{mcstas_webpage}.
 A special bug/request reporting service is available \cite{mczilla_webpage}.
 
 If you {\bf appreciate} this software, please subscribe to the \verb+neutron-mc@risoe.dk+ email list, send us a smiley message, and contribute to the package. We also encourage you to refer to this software when publishing results, with the following citations:
 \begin{itemize}
-\item{K. Lefmann and K. Nielsen, Neutron News 10/3, 20, (1999).}
-\item{P. Willendrup, E. Farhi and K. Lefmann, Physica B, 350 (2004) 735.}
+\item{K. Lefmann and K. Nielsen, Neutron News {\bf 10/3}, 20, (1999).}
+\item{P. Willendrup, E. Farhi and K. Lefmann, Physica B, {\bf 350} (2004) 735.}
 \end{itemize}
 
 
@@ -51,16 +51,14 @@ If you {\bf appreciate} this software, please subscribe to the \verb+neutron-mc@
 Several people outside the core developer team have been contributing
 to \MCS\ \version:
 \begin{itemize}
-\item{Dickon Champion and Stuart Ansell, ISIS:
-    \verb+ISIS_moderator+. Dickon also contributed his model of the
-    ISIS HET instrument plus a test instrument for the moderator
-    component and assisted in various debugging.}
-\item{Uwe Filges, PSI: \verb+Guide_tapering+ and a model of the PSI
-    FOCUS instrument}
-\item{Ross Stewart, ILL: New \verb+Guide_curved+}
-\item{Chris Ling, ILL: ILL D9 instrument}
-\item{Lise Arleth, KVL Denmark: Co-author of the \verb+Sans_spheres+ component}
-\item{Geza Zsigmond helped a lot in porting his Fermi Chopper component from Vitess \cite{Vitess,vitess_webpage} to \MCS .}
+\item Thorwald van Vuure, ILL contributed his \verb+PSD_Detector.comp+
+  component, a physical detector model.
+\item Chama Hennae, ENSIMAG worked with Emmanuel Farhi on the new
+  \verb+Virtual_mcnp_input.comp+ and \verb+Virtual_mcnp_output.comp+
+  for handeling MCNP event files.
+\item Ludovic Giller and Uwe Filges, PSI contributed
+  \verb+Source_multi_surfaces.comp+, a source component with multiple
+  surface areas with individual spectrums.
 \end{itemize}
 Thank you guys! This is what \MCS\ is all about!
 
@@ -78,4 +76,6 @@ In FP5, \MCS\ was supported strongly through the
 ``SCANS'' program.
 Currently, in FP6, \MCS\ is supported through the Joint Research Activity
 ``MCNSI'' under the Integrated Infrastructure Initiative ``NMI3'', see
-the WWW home pages~\cite{mcnsi_webpage,nmi3_webpage}.
+the home pages~\cite{mcnsi_webpage,nmi3_webpage}. \MCS\ is also
+supported directly from the construction project for the ISIS second
+target station (TS2), see~\cite{ts2_webpage}.

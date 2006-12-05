@@ -10,7 +10,10 @@ list~\cite{mcstas_webpage} or the authors should be contacted.
 {\bf Important note for Windows users:} It is a known problem that some of
 the \MCS\ tools do not support filenames / directories with spaces.
 We are working on a more general approach to this problem, which will
-hopefully be solved in the next release. Also, there are known issues for \MCS\ with recent Perl versions for Windows. We recommand to use ActiveState {\bf Perl 5.6}.
+hopefully be solved in the next release. Also, there are known issues
+for \MCS\ with recent Perl versions for Windows. We recommand to use
+ActiveState {\bf Perl 5.6}. (Note that as of \MCS\ 1.10, all needed
+support tools for Windows are bundled with \MCS\ in a single installer file.)
 
 To use \MCS, an instrument
 definition file describing the instrument to be simulated must be
@@ -34,7 +37,7 @@ front-end programs for example to present the intensity at the
 detector as a motor position is varied.
 
 The output data may be analyzed and visualized in the same way as
-regular experiments by using the data handeling and visualisation tools in \MCS based on
+regular experiments by using the data handling and visualisation tools in \MCS\ based on
 Perl and Matlab, Scilab~\cite{scilab_webpage} or PGPLOT. Further data
 output formats including IDL and XML are available, see section \ref{s:analyze}.\index{Tools}
 
@@ -153,8 +156,8 @@ will, however, not be released and the modifications are documented on the
 \MCS\ web-page. The extensions of the forthcoming version {\version}.x are also listed
 on the web, and new versions may be released quite frequently when it is requested
 by the user community.
-\item The version 1.10 will contain important new features and an
-  updated manual. It will be released in 2006.
+\item The version 1.11 will contain important new features and an
+  updated manual. It will be released in 2007.
 \end{itemize}
 
 \section{Running the instrument compiler}
@@ -174,7 +177,7 @@ is invoked by typing a command of the form
 This will read the instrument definition \verb+name.instr+ which is
 written in the \MCS\ meta-language. The compiler will translate the
 instrument definition into a Monte Carlo simulation program provided in
-ANSI-C. The output is by default written to a file in the current
+ISO-C. The output is by default written to a file in the current
 directory with the same name as the instrument file, but with extension
 \verb+.c+ rather than \verb+.instr+. This can be overridden using the
 \verb+-o+ option as follows:
@@ -189,11 +192,11 @@ to represent standard input and standard output, respectively.
 \subsection{Code generation options}
 \index{Code generation options}
 
-By default, the output files from the \MCS\ compiler are in ANSI-C with
+By default, the output files from the \MCS\ compiler are in ISO-C with
 some extensions (currently the only extension is the creation of new
-directories, which is not possible in pure ANSI-C). The use of
+directories, which is not possible in pure ISO-C). The use of
 extensions may be disabled with the \verb+-p+ or \verb+--portable+
-option. With this option, the output is strictly ANSI-C compliant, at
+option. With this option, the output is strictly ISO-C compliant, at
 the cost of some slight reduction in capabilities.
 
 The \verb+-t+ or \verb+--trace+ option puts special ``trace'' code in
@@ -286,8 +289,8 @@ further help.
 
 After the source code for the simulation program has been generated with
 the \MCS\ compiler, it must be compiled with the C compiler to produce
-an executable. The generated C code obeys the ANSI-C standard, so it
-should be easy to compile it using any ANSI-C (or C++) compiler. \textit{E.g}.\ a
+an executable. The generated C code obeys the ISO-C standard, so it
+should be easy to compile it using any ISO-C (or C++) compiler. \textit{E.g}.\ a
 typical Unix-style command would be
 \begin{verbatim}
     cc -O -o name.out name.c -lm
@@ -310,10 +313,10 @@ available on the \MCS\ WWW home page~\cite{mcstas_webpage}):
   options \verb+egcc -O6+.
 \item Intel x86 with Linux and PGCC (pentium-optimized GCC derivate), using
   options \verb+gcc -O6 -mstack-align-double+.
-\item HPPA machines running HPUX with the optional ANSI-C compiler,
+\item HPPA machines running HPUX with the optional ISO-C compiler,
   using the options
   \verb|-Aa +Oall -Wl,-a,archive| (the \verb+-Aa+ option is necessary to
-  enable the ANSI-C standard).
+  enable the ISO-C standard).
 \item SGI machines running Irix with the options
   \verb|-Ofast -o32 -w|
 \end{itemize}
@@ -323,7 +326,7 @@ about 3, but the compilation of the instrument may be 5 times slower.
 A warning is in place here: it is tempting to spend far more time
 fiddling with compiler options and benchmarking than is actually saved
 in computation times. Even worse, compiler optimizations are notoriously
-buggy; the options given above for PGCC on Linux and the ANSI-C compiler
+buggy; the options given above for PGCC on Linux and the ISO-C compiler
 for HPUX have been known to generate \emph{incorrect code} in some
 compiler versions. \MCS\ actually puts an effort into making the task of the C compiler
 easier, by in-lining code and using variables in an efficient way. As a

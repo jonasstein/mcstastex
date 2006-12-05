@@ -3,26 +3,26 @@
 \chapter{New features in \MCS\ \version\ }
 \label{c:changes}
 
-This version of \MCS\ implements both new features, as well as many bug corrections, especially for the Windows plateform. Bugs are reported and traced using the \MCS\ Bugzilla system \cite{mczilla_webpage}. We will not present here an extensive list of corrections, and we let the reader refer to this bug reporting service for details. Only important changes are indicated here.
+This version of \MCS\ implements both new features, as well as many bug corrections, especially for the Windows platform. Bugs are reported and traced using the \MCS\ Bugzilla system \cite{mczilla_webpage}. We will not present here an extensive list of corrections, and we let the reader refer to this bug reporting service for details. Only important changes are indicated here.
 
-Of course, we can not garranty that the sofware is bullet proof, but we do our best to correct bugs, when they are reported.\index{Bugs}
+Of course, we can not garranty that the software is bullet proof, but we do our best to correct bugs, when they are reported.\index{Bugs}
 
 \section{General}
 \label{s:new-features:general}
 \begin{itemize}
 \item  This release is a major step forward for McStas in terms of
-  support for polarisation. Peter Christiansen who worked at Risoe
+  support for polarisation. Peter Christiansen who worked at Ris\o\
   March-October 2006 was the main workforce behind this new
   functionality, backed by funding from ISIS, work by Rob Dalgliesh at
   ISIS plus functionality of the VitESS and NSIP packages. As this is
   the first release with polarisation support, the methods and
   algorithms implemented are probably not the final solution. Hence,
   documentation of the functionality has been placed in Appendix
-  \ref{c:polarization}to the manual. Polarisation users: Please give
+  \ref{c:polarization} to this manual. Polarisation users: Please give
   us feedback for further development! Items marked by {\bf(p)} below
   relate to the new polarisation support. 
 \item New keywords for the meta language improves support for e.g. description of sample enviroments.
-\item A method for automatic optimisation has been implemented, e.g. for achieving maximum flux at the sample position (any quantity measured by a McStas monitor can be optimised) as a function of simulation parameters.
+\item A method for automatic optimisation has been implemented, e.g.~for achieving maximum flux at the sample position (any quantity measured by a McStas monitor can be optimised) as a function of simulation parameters.
 \item Bugfixes in many different areas.
 \end{itemize}
 \section{Kernel}
@@ -33,7 +33,7 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
 
 \begin{itemize}
 \item New \verb+WHEN+ keyword, conditional use of components,
-  \verb+COMPONENT MyComp=Component(...) WHEN (condition) AT+
+  \\\verb+COMPONENT MyComp=Component(...) WHEN (condition) AT+
 \item New \verb+JUMP+ keyword, possibility to iterate a given component a
   number of times (multiple scattering) or for 'teleportation' to a
   given component. (USE WITH CAUTION)
@@ -113,7 +113,7 @@ Details about the installation and the available tools are given in chapter \ref
 
 \section{Future extensions}
 \label{s:future}
-The following features are planned for the oncoming releases of \MCS
+The following features are planned for the oncoming releases of \MCS\ 
 (not an ordered list):
 \begin{itemize}
 \item Increased validation and testing.
@@ -136,6 +136,7 @@ The following features are planned for the oncoming releases of \MCS
 \item More complete polarisation support including numerically defined
   magnetic fields and advanced sample components.
 \item Perl plotting alternative to PGPLOT.
+\item Larger variety of sample components.
 \end{itemize}
 
 
