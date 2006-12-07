@@ -26,13 +26,19 @@ entirely in the meta-language.
 Apart from the meta-language, \MCS\ also includes a number of C library
 functions and definitions that are useful for neutron ray-tracing
 simulations. The definitions available for component developers are
-listed in appendix~\ref{c:kernelcalls}. The list includes functions for
-computing the intersection between a flight-path and various objects
-(such as cylinders, boxes and spheres), functions for generating random numbers
-with various distributions, functions for reading or writing
-informations from/to data files, convenient conversion
-factors between relevant units, etc. \index{Library!Run-time}
+listed in appendix~\ref{c:kernelcalls}. The list includes functions
+for
+\begin{itemize}
+\item Computing the intersection between a flight-path and various
+  objects (such as planes, cylinders, boxes and spheres)
+\item Functions for generating random numbers
+with various distributions
+\item Functions for reading or writing informations from/to data
+  files
+\item Convenient conversion factors between relevant units, etc. 
+\index{Library!Run-time}
 \index{Library!Components!share}
+\end{itemize}
 
 The \MCS\ meta-language was designed to be readable, with a verbose
 syntax and explicit mentioning of otherwise implicit information. The
@@ -53,7 +59,10 @@ wrong results with some components.\index{Gravitation}
 An instrument consists of a list of components through which the neutron
 ray passes one after the other. The order of components is thus significant
 since \MCS\ does not automatically check which component is the next to
-interact with the neutron ray at a given point in the simulation.
+interact with the neutron ray at a given point in the simulation. Note
+that in case of a negative propagation time from one component to the
+next, the neutron ray is by default \emph{absorbed} as this is often
+an indication of unphysical conditions. 
 
 The instrument is given a global, absolute coordinate system. In
 addition, every component in the instrument has its own local coordinate
@@ -63,9 +72,9 @@ single simulation). \index{Coordinate system}
 By convention, the $z$ axis points in the direction of the beam, the $x$ axis
 is perpendicular to the beam in the horizontal plane pointing left as seen
 from the source, and the $y$ axis points upwards (see figure~\ref{f:axis}).
-Nothing in \MCS\ enforces this convention, but if every component used
+Nothing in the \MCS\ metalanguage enforces this convention, but if every component used
 different conventions the user would be faced with a severe headache! It is
-therefore strongly recommended that this convention is followed by users implementing
+therefore necessary that this convention is followed by users implementing
 new components.
 \begin{figure}
   \begin{center}
@@ -81,8 +90,7 @@ positions) are given in meters and units of angles (\textit{e.g}.\
 rotations) are given in degrees.  The state of the neutron is given by
 its position $(x,y,z)$ in meters, its velocity $(v_x, v_y, v_z)$ in
 meters per second, the time $t$ in seconds, and the three spin parameters
-$\left( s_x, s_y, s_z \right)$, normalized to
-unity and finally the neutron weight $p$ described in \ref{s:MCtechniques}.
+$\left( s_x, s_y, s_z \right)$, and finally the neutron weight $p$ described in \ref{s:MCtechniques}.
 
 \section{Syntaxical conventions}
 \label{s:syntax}

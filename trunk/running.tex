@@ -1408,10 +1408,12 @@ Single-point monitors output the neutron intensity, the estimated
 error, and the neutron event count as numbers on the
 terminal. (The results from a series of simulations may be combined in a
 data file using the \verb+mcrun+ front-end as explained in
-section~\ref{s:mcrun}, similarly for the integrated intensity on one-
-and two-dimensional monitors).
+section~\ref{s:mcrun}).
 
-Both one- and two-dimensional monitor output by default start with a
+When using one- and two-dimensional monitors, the integrated
+intensities are written to terminal as for the single-point monitor
+type, supplementing file output of the full one- or two-dimensional
+intensity distribution. Both one- and two-dimensional monitor output by default start with a
 header of comment lines, all beginning with the `\verb+#+' character.
 This header gives such information as the name of the instrument used in
 the simulation, the values of any instrument parameters, the name of the
@@ -1490,22 +1492,26 @@ final NeXus format~\cite{nexus_webpage}.
 \index{Parallel computing|textbf}
 \index{MPI|textbf}\index{Grid computing|textbf}\index{mcstas-hosts}
 
-Parallelizing a computation is possible when dependencies between
+Parallelizing a computation is in general possible when dependencies between
   each computation are not too strong. The situation of \MCS\ is
   ideal since each neutron ray can be simulated without interfering with
   other simulated neutron rays. Therefore each neutron ray can be simulated
-  independently on a set of computer.
+  independently on a set of computers.
 
 \MCS\ provides three methods in order to distribute computations on many computers.
 \begin{itemize}
 \item when scanning instrument parameters (using \texttt{mcrun --multi -N}),
   it is possible to distribute each scan step on a list of computers.
 \item when using an homogeneous computer cluster, each simulation (including scan
-  steps) may be computed in parallel using MPI (using \texttt{mcrun --mpi=Nb\_Nodes}). We highly recommand this method which shows excellent performances (but require to install MPI).
-\item when using SMP machines (multi processor machines) \MCS\ may distribute the simulations among CPU's using multi-threading mechanism. Eventhough most systems now support multi-threading (i.e. do not require specific installation), the performances are not as good as with MPI.
+  steps) may be computed in parallel using MPI (using \texttt{mcrun
+    --mpi=Nb\_Nodes}). We highly recommand this method which shows
+  excellent performances (but require the user to install MPI).
+\item when using SMP machines (multi processor machines) \MCS\ may
+  distribute the simulations among CPU's using multi-threading
+  mechanism. Even though most systems now support multi-threading (i.e. do not require specific installation), the performances are not as good as with MPI.
 \end{itemize}
 
-Lats but not least, you may run simulations manually on many machines and merge them afterwards.
+Last but not least, you may run simulations manually on a number of machines and merge them subsequently.
 Once the distributed simulation has been completed, you may merge their results using the \verb+mcformat+ (see section \ref{s:mcformat}) \index{Tools!mcformat} in order to obtain a set of files just as if it had been executed on a single machine.
 
 \subsection{Distribute mcrun scans (ssh grid) - Unix only}
@@ -1537,7 +1543,7 @@ Once the distributed simulation has been completed, you may merge their results 
   {\bf Warning:} This option is considered \emph{experimental} - i.e.,
   you are welcome to use it, but be ready for trouble. Note also that
   this is a unix only option in \texttt{mcgui} and \texttt{mcrun}, it
-  {\bf does not} work on windows.
+  {\bf does not} work on Windows.
 
 \subsection{Parallel computing (MPI)}
 
@@ -1684,16 +1690,16 @@ every node.
 \subsection{McStas/MPI Bugs and limitations}\index{Bugs}
 
 \begin{itemize}
-\item signals are \emph{not} supported while simulating with MPI (since
+\item Signals are \emph{not} supported while simulating with MPI (since
   asynchroneous events cannot be easily transmitted to all nodes). Anyway,
   depending on the MPI implementation, you may force all nodes to synchronize
   and save data using the HUP signal (\verb'kill -HUP mcstasPID').
-\item some header of output files might contain minor errors
-\item the computation split does not take into account the speed or the
+\item Some header of output files might contain minor errors
+\item The computation split does not take into account the speed or the
   load of nodes: the overall time of a distributed computation is
   forced by the slowest node; for optimal performance, the ``cluster''
   should be homogeneous
-\item forcing the random seed while spreading the computation doesn't
+\item Forcing the random seed while spreading the computation doesn't
   work since every node will use identical seeds and will then
   generate identical pseudo-random values
 \item MPI must be correctly configured: if using \verb'ssh', you
