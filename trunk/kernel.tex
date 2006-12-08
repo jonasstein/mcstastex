@@ -329,6 +329,8 @@ definitions or between component and instrument definitions. It is thus
 possible (and usual) to use a component definition multiple times
 in an instrument description.
 
+Beware about variable type conversion when setting numerical parameter values, as in \verb+p1=12/1000+. In this example, the parameter \verb+p1+ will be set to 0 as the division of the two integers is indeed 0. To avoid that, use explicitely floating type numbers as in \verb+p1=12.0/1000+.\index{Bugs}
+
 The \MCS\ compiler will automatically search for a file containing a
 definition of the component if it has not been declared previously. The
 definition is searched for in a file called ``{\it name\/}{\tt .comp}''. See

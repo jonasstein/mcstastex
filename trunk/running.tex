@@ -672,7 +672,7 @@ The user is adviced to be cautious when interpreting the optimization results.
 
 \subsubsection{Using the Simplex method}
 
-The \MCS\ package comes with a Simplex optimization method to find best instrument parameters in order to maximize all or some specified monitor integrated values. It uses the Downhill Simpex Method in Multidimensions~\cite{neldermead} which is a geometric optimization method somewhat similar to genetic algorithms. It is not as fast as the gradient method, but is much more robust.
+The \MCS\ package comes with a Simplex optimization method to find best instrument parameters in order to maximize all or some specified monitor integrated values. It uses the Downhill Simpex Method in Multidimensions~\cite{neldermead,NumRecip} which is a geometric optimization method somewhat similar to genetic algorithms. It is not as fast as the gradient method, but is much more robust.
 
 When using \verb+mcrun+ (section \ref{s:mcrun}), the optimization mode is set by using the
 \verb+--optim+ option or a list of monitors to maximize with as many
@@ -687,13 +687,15 @@ parameter scans. The optimization accuracy criterion is controlled
 using the 'Precision' entry box in the configuration options (See
 Figure \ref{fig:mcgui-choose}. Finally, run the simulation. The optimum
 set of parameters is then printed at the end of the simulation
-process. Your may ask to maximize only given monitors (instead of all) 
+process. Your may ask to maximize only given monitors (instead of all)
 by selecting their component names in the lower lists in the Run Dialog (up to 3).
 
 If you would like to maximize the flux at a given monitor, with some
 divergence constrains, you should for instance simply add a divergence
 collimator before the monitor. Alternatively, write a new component
 that produce the required 'figure-of-merit'.
+
+The optimization search interval constrains the evolution of parameters. It should be chosen carefully. In particular it is safier for it to indeed contain a high signal domain, and be preferably symetric w/r to that maximum.
 
 \subsubsection{Using custom optimization routines}
 The user should write a function script or a program that
@@ -818,7 +820,7 @@ The {\bf File} menu has the following features:
   applicable (improved disk I/O).
   \item One- or three-pane view of your instrument in trace mode when
     using PGPLOT.
-  \item Clustering option (None|MPI|Threads|ssh) 
+  \item Clustering option (None|MPI|Threads|ssh)
   \item Choice of editor to use to when editing instrument files.
   \item Automatic quotation of strings when inserting in the built-in
     editor.
@@ -920,7 +922,7 @@ The meaning of the different fields is as follows:
 \end{itemize}
 \item[\# steps / \# optim] sets the number of simulation to run when
   performing a parameter scan or the number of iterations to
-  perform in optimization mode. 
+  perform in optimization mode.
 \item[Inspect component] (Trace mode) will trace only neutron trajectories that reach a given component (e.g. sample or detector).
 \item[First component] (Trace mode) seletcs the first component to plot (default is first) in order to define a region of interest.
 \item[Last component] (Trace mode) seletcs the last component to plot (default is first) in order to define a region of interest.
