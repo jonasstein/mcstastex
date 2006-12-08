@@ -16,8 +16,8 @@ test instrument: the instrument to test the component
 These instrument files are included in the \MCS\ distribution
 in the \verb+examples/+ directory.
 All the instrument examples there-in may be executed automatically throught the \MCS\ self-test procedure (see section~\ref{s:testing}).
-It is our intention to extend the list of instrument examples extensively
-and perhaps publish them in a separate report.
+The list of instrument examples has been extended considerably, see
+the ``Neutron Site'' menu in mcgui (See page \ref{p:neutronsite}). 
 
 \section{A test instrument for the component V\_sample}
 \label{s:V-instr}
@@ -56,7 +56,7 @@ of the scatting from an evenly illuminated V-sample,
 as seen by a spherical PSD.
 It is interesting to note that the variation in the
 scattering intensity is as large as 10\%. This is an effect
-of attenuation of the beam in the cylindrical sample.
+of anisotropic attenuation of the beam in the cylindrical sample.
 
 \begin{figure}
   \begin{center}
@@ -74,7 +74,8 @@ of attenuation of the beam in the cylindrical sample.
 \label{s:TAS1}
 With this instrument definition, we have tried to create
 a very detailed model of the conventional cold-source
-triple-axis spectrometer TAS1 at the now closed source of Ris\o\ National Laboratory.
+triple-axis spectrometer TAS1 at the now closed neutron source DR3 of
+Ris\o\ National Laboratory. 
 Except for the cold source itself, all components 
 used have quite realistic properties. Furthermore, the overall
 geometry of the instrument has been adapted from
@@ -109,7 +110,7 @@ first order neutrons.  In the instrument definition, we have adapted the
 angle corresponding to 5.0~meV in order to test the simulations against
 measurements performed on the spectrometer.
 
-The exit channel from the monochromator may 
+The width of the exit channel from the monochromator may 
 be narrowed down from initially 40~mm
 to 20~mm by an insert piece. In the simulations, we have chosen
 the 20~mm option and modeled the channel with two slits to match
@@ -153,7 +154,7 @@ in Appendix~\ref{data:TAS1}.
 
 In order to test the \MCS\ package on a qualitative level,
 we have performed a very detailed comparison of a simulation with a
-standard experiment from TAS1, Ris\o . The measurement series
+standard experiment from TAS1. The measurement series
 constitutes a complete alignment of the spectrometer,
 using the direct beam and scattering from V and Al$_2$O$_3$
 samples at an incoming energy of 20.0~meV, using the second order
@@ -166,7 +167,7 @@ absolute intensities. Below, we show a few comparisons
 of the simulations and the measurements. 
 
 Figure \ref{f:2t_direct} shows a scan of 
-$2\theta_s$ on the collimated direct beam in two-axis mode.
+$2\theta_m$ on the collimated direct beam in two-axis mode.
 A \hbox{1 mm} slit is placed on the sample position.
 Both the measured width and non-Gaussian peak shape
 are well reproduced by the \MCS\ simulations.

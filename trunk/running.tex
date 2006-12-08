@@ -70,7 +70,7 @@ see figure~\ref{fig:mcgui}. \index{Tools!mcgui}
 \caption{The graphical user interface \texttt{mcgui}.}
 \label{fig:mcgui}
 \end{figure}
-
+\label{p:neutronsite}
 To load an instrument, select ``Tutorial'' from the ``Neutron site''
 menu and open the file \verb+vanadium_example+. Next, check that the current plotting backend setting
 (select ``Choose backend'' from the ``Simulation'' menu) corresponds
@@ -684,7 +684,8 @@ From \verb+mcgui+ (section \ref{s:mcgui}), one should choose the
 mode). Then speficy the instrument parameters to optimize by
 indicating their variation range 'min,max' (e.g. Lambda=1,4) just like
 parameter scans. The optimization accuracy criterion is controlled
-using the 'prec.' entry box. Finally, run the simulation. The optimum
+using the 'Precision' entry box in the configuration options (See
+Figure \ref{fig:mcgui-choose}. Finally, run the simulation. The optimum
 set of parameters is then printed at the end of the simulation
 process. Your may ask to maximize only given monitors (instead of all) 
 by selecting their component names in the lower lists in the Run Dialog (up to 3).
@@ -823,6 +824,7 @@ The {\bf File} menu has the following features:
     editor.
   \item Possibility to \emph{not} optimize when compiling the
     generated c-code.
+  \item Adjustment of final precision when doing parameter optimization.
 \end{itemize}
 \end{description}
 
@@ -830,7 +832,7 @@ The {\bf File} menu has the following features:
   \begin{center}
     \includegraphics[width=0.3\textwidth]{figures/choose_backend.eps}
   \end{center}
-\caption{The choose backend dialog in \texttt{mcgui}.}
+\caption{The ``configuration options'' dialog in \texttt{mcgui}.}
 \label{fig:mcgui-choose}
 \end{figure}
 
@@ -919,8 +921,6 @@ The meaning of the different fields is as follows:
 \item[\# steps / \# optim] sets the number of simulation to run when
   performing a parameter scan or the number of iterations to
   perform in optimization mode. 
-\item[prec.] sets the required, final precision when in optimization
-  mode. 
 \item[Inspect component] (Trace mode) will trace only neutron trajectories that reach a given component (e.g. sample or detector).
 \item[First component] (Trace mode) seletcs the first component to plot (default is first) in order to define a region of interest.
 \item[Last component] (Trace mode) seletcs the last component to plot (default is first) in order to define a region of interest.
