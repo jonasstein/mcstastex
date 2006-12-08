@@ -1,0 +1,154 @@
+% Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
+
+\chapter{New features in \MCS\ \version\ }
+\label{c:changes}
+
+This version of \MCS\ implements both new features, as well as many bug corrections, especially for the Windows platform. Bugs are reported and traced using the \MCS\ Bugzilla system \cite{mczilla_webpage}. We will not present here an extensive list of corrections, and we let the reader refer to this bug reporting service for details. Only important changes are indicated here.
+
+Of course, we can not garranty that the software is bullet proof, but we do our best to correct bugs, when they are reported.\index{Bugs}
+
+\section{General}
+\label{s:new-features:general}
+\begin{itemize}
+\item  This release is a major step forward for McStas in terms of
+  support for polarisation. Peter Christiansen who worked at Ris\o\
+  March-October 2006 was the main workforce behind this new
+  functionality, backed by funding from ISIS, work by Rob Dalgliesh at
+  ISIS plus inspiration from the VitESS and NISP packages. As this is
+  the first release with polarisation support, the methods and
+  algorithms implemented will certainly bed developed further. Hence,
+  documentation of the functionality has been placed in Appendix
+  \ref{c:polarization} to this manual. Polarisation users: Please give
+  us feedback for further development! Items marked by {\bf(p)} below
+  relate to the new polarisation support. 
+\item New keywords for the meta language improves support for e.g. description of sample enviroments.
+\item A method for automatic optimisation has been implemented, e.g.~for achieving maximum flux at the sample position (any quantity measured by a McStas monitor can be optimised) as a function of simulation parameters.
+\item Bugfixes in many different areas.
+\end{itemize}
+\section{Kernel}
+\label{s:new-features:kernel}
+\index{Kernel}
+
+The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and program). See the dedicated chapter in the {\it User manual} for more details.
+
+\begin{itemize}
+\item New \verb+WHEN+ keyword, conditional use of components,
+  \\\verb+COMPONENT MyComp=Component(...) WHEN (condition) AT+
+\item New \verb+JUMP+ keyword, possibility to iterate a given component a
+  number of times (multiple scattering) or for 'teleportation' to a
+  given component. (USE WITH CAUTION)
+\item Improved \verb+COPY+ keyword with parameter substitution (Make a copy
+  of an other component instance with a few parameters changed)
+\item Spin propagation algorithm (When magnetic field is set 'on', the
+  central propagation routines also handle Larmor precession in the field) {\bf(p)}
+\item Handeling of analytical B-fields {\bf(p)}
+\end{itemize}
+
+\section{Run-time}
+\label{s:new-features:run-time}
+\index{Library!Run-time}
+
+\begin{itemize}
+\item Optmisation support in mcrun/mcgui using Perl::Amoeba (se description above)
+\item \verb+POSIX+ threading on multi-core processors (BEWARE, performance is generally better using MPI)
+\end{itemize}
+
+
+\section{Components and Library}
+\label{s:new-features:components}
+\index{Components} \index{Library!Components}
+
+We here list some of the new components (found in the \MCS\ \verb+lib+ directory)
+which are detailed in the {\it Component manual}, also mentioned in
+the {\it Component Overview} of the {\it User Manual}.
+\subsection{New components}
+\begin{itemize}
+\item Monochromator\_pol.comp - Polarising monochromator/analyzer {\bf(p)}
+\item Pol\_bender.comp - Polarising bender {\bf(p)}
+\item Pol\_mirror.comp - Polarising mirror {\bf(p)}
+\item Pol\_guide\_vmirror.comp - Guide with semi-transparent, polarising mirror {\bf(p)}
+\item Pol\_simpleBfield.comp - Numerical precession in analytical B-fields {\bf(p)}
+\item 3 Polarisation monitors - MeanPolLambda\_monitor.comp, PolLambda\_monitor.comp
+    Pol\_monitor.comp {\bf(p)}
+\item PSD\_Detector.comp - Physical detector - comes with many gas lookup tables 
+    (Contrib: Thorwald van Vuure, ILL)
+\item Virtual\_mcnp\_*.comp - MCNP event file handeling
+    (Contrib: Chama Hennane, ENSIMAG and Emmanuel Farhi, ILL) 
+\item Source\_multi\_surfaces.comp - Source comp with multiple surface areas with individual
+    spectrums (Contrib: Ludovic Giller, EPFL and Uwe Filges, PSI)
+\item multi\_pipe.comp - Defines a 'grid' of slits (focusing device)
+    (Contrib: Uwe Filges, PSI)
+\item Exact\_radial\_coll.comp - Radial collimator comp, exact model
+    (Contrib: Roland Schedler, HMI)
+\item FermiChopper\_ILL.comp  - Fermi Chopper comp with optional
+  supermirror coated blades. (Contrib: Helmut Schober, ILL)
+\item V\_sample enriched with quasi-elastic features (Kim Lefmann)
+\end{itemize}
+\subsection{New example instruments}
+\begin{itemize}
+\item TAS frontend with reciprocal space (hkl) calculator (Emmanuel Farhi)
+\item Example instruments for polarisation comps {\bf(p)}
+\item QUENS\_test.instr (Test of new quasi-elastic features V\_sample)
+\end{itemize}
+\section{Documentation}
+\label{s:new-features:documentation}
+\begin{itemize}
+\item Manual and component manual slightly updated according to
+  adding/modification of components and functionality. 
+\item New appendix on the polarisation features. {\bf(p)}
+\end{itemize}
+
+\section{Tools, installation}
+\label{s:new-features:tools}
+\index{Tools}
+\index{Installing}
+\subsection{New tools} 
+\begin{itemize}
+\item New 'merge/convert' tool mcformat: Convert between McStas output formats and merge cluster
+    node datasets into one dataset.
+\item TOF mode for mcdisplay (Statistical chopper acceptance diagrams generated from the simulated
+    neutron rays. Currently only supported on Unix systems with PGPLOT.)
+\end{itemize}
+\subsection{Installation}
+\begin{itemize}
+\item Much easier installation on Windows, single executable file with all support applications
+    is now available. Simply click 'next' alle the way and you are done.
+\item PGPLOT and Scilab installation help tools on Linux systems
+\end{itemize}
+Details about the installation and the available tools are given in chapter \ref{installing}.
+
+\section{Future extensions}
+\label{s:future}
+The following features are planned for the oncoming releases of \MCS\ 
+(not an ordered list):
+\begin{itemize}
+\item Increased validation and testing.
+\item Extend test cases to all (most) components. One instrument
+  pr. component. (Probably not in \verb+examples/+.
+\item Better support for heterogeneous grid computing.
+\item Improvements to the NeXus data format (initial support is
+  already included).
+\item Updates to mcresplot to support the Matlab and Scilab backends.
+\item Compatibility issues with recent Perl releases on Windows.
+\item Compatibility issues with the next release of Scilab.
+\item Global changes of components relating to polarisation
+  visualisation.
+\item Visualisation of neutron spins in magnetic fields for all
+  graphical backends.
+\item \emph{Array} \verb+AT+ specifiers for components, i.e. \\
+  \verb+COMPONENT MyComp=Comp(...)+\\\verb+AT([Xarray],[Yarray],[Zarray])+ and\\
+  \verb+AT Positions('filename')+
+\item Gui support for array AT specifiers.
+\item More complete polarisation support including numerically defined
+  magnetic fields and advanced sample components.
+\item Perl plotting alternative to PGPLOT.
+\item Larger variety of sample components.
+\end{itemize}
+
+
+
+
+
+
+
+
