@@ -418,8 +418,9 @@ It is also possible to create and read \textit{Vitess} and \textit{Tripoli4}
 neutron event files using components
 \begin{itemize}
 \item \verb+Vitess_input+ and \verb+Vitess_output+
-\item \verb+Tripoli_input+ and \verb+Tripoli_output+
-\end{itemize}\index{Vitess} \index{Tripoli}
+\item \verb+Virtual_tripoli4_input+ and \verb+Virtual_tripoli4_output+
+\item \verb+Virtual_mcnp_input+ and \verb+Virtual_mcnp_output+
+\end{itemize}\index{Vitess} \index{Tripoli} \index{MCNP}
 
 Additionally, adding the \texttt{raw} keyword to the FORMAT will produce raw $[N, p, p^2]$ data sets instead of $[N, p, \sigma]$ (see Section \ref{s:staterror}). The former representation is fully additive, and thus enables to add results from separate simulations (e.g. when using a computer Grid).
 
@@ -443,7 +444,7 @@ and for IDL
 \end{verbatim} \index{Tools!IDL}
 See section~\ref{s:mcplot} for an other way of plotting simulation results using the \verb+mcplot+ front-end.\index{Tools!mcplot} \index{Tools!mcplot}
 
-When choosing the HTML format, the simulation results are saved as a web page, whereas the monitor data files are saved as VRML files, displayed within the web page.\index{Tools!VRML/openGL}
+When choosing the HTML format, the simulation results are saved as a web page, whereas the monitor data files are saved as VRML files, displayed within the web page.\index{Tools!VRML/OpenGL}
 
 \begin{table}
   \begin{center}
@@ -565,13 +566,13 @@ When choosing the HTML format, the simulation results are saved as a web page, w
       \texttt{IDL} & .pro & IDL format. {\em Must} be used with -f option. \\
       \texttt{IDL\_binary} & & IDL format with external binary files (may be used with -d option). (-a option implicitly set) \\
       \texttt{XML} & .xml & XML/NeXus format (may be used with -f and -d options). \\
-      \texttt{HTML} & .html & HTML format (generates a web page, may be used with -f and -d options). Data files are saved as VRML objects (openGL). \\
+      \texttt{HTML} & .html & HTML format (generates a web page, may be used with -f and -d options). Data files are saved as VRML objects (OpenGL). \\
       \texttt{VRML} & .wrl & Virtual Reality file format for data files. Simulation files are not saved properly, and the HTML format should be used preferably. \\
       {\it Tripoli} &  & \hbox{Tripoli 4 neutron events file format.} \hbox{Use
-        \verb+Virtual_tripoli4_input+/\verb+Virtual_tripoli4_output+} components. \\
+        \verb+Virtual_tripoli4_input+/\verb+Virtual_tripoli4_output+} components. \index{Tripoli}\\
       {\it MCNP} &  & \hbox{MCNP PTRAC neutron events file format.} \hbox{Use
-        \verb+Virtual_mcnp_input+/\verb+Virtual_mcnp_output+} components. \\
-      {\it Vitess} &  & \hbox{Vitess neutron events file format.} \hbox{Use \verb+Vitess_input+/\verb+Vitess_output+ components. }\\
+        \verb+Virtual_mcnp_input+/\verb+Virtual_mcnp_output+} components. \index{MCNP}\\
+      {\it Vitess} &  & \hbox{Vitess neutron events file format.} \hbox{Use \verb+Vitess_input+/\verb+Vitess_output+ components. } \index{Vitess}\\
       {\it McStas events} & & \hbox{McStas event files in text or binary
       format.} \hbox{Use \verb+Virtual_input+/\verb+Virtual_output+ components.} \\
       \hline
@@ -1179,7 +1180,7 @@ require the Perl+PGPLOT, and either Scilab or Matlab to be installed. \index{Too
 
 \paragraph{VRML/OpenGL back-ends}
 
-When using the \verb+-pVRML+ option, the instrument is shown in Virtual Reality (using openGL). You may then walk aside instrument, or go inside elements following neutron trajectories.
+When using the \verb+-pVRML+ option, the instrument is shown in Virtual Reality (using OpenGL). You may then walk aside instrument, or go inside elements following neutron trajectories.
 
 \subsection{Plotting the results of a simulation (mcplot)}
 \label{s:mcplot}
@@ -1366,7 +1367,7 @@ If you have been running a \MCS\ simulation with a given text format output, but
 \begin{quote}
   \texttt{mcformat {\it file | dir} -d {\it target\_dir} --format=TARGET\_FORMAT}
 \end{quote}
-to translate files into format FORMAT. When given a directory, the translation works recursively. The conversion works only for text files. Some problems may be found when translating from HTML/VRML data files, or from binary files.\index{Tools!VRML/openGL}
+to translate files into format FORMAT. When given a directory, the translation works recursively. The conversion works only for text files. Some problems may be found when translating from HTML/VRML data files, or from binary files.\index{Tools!VRML/OpenGL}
 
 The \verb+--merge+ option may be used to merge similar files, e.g. obtained from grid systems, just as if a longer run was achieved.
 

@@ -58,6 +58,10 @@ Source\_div &          Continuous neutron source with a specified Gaussian diver
 Source\_simple &  A simple, continuous circular neutron source with flat energy/wavelength spectrum.\\
 Source\_gen     &    General, continuous neutron source with tunable shape, spectrum,
                      and divergence. \\
+Virtual\_input &  Source-like component that reads neutron events
+                  from an ascii/binary 'virtual source' file (recorded by Virtual\_output). \\
+Virtual\_output &  Detector-like component that writes neutron state
+                   (for use in Virtual\_input). \\
       \hline
     \end{tabular}
     \caption{Source and source-related components of the \MCS\ library.}
@@ -75,12 +79,12 @@ Source\_gen     &    General, continuous neutron source with tunable shape, spec
       \hline
        {\bf MCSTAS/optics} & Description \\
        \hline
-Arm                &  Arm/optical bench. \\
+ Arm                &  Arm/optical bench. \\
  Beamstop          &   Rectangular/circular beam stop. \\
  Bender            &  A curved neutron guide (shown straight in \verb+mcdisplay+). \\
- Chopper           &   Disk chopper. \\
  Collimator\_linear &  A simple analytical Soller collimator. \\
  Collimator\_radial &  A radial Soller collimator.\\
+ DiskChopper           &   Disk chopper. \\
  FermiChopper      &  Fermi Chopper with rotating-frame calculations. \\
  Filter\_gen        &   This components may either set the flux
                       or change it (filter-like), using
@@ -97,6 +101,10 @@ Arm                &  Arm/optical bench. \\
                       slabs with anisotropic Gaussian mosaic. \\
  Monochromator\_flat &  Flat Monochromator crystal with
                       anisotropic Gaussian mosaic. \\
+ Pol\_bender & Polarising bender. \\
+ Pol\_guide\_vmirror & Guide with semi-transparent, polarising mirror. \\
+ Pol\_mirror        & Polarising mirror \\
+ Pol\_simpleBfield  & Numerical precession in analytical B-fields. \\
  Selector            & A velocity selector (helical lamella type) such as
                       V\_selector component. \\
  Slit                & Rectangular/circular
@@ -121,8 +129,8 @@ Arm                &  Arm/optical bench. \\
        \hline
   Isotropic\_Sqw & A general S(q,$\omega$) scatterer with multiple scattering, for liquids, powders, glasses, polymers. May be concentrically arranged. Coherent/incoherent, elastic/inelastic scattering. \\
   Phonon\_simple   & Single-crystal sample with acoustic isotropic phonons (simple). \\
-%  Powder1      &  General powder sample with a single
-%                scattering vector. \\
+  Powder1      &  General powder sample with a single
+                scattering vector. \\
 %  Powder2      &  General powder sample with two
 %                scattering vectors. \\
   PowderN      &  General powder sample with N
@@ -132,6 +140,12 @@ Arm                &  Arm/optical bench. \\
                     using a data file. \\
   V\_sample      & Vanadium sample, or other incoherent
   scatterer. Optional quasielastic broadening.\\ \hline
+
+    Res\_sample   & Sample-like component for resolution function calculation. \\
+  TOF\_Res\_sample   & Sample-like component for resolution function calculation in TOF instruments. \\
+Res\_monitor      &   Monitor for resolution function calculations \\
+TOF\_Res\_monitor      &   Monitor for resolution function calculations
+                        for TOF instruments \\ \hline
     \end{tabular}
     \caption{Sample components of the \MCS\ library.}
     \label{t:comp-samples}
@@ -178,7 +192,7 @@ TOF\_monitor     &    Rectangular Time-of-flight monitor. \\
 %                    time binning. \\
       \hline
     \end{tabular}
-    \caption{Monitor components of the \MCS\ library.}
+    \caption{Selected Monitor components of the \MCS\ library.}
     \label{t:comp-monitors}
     \index{Library!Components!monitors}
     }
@@ -194,15 +208,8 @@ TOF\_monitor     &    Rectangular Time-of-flight monitor. \\
        \hline
  Progress\_bar     &  Displays status of a running simulation.
                       May also trigger intermediate SAVE.\\
-  Res\_sample   & Sample-like component for resolution function calculation. \\
-  TOF\_Res\_sample   & Sample-like component for resolution function calculation in TOF instruments. \\
-Res\_monitor      &   Monitor for resolution function calculations \\
-TOF\_Res\_monitor      &   Monitor for resolution function calculations
-                        for TOF instruments \\
-Virtual\_input &  Source-like component that reads neutron events
-                  from an ascii/binary 'virtual source' file (recorded by Virtual\_output). \\
-Virtual\_output &  Detector-like component that writes neutron state
-                   (for use in Virtual\_input). \\
+ Beam\_spy         & A monitor that displays mean statistics (no output file). \\
+ Set\_pol          & sets polarisation vector. \\
  Vitess\_input     &   Read neutron state parameters from a VITESS neutron file.\\
  Vitess\_output    &  Write neutron state parameters to a VITESS neutron file.\\
       \hline
@@ -223,6 +230,8 @@ Virtual\_output &  Detector-like component that writes neutron state
        \hline
  Al\_window     &         Aluminium transmission window. \\
  Collimator\_ROC   &      Radial Oscillating Collimator (ROC). \\
+ Exact\_radial\_coll &      Radial collimator. \\
+ FermiChopper\_ILL &       Fermi Chopper with rotating frame and SM coating (straight). \\
  Filter\_graphite  &      Pyrolytic graphite filter (analytical model). \\
  Filter\_powder   &       Box-shaped powder
                         filter based on Single\_crystal (unstable). \\
@@ -233,9 +242,14 @@ Virtual\_output &  Detector-like component that writes neutron state
  He3\_cell    &           Polarised 3He cell. \\
  ISIS\_moderator    &     ISIS Target 1 and 2 moderator models based on MCNP calculations. \\
  Monochromator\_2foc   &  Doubly bent monochromator with multiple slabs. \\
+ multi\_pipe       & a multi pipe slit (for SANS). \\
+ PSD\_Detector  & Realistic detector model, with gas effects. \\
  PSD\_monitor\_rad & A banana PSD monitor. \\
  SiC           &         SiC multilayer sample for reflectivity simulations. \\
  SNS\_source    & SNS moderator models based on MCNP calculations. \\
+ Source\_multi\_surfaces & An array of sources described from spectrum tables. \\
+ Virtual\_mcnp\_input & Reads a PTRAC neutron events file from MCNP. \\
+ Virtual\_mcnp\_output& Writes a PTRAC neutron events file for MCNP. \\
  Virtual\_tripoli4\_input & Reads a 'Batch' neutron events file from Tripoli 4. \\
  Virtual\_tripoli4\_output& Writes a 'Batch' neutron events file for Tripoli 4. \\
       \hline
