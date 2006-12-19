@@ -196,7 +196,7 @@ example of \texttt{\%include}, see the monitors/Monitor\_nD component.
 
 If the instrument description compilation fails, check that the
 keywords syntax is correct, that no semi-colon \verb+;+ sign is
-missing (e.g. in C blocks and after an ABSORB macros), and there are no name conflicts between instrument and component instances variables.\index{Can not compile}
+missing (e.g. in C blocks and after an ABSORB macro), and there are no name conflicts between instrument and component instances variables.\index{Can not compile}
 
 
 \section{Writing instrument definitions}
@@ -479,30 +479,8 @@ macro\index{Library!Run-time!SCATTER}). The selected component acts on
 the neutron ray, and the rest of the group is skipped. Such groups are thus exclusive (only one of the elements is active).
 If no component of the group could intercept the neutron ray, it is
 ABSORBed. If you wish not to absorb these neutrons, you may end each
-group by a large monitor or another dummy component, which will eventually catch neutrons that were not caught by previous components of the group.
-
-It is sometimes desirable to modify an existing component of the \MCS\ library. One would usually make a copy of the component, and extend the code of its \texttt{TRACE} section. \MCS\ provides an easy way to change the behaviour of existing components in an instrument definition without duplicating files, using the \texttt{EXTEND} modifier \index{Keyword!EXTEND} (after the AT-ROTATED and optional GROUP)
-\begin{quote}
-  \texttt{EXTEND} \\
-  \verb|%{| \\
-  \hbox to 3em{}\ldots C code executed after the component TRACE section \ldots \\
-  \verb|%}|
-\end{quote} \index{Embedded C code}
-The embeded C code is appended at the end of the component \texttt{TRACE} section, and all its internal variables (as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters) may be used. It thus behave as a 'plug-in' for the component TRACE.
-This component instance modifier is of course optional.
-
-
-As an example for EXTEND, Sources are special components that set the neutron STATE parameters
-(e.g. position, time, velocity and initial weight) and are usually positioned at the very beginning of the
-TRACE section. As a default, neutrons are defined at the origin, with
-zero time and speed. As a consequence, the time spread is zero. Most sources components only set the position and velocity, but do not set the time of the created neutrons. You may manually set the neutron time spreading (for e.g. Time of Flight instruments) in an \verb+EXTEND+ code section such as:
-\begin{quote}
-  \texttt{COMPONENT} $\textit{MySource} = \textit{source}(\ldots)$ \texttt{AT}(\ldots) \texttt{EXTEND} \\
-  \hbox to 1em{} \verb|%{| \\
-  \hbox to 3em{} \verb+t = randpm1()*10e-6;+ \\
-  \hbox to 1em{} \verb|%}|
-\end{quote}
-This will set the time randomly between -10 and 10 $\mu$-seconds.
+group by a large monitor or another dummy component (e.g. an Arm
+component \verb+EXTEND+ed by a \verb+SCATTER+ keyword)This will set the time randomly between -10 and 10 $\mu$s
 
 
 Within a \texttt{GROUP}, \emph{all} \texttt{EXTEND} sections of the group are executed. In order to discriminate components that are active from those that are skipped, one may use the SCATTERED flag, which is set to zero when entering each component or group, and incremented when the neutron is SCATTERed, as in the following example \index{Library!Run-time!SCATTER} \index{Library!Run-time!SCATTERED}
@@ -547,7 +525,11 @@ In the case where there are many duplicated components all originating from the 
 \begin{quote}
   \texttt{COMPONENT} \texttt{COPY}(root\_name) = \texttt{COPY}(instance\_name)
 \end{quote}
-will catenate a unique number to {\it root\_name}, avoiding name conflicts. As a side effect, refering this component instance (for e.g. further positioning) is not straight forward as the name is determined by \MCS\ and does not depend completely on the user's choice, eventhough the PREVIOUS keyword may still be used. We thus recommand to use this naming mechanism only for components which should not be refered to in the instrument.
+will catenate a unique number to {\it root\_name}, avoiding name
+conflicts. As a side effect, refering this component instance (for
+e.g. further positioning) is not straight forward as the name is
+determined by \MCS\ and does not depend completely on the user's
+choice, even though the PREVIOUS keyword may still be used. We thus recommand to use this naming mechanism only for components which should not be refered to in the instrument.
 
 This automatic naming may be used anywhere in the TRACE section of the instrument, so that all components which do not need further refering may be labeled as COPY(Origin).
 
@@ -574,7 +556,7 @@ COMPONENT CG_Out = Arm() AT (0,0,L/n) RELATIVE PREVIOUS
 \index{Keyword!WHEN}
 \label{s:instrdefs-extend-when}
 
-One of the most usefull features of the extended \MCS\ syntax is the conditional \texttt{WHEN} modifier. This optional keyword comes before the AT-ROTATED positioning. It basically enables the component only when a given condition is true (non null).
+One of the most useful features of the extended \MCS\ syntax is the conditional \texttt{WHEN} modifier. This optional keyword comes before the AT-ROTATED positioning. It basically enables the component only when a given condition is true (non null).
 
 \begin{quote}
   \texttt{COMPONENT} $\textit{name} = \textit{comp}(p_1 = e_1, p_2 = e_2, \ldots)$
@@ -584,7 +566,7 @@ The condition has the same scope as the EXTEND modifier, i.e. may use component 
 
 Usage examples could be to have specific monitors only sensitive to selected processes, or to have components which are only present under given circonstances (e.g. removable guide or radial collimator), or to select a sample among a set of choices.
 
-In the following example, an EXTEND block defines sets a condition when a scattering event is encoutered, and the following monitor is then activated.
+In the following example, an EXTEND block sets a condition when a scattering event is encoutered, and the following monitor is then activated.
 \begin{verbatim}
 COMPONENT Sample = V_sample(...) AT ...
   EXTEND
@@ -649,7 +631,9 @@ Similarly to the \texttt{WHEN} modifier (see section \ref{s:instrdefs-extend-whe
 
 It is \emph{not} recommanded to use the \verb+JUMP+ inside \verb+GROUP+s, as the JUMP condition/counter applies to the component instance within its group.
 
-We would like to emphasize the potential errors originating from such jumps. Indeed, imbricating many jumps may lead to situations were it is difficult to understand what is going on. We thus recommand the usage of JUMPs only for experienced and cautious users.\index{Bugs}
+We would like to emphasize the potential errors originating from such
+jumps. Indeed, imbricating many jumps may lead to situations were it
+is difficult to understand the flow of the simulation. We thus recommand the usage of JUMPs only for experienced and cautious users.\index{Bugs}
 
 \section{Writing component definitions}
 \label{s:compdefs}
@@ -676,7 +660,6 @@ for
 \item coordinate retrieval and operations
 \item file generation routines (for monitors),
 \item data file reading
-\item \ldots
 \end{itemize}
 
 %A component definition looks as follows:
@@ -871,10 +854,10 @@ or from other components. This particular example is outdated since
 \index{Keyword!SHARE}
 
 The \texttt{SHARE} section has the same role as \texttt{DECLARE} except that when using more than one instance of the component, it is inserted \emph{only once} in the simulation code. No occurence of the items to be shared should be in the \texttt{OUTPUT} parameter list (not to have \MCS\ rename the identifiers).
-This is particularly useful when using many instances of the same component (for instance guide elements). If the declarations were in the \texttt{DECLARE} section, \MCS\ would duplicates it for each instance (making the simulation code longer).
+This is particularly useful when using many instances of the same component (for instance guide elements). If the declarations were in the \texttt{DECLARE} section, \MCS\ would duplicate it for each instance (making the simulation code longer).
 A typical example is to have shared variables, functions, type and structure definitions that may be used from the component \texttt{TRACE} section. For an
 example of \texttt{SHARE}, see the samples/Single\_crystal
-component. The \verb+%include ''file''+ keyword may be used to import
+component. The \verb+%include "file"+ keyword may be used to import
 a shared library. The \texttt{SHARE} section is optional.
 
 \subsection{The \texttt{INITIALIZE} section}
@@ -943,7 +926,7 @@ component. \index{Library!Run-time!SCATTER}
 \end{quote}
 This gives code that will be executed when the simulation is requested to save data, for instance when receiving a USR2 signal (on Unix systems, see section~\ref{s:run-sim}), or when triggered by the \texttt{Progress\_bar(flag\_save=1)} component.
 This might be used by monitors and detectors in order to write results.
-An extension depending on the selected output format (see~\ref{t:formatoptions} and section~\ref{s:run-sim}) is automatically appended to file names, if these latter do not contain extension.
+An extension depending on the selected output format (see table~\ref{t:formatoptions} and section~\ref{s:run-sim}) is automatically appended to file names, if these latter do not contain extension.
 
 In order to work properly with the common output file format used in
 \MCS, all monitor/detector components should use standard macros for
@@ -1190,7 +1173,7 @@ height}. Depending on {\it plane} the width and height are defined as:\\
 
 The {\tt box} command takes the following form:
 \begin{quote}
-  \texttt{box($x$, $y$, $z$, {\it xwidth}, {\it yheight}), {\it zlength})}
+  \texttt{box($x$, $y$, $z$, {\it xwidth}, {\it yheight}, {\it zlength})}
 \end{quote}
 The command draws a box with the center at $(x, y, z)$ and the size {\it xwidth} $\times$ {\it yheight} $\times$ {\it zlength}.
 
@@ -1269,7 +1252,7 @@ On the other hand, if you do not derive a component as a whole from a parent, yo
   \texttt{TRACE} \texttt{COPY} {\it parent3}
 \end{quote}
 
-This mechanism may lighter the component code, but a special care should be taken in mixing bits from different sources, specially concerning variables. This may result in difficulties to compile components.\index{Can not compile}
+This mechanism may lighten the component code, but a special care should be taken in mixing bits from different sources, specially concerning variables. This may result in difficulties to compile components.\index{Can not compile}
 
 \section{McDoc, the McStas library documentation tool}
 \label{s:mcdoc}
