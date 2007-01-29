@@ -307,10 +307,10 @@ The NeXus format~\cite{nexus_webpage} requires to link the simulation to additio
   \verb|%{| \\
   \hbox to 3em{}\ldots C initializations. \ldots \\
   \verb|%}|
-  \verb+NEXUS {filename} {HDF [4|5|XML]}+
+  \verb+NEXUS {filename} {HDF ["4"|"5"|"XML"]}+
 \end{quote}
 
-The optional {\it filename} is the name of the output data file. If not present, the filename is automatically built from the instrument name and a time stamp. The extension is added automatically, if not present. Additionally, it is possible to set the type of NeXus file with the \verb+HDF+ modifier, either 4, 5 or XML.
+The optional {\it filename} is the name of the output data file. If not present, the filename is automatically built from the instrument name and a time stamp. The extension is added automatically, if not present. Additionally, it is possible to set the type of NeXus file with the \verb+HDF+ modifier, either "4", "5" or "XML".
 
 Then, the output format is chosen as usual with the \verb+--format=NeXus+ option when launching the simulation. All output files are stored in the {\it filename}, as well as the instrument itself. Other formats are still available. When run on a distributed system (e.g. MPI), detectors are gathered, but list of events (see e.g. component Virtual\_output) are stored as one data set per node.
 
