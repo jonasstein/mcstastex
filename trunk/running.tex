@@ -387,7 +387,7 @@ placed instead in a newly created directory \textit{dir} (to prevent overwriting
 previous results an error message is given if the directory already exists).
 Alternatively, all output may be written to a single file \textit{file} using
 the \verb+--file=+\textit{file} or \verb+-f+\textit{file} option (which should
-probably be avoided when saving in binary format, see below).
+probably be avoided when saving in binary format, see below). If the \verb+file+ is given as \verb+NULL+, the file name is automatically built from the instrument name and a time stamp. The default file name is \verb+mcstas+ followed by appropriate extension.
 
 The complete list of options
 and arguments accepted by \MCS\ simulations appears in
@@ -404,7 +404,7 @@ turned off using the \verb+--data-only+ or \verb+-a+ option.
 The format of the output files from \MCS\ simulations is described in
 more detail in section~\ref{s:analyze}. It may be chosen either with \verb+--format=FORMAT+ for each simulation or globally by setting the MCSTAS\_FORMAT environment variable. \index{Environment variable!MCSTAS\_FORMAT}
 The available format list is obtained using the \verb+name.out --help+ option, and shown in Table~\ref{t:formatoptions}. \index{Tools!PGPLOT} \index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!VRML/OpenGL} \index{Tools!HTML} \index{Data formats}
-\MCS\ can presently generate many formats, including the original \MCS /PGPLOT and the new Scilab and Matlab formats. All formats, except the \MCS /PGPLOT, may eventually support binary files, which are much smaller and faster to import, but are platform dependent. The simulation data file extensions are appended automatically, depending on the format, if the file names do not contain any. Binary files are particularly recommanded for the IDL format (e.g. \verb+--format=IDL_binary+), and the Matlab and Scilab format when handling large detectors (e.g. more than 50x50 bins). For example:
+\MCS\ can presently generate many formats, including the original \MCS /PGPLOT and the Scilab and Matlab formats. All formats, except the \MCS /PGPLOT, may eventually support binary files, which are much smaller and faster to import, but are platform dependent. The simulation data file extensions are appended automatically, depending on the format, if the file names do not contain any. Binary files are particularly recommanded for the IDL format (e.g. \verb+--format=IDL_binary+), and the Matlab and Scilab format when handling large detectors (e.g. more than 50x50 bins). For example:
 \begin{verbatim}
     ./vanadium_example.out ROT=90 --format="Scilab_binary"
 \end{verbatim}
@@ -414,7 +414,7 @@ or more generally (for bash/Bourne shell users)
     ./vanadium_example.out ROT=90
 \end{verbatim}
 
-It is also possible to create and read \textit{Vitess} and \textit{Tripoli4}
+It is also possible to create and read \textit{Vitess}, \textit{MCNP/PTRAC} and \textit{Tripoli4/batch}
 neutron event files using components
 \begin{itemize}
 \item \verb+Vitess_input+ and \verb+Vitess_output+
@@ -422,7 +422,7 @@ neutron event files using components
 \item \verb+Virtual_mcnp_input+ and \verb+Virtual_mcnp_output+
 \end{itemize}\index{Vitess} \index{Tripoli} \index{MCNP}
 
-Additionally, adding the \texttt{raw} keyword to the FORMAT will produce raw $[N, p, p^2]$ data sets instead of $[N, p, \sigma]$ (see Section \ref{s:staterror}). The former representation is fully additive, and thus enables to add results from separate simulations (e.g. when using a computer Grid).
+Additionally, adding the \texttt{raw} keyword to the FORMAT will produce raw $[N, p, p^2]$ data sets instead of $[N, p, \sigma]$ (see Section \ref{s:staterror}). The former representation is fully additive, and thus enables to add results from separate simulations (e.g. when using a computer Grid - which is automated in the \verb+mcformat+ tool). Other format acceptable format modifiers are \verb+transpose+ to transpose data matrices and \verb+append+ to catenate data to existing files.
 
 \subsection{Basic import and plot of results}
 \label{s:run-format}
@@ -568,7 +568,7 @@ When choosing the HTML format, the simulation results are saved as a web page, w
       \texttt{XML} & .xml & XML format, NeXus-like (may be used with -f and -d options). \\
       \texttt{HTML} & .html & HTML format (generates a web page, may be used with -f and -d options). Data files are saved as VRML objects (OpenGL). \\
       \texttt{VRML} & .wrl & Virtual Reality file format for data files. Simulation files are not saved properly, and the HTML format should be used preferably. \\
-      \texttt{NeXus} & .nx5 & NeXus data files (HDF). All simulation results are stored in a unique compressed binary file. This format requires to have NeXus installed, and to use NEXUS after the INITIALIZE keyword in the instrument decription.\\
+      \texttt{NeXus} & .nxs & NeXus data files (HDF). All simulation results are stored in a unique compressed binary file. This format requires to have NeXus installed.\\
       {\it Tripoli} &  & \hbox{Tripoli 4 neutron events file format.} \hbox{Use
         \verb+Virtual_tripoli4_input+/\verb+Virtual_tripoli4_output+} components. \index{Tripoli}\\
       {\it MCNP} &  & \hbox{MCNP PTRAC neutron events file format.} \hbox{Use
@@ -578,7 +578,7 @@ When choosing the HTML format, the simulation results are saved as a web page, w
       format.} \hbox{Use \verb+Virtual_input+/\verb+Virtual_output+ components.} \\
       \hline
     \end{tabular}
-    \caption{Available formats supported by \MCS\ simulations.}
+    \caption{Available formats supported by \MCS\ simulations. Format modifiers include \verb+binary+, \verb+raw+, \verb+transpose+, \verb+append+.}
     \label{t:formatoptions}
     }
   \end{center}
@@ -665,7 +665,7 @@ There are various ways to speed up simulations
 \end{itemize}
 
 \subsection{Optimizing instrument parameters}
-\label{s:optimize}
+\label{s:optimize}\index{Parameters!Optimization}
 Often, the user may wish to optimize the parameters of a simulation (e.g. find the optimal curvature of a monochromator, or the best geometry of a given component).
 
 The choice of the optimization routine, of the simulation quality
@@ -685,8 +685,8 @@ may be changed with the \verb+--optim-prec=accuracy+ option.
 From \verb+mcgui+ (section \ref{s:mcgui}), one should choose the
 'Optimization' execution mode (instead of the Simulation or Trace
 mode). Then speficy the instrument parameters to optimize by
-indicating their variation range 'min,max' (e.g. Lambda=1,4) just like
-parameter scans. The optimization accuracy criterion is controlled
+indicating their variation range \verb+param=min,max+ (e.g. Lambda=1,4) just like
+parameter scans. Optionally, the starting guess value might be given with the syntax \verb+param=min,guess,max+. The optimization accuracy criterion is controlled
 using the 'Precision' entry box in the configuration options (See
 Figure \ref{fig:mcgui-choose}. Finally, run the simulation. The optimum
 set of parameters is then printed at the end of the simulation
@@ -793,8 +793,10 @@ The {\bf File} menu has the following features:
 \item[Compile instrument] forces a recompile of the instrument
   definition, regardless of file dates. This is for example useful to
   pick up changes in component definitions, which the front-end will not
-  notice automatically. See section~\ref{s:install} for how to override
+  notice automatically. This might also be required when choosing MPI \index{MPI|textbf} and NeXus options \index{Tools!NeXus}. See section~\ref{s:install} for how to override
   default C compiler options.
+\item[Save log file] saves the text in the window showing output of
+  compilations and simulations into a file.
 \item[Clear output] erases all text in the window showing output of
   compilations and simulations.
 \item[Quit] exits the graphical user interface front-end.
@@ -821,7 +823,7 @@ The {\bf File} menu has the following features:
   applicable (improved disk I/O).
   \item One- or three-pane view of your instrument in trace mode when
     using PGPLOT.
-  \item Clustering option (None|MPI|Threads|ssh)
+  \item Clustering option (None|MPI|ssh)
   \item Choice of editor to use to when editing instrument files.
   \item Automatic quotation of strings when inserting in the built-in
     editor.
@@ -864,6 +866,8 @@ Windows.
 \item[Current instrument info] generates a description web-page of the current edited instrument.
 \item[Test \MCS\ installtion] launches a self test procedure to check that the \MCS\ package is installed properly, generates accurate results, and may use the plotter to display the results.
 \item[Generate component index] (re-)generates locally the component \verb+index.html+.
+\item[Shortcut keys] displays the shortcut keys used for running and editing instruments.
+\item[Install DSA key] This item will install a DSA key to be used by ssh clustering and MPI (see Section \ref{s:run-mpi}).
 
 \end{description}
 
@@ -890,7 +894,7 @@ The meaning of the different fields is as follows:
   the input parameters of the instrument. The type of each instrument
   parameter is given in parenthesis after each name. Floating point
   numbers are denoted by (D) (for the C type ``\verb+double+''), (I)
-  denotes integer parameters, and (S) denotes strings. For parameter scans, enter the minimum and maximum values to scan, separated by a comma, e.g. \verb+1,10+ and do not forget to set the {\bf \# Scanpoints} to more than 1.
+  denotes integer parameters, and (S) denotes strings. For parameter scans and optimizations, enter the minimum and maximum values to scan/optimize, separated by a comma, e.g. \verb+1,10+ and do not forget to set the {\bf \# Scanpoints} to more than 1.
 \item[Output to] allows the entry of a directory for storage of the
   resulting data files in (like the \verb+--dir+ option). If no name is
   given, the results are stored in the current directory, to be overwritten
@@ -898,16 +902,8 @@ The meaning of the different fields is as follows:
 \item[Force] Forces to overwrite existing data files
 \item[Neutron count] sets the number of neutron rays to
   simulate (the \verb+--ncount+ option).
-  \item[Gravity] Activates gravitation handling. Be aware that not all
+\item[Gravity] Activates gravitation handling. Be aware that not all
     components support the use of gravitation.
-\item[Distribute mcrun scans (grid)] activates the distribution of the scan
-  steps over a computer grid, using an \texttt{ssh} mechanism.
-  See section~\ref{s:run-mpi} on parallel computing for more informations
-  about how to define and access the grid. This options is only visible if MPI/ssh is available.
-\item[Plot results] -- if checked, the \verb+mcplot+ front-end will be run
-  after the simulation has finished, and the plot dialog will appear
-  (see below).
-\item[Format] The data file format can be changed the same way as in the ``Simulation/Configuration options''.
 \item[Random seed/Set seed to] selects between using a random seed (different
   in each simulation) for the random number generator, or using a fixed
   seed (to reproduce results for debugging).
@@ -920,13 +916,22 @@ The meaning of the different fields is as follows:
     neutrons through the instrument
   \item Optimize: find the optimum value of the simulation parameters
     in the given ranges (see section \ref{s:optimize}).
+  \item Backgrounding (bg): Simulate or Optimize in the background.
 \end{itemize}
 \item[\# steps / \# optim] sets the number of simulation to run when
   performing a parameter scan or the number of iterations to
   perform in optimization mode.
+\item[Plot results] -- if checked, the \verb+mcplot+ front-end will be run
+  after the simulation has finished, and the plot dialog will appear
+  (see below).
+\item[Format] quick selection of output format. Binary mode may be checked from the ``Simulation/Configuration options'' dialog box.
+\item[Clustering method] selects the mechanism to be used for running on grids and clusters.
+  See section~\ref{s:run-mpi} on parallel computing for more informations.
+\item[Number of nodes] sets the number of nodes to use for MPI/ssh clustering.
 \item[Inspect component] (Trace mode) will trace only neutron trajectories that reach a given component (e.g. sample or detector).
 \item[First component] (Trace mode) seletcs the first component to plot (default is first) in order to define a region of interest.
 \item[Last component] (Trace mode) seletcs the last component to plot (default is first) in order to define a region of interest.
+\item[Maximize monitor] (Optimization mode) seletcs up to three monitors which integral value should be maximized, varying instrument parameters. If non is selected, all monitors are used.
 \item[Start] runs the simulation.
 \item[Cancel] aborts the dialog.
 \end{description}
@@ -1007,6 +1012,7 @@ difficulty. \index{Environment variable!PGPLOT\_DIR}
 \index{Tools!mcrun|textbf}
 \index{Parameters!Instruments}
 \index{Parameters!Scans}
+\index{Parameters!Optimization}
 
 The \verb+mcrun+ front-end (mcrun.pl on Windows) provides a convenient command-line
 interface for running simulations with the same automatic compilation
@@ -1375,7 +1381,7 @@ The \verb+--scan+ option may be used to reconstruct the scan data from a set of 
 
 The data files are analyzed by searching keywords inside data files (e.g. 'Source' for the source instrument description file). If some filenames or component names match these keywords (e.g. using a file 'Source.psd'), the extracted metadata information may be wrong, eventhough the data itself will be correct.\index{Bugs}
 
-\section{Analyzing and visualizing the simulation results}
+\section{Data formats - Analyzing and visualizing the simulation results}
 \label{s:analyze}
 \index{Data formats}
 
@@ -1383,8 +1389,7 @@ To analyze simulation results, one uses the same tools as for analyzing
 experimental data, \textit{i.e}. programs such as IDL, Matlab and Scilab.
 The output files from simulations are usually simple text files containing headers and data blocks. If data blocks are empty they may be accessed refering to an external file indicated in the header. This file may also be a binary file (except with the original \MCS /PGPLOT format), which does not contain any header (except if simulation is launched with \verb|+a| option), but are in turn smaller in size and faster to import.
 
-In order for the user to choose the data format, we recommand to set it {\it via} the MCSTAS\_FORMAT environment variable, which will also make the front-end programs able to import and plot data and instrument consistently. The available format list is shown in Table~\ref{t:formatoptions}. \index{Environment variable!MCSTAS\_FORMAT}
-
+In order for the user to choose the data format, we recommand to set it using the \verb+--format=FORMAT+ or alternatively {\it via} the MCSTAS\_FORMAT environment variable, which will also make the front-end programs able to import and plot data and instrument consistently (see Section \ref{s:run-sim}. The available format list is shown in Table~\ref{t:formatoptions}. \index{Environment variable!MCSTAS\_FORMAT}
 
 Note that the neutron event counts in detectors is typically not very
 meaningful except as a way to measure the performance of the
@@ -1494,7 +1499,13 @@ The XML format is NeXus-like, but not fully compatible. However, \MCS\ may gener
 \index{Tools!NeXus} \index{Tools!HDF} \index{Data formats}
 \label{r:nexus}
 
-The NeXus format~\cite{nexus_webpage} is a platform independent HDF binary data file. To have \MCS\ use it, the HDF and NeXus libraries must have been installed. To link the instrument with these libraries, the keyword \verb+NEXUS+ \emph{must} follow the \verb+INITIALIZE+ section in the instrument description (see Section \ref{s:nexus}). All results are saved in a single file, containing 'groups' of data. To view such files, install and use HDFView. This Java viewer can show content of all detectors, including metadata (attributes). Basic detector images may also be generated.
+The NeXus format~\cite{nexus_webpage} is a platform independent HDF binary data file. To have \MCS\ use it
+\begin{enumerate}
+\item the HDF and NeXus libraries must have been installed
+\item the \MCS\ installation should be done with NeXus bindings, e.g. on Unix/Linux systems \verb+configure --with-nexus; make; make install+.
+\item  the compilation of instruments must be done with the \verb+-DHAVELIB_NEXUS -lNeXus+ flag (see Section \ref{s:nexus}). This is automated with the \verb+mcrun+ tool (Section \ref{s:mcrun}).
+\end{enumerate}
+. To link the instrument with these libraries, the . All results are saved in a single file, containing 'groups' of data. To view such files, install and use HDFView. This Java viewer can show content of all detectors, including metadata (attributes). Basic detector images may also be generated.
 
 \section{Using computer Grids and Clusters}
 \label{s:run-mpi}
@@ -1517,13 +1528,13 @@ Parallelizing a computation is in general possible when dependencies between
   excellent performances (but require the user to install MPI).
 \item when using SMP machines (multi processor machines) \MCS\ may
   distribute the simulations among CPU's using multi-threading
-  mechanism. Even though most systems now support multi-threading (i.e. do not require specific installation), the performances are limited compared to MPI.
+  mechanism. Even though most systems now support multi-threading (i.e. do not require specific installation), the performances are very limited compared to MPI.
 \end{itemize}
 
-Last but not least, you may run simulations manually on a number of machines and merge them subsequently.
+Last but not least, you may run simulations manually on a number of machines.
 Once the distributed simulation has been completed, you may merge their results using the \verb+mcformat+ (see section \ref{s:mcformat}) \index{Tools!mcformat} in order to obtain a set of files just as if it had been executed on a single machine.
 
-\subsection{Distribute mcrun scans (ssh grid) - Unix only}
+\subsection{Distribute mcrun scans (ssh grid) - Unix only}\label{s:ssh-grid}
   This is an experimental option to
   distribute scan steps on a set of machines using \emph{ssh}
   connections. To use this option you will need
@@ -1536,7 +1547,7 @@ Once the distributed simulation has been completed, you may merge their results 
       \texttt{ssh-keygen}. Run \emph{e.g.} \texttt{ssh-keygen -t dsa} on
       master node, enter no passphrase and add resulting
       \texttt{.ssh/id\_dsa.pub} to \texttt{.ssh/authorized\_keys}
-      on all the slave nodes.}
+      on all the slave nodes. The key generation and registering mechanism may be done automatically for the local machine from the \emph{Help menu/Install DSA key} item of \verb+mcgui+.}
   \item{The machine names listed in the file \texttt{.mcstas-hosts} in
       your home directory or in the \texttt{MCSTAS/tools/perl/mcstas-hosts} on
       the master node, one node per line. The \verb'--machines=<file>' option
@@ -1570,7 +1581,7 @@ neutrons simulated. As a result, \MCS\ generates two kinds of data sets:
 \item event lists: the merge of events is done by concatenation
 \end{itemize}
 The MPI support requires to have MPICH (recommanded), or alternatively LAM-MPI, installed on a set of nodes.
-This usually also requires to setup properly the \texttt{ssh} connections and keys. This last step is not required when running on a local SMP machine.
+This usually also requires to setup properly the \texttt{ssh} connections and keys as indicated in the ssh grid system (Section \ref{s:ssh-grid}).
 
 There are 3 methods for using MPI
 \begin{itemize}

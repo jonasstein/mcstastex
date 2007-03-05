@@ -137,7 +137,7 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{INITIALIZE} & I,C & Embeds C code to be executed when starting. \\
       \texttt{ITERATE} & I & Defines iteration counter for JUMP. \\
       \texttt{MCDISPLAY} & C & Embeds C code to display a geometric  representation of a component. \\
-      \texttt{NEXUS} & I & Makes the NeXus output format available. \\
+      \texttt{NEXUS} & I & Makes the NeXus output format available and defines NeXus output type. \\
       \texttt{OUTPUT} & C & Defines internal variables to be public and protected symbols (usually all global variables and functions of DECLARE).\\
       \texttt{PARAMETERS} & C & Defines a class of component parameter. \\
       \texttt{POLARISATION} & C & Defines neutron polarisation coordinates. \\
@@ -300,21 +300,21 @@ optional. Instrument setting parameters (e.g. doing tests or automatic settings)
 \index{Keyword!NEXUS} \index{Tools!NeXus} \index{Tools!HDF} \index{Data formats}
 \label{s:nexus}
 
-The NeXus format~\cite{nexus_webpage} requires to link the simulation to additional libraries (HDF and NeXus). The resulting executable is no longer portable. To activate the NeXus output, the keyword \verb+NEXUS+ must follow the INITIALIZE section, namely:
+The NeXus format~\cite{nexus_webpage} requires to link the simulation to additional libraries (HDF and NeXus) which must have been pre-installed. The resulting executable is no longer portable. To activate the NeXus output, the compilation of the instrument must be done with flag \verb+-DHAVE_LIBNEXUS -lNeXus+. The default NeXus format is NeXus 5 without compression. However, that format may be specified with the keyword \verb+NEXUS+ to follow the INITIALIZE section, namely:
 
 \begin{quote}
   \texttt{INITIALIZE} \\
   \verb|%{| \\
   \hbox to 3em{}\ldots C initializations. \ldots \\
   \verb|%}|
-  \verb+NEXUS {filename} {HDF ["4"|"5"|"XML"]}+
+  \verb+NEXUS ["4"|"5"|"XML"|"compress"|"zip"]}+
 \end{quote}
 
-The optional {\it filename} is the name of the output data file. If not present, the filename is automatically built from the instrument name and a time stamp. The extension is added automatically, if not present. Additionally, it is possible to set the type of NeXus file with the \verb+HDF+ modifier, either "4", "5" or "XML".
+It is possible to set the type of NeXus file with a string argument, either "4", "5" or "XML". Optionally, if the string also contains the \verb+compress+ or \verb+zip+ word, the NeXus file will use compression for Data Sets. We recommend the syntax \verb+NEXUS "5 compress"+.
 
-Then, the output format is chosen as usual with the \verb+--format=NeXus+ option when launching the simulation. All output files are stored in the {\it filename}, as well as the instrument itself. Other formats are still available. When run on a distributed system (e.g. MPI), detectors are gathered, but list of events (see e.g. component Virtual\_output) are stored as one data set per node.
+You may choose the name of the output file with the \verb+-f filename+ option from the instrument executable or \verb+mcrun+ (see Sections \ref{s:run-sim}, \ref{s:mcrun} and Table \ref{f:simoptions2}).
 
-If the \verb+NEXUS+ keyword is not part of the instrument, the default \MCS\ format will be used.\index{Bugs}
+Then, the output format is chosen as usual with the \verb+--format=NeXus+ option when launching the simulation. All output files are stored in the output {\it filename}, as well as the instrument description itself. Other formats are still available. When run on a distributed system (e.g. MPI), detectors are gathered, but list of events (see e.g. component Virtual\_output) are stored as one data set per node.
 
 \subsection{The \texttt{TRACE} section}
 \index{Keyword!TRACE}
