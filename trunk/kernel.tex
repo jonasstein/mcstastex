@@ -137,7 +137,7 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{INITIALIZE} & I,C & Embeds C code to be executed when starting. \\
       \texttt{ITERATE} & I & Defines iteration counter for JUMP. \\
       \texttt{MCDISPLAY} & C & Embeds C code to display a geometric  representation of a component. \\
-      \texttt{NEXUS} & I & Makes the NeXus output format available and defines NeXus output type. \\
+      \texttt{NEXUS} & I & Defines NeXus output type (4,5,XML,compression). \\
       \texttt{OUTPUT} & C & Defines internal variables to be public and protected symbols (usually all global variables and functions of DECLARE).\\
       \texttt{PARAMETERS} & C & Defines a class of component parameter. \\
       \texttt{POLARISATION} & C & Defines neutron polarisation coordinates. \\
@@ -300,7 +300,9 @@ optional. Instrument setting parameters (e.g. doing tests or automatic settings)
 \index{Keyword!NEXUS} \index{Tools!NeXus} \index{Tools!HDF} \index{Data formats}
 \label{s:nexus}
 
-The NeXus format~\cite{nexus_webpage} requires to link the simulation to additional libraries (HDF and NeXus) which must have been pre-installed. The resulting executable is no longer portable. To activate the NeXus output, the compilation of the instrument must be done with flag \verb+-DHAVE_LIBNEXUS -lNeXus+. The default NeXus format is NeXus 5 without compression. However, that format may be specified with the keyword \verb+NEXUS+ to follow the INITIALIZE section, namely:
+The NeXus format~\cite{nexus_webpage} requires to link the simulation to additional libraries (HDF and NeXus) which must have been pre-installed. Preferably, \MCS\ should have been installed with the \verb+./configure --with-nexus+ on Unix/Linux systems. To activate the NeXus output, the compilation of the instrument must be done with flag \verb+-DHAVE_LIBNEXUS -lNeXus+. The resulting executable is no longer portable.
+
+The default NeXus format is NeXus 5 with compression. However, that format may be changed with the optional keyword \verb+NEXUS+ to follow the INITIALIZE section, namely:
 
 \begin{quote}
   \texttt{INITIALIZE} \\
@@ -310,7 +312,7 @@ The NeXus format~\cite{nexus_webpage} requires to link the simulation to additio
   \verb+NEXUS ["4"|"5"|"XML"|"compress"|"zip"]}+
 \end{quote}
 
-It is possible to set the type of NeXus file with a string argument, either "4", "5" or "XML". Optionally, if the string also contains the \verb+compress+ or \verb+zip+ word, the NeXus file will use compression for Data Sets. We recommend the syntax \verb+NEXUS "5 compress"+.
+It is possible to set the type of NeXus file with a string argument, containing words "4", "5" or "XML". Optionally, if the string also contains the \verb+compress+ or \verb+zip+ word, the NeXus file will use compression for Data Sets. We recommend the syntax \verb+NEXUS "5 compress"+ which is the default.
 
 You may choose the name of the output file with the \verb+-f filename+ option from the instrument executable or \verb+mcrun+ (see Sections \ref{s:run-sim}, \ref{s:mcrun} and Table \ref{f:simoptions2}).
 
