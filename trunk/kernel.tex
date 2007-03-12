@@ -129,6 +129,7 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{- COMPONENT} & & \\
       \texttt{DEFINITION} & C & Defines component parameters that are constants (like C \#define). \\
       \texttt{END} & I,C & Ends the instrument or component definition. \\
+      \texttt{ENHANCE} & I & Enhance incoming statistics by event repetition. \\
       \texttt{EXTEND} & I & Extends the TRACE section of a component in an instrument definition. \\
       \texttt{FINALLY} & I,C & Embeds C code to execute when simulation ends (also executes the SAVE section). \\
       \texttt{GROUP} & I & Defines an exclusive group of components. \\
@@ -470,7 +471,7 @@ here shown as an example of the use of \MCS .
 
 
 
-\section{Writing instrument definitions - complex arrangements}
+\section{Writing instrument definitions - complex arrangements and syntax}
 \label{s:instrdefs-extend}
 \index{Instruments}
 
@@ -479,7 +480,7 @@ In this section, we describe some additional ways to build instruments using gro
 As a summary, the nearly complete grammar definition for component instances within the instrument TRACE section is:
 
 \begin{verbatim}
-COMPONENT name = comp(parameters) {WHEN condition}
+{ENHANCE} COMPONENT name = comp(parameters) {WHEN condition}
   AT (...) [RELATIVE [reference|PREVIOUS] | ABSOLUTE]
   {ROTATED {RELATIVE [reference|PREVIOUS] | ABSOLUTE} }
   {GROUP group_name}
@@ -487,7 +488,7 @@ COMPONENT name = comp(parameters) {WHEN condition}
   {JUMP [reference|PREVIOUS|MYSELF|NEXT] [ITERATE number_of_times | WHEN condition] }
 \end{verbatim}
 
-\subsection{Groups and component extensions}
+\subsection{Groups and component extensions - GROUP}
 \index{Keyword!GROUP}
 \index{Keyword!EXTEND}
 \label{s:instrdefs-extend-group}
@@ -507,11 +508,6 @@ All components of the same named group are tested one after the other,
 until one of them interacts (uses the SCATTER
 macro\index{Library!Run-time!SCATTER}). The selected component acts on
 the neutron ray, and the rest of the group is skipped. Such groups are thus exclusive (only one of the elements is active).
-If no component of the group could intercept the neutron ray, it is
-ABSORBed. If you wish not to absorb these neutrons, you may end each
-group by a large monitor or another dummy component (e.g. an Arm
-component \verb+EXTEND+ed by a \verb+SCATTER+ keyword)This will set the time randomly between -10 and 10 $\mu$s
-
 
 Within a \texttt{GROUP}, \emph{all} \texttt{EXTEND} sections of the group are executed. In order to discriminate components that are active from those that are skipped, one may use the SCATTERED flag, which is set to zero when entering each component or group, and incremented when the neutron is SCATTERed, as in the following example \index{Library!Run-time!SCATTER} \index{Library!Run-time!SCATTERED}
 \begin{quote}
@@ -531,7 +527,7 @@ Within a \texttt{GROUP}, \emph{all} \texttt{EXTEND} sections of the group are ex
 Components \emph{name1} and \emph{name2} are at the same position. If the first one intercepts the neutron (and has a SCATTER within its \texttt{TRACE} section), the SCATTERED variable becomes true, the code extension will result in printing "I scatter", and the second component will be skipped.
 Thus, we recommand to make use of the SCATTER keyword each time a component 'uses' the neutron (scatters, detects, \ldots) within component definitions (see section \ref{s:compdefs}).
 
-\subsection{Duplication of component instances}
+\subsection{Duplication of component instances - COPY}
 \index{Keyword!COPY}
 \label{s:instrdefs-extend-copy}
 
@@ -556,7 +552,7 @@ In the case where there are many duplicated components all originating from the 
   \texttt{COMPONENT} \texttt{COPY}(root\_name) = \texttt{COPY}(instance\_name)
 \end{quote}
 will catenate a unique number to {\it root\_name}, avoiding name
-conflicts. As a side effect, refering this component instance (for
+conflicts. As a side effect, refering to this component instance (for
 e.g. further positioning) is not straight forward as the name is
 determined by \MCS\ and does not depend completely on the user's
 choice, even though the PREVIOUS keyword may still be used. We thus recommand to use this naming mechanism only for components which should not be refered to in the instrument.
@@ -582,7 +578,7 @@ COMPONENT COPY(CG_1)  = COPY(CG_1)
 COMPONENT CG_Out = Arm() AT (0,0,L/n) RELATIVE PREVIOUS
 \end{verbatim}
 
-\subsection{Conditional components}
+\subsection{Conditional components - WHEN}
 \index{Keyword!WHEN}
 \label{s:instrdefs-extend-when}
 
@@ -592,7 +588,7 @@ One of the most useful features of the extended \MCS\ syntax is the conditional 
   \texttt{COMPONENT} $\textit{name} = \textit{comp}(p_1 = e_1, p_2 = e_2, \ldots)$
   \texttt{WHEN} {\it condition}
 \end{quote}
-The condition has the same scope as the EXTEND modifier, i.e. may use component internal variables as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters.
+The condition has the same scope as the EXTEND modifier, i.e. may use component internal variables as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters. It is evaluated before the component TRACE section.
 
 Usage examples could be to have specific monitors only sensitive to selected processes, or to have components which are only present under given circonstances (e.g. removable guide or radial collimator), or to select a sample among a set of choices.
 
@@ -612,13 +608,13 @@ The WHEN keyword only applies to the TRACE section of instruments/components. Ot
 
 Also, the \verb+WHEN+ keyword is a condition for \verb+GROUP+. This means that when the \verb+WHEN+ is false, the component instance is not active in the \verb+GROUP+ it belongs to.\index{Bugs}
 
-\subsection{Component loops}
+\subsection{Component loops and non sequential propagation - JUMP}
 \index{Keyword!JUMP}
 \index{Keyword!ITERATE}
 \index{Keyword!WHEN}
 \label{s:instrdefs-extend-jump}
 
-There are situations for which one would like to repeat a given component many times, or under a given condition. The JUMP modifier is meant for that and should be mentioned after the positioning, GROUP and EXTEND.
+There are situations for which one would like to repeat a given component many times, or under a given condition. The JUMP modifier is meant for that and should be mentioned after the positioning, GROUP and EXTEND. This breaks the sequential propagation along components in the instrument description. There may be more than one JUMP per component instance.
 
 The jump may depend on a condition:
 \begin{quote}
@@ -628,9 +624,9 @@ The jump may depend on a condition:
 \end{quote}
 in which case the instrument TRACE will jump to the {\it reference} when {\it condition} is true.
 
-The {\it reference} may be an instance name, as well as PREVIOUS, PREVIOUS($n$), MYSELF, NEXT, and NEXT($n$), where $n$ is the index gap to the target either backward (PREVIOUS) or forward (NEXT), so that PREVIOUS(1) is PREVIOUS and NEXT(1) is NEXT. MYSELF means that the component will be iterated as long as the condition is true. This may be a way to handle multiple scattering.
+The {\it reference} may be an instance name, as well as PREVIOUS, PREVIOUS($n$), MYSELF, NEXT, and NEXT($n$), where $n$ is the index gap to the target either backward (PREVIOUS) or forward (NEXT), so that PREVIOUS(1) is PREVIOUS and NEXT(1) is NEXT. MYSELF means that the component will be iterated as long as the condition is true. This may be a way to handle multiple scattering, if the component has been designed for that.
 
-The jump arrives directly inside the target component, in the local coordinate system (i.e. without applying the AT and ROTATED keywords). In order to control better the target positions, it is required that, except for looping MYSELF, the target component type should be an \emph{Arm}.
+The jump arrives directly inside the target component, in the local coordinate system (i.e. without applying the AT and ROTATED keywords). In order to control better the target positions, it is \emph{required} that, except for looping MYSELF, the target component type should be an \emph{Arm}.
 
 There is a more general way to iterate components, which consists in repeating the loop for a given number of times.
 \begin{quote}
@@ -664,6 +660,19 @@ It is \emph{not} recommanded to use the \verb+JUMP+ inside \verb+GROUP+s, as the
 We would like to emphasize the potential errors originating from such
 jumps. Indeed, imbricating many jumps may lead to situations were it
 is difficult to understand the flow of the simulation. We thus recommand the usage of JUMPs only for experienced and cautious users.\index{Bugs}
+
+\subsection{Enhancing statistics reaching components - ENHANCE}
+\index{Keyword!ENHANCE}
+\label{s:instrdefs-extend-enhance}
+
+The following method applies when the incoming neutron event distribution is considered to be representative of the real beam, but neutrons are lost afterwards (with low efficiency processes, absorption, etc). Then, one may think that it's a pity to have so few events reaching the 'interesting' part of the instrument (usually close to the end of the instrument description).
+If some components make extensive use of random numbers (MC choices), they shuffle this way the distributions, so that identical incoming events will not produce the same outgoing event. In this case, you may use the \verb+ENHANCE+ keyword with the syntax
+
+\begin{quote}
+  \texttt{ENHANCE} ${n}$ \texttt{COMPONENT} $\textit{name} = \textit{comp}(\ldots)$
+\end{quote}
+where the optional number $n$ specifies the number of repetitions for each event. Default is 10.
+Each neutron event reaching component {\it name} will be repeated $n$ times with a weight divided by $n$, so that in practice the number of events for the remaining part of the simulation (down to the END), will potentially have more statistics. This is only true if following components (and preferably component {\it name}) use random numbers. You may use this method as many times as you wish in the same instrument, e.g. at the monochromator and sample position. This keyword can also be used within a GROUP. The efficiency is roughtly $n$ to the number of occurences in the instrument, so that enhancing two components with the default $n=10$ will produce at the end an enhancement effect of 100 in the number of events. The execution time will usually get very slightly longer.
 
 \section{Writing component definitions}
 \label{s:compdefs}
