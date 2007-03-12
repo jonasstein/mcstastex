@@ -241,8 +241,8 @@ Details about using these functions are given in the \MCS\ User Manual.
 
 \subsection{Ray-geometry intersections}
 \begin{itemize}
-\item {\bf inside\_rectangle}(\&$x$, \&$y$, $x$, $xw$, $yh$). 
-  Return 1 if $-xw/2 \leq x \leq xw/2$ AND $-yh/2 \leq y \leq yh/2$. 
+\item {\bf inside\_rectangle}(\&$x$, \&$y$, $x$, $xw$, $yh$).
+  Return 1 if $-xw/2 \leq x \leq xw/2$ AND $-yh/2 \leq y \leq yh/2$.
   Else return 0.
 \item {\bf box\_intersect}(\&$t_1$, \&$t_2$, $x$, $y$, $z$, $v_x$, $v_y$, $v_z$,
   $d_x$, $d_y$, $d_z$). Calculates the (0, 1, or 2) intersections between
@@ -417,11 +417,11 @@ This library gathers a few functions used by a set of monitors e.g. Monitor\_nD,
 It may monitor any kind of data, create the data files, and may display many geometries (for \verb+mcdisplay+).
 Refer to these components for implementation examples, and ask the authors for more details.
 
-\section{Adaptative importance sampling Library}
+\section{Adaptive importance sampling Library}
 \index{Library!adapt\_tree-lib}
 
 This library is currently only used by the components {\bf Source\_adapt}
-and {\bf Adapt\_check}. It performs adaptative importance sampling of neutrons for simulation efficiency optimization.
+and {\bf Adapt\_check}. It performs adaptive importance sampling of neutrons for simulation efficiency optimization.
 Refer to these components for implementation examples, and ask the authors for more details.
 
 \section{Vitess import/export Library}

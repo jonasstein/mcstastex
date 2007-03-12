@@ -662,7 +662,11 @@ There are various ways to speed up simulations
 \item Complex components usually take into account additional small effects in a simulation,
       but are much longer to execute. Thus, simple components should be prefered
       whenever possible, at least in the beginning of a simulation project.
+\item The ENHANCE keyword may artificially repeat events reaching specified positions in the
+      instrument. This is \emph{very} efficient, but requires to cast random numbers in the course of
+      the remaining propogagtion (e.g. at samples, crystals, ...). See section \ref{s:instrdefs-extend-enhance} for details.
 \end{itemize}
+A general comment about optimization is that it should be used cautiously, checking that the results are not significatively affected.
 
 \subsection{Optimizing instrument parameters}
 \label{s:optimize}\index{Parameters!Optimization}
@@ -690,7 +694,7 @@ parameter scans. Optionally, the starting guess value might be given with the sy
 using the 'Precision' entry box in the configuration options (See
 Figure \ref{fig:mcgui-choose}. Finally, run the simulation. The optimum
 set of parameters is then printed at the end of the simulation
-process. Your may ask to maximize only given monitors (instead of all)
+process. You may ask to maximize only given monitors (instead of all)
 by selecting their component names in the lower lists in the Run Dialog (up to 3).
 
 If you would like to maximize the flux at a given monitor, with some
@@ -848,10 +852,18 @@ neutron site. When selecting one of these, a local copy of the
 instrument description is transfered to the active directory (so that
 users have modification rights) and loaded. One may then view its source (Edit) and use it directly for simulations/trace (3D View).
 
-The {\bf Help} menu has the following features, through use of
+
+\noindent The {\bf Tools} menu gathers minor tools.
+\begin{description}
+\item[Shortcut keys] displays the shortcut keys used for running and editing instruments.
+\item[Install DSA key] installs a DSA key to be used for ssh clustering and MPI (see Section \ref{s:run-mpi}).\index{MPI}\index{Grid computing}
+\end{description}
+
+
+\noindent The {\bf Help} menu has the following features, through use of
 \verb+mcdoc+ and a web browser. To customize the used web browser, set
 the \verb+BROWSER+ environment variable. If \verb+BROWSER+ is not set,
-\verb+mcgui+ uses \verb+netscape+ on Unix and the default browser on
+\verb+mcgui+ uses \verb+netscape/mozilla/firefox+ on Unix/Linux and the default browser on
 Windows.
 \begin{description}
 \item[\MCS\ User manual] calls \verb+mcdoc --manual+, brings up the local
@@ -866,10 +878,8 @@ Windows.
 \item[Current instrument info] generates a description web-page of the current edited instrument.
 \item[Test \MCS\ installtion] launches a self test procedure to check that the \MCS\ package is installed properly, generates accurate results, and may use the plotter to display the results.
 \item[Generate component index] (re-)generates locally the component \verb+index.html+.
-\item[Shortcut keys] displays the shortcut keys used for running and editing instruments.
-\item[Install DSA key] This item will install a DSA key to be used by ssh clustering and MPI (see Section \ref{s:run-mpi}).
-
 \end{description}
+
 
 \subsubsection{The run dialog}
 
@@ -943,26 +953,6 @@ assumed to have a \verb+.out+ suffix in the filename. NB: If
 components are changed, automatic compilation is \emph{not}
 performed. Use the File->Compile menu item in mcgui.
 
-
-\subsubsection{The plot dialog} \index{Tools!PGPLOT}
-This dialog only shows-up when using the \MCS/PGPLOT plotter. Other plotters have attached menus to control graphics and file exports.
-\begin{description}
-\item[Monitors and detectors] lists all the one- and
-  two-dimensional detectors in the instrument. By double-clicking, one plots
-  the data in the plot window.
-\item[Plot] plots the selected detector in the plot window. Has the
-  same effect as double-clicking its name.
-\item[Overview plot] plots all the detectors together in the plot
-  window.
-\item[B\&W postscript] prompts for a file name and saves the
-  current plot as a black and white postscript file. This can
-  subsequently be printed on a postscript printer.
-\item[Colour postscript] creates a colour postscript file of the
-  current plot.
-\item[Colour GIF] creates a colour GIF file of the
-  current plot.
-\item[Close] ends the dialog.
-\end{description}
 
 
 \subsubsection{The editor window}
