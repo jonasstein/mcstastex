@@ -1,5 +1,5 @@
 \chapter{Monte Carlo Techniques and simulation strategy}
-\label{s:MCtechniques}
+\label{s:MCtechniques}\index{Monte Carlo method}
 
 This chapter explains the simulation strategy and the Monte Carlo
 techniques used in \MCS. We first explain the concept of the neutron
@@ -91,7 +91,7 @@ whenever possible. This includes
 \begin{itemize}
 \item Transmission through filters and windows.
 \item Transmission through Soller blade collimators and velocity
-  selectors 
+  selectors
  (in the approximation
  which does not take each blade into account).
 \item Reflection from monochromator (and analyser) crystals
@@ -254,3 +254,31 @@ the focusing according to that.
 Implementation of this idea is
 found in the {\bf Source\_adapt} and {\bf Source\_Optimizer} components.
 %, described in section~\ref{s:Source_adapt}.
+
+\section{Accuracy of Monte Carlo simulations}
+\index{Accuracy}
+
+When running a Monte Carlo, the meaningfull quantities are obtained by integrating random events into a single value (e.g. flux), or onto an histogram grid. The theory \cite{James80} shows that the accuracy of these estimates is a function of the space dimension $d$ and the number of events $N$. For large numbers, the central limit theory shows that the relative error varies as $1/\sqrt{N}$. However, the exact expression depends on the random distributions.
+
+\MCS\ uses a space with $d=10$ parameters to describe neutrons (position, velocity, spin, time). We show in Table \ref{t:mc_accuracy} a rough estimate of the accurarcy on integrals as a function of the number of records reaching the integration point. This stands both for integrated flux, as well as for histogram bins - for which the number of events per bin should be used for $N$.
+
+\begin{table}
+  \begin{center}
+  {\let\my=\\
+    \begin{tabular}{|c|c|}
+    \hline
+    Records       & Accurarcy \\
+    \hline
+    $10^3$ & 10 \% \\
+    $10^4$ & 2.5 \% \\
+    $10^5$ & 1 \% \\
+    $10^6$ & 0.25 \% \\
+    $10^7$ & 0.05 \% \\
+    \hline
+    \end{tabular}
+    \caption{Accuracy estimate as a function of the number of statistical events, obtained with \MCS.}
+    \label{t:mc_accuracy}
+  }
+  \end{center}
+\end{table}
+
