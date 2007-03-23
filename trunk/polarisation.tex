@@ -12,7 +12,7 @@
 In the current release of McStas there are components with polarization
 capabilities. At the moment all such components should be understood as under
 development as the amount of testing and debugging of these components is
-small, and there are known problems. 
+small, and there are known problems.
 
 Here, we shall report on what have been done so far.
 
@@ -23,8 +23,8 @@ last two sections the actual McStas polarization components are first
 described (section~\ref{sec:new}) and a list of test instruments in McStas is
 given (section~\ref{sec:test}).
 
-We rely heavily on the books~\cite{lovesey,gavin} for the physics where
-the detailed calculations can be found. 
+We rely heavily on the books~\cite{lovesey84,gavin} for the physics where
+the detailed calculations can be found.
 
 The notation used here (and in~\cite{gavin}) is $P$ (scalar), $\PB$
 (vector), $\tP$ (unit-vector), $\sigmaH$ (operator), and $\sigmao$
@@ -58,21 +58,21 @@ $\downarrow$, and the polarization can be expressed as:
 
 \begin{equation}
   \label{eq:pol}
-  P = \frac{\nu-\nd}{\nu+\nd},
+  P = \frac{\nup-\nd}{\nup+\nd},
 \end{equation}
 
 where $\nu$ ($\nd$) is the number of neutrons with spin up
 (down).
 
-For a given neutron the probability of the neutron being spin up, $\Pu$, is: 
+For a given neutron the probability of the neutron being spin up, $\Pu$, is:
 
 \begin{equation}
   \label{eq:prob_spinup}
-  \Pu = \frac{\nu}{\nu+\nd} = \frac{\nu + (\nd-\nd)/2}{\nu+\nd} 
+  \Pu = \frac{\nup}{\nup+\nd} = \frac{\nup + (\nd-\nd)/2}{\nup+\nd}
   = \frac{1+P}{2},
 \end{equation}
 
-and $\Pd = 1-\Pu = (1-P)/2$. 
+and $\Pd = 1-\Pu = (1-P)/2$.
 
 The expectation value of the 'spin' operator, $\sigmao$, which can be
 expressed by the Pauli matrices, is the polarization vector $\PB$, $\PB =
@@ -100,7 +100,7 @@ P_z & = & \langle \chi | \sigmaH_z | \chi \rangle
 \end{eqnarray}
 
 This shows the relation of the polarization vector to the neutron wave
-function. 
+function.
 
 The neutron magnetic moment operator can be expressed in terms of $\sigmao$,
 as:
@@ -135,11 +135,11 @@ In the following we will use $\PB$ to denote the polarization
 vector. The most important variables used are:
 
 \begin{tabular}{ll}
-    
+
   $\Q$  & Scattering vector. \\
-  $\PB$  & Polarization before a component (ingoing). \\ 
-  $\PB_\perp$  & Polarization perpendicular to scattering vector, 
-  $\PB_\perp = \tQ \times (\PB \times \tQ$). \\ 
+  $\PB$  & Polarization before a component (ingoing). \\
+  $\PB_\perp$  & Polarization perpendicular to scattering vector,
+  $\PB_\perp = \tQ \times (\PB \times \tQ$). \\
   $\PB'$ & Polarization after a component (outgoing). \\
   $\tN$ & Unit vector in direction of atomic spin ($\tN \cdot \tilde{\BB} = -1$ for a ferromagnet). \\
   $\FN$ & Unit cell nuclear structure factor. \\
@@ -161,7 +161,7 @@ single atom Bravais crystal one finds $\FN = \overline{b}$.
 The unit cell magnetic structure factor is useful when the atoms in
 the crystal only have spin orbital angular momentum, and simple when
 the magnet is saturated (all spins are parallel or anti-parallel to
-\emph{one} direction, $\sigma_d=\pm1$). It is then given as: 
+\emph{one} direction, $\sigma_d=\pm1$). It is then given as:
 
 \begin{equation}
   \FM =
@@ -187,12 +187,12 @@ S (with values $S=\pm 1$) to define $\gamma_n$ we would get $\gamma_n =
 -1.913$ which is also commonly used.}
 
 A magnetic field, $\BB$, will exert a torque, $\tauB = d\sB/dt = (1/\gamma_n)d\muB/dt$, on the neutron magnetic moment:
- 
+
 \begin{equation}
   \label{eq:torque}
   \frac{1}{\gamma_n} \frac{d\muB}{dt} = \muB \times \BB
 \end{equation}
- 
+
 The magnetic moment $\mu$ can be related to the polarization as $\muB
 = \gamma_n \PB/2$, and inserting in Eq.~\ref{eq:torque} we find:
 
@@ -249,7 +249,7 @@ change the spin. Let us just remind here that:
     \sigmaH_x \chiD = \chiU, &
     \sigmaH_y \chiD = -i\chiU, &
     \sigmaH_z \chiD = -\chiD.
-  \end{matrix} 
+  \end{matrix}
 \end{equation}
 
 So that the interaction proportional to $\sigmaH_x$ and $\sigmaH_y$
@@ -258,18 +258,18 @@ conserves the spin.
 
 It turns out to be smart to define a density matrix operator:
 \begin{equation}
-  \rhoo = \chi \chi^\dagger =  
-  \left( \begin{matrix} 
-    |a|^2 & ab^\ast \\ 
-    ba^\ast & |b|^2 
-  \end{matrix} \right) 
+  \rhoo = \chi \chi^\dagger =
+  \left( \begin{matrix}
+    |a|^2 & ab^\ast \\
+    ba^\ast & |b|^2
+  \end{matrix} \right)
   = \frac{1}{2}({\cal I}+\PB \cdot \sigmao),
 \end{equation}
 where $\chi$ is the neutron wave function (Eq.~\ref{eq:neutron_wave}),
 and ${\cal I}$ is the unit matrix.
 
 Using the density matrix the elastic cross section can be written as
-(\cite{lovesey}, Eq.~10.31):
+(\cite{lovesey84}, Eq.~10.31):
 \begin{equation}
   \label{eq:master_sigma}
   \frac{d\sigma}{d\Omega} = \text{Tr} \rhoo \hat{v}^\dagger \hat{v}
@@ -284,13 +284,13 @@ the trace is to be taken with respect only to the neutron spin
 coordinates. The outgoing polarization is given as:
 \begin{equation}
   \label{eq:master_pol}
-  \PB' \frac{d\sigma}{d\Omega} = 
+  \PB' \frac{d\sigma}{d\Omega} =
   \text{Tr} \rhoo \hat{v}^\dagger \sigmao \hat{v}
   = \sum_{\lambda, \lambda'} p_\lambda \text{Tr} \rhoo
   \langle \lambda | \hat{V}^\dagger(\Q) | \lambda' \rangle
   \sigmao
   \langle \lambda' | \hat{V}(\Q) | \lambda \rangle
-  \delta(E_\lambda - E_{\lambda'}) 
+  \delta(E_\lambda - E_{\lambda'})
 \end{equation}
 
 Inserting Eq.~\ref{eq:general_pot} in Eq.~\ref{eq:master_sigma} and
@@ -299,23 +299,23 @@ polarized neutron scattering:
 
 \begin{equation}
   \label{eq:general_sigma}
-  \text{Tr} \rhoo \hat{v}^\dagger \hat{v} = 
+  \text{Tr} \rhoo \hat{v}^\dagger \hat{v} =
   \alphao^\dagger \cdot \alphao + \betao^\dagger \betao+
   \betao^\dagger (\alphao \cdot \PB) +
   (\alphao^\dagger \cdot \PB) \betao +
   i\PB \cdot (\alphao^\dagger \times \alphao),
 \end{equation}
 
-and 
+and
 
 \begin{equation}
   \label{eq:general_pol}
   \text{Tr} \rhoo \hat{v}^\dagger \sigmao \hat{v} =
   \betao^\dagger \alphao
   + \alphao^\dagger \betao
-  + \betao^\dagger \betao \PB 
-  + \alphao^\dagger (\alphao \cdot \PB) 
-  + (\alphao^\dagger \cdot \PB) \alphao 
+  + \betao^\dagger \betao \PB
+  + \alphao^\dagger (\alphao \cdot \PB)
+  + (\alphao^\dagger \cdot \PB) \alphao
   - \PB (\alphao^\dagger \cdot \alphao)
   - i \alphao^\dagger \times \alphao
   + i \betao^\dagger (\alphao \times \PB)
@@ -323,22 +323,22 @@ and
 \end{equation}
 
 Based on these two equations and the interaction potentials all the
-results presented in the following are derived in~\cite{lovesey}.
+results presented in the following are derived in~\cite{lovesey84}.
 
 \subsection{Example: Nuclear scattering}
 
 The nuclear scattering potential for a crystal is:
 \begin{equation}
   \label{eq:nuclear_pot}
-  \hat{V}_N(\Q) = \sum_{\lB,\dB} \exp(i\Q \cdot \RB_{ld})(A_{ld} + 
+  \hat{V}_N(\Q) = \sum_{\lB,\dB} \exp(i\Q \cdot \RB_{ld})(A_{ld} +
   \frac{1}{2} B_{ld} \sigmao \cdot \Io_{ld}),
 \end{equation}
 
-so that 
+so that
 
 \begin{eqnarray}
   \label{eq:ab_nuclear}
-  \alphao & = & 
+  \alphao & = &
   \sum_{\lB,\dB} \exp(i\Q \cdot \RB_{ld}) \frac{1}{2} B_{ld} \Io_{ld} \\
   \betao & = &
   \sum_{\lB,\dB} \exp(i\Q \cdot \RB_{ld}) A_{ld},
@@ -352,13 +352,13 @@ To calculate the polarization cross section and outgoing polarization
 we have to average over the nuclear spin (which we assume is random
 oriented), so that terms linear in $\alphao$ (three last terms in
 Eq.~\ref{eq:general_sigma}) disappears. The scattering cross section
-ends up being (see~\cite{lovesey} p.~159):
+ends up being (see~\cite{lovesey84} p.~159):
 
 \begin{equation}
   \label{eq:nuclear_sigma}
-  \frac{d\sigma}{d\Omega}  = 
+  \frac{d\sigma}{d\Omega}  =
   \sum_{\lB, \dB, \lB', \dB'} \exp(i \Q \cdot (\RB_{ld}-\RB_{l'd'}))
-  (\madsq + \delta_{\lB,\lB'}\delta_{\dB,\dB'}[\sqmad - \madsq 
+  (\madsq + \delta_{\lB,\lB'}\delta_{\dB,\dB'}[\sqmad - \madsq
   + \frac{1}{4}\bd])
 \end{equation}
 
@@ -370,7 +370,7 @@ The polarization in the final state is:
 
 \begin{equation}
   \label{eq:nuclear_pol}
-  \PB' \frac{d\sigma}{d\Omega}  = 
+  \PB' \frac{d\sigma}{d\Omega}  =
   \sum_{\lB, \dB, \lB', \dB'} \exp(i \Q \cdot (\RB_{ld}-\RB_{l'd'}))
   \PB' (\madsq + \delta_{\lB,\lB'}\delta_{\dB,\dB'}[\sqmad - \madsq
   - \frac{1}{12}\bd])
@@ -413,7 +413,7 @@ illustrated in Figure~\ref{fig:mono_princip}, the typical setup has many
 geometrical constraints: $\tN \cdot \tQ = 0$, $\tN \cdot \PB_\perp = \tN \cdot
 \PB$, and $\Q \times (\tN \times \Q) = \tN$, which simplifies the problem.
 
-In~\cite{lovesey} the calculation for a centrosymmetric ferromagnetic
+In~\cite{lovesey84} the calculation for a centrosymmetric ferromagnetic
 crystal is done, and inserting the constraints above one finds
 (\cite{lovesey84}, Eq.~10.96 and Eq.~10.110):
 
@@ -421,7 +421,7 @@ crystal is done, and inserting the constraints above one finds
   \label{eq:mono_sigma}
   d\sigma/d\Omega & = & \FN^2 + 2\FN\FM (\PB \cdot \tN) + \FM^2\\
   \label{eq:mono_pol}
-  \PB' d\sigma/d\Omega & = 
+  \PB' d\sigma/d\Omega & =
   & \PB [\FN^2 - \FM^2] + \tN [2\FN\FM + 2(\tN \cdot \PB)\FM^2]
 \end{eqnarray}
 
@@ -436,7 +436,7 @@ crystal is done, and inserting the constraints above one finds
 For a beam which is initially unpolarized we find the outgoing
 polarization to be:
 \begin{equation}
-  \PB' = \frac{\tN 2\FN \FM}{d\sigma/d\Omega} 
+  \PB' = \frac{\tN 2\FN \FM}{d\sigma/d\Omega}
   = \frac{2\FN\FM}{\FN^2 + \FM^2} \tN,
 \end{equation}
 
@@ -525,7 +525,7 @@ implemented.
 ways. Either to hard code the polarization to the vector $(px, py, pz)$
 or when randomOn!=0 to set the polarization vector to a random vector
 on the unit sphere.\\
-  
+
 \item \textbf{Monochromator\_pol:} A monochromator that only does the $n=1$
   reflection. For each neutron it calculates the wavelength which would give
   Bragg reflection, $\lambda_\text{Bragg}$, and it then calculates, based on
@@ -544,7 +544,7 @@ on the unit sphere.\\
 
 \item \textbf{Pol\_mirror:} Plane with a reflection probability for up
 and down. There are 3 options: always reflect, always transmit, or
-random select transmit/reflect. 
+random select transmit/reflect.
 
 \begin{quote}
   NB! Note that at the moment the plane only reflects from one side (because
@@ -570,11 +570,11 @@ functions or use tables for the up and down reflectivity descriptions.
 \item \textbf{Pol\_monitor:} One defines a vector $\mathbf{m} = (mx,
   my, mz)$ for the monitor and measures the projection of the spin
   along this vector i.e. $\mathbf{m} \cdot \mathbf{S}$.\\
-  
+
 \item \textbf{PolLambda\_monitor:} Measures the projection of the
   spin along the defined vector $\mathbf{m}$ (see
   \textbf{Pol\_monitor}) as a function of the wavelength $\lambda$.
-  
+
 \item \textbf{MeanPolLambda\_monitor:} Measures the \emph{average}
   projection of the spin along the defined vector $\mathbf{m}$ (see
   \textbf{Pol\_monitor}) as a function of the wavelength $\lambda$.
@@ -597,14 +597,14 @@ in~\cite{pol_seeger}.
   of a wavelength so that the spin will precess 180 degrees for the given
   wavelength. The component can be rotated to have the field along another
   axis. \\
-  
+
 \item \textbf{Pol\_simpleBfield:} The first attempt at a component for
   handling general magnetic fields. It is a concentric component where you
   define a start and stop component for each field, but this allows other
   components, e.g. monitors, to be put inside the field. The component
   overloads the propagation routines so that numerical spin propagation is
-  done for analytical magnetic fields. 
-  
+  done for analytical magnetic fields.
+
   \begin{quote}
     NB! At the moment both components does not really check the boundaries of
     the field on the sides, but merely assumes that the field starts at the
@@ -628,21 +628,21 @@ in~\cite{pol_seeger}.
   components handled multiple scattering the polarization should be
   set to $\PB' = (-1/3)^n\PB$, where $n$ is the number of
   scatterings.\\
-\end{itemize}  
+\end{itemize}
 
 
 \section{Tests With New Components}
 \label{sec:test}
 
 All the test instruments can be found in the McStas examples folder
-(go to ``Neutron site/tests'' in mcgui). 
+(go to ``Neutron site/tests'' in mcgui).
 
 There are basically two kind of tests. The first kind of tests shows
 that the polarizing component can reproduce the same results as a
 similar non-polarizing component:
-\begin{itemize} 
+\begin{itemize}
 \item \textit{Test\_Monochromators.instr} : Intercomparison of
-  \textbf{Monochromator\_flat} and \textbf{Monochromator\_pol}. 
+  \textbf{Monochromator\_flat} and \textbf{Monochromator\_pol}.
 \item \textit{Test\_Pol\_Bender\_Vs\_Guide\_Curved.instr} : Intercomparison of
   \textbf{Guide\_curved} and \textbf{Pol\_bender}.
 \end{itemize}
@@ -650,15 +650,15 @@ similar non-polarizing component:
 The second type of test illustrates the polarizing capabilities of the
 component:
 \begin{itemize}
-\item \textit{Test\_Magnetic\_Constant.instr} : Constant magnetic field. 
+\item \textit{Test\_Magnetic\_Constant.instr} : Constant magnetic field.
 \item \textit{Test\_Magnetic\_Majorana.instr} : Linearly decreasing field with
   small transverse component.
-\item \textit{Test\_Magnetic\_Rotation.instr} : Rotating magnetic field. 
+\item \textit{Test\_Magnetic\_Rotation.instr} : Rotating magnetic field.
 \item \textit{Test\_Magnetic\_Userdefined.instr} : Example of how to make a
-  user defined analytic magnetic field that can also depend on time. 
+  user defined analytic magnetic field that can also depend on time.
 \item \textit{Test\_Pol\_Bender.instr} : Illustrates beam polarization with
   the \textbf{Pol\_bender}.
-\item \textit{Test\_Pol\_Set.instr} : Tests \textbf{Pol\_set}. 
+\item \textit{Test\_Pol\_Set.instr} : Tests \textbf{Pol\_set}.
 \item \textit{Test\_Pol\_Guide\_Vmirror.instr} : Illustrates beam polarization
   with the \textbf{Pol\_guide\_vmirror}.
 \item \textit{Test\_Pol\_Mirror.instr} : Illustrates beam polarization
@@ -667,4 +667,4 @@ component:
   spectrometer with polarizing monochromators, a vanadium sample, and a spin
   flipper.
 \end{itemize}
-    
+
