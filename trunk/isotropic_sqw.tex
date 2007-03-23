@@ -16,27 +16,44 @@
 \label{f:isotropic-sqw}
 \end{figure}
 
-The component assumes that the sample has the structure of an isotropic material. This stands for liquids, glasses (amorphous systems), polymers, gases, and may be extended to powders. It simulates coherent and incoherent neutron scattering, and may be used to model isotropic samples, but also sample environments as concentric geometries are possible. The main input for the component is $S(q,\omega)$ tables, or powder structure files.
+The sample component \emph{Isotropic\_Sqw} has been developed in order to simulate neutron scattering from any isotropic material such as liquids, glasses (amorphous systems), polymers and powders (currently, mono-crystals cannot be handled).
+The component \emph{Isotropic\_Sqw} treats coherent and incoherent neutron scattering and may be used to model most materials, including sample environments with concentric geometries.
+The structure and dynamics of isotropic samples can be characterised by the dynamic structure factor $S(q,\omega)$, which determines the interaction between neutrons and the sample and therefore can be used as a probability distribution of $\omega$-energy and $q$-momentum transfers. It handles coherent and incoherent processes, both for elastic and inelastic interactions.
+The main input for the component is $S(q,\omega)$ tables, or powder structure files.
 
-\subsection{Neutron interaction with matter}
+\subsection{Neutron interaction with matter - overview}
 
-When a neutron enters a material, according to usual models and letting the absorption aside to begin with, it 'sees' atoms as disks with a surface equal to the total scattering cross section of material $\sigma$. Each coherent and incoherent process is associated with a given probability to hit these cross-sections, according to $\sigma_{coh}$ or $\sigma_{inc}$. We may choose randomly a scattering position along the path, using e.g. an exponential decay probability. If the scattering condition is not satisfied, the neutron is transmitted, and leaves the sample. In any case, the absorption lowers the intensity along the propagation path $d$. In this process, the neutron is considered to be a particle.
+When a neutron enters a material, according to usual models, it 'sees' atoms as disks with a surface equal to the total cross section of the material $\sigma_{tot}$. The latter includes absorption, coherent and incoherent contributions, which all depend on the incoming neutron energy.
+The transmission probability follows an exponential decay law accounting for the total cross section.
 
-Once the neutron 'knows' that something (terrible) is going to occur, it looks for a possible excitation to interact with. Then we turn to the wave description of the neutron, which interacts with the whole volume. The distribution of excitations, from which derives their relative intensity in the scattered beam, is simply the dynamic structure factor - or scattering law - $S(q,\omega)$. According to the definition of the density of states, we may use $g(\omega)$ as the probability law to scatter at a given energy transfer.
+For the neutron which is not transmitted, we select a scattering position along the path, taking into account the secondary extinction and absorption probability. In this process, the neutron is considered to be a particle or an attenuated wave.
 
-The neutron leaves the scattering point when a suitable $(q, \omega)$ choice has been found to satisfy the conservation laws. The process is iterated until the neutron leaves the volume of the material, eventually producing multiple scattering contributions.
+Once a scattering position has been assigned, the neutron interacts with a material excitation. Here we turn to the wave description of the neutron, which interacts with the whole sample volume. The distribution of excitations, which determines their relative intensity in the scattered beam, is simply the dynamic structure factor - or scattering law - $S(q,\omega)$. We shall build probability distributions from the scattering law in order to improve the efficiency of the method by favoring the $(q,\omega)$ choice towards high $S(q,\omega)$ regions.
 
-The method shown below for multiple scattering handling is quite close in many respects to the earlier MSC \cite{msc}, Discus \cite{discus} and MSCAT \cite{mscat} programs, eventhough this implementation is original.
+The neutron leaves the scattering point when a suitable $(q, \omega)$ choice has been found to satisfy the conservation laws. The method is iterated until the neutron leaves the volume of the material, therefore allowing multiple scattering contributions, which will be considered in more details below.
+
+No experimental method makes it possible to accurately measure the multiple scattering contribution, even though it can become significant at low $q$ transfers (below the first diffraction maximum), where the single scattering coherent signal is weak in most materials. This is why attemps have been made to reduce the multiple scattering contribution by partitioning the sample with absorbing layers. However, this is not always applicable thus makiong the simulation approach very valuable.
+
+The method presented here for handling neutron interaction with isotropic materials is similar in many respects to the earlier MSC \cite{msc}, Discus \cite{discus} and MSCAT \cite{mscat} methods, but the implementation presented here is part of a more general treatment of a sample in an instrument.
 
 \subsection{Theoretical side}
 
 \subsubsection{Pair correlation function $g(r)$ and Dynamic structure factor $S(q,\omega)$}
 
-Following Squires (\cite{squires}, p63), the neutron differential scattering cross section for both coherent and incoherent processes is
+In the following, we consider an isotropic medium irradiated with a cold or thermal neutron beam. We ignore the possible thermal fission events and assume that the incoming neutron energy does not correspond to a Breit-Wigner resonance in the material. Furthermore, we do not take into account quantum effects in the material, nor refraction and primary extinction.
+
+Following Squires \cite{squires}, the experimental counterpart of the scattering law $S(q,\omega)$ is the neutron double differential scattering cross section for both coherent and incoherent processes:
 \begin{equation}\label{eq:d2sigma}
 \frac{d^2\sigma}{d\Omega dE_f} = \frac{\sigma}{4\pi}\frac{k_f}{k_i} N S(q, \omega)
 \end{equation}
-with usual notations: $N=\rho V$ is the number of atoms in the scattering volume $V$ with atomic number density $\rho$, $E_f, E_i, k_f, k_i$ are the energy and wavevectors of final and initial states respectively, $\sigma$ is the scattering cross-section, and $q,\omega$ are the wave-vector and energy transfer at the sample. The unit of the dynamical structure factor $S(q,\omega)$ is an inverse energy. We define its norm on a selected $q$ range:
+which describes the amount of neutrons scattered per unit solid angle $d\Omega$ and per unit final energy $dE_f$. In this equation, $N=\rho V$ is the number of atoms in the scattering volume $V$ with atomic number density $\rho$, $E_f, E_i, k_f, k_i$ are the kinetic energy and wavevectors of final and initial states respectively, $\sigma$ is the bound atom scattering cross-section, $\Omega$ is the solid angle and $q,\omega$ are the wave-vector and energy transfer at the sample. In practice, the double differential cross section is a linear combinaison of the coherent and incoherent parts as:
+\begin{equation}
+\label{eq:S=coh+inc}
+\sigma S(q,\omega) = \sigma_{coh} S_{coh}(q,\omega) + \sigma_{inc} S_{inc}(q,\omega)
+\end{equation}
+where the subscripts $coh$ and $inc$ stand for the coherent and incoherent contributions respectively.
+
+We define its norm on a selected $q$ range:
 \begin{equation}
 |S| = \iint S(q,\omega) dq d\omega .
 \end{equation}
@@ -67,158 +84,125 @@ In practice, the function $S(q)$ is often known on a restricted range $q \in [0,
 In first approximation we consider that Eq. (\ref{eq:sq-nomr1}) can be applied in this range, i.e. we neglect the large $q$ contributions provided $S(q)-1$ converges faster than $1/q^2$. This is usually true after 2-3 oscillations of $S(q)$ in liquids.
 Then, in isotropic liquid-like materials, Eq. (\ref{eq:sq-nomr1}) provides a normalisation sum-rule for $S$.
 
-We may measure, e.g. with time-of-flight instruments, the \emph{density of states} $g_{\omega}(\omega)$  which is the fraction of modes whose energy lie between $\omega$ and $\omega+d\omega$ \cite{lovesey84}
+\subsection{Theoretical side - scattering in the sample}
+
+The Eq. \ref{eq:d2sigma} controls the scattering in the whole sample volume.
+Its implementation in a propagative Monte Carlo neutron code such as \emph{McStas} can be summarised as follows:
+\begin{enumerate}
+{\item Compute the propagation path length in the material by geometrical intersections between the neutron trajectory and the sample volume.}
+{\item Evaluate the total cross section from the integration of the scattering law over the accessible dynamical range (Section \ref{s:inter-proba}).}
+{\item Use the total cross section to determine the probability of interaction for each neutron along the path length, and select a scattering position.}
+{\item Weight neutron interaction with the absorption probability and select the type of interaction (coherent or incoherent).}
+{\item Select the wave vector and energy transfer from the dynamic structure factor $S(q,\omega)$ used as a probability distribution (Section \ref{s:choose-qw}). Apply the detailed balance.}
+{\item Check whether selection rules can be solved (Section \ref{s:rules-qw}). If they cannot, repeat (5).}
+\end{enumerate}
+This procedure is iterated until the neutron leaves the sample. We shall now detail the key steps of this implementation.
+
+\subsubsection{Evaluating the cross sections and interaction probability}
+\label{s:inter-proba}
+
+Following Sears \cite{Sears75}, the total scattering cross section for incoming neutrons with initial energy $E_i$ is
 \begin{equation}
-g_{\omega}(\omega) = \frac{\int S(q,\omega) dq}{|S|} .
+\label{eq:iisigma}
+\sigma_s(E_i) = \iint \frac{d^2 \sigma}{d\Omega dE_f} d\Omega dE_f = \frac{N \sigma}{4\pi} \iint \frac{k_f}{k_i} S(q, \omega) d\Omega dE_f
 \end{equation}
-This function is normalised to unity, $\int g_{\omega}(\omega) d\omega = 1$ and is a probability distribution of mode energies in the material.
-
-\subsubsection{Drawing probabilities from $S(q, \omega)$}
-
-The main idea to implement the scattering from $S(q, \omega)$ is to basically make two consecutive Monte Carlo choices, applying the well known \emph{joint probability} theorem:
+where the integration runs over the entire space and all final neutron energies.
+As the dynamic structure factor is defined in the $q,\omega$ space, the integration requires a variable change. Using the momentum conservation law and the solid angle relation $\Omega=2\pi(1-cos \theta)$, were $\theta$ is the solid angle opening, we draw:
 \begin{equation}
-\label{eq:jointproba}
-P(q \cap \omega) = P(\omega).P(q \mid \omega) .
+\label{eq:iqSqw}
+\sigma_s(E_i) = N \iint \frac{\sigma S(q,\omega) q}{2 k_i^2} dq d\omega.
 \end{equation}
+This integration runs over the whole accessible $q,\omega$ dynamical range for each incoming neutron.
+In practice, the knowledge of the dynamic structure factor is defined over a limited area with $q \in [q_{min}, q_{max}]$ and $\omega \in [\omega_{min}, \omega_{max}]$ which is constrained by the method for obtaining $S(q,\omega)$, i.e. from previous experiments, molecular dynamics simulations, and analytical models. It is desirable that this area be as large as possible, starting from 0 for both ranges. If we use $\omega_{min} \rightarrow 0$, $q_{min} \rightarrow 0$, $\omega_{max} > 4E_i$ and $q_{max} > 2k_i$, we completely describe all scattering processes for incoming neutrons with wavevector $k_i$ \cite{msc}.
 
-Thus we define $P(\omega)$ as the \emph{cumulated distribution} (primitive) of the density of states $g_{\omega}(\omega)$:
-\begin{equation}\label{eq:Pw}
-P(\omega) = \int_0^\omega g_{\omega}(\omega') d\omega'
+This means that in order to correctly estimate the total intensity and multiple scattering, the knowledge of $S(q,\omega)$ must be wider (at least twice in $q$, as stated previously) than the measurable range in the corresponding experiment.
+As a side effect, a self consistent iterative method for finding the true scattering law from the measurement itself is not theorically feasible, except for providing crude approximations.
+However, that measured dynamic structure factor may be used to estimate the multiple scattering for a further measurement using longer wavelength neutrons.
+Extrapolating the scattering law beyond the accessible measurement ranges might improve substantially the accuracy of the method, but this discussion is beyond the scope of this paper.
+
+Consequently, limiting the $q$ integration in Eq. \ref{eq:iqSqw} to the maximum momentum transfer for elastic processes $2 k_i$, we write the total scattering cross section as
+\begin{equation}
+\label{eq:iqSq}
+\sigma_s(E_i) \simeq \frac{N}{2 k_i^2} \int_0^{2k_i} q \sigma S(q) dq.
 \end{equation}
-The function $P(\omega)$ is the probability for an excitation to have an energy lower than $\omega$.
+Using Eq. \ref{eq:S=coh+inc}, it is possible to define similar expressions for the coherent and incoherent terms $\sigma_{coh}(E_i)$ and $\sigma_{inc}(E_i)$ respectively. These integrated cross sections are usually quite different from the tabulated values \cite{ILLblue} since the latter are bound scattering cross sections.
 
-Similarly, we define the conditional probability $P(q \mid \omega)$ to be, for each energy lying between $\omega$ and $\omega+d\omega$:
-\begin{eqnarray}\label{eq:Pqw}
-g_q(q\mid\omega) &=& \frac{S(q, \omega)}{S(q)} \\
-P(q \mid \omega)    &=& \int_0^q g_q(q'\mid\omega) dq'
-\end{eqnarray}
-The former $g_q$ is the density of wavevector transfers for a selected energy transfer, and the latter $P(q \mid \omega)$ is the probability for an excitation to have a wavevector lower than $q$, for a given energy transfer $\omega$.
+Except for a few materials with absorption resonances in the cold-thermal energy range, the absorption cross section for an incoming neutron of velocity $v_i=\sqrt{2E_i/m}$, where $m$ is the neutron mass, is computed as
+$\sigma_{abs}(E_i) = \sigma_{abs}^{{\rm 2200}}\frac{2200 m/s}{\sqrt{2E_i/m}}$, where $\sigma_{abs}^{{\rm 2200}}$ is obtained from the literature \cite{ILLblue}.
 
-These probability distributions $g_\omega$ and $g_q$ implement importance sampling for scattering, 'directing' neutron events to high $S(q,\omega)$ regions.
+We now determine the total cross section accounting for both scattering and absorption
+\begin{equation}
+\sigma_{tot}(E_i) = \sigma_{abs}(E_i) + \sigma_s(Ei).
+\end{equation}
+The neutron trajectory intersection with the sample geometry provides the total path length in the sample $d_{exit}$ to the exit.
+Defining the linear attenuation $\mu(E_i) = \rho\sigma_{tot}(E_i)$, the probability that the neutron event is transmitted along path $d_{exit}$ is $e^{-\mu(E_i) d_{exit}}$.
+
+If the neutron event is transmitted, it leaves the sample. In previous Monte Carlo codes such as DISCUSS \cite{discus}, MSC \cite{msc} and MSCAT \cite{mscat}, each neutron event is forced to scatter to the detector area in order to improve the sample scattering simulation statistics and reduce the computing time. The corresponding instrument model is limited to a neutron event source, a sample and a detector. It is equaly possible in the current implementation to 'force' neutron events to scatter by applying a correction factor $\pi_0=1-e^{-\mu(E_i) d_{exit}}$ to the neutron statistical weight. However, the \emph{McStas} instrument model is often build from a large sequence of components. Eventhough the instrument description starts as well with a neutron event source, more than one sample may be encountered in the course of the neutron propagation and multiple detectors may be positioned anywhere in space, as well as other instrument components (e.g. neutron optics). This implies that neutron events scattered from a sample volume should not focus to a single area.  Indeed, transmitted events may reach other scattering materials and it is not desirable to force all neutron events to scatter. The correction factor $\pi_0$ is then not applied, and neutron events can be transmitted through the sample volume. The simulation efficiency for the scattering then drops significantly, but enables to model much more complex arrangements such as concentric sample environments, magnets and monochromator mechanical parts, and neutron filters.
+
+If the neutron is not transmitted, the neutron statistical weight is multiplied by a factor
+\begin{equation}
+\pi_1 = \frac{\sigma_s(E_i)}{\sigma_{tot}(E_i)}
+\end{equation}
+to account for the fraction of absorbed neutrons along the path, and we may in the following treat the event as a scattering event.
+Additionally, the type of interaction (coherent or incoherent) is chosen randomly with fractions $\sigma_{coh}(E_i)$ and $\sigma_{inc}(E_i)$.
+
+The position of the neutron scattering event along the neutron trajectory length $d_{exit}$ is determined by \cite{Mildner77,discus}
+\begin{equation}
+d_{s} = -\frac{1}{\mu(E_i)} \ln(1 - \xi[1 -e^{-\mu(E_i) d_{exit}}])
+\end{equation}
+where $\xi$ is a random number in [0,1]. This expression takes into account secondary extinction, originating from the decrease of the beam intensity through the sample (self shielding).
+
+\subsubsection{Choosing the $q$ and $\omega$ transfer from $S(q, \omega)$ }
+\label{s:choose-qw}
+
+The choice of the $(q, \omega)$ wavevector-energy transfer pair could be done randomly, as in the first event of the second order scattering evaluation in DISCUS \cite{discus}, but it is somewhat inefficient except for materials showing a broad quasi-elastic signal. As the scattering originates from structural peaks and excitations in the material $S(q, \omega)$, it is usual \cite{mscat} to adopt an importance sampling scheme by focusing the $(q, \omega)$ choice to areas where the intensity of $S(q, \omega)$ is high. In practice, this means that the neutron event should scatter preferably on e.g. Bragg peaks, quasielastic contribution and phonons.
+
+The main idea to implement the scattering from $S(q, \omega)$ is to cast two consecutive Monte Carlo choices, using probability distribution built from the dynamic structure factor.
+We define first the probability $P_{\omega}(\omega)$ as the \emph{unweighted} fraction of modes whose energy lies between $\omega$ and $\omega+d\omega$
+\begin{equation}
+P_{\omega}(\omega) d\omega = \frac{\int_0^{q_{max}} S(q,\omega) dq}{|S|},
+\end{equation}
+where $|S| = \iint S(q,\omega) dq d\omega$ is the norm of $S(q,\omega)$ in the available dynamical range $q \in [q_{min}, q_{max}]$ and $\omega \in [\omega_{min}, \omega_{max}]$.
+The probability $P_{\omega}(\omega)$ is normalised to unity, $\int P_{\omega}(\omega) d\omega = 1$, and is a probability distribution of mode energies in the material. We then choose randomly an energy transfer $\omega$ from this distribution.
+
+Similarly, in order to focus the wavevector transfer choice, we define the probability distribution of wavevector $P_q(q\mid\omega)$ for the selected energy transfer lying between $\omega$ and $\omega+d\omega$
+\begin{equation}
+P_q(q\mid\omega) = \frac{S(q, \omega)}{S(q)},
+\end{equation}
+from which we choose randomly a wavevector transfer $q$, knowing the energy transfer $\omega$.
+These two probability distributions extracted from $S(q,\omega)$ are shown in Fig. \ref{f:isotropic-sqw-proba}, for a model $S(q,\omega)$ function built from the {\it l}-$^4$He elementary excitation (Data from Donnelly).
 
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.9\textwidth]{figures/Sqw_sampling.eps}
   \end{center}
-\caption{The probability functions extracted from $S(q,\omega)$. The energy transfer is first selected from the density of states $g_\omega$, then the wavevector is obtained from $g_q(\omega)$.}
+\caption{\emph{Centre}: Model of dynamic structure factor $S(q,\omega)$ for l-$^4$He ; \emph{left}: probability distribution $g_\omega$ (horizontal axis) of energy transfers (vertical axis, density of states) ; \emph{right} : probability distribution $g_q(\omega)$ (vertical axis) of momentum transfers (horizontal axis) for a given energy transfer $\hbar \omega \sim 1.1$ meV.}
 \label{f:isotropic-sqw-proba}
 \end{figure}
 
+Then a selection between energy gain and loss is performed with the detailed balance ratio $e^{-\hbar \omega / k_B T}$. In the case of Stokes processes, the neutron can not loose more than its own energy to the sample dynamics, so that $\hbar \omega < E_i$. This condition breaks the symmetry between up-scattering and down-scattering.
 
-\subsection{The method}
+\subsubsection{Solving selection rules and choosing the scattered wave vector}
+\label{s:rules-qw}
 
-\subsubsection{Choosing the interaction type}
-
-The method used is similar to the one adopted in the \verb+Single_crystal+ component (section \ref{s:Single_crystal}).
-
-In order to estimate the probability of interaction of a neutron through the sample, using the linear attenuation $\mu = \rho \sigma$, we need the scattering cross sections for the scattering range.
-It is important to understand that these cross sections $\hat{\sigma}_{coh}$ and $\hat{\sigma}_{inc}$ to be used here are \emph{not} the usual tabulated values $\sigma_{coh}$ and $\sigma_{inc}$ (see \cite{ILLblue}) but, following Sears \cite{Sears75}, are the \emph{effective} cross sections on the available solid angle, which defines the $q$ and $\omega$ range from the incoming neutron energies:
-\begin{equation}
-\hat{\sigma} = \iint \frac{d^2 \sigma}{d\Omega dE_f} d\Omega dE_f
-\end{equation}
-In order to use Eq. (\ref{eq:d2sigma}) in the $q,\omega$ space where the Monte Carlo integration is performed, a variable change must be inserted, so that using conservation law Eq. (\ref{eq:q-transfer}) and the solid angle relation $\Omega=2\pi(1-cos \theta)$, we draw:
-\begin{eqnarray}\label{eq:dqdw}
-\frac{d\Omega}{d\theta} &=& - 2\pi sin \theta \\
-\frac{dq}{d\theta} &=& - \frac{k_i k_f sin \theta}{q}
-\end{eqnarray}
-Then we come to the effective cross section definition:
-\begin{equation}
-\hat{\sigma} = \sigma \iint \frac{S(q,\omega) q}{2 k_i^2} dq d\omega \simeq \frac{\sigma}{2 k_i^2} \int_0^{2k_i} q S(q) dq
-\end{equation}
-which in turn determines the total scattered intensity. This quantity is usually lower than the tabulated value $\sigma$, which means that most neutronists over-estimate the scattered intensity and multiple scattering.
-
-Then, we compute the absorption and total cross-section
+The next step is to check that the conservation laws
 \begin{eqnarray}
-\sigma_{abs} &=& \sigma_{abs}^{{\rm 2200}}\frac{2200 m/s}{v} \\
-\hat{\sigma}_{tot} &=& \sigma_{abs} + \hat{\sigma}_{coh} + \hat{\sigma}_{inc}
-\end{eqnarray}
-as well as the neutron trajectory intersection with the geometry. This provides the total path length in the sample $d_{out}$ to the exit.
-
-Defining the linear attenuation $\mu = \rho\hat{\sigma}_{tot}$, the probability that the neutron scatters (or be absorbed) along path $d_{out}$ is $e^{-\mu d_{out}}$. If this condition is not satisfied, the neutron leaves the sample unchanged.
-
-In the other case, we adjust the neutron weight by a factor
-\begin{equation}
-\pi_1 = \frac{\sigma_{coh} + \sigma_{inc}}{\hat{\sigma}_{tot}}
-\end{equation}
-to account for the portion of absorbed neutrons along the path.
-
-Finally, we choose randomly the type of interaction with fractions $\sigma_{coh}$ and $\sigma_{inc}$.
-
-\subsubsection{Choosing the interaction position}
-
-If the straight path to the sample volume exit is $d_{out}$, the probability that the neutron scatters before exiting the sample at a distance $d_{scatt}$ is:
-\begin{equation}
-P(d_{scatt} < d_{out}) = \int_0^{d_{out}} \mu e^{-\mu x}dx = 1 - e^{-\mu d_{out}}. \\
-\end{equation}
-From that law, we may compute the cumulated distribution, which gives the probability for scattering to occur at a distance lower than $d_{scatt}$, knowing that the neutron interacts before $d_{out}$. This law may be analytically inverted so that the path length $d_{scatt}$ may be obtained directly from a uniform distribution random number $\xi$
-\begin{equation}
-d_{scatt} = -\frac{1}{\mu} \ln(1 - \xi[1 -e^{-\mu d_{out}}]).
-\end{equation}
-which then takes into account secondary extinction, originating from the decrease of the beam intensity through the sample (a kind of self shielding).\index{Secondary extinction}
-The Monte Carlo choice of the scattering position in the sample accounts for the $N \sigma$ factor in Eq. (\ref{eq:d2sigma}).
-
-\subsubsection{Choosing the $q$ and $\omega$ transfer}
-
-If no $S(q, \omega)$ data is available and the scattering process has been chosen as incoherent, we set $\omega=0$ and select randomly an outgoing wave vector $\boldsymbol{k}_f$.
-
-In case the $S(q, \omega)$ data is available for the scattering process (coherent or incoherent), a random choice is made to select the energy transfer using $P(\omega)$ with the $g_\omega(\omega)$ probability distribution (Eq. \ref{eq:Pw}).
-Similarly, we use $P(q \mid \omega)$ to select a wavevector transfer (Eq. \ref{eq:Pqw}).
-
-Choosing a $(q, \omega)$ set and applying Eq. (\ref{eq:jointproba}), we have obtained a probabilistic normalised evaluation of the dynamical structure factor which controls the relative intensities of scattering processes from $S(q, \omega)$:
-\begin{equation}
-S(q, \omega) = |S|.g_\omega(\omega).g_q(q \mid \omega) .
-\end{equation}
-Then a selection between energy gain and loss is done with the detailed balance ratio $e^{-\hbar \omega / k_B T}$. In the case of Stokes processes, neutron can not loose more than its own energy into the sample dynamics, so that $\omega < E_i$. This condition breaks the symmetry between up-scattering and down-scattering.
-
-\subsubsection{Choosing the scattered wave vector}
-
-The next step is to check that conservation laws
-\begin{eqnarray}
-\hbar \omega &=& E_i - E_f = \frac{\hbar^2}{2m}(k_i^2 - k_f^2) \label{eq:w-transfer_here} \\
-\vec q &=& \vec k_i - \vec k_f \label{eq:q-transfer_here}
+\hbar \omega &=& E_i - E_f = \frac{\hbar^2}{2m}(k_i^2 - k_f^2) \label{eq:sqw-w-transfer} \\
+\vec q &=& \vec k_i - \vec k_f \label{eq:sqw-q-transfer}
 \end{eqnarray}
 can be satisfied. These conditions are closely related to the method for selecting the outgoing wave vector direction.
 
 When the final wave vector has to be computed, the quantities $\vec{k}_i$, $\hbar \omega$ and $q = |\vec{q}|$ are known.
-From the energy conservation law Eq. (\ref{eq:w-transfer_here}), we select randomly one of the two roots, $k_f^+$ and $k_f^-$.
-The scattered wave vector is noted : $\vec{k}_f = k_f \vec{\hat k}_s$ where $\vec{\hat k}_s$ is a unit vector.\\
-Since we only know the norm of the scattering vector $\vec{q}$, the momentum conservation law Eq. (\ref{eq:q-transfer_here}) may be expressed as
-\begin{align} \label{eq:q2-transfer}
-q^2 = |\vec{k}_i -\vec{k}_f|^2 = |k_i^2| + |k_f^2| - 2 k_f \vec{k}_i \cdot \vec{\hat k}_s
-\end{align}
-where $\vec{k}_i \cdot \vec{\hat k}_s$ stands for the dot product of the vectors.\\
-Now, we should solve :
-\begin{align}
-\vec{k}_i \cdot \vec{\hat k}_s &= \frac{1}{2k_f} (k_i^2 + k_f^2 - q^2) = C \\
-|\vec{\hat k}_s| &= 1
-\end{align}
-where $C$ is a constant.
-$\vec{\hat k}_s$ can be decomposed as : $\vec{\hat k}_s = B \vec{k}_i + \vec{u}_0$ where $B$ is a constant and $\vec{u}_0$ is a vector of $Vect(\vec{k}_i)^{\bot}$ (that is the orthogonal of the space generated by $\vec{k}_i$), which is a plane $P$.
-Since we have : $\vec{k}_i \cdot \vec{\hat k}_s = C$, we may write : $B = \frac{C}{k_i^2}$.
-\begin{figure}[!h]
-\begin{center}
-\includegraphics*[height=6cm]{figures/calckf_2.eps}
-\caption{How to compute the outgoing wavevector direction $\vec{\hat k}_s$}
-\label{fig:ann_kf}
-\end{center}
-\end{figure}
-The vectors $\vec{u}_0$ such that $|\vec{\hat k}_s| = 1$ define a circle of radius $R$ : $|\vec{u}_0|~=~R$.
-Since $\vec{u}_0$ and $B \vec{k}_i$ are orthogonal, we find :
-\begin{align}
-\frac{C^2}{k_i^2} + R^2 = |\vec{\hat k}_s|^2 = 1
-\end{align}
-from which we deduce the radius of the circle :
-\begin{align}
-R = \sqrt{1 - \frac{C^2}{k_i^2}}.
-\end{align}
-Let us now define an orthonormal basis ($\vec{u}_1,\vec{u}_2$) of the plane containing $\vec{u}_0$.
-$\vec{u}_0$ can be decomposed as : $\vec{u}_0~=~R(\cos \theta \vec{u}_1 + \sin \theta \vec{u}_2)$, where $\theta$ can be randomly drawn for a uniform distribution.
-Finally, we obtain :
-\begin{align}
-\vec{\hat k}_s = \frac{C^2}{k_i^2} \vec{k}_i + R (\cos \theta \vec{u}_1 + \sin \theta \vec{u}_2)
-\end{align}
+We solve the energy conservation law Eq. (\ref{eq:sqw-w-transfer}) and we select randomly $k_f$ as one of the two roots.
 
-If the selection rules can not be verified, a new $(q,\omega)$ random choice is performed until success.
+The scattering angle $\theta$ from the initial $k_i$ direction is determined from the momentum conservation law $cos(\theta) = (k_i^2 + k_f^2 - q^2)/(2k_i k_f)$, which defines a scattering cone. We then choose randomly a direction on the cone.
+
+If the selection rules can not be verified (namely $|cos(\theta)| > 1$), a new $(q,\omega)$ random choice is performed (see Section \ref{s:choose-qw}).
+It might appear inefficient to select the energy and momentum tranfers first and check the selection rules afterwards. However, in practice, the number of iterations to actually scatter on a high probability process and satisfy these rules is limited, usually below 10. Moreover, as these two steps are simple, the whole process requires a limited number of computer operations.
+
+As mentioned in Section \ref{s:inter-proba}, previous multiple scattering estimation codes \cite{msc,mscat,discus} force the outgoing neutron event to come into the detector area and time window, thus improving dramatically the code efficiency. This choice sets the measurable energy and momentum transfers for the last scattering event in the sample, so that the choice of the scattering excitation actually requires a more complex sampling mechanism for the dynamic structure factor. As the present implementation makes no assumption on the simulated instrument part which is behind the sample, we can not apply this method. Consequently, the efficiency of the sample scattering code is certainly lower than previous codes, but on the other hand it does not depend on the type of instrument simulation. In particular, it may be used to model any material in the course of the neutron propagation along the instrument model (filters, mechanical parts, samples, shields, radiation protections).
+
+Once the scattering probability and position, the energy and momentum transfers and the neutron momentum after scattering have all been defined, the whole process is iterated until the neutron is transmitted and exits the sample volume.
 
 \subsubsection{Extension to powder elastic scattering}
 
