@@ -16,7 +16,7 @@ till the file has been exhausted. If desirable, the input file
 can be reused a number of times, determined by the optional parameter
 ``repeat-count''. This is only useful if the present simulation makes use of
 MC choices, otherwise the same outcome will result for each repetition of the
-simulation.
+simulation (see Appendix \ref{s:MCtechniques}).
 
 Care should be taken when dealing with
 absolute intensities, which will be correct only
@@ -25,4 +25,4 @@ when the input file has been exhausted at least once.
 The simulation ends with either the end of the repeated file counts,
 or with the normal end with $ncount$ \MCS\ simulation events. We recommand to
 control the simulation on \verb+repeat-count+ by using
-a very large ncount value, e.g. $ncount=1e10$.
+a very larger ncount value.

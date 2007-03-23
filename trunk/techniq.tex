@@ -8,43 +8,23 @@ of neutron weights.  Secondly, we give an expression for how the weight
 factor transforms under a Monte Carlo choice and specialize this
 to the concept of direction focusing.  Finally, we present a way of
 generating random numbers with arbitrary distributions.
+More details are available in Appendix \ref{s:random}.
 
 
 \section{Neutron spectrometer simulations}
 
-Neutron scattering instruments are built as a series of neutron optics elements.
-Each of these elements modifies the beam characteristics
-(e.g. divergence, wavelength spread, spatial and time distributions)
-in a way which may be modeled through analytical methods,
-for simplified neutron beam configurations.
-This stands for individual elements such as guides \cite{Leibnitz63,Mildner90},
-choppers \cite{Lowde60,Copley03}, Fermi choppers \cite{Fermi47,Peters05},
-velocity selectors \cite{Clark66},
-monochromators \cite{Freund83,Sears97,Shirane02,Alianelli04},
-and detectors \cite{Radeka74,Charpak89,Manzin04}.
-In the case of selected neutron instrument parts, one may use efficiently
-the so-called acceptance diagram theory \cite{Mildner90,Copley93,Cussen03}
-within which the neutron beam distributions are considered to be homogeneous
-or gaussian.
-However, the concatenation of a high number of neutron optical elements,
-which indeed constitute real instruments, brings additional complexity
-by introducing strong correlations between neutron beam parameters:
-divergence and position - which is the basis of the acceptance diagram method -
-but also wavelength and time.
-The usual analytical methods (phase-space theory...) then reach their limit
-of validity in the description of the resulting fine effects.
+Neutron scattering instruments are built as a series of neutron optics elements. Each of these elements modifies the beam characteristics (e.g. divergence, wavelength spread, spatial and time distributions) in a way which, for simple neutron beam configurations, may be modelled with analytical methods. This is valid for individual elements such as guides \cite{Leibnitz63,Mildner90}, choppers \cite{Lowde60,Copley03}, Fermi choppers \cite{Fermi47,Peters05}, velocity selectors \cite{Clark66}, monochromators \cite{Freund83,Sears97,Shirane02,Alianelli04}, and detectors \cite{Radeka74,Charpak89,Manzin04}. In the case of a limited number of optical elements, the so-called acceptance diagram theory \cite{Mildner90,Copley93,Cussen03} may be used, within which the neutron beam distributions are considered to be homogeneous, triangular or Gaussian.
+However, real neutron instruments are constituted of a large number of optical elements, and this brings additional complexity by introducing strong correlations between neutron beam parameters like divergence and position - which is the basis of the acceptance diagram method - but also wavelength and time. The usual analytical methods, such as phase-space theory, then reach their limit of validity in the description of the resulting effects.
 
-In principle, computing individual neutron event propagation
-at each instrument part, using analytical and numerical models,
-is not such a hard task.
-The use of probablilities is common to describe microscopic physical processes.
-Integrating all these events over the propagation path will result
-in an estimation of measurable quantities characterizing the neutron instrument.
-Moreover, using variance reduction ({\it e.g.} importance sampling),
-whenever possible, will both speed-up the computation and achieve
-a better accuracy. What we just sketched is nothing else than the basis
-of the Monte-Carlo (MC) method \cite{James80},
-applied to neutron ray-tracing instrumentation.
+In order to cope with this difficulty, Monte Carlo (MC) methods (for a general review, see Ref. \cite{James80}) may be applied to the simulation of neutron instruments.
+The use of probability is common place in the description of microscopic physical processes. Integrating these events (absorption, scattering, reflection, ...) over the neutron trajectories
+results in an estimation of measurable quantities characterizing the neutron instrument. Moreover, using variance reduction (importance sampling)
+where possible, reduces the computation time and gives better accuracy.
+
+Early implementations of the MC method for neutron instruments used \emph{home-made} computer programs  (see \cite{Copley86,Mildner77}) but, more recently, general packages have been designed, providing models for most optical components of neutron spectrometers.
+The most widely-used packages are NISP \cite{NISP}, ResTrax \cite{Restrax}, McStas \cite{nn_10_20,mcstas_webpage}, Vitess \cite{Vitess}, and IDEAS \cite{IDEAS}, which allow a wide range of neutron scattering instruments to be simulated.
+
+The neutron ray-tracing Monte Carlo method has been used widely for guide studies \cite{Copley93,Farhi02,Schanzer04}, instrument optimisation and design \cite{Zsigmond04,Lieutenant05}. Most of the time, the conclusions and general behaviour of such studies may be obtained using the classical analytical approaches, but accurate estimates for the flux, resolution and generally the optimum parameter set, benefit considerably from MC methods.
 
 \subsection{Monte Carlo ray tracing simulations}
 Mathematically, the Monte-Carlo method is an application of the law of large numbers \cite{James80,Grimmett92}. Let $f(u)$ be a finite continuous integrable function of parameter $u$ for which an integral estimate is desirable. The discrete statistical mean value of $f$ (computed as a series) in the uniformly sampled interval $a < u < b$ converges to the mathematical mean value of $f$ over the same interval.
@@ -210,6 +190,7 @@ the scattering position within the sample and the final neutron direction
 within the Debye-Scherrer cone.
 
 \subsection{Direction focusing}
+\index{Monte Carlo method!Direction focusing}
 \label{s:focus}
 An important application of weight transformation is direction focusing.
 Assume that the sample scatters the neutron rays in many directions.
@@ -244,10 +225,11 @@ we cut neutrons rays that should have reached the final detector.
 \label{fig:focusing}
 \end{figure}
 
-
-\section{Adaptive sampling}
+\section{Adaptive and Stratified sampling}
+\index{Monte Carlo method!Adaptive sampling}
+\index{Monte Carlo method!Stratified sampling}
 Another strategy to improve sampling in simulations
-is adaptive importance sampling, % \cite{importance},
+is \emph{adaptive importance sampling} (also called variance reduction technique), % \cite{importance},
 where \MCS\ during the simulations will determine
 the most interesting directions and gradually change
 the focusing according to that.
@@ -255,10 +237,14 @@ Implementation of this idea is
 found in the {\bf Source\_adapt} and {\bf Source\_Optimizer} components.
 %, described in section~\ref{s:Source_adapt}.
 
-\section{Accuracy of Monte Carlo simulations}
-\index{Accuracy}
+An other class of efficiency improvement technique is the so-called \emph{stratified sampling}. It consists in partitioning the event distributions in representative sub-spaces, which are then all sampled individualy. The advantage is that we are then sure that each sub-space is well represented in the final integrals. This means that instead of shooting $N$ events, we define $D$ partitions and shoot $r=N/D$ events in each partition. In conjunction with adaptive sampling, we may define partitions so that they represent 'interesting' distributions, e.g. from events scattered on a monochromator or a sample. The sum of partitions should equal the total space integrated by the Monte Carlo method, and each partition must be sampled randomly.
 
-When running a Monte Carlo, the meaningfull quantities are obtained by integrating random events into a single value (e.g. flux), or onto an histogram grid. The theory \cite{James80} shows that the accuracy of these estimates is a function of the space dimension $d$ and the number of events $N$. For large numbers, the central limit theory shows that the relative error varies as $1/\sqrt{N}$. However, the exact expression depends on the random distributions.
+In the case of \MCS, the stratified sampling is used when repeating events, such as in the Virtual sources (Virtual\_input, Vitess\_input, Virtual\_mcnp\_input, Virtual\_tripoli4\_input) and when using the ENHANCE keyword in the TRACE section on instrument descriptions. We emphasize here that the number of repetitions $r$ should not exceed the dimensionality of the Monte Carlo integration space (which is $d=10$ for neutron events) and the dimensionality of the partition spaces, i.e. the number of random generators following the stratified sampling location in the instrument.
+
+\section{Accuracy of Monte Carlo simulations}
+\index{Monte Carlo method!Accuracy}
+
+When running a Monte Carlo, the meaningfull quantities are obtained by integrating random events into a single value (e.g. flux), or onto an histogram grid. The theory \cite{James80} shows that the accuracy of these estimates is a function of the space dimension $d$ and the number of events $N$. For large numbers $N$, the central limit theorem provides an estimate of the relative error as $1/\sqrt{N}$. However, the exact expression depends on the random distributions.
 
 \MCS\ uses a space with $d=10$ parameters to describe neutrons (position, velocity, spin, time). We show in Table \ref{t:mc_accuracy} a rough estimate of the accurarcy on integrals as a function of the number of records reaching the integration point. This stands both for integrated flux, as well as for histogram bins - for which the number of events per bin should be used for $N$.
 
@@ -276,7 +262,7 @@ When running a Monte Carlo, the meaningfull quantities are obtained by integrati
     $10^7$ & 0.05 \% \\
     \hline
     \end{tabular}
-    \caption{Accuracy estimate as a function of the number of statistical events, obtained with \MCS.}
+    \caption{Accuracy estimate as a function of the number of statistical events used to estimate an integral with \MCS.}
     \label{t:mc_accuracy}
   }
   \end{center}

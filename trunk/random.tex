@@ -1,5 +1,6 @@
 \chapter{Random numbers in \MCS}
 \label{s:random}
+\index{Monte Carlo method}
 
 \section{Transformation of random numbers}
 In order to perform the Monte Carlo choices, one needs to be able to
@@ -77,6 +78,7 @@ In stead, we rely on a specific algorithm for selecting random
 numbers with this distribution.
 
 \section{Random generators}
-Eventhough there is the possibility to use the system random generator, as well as ther initial \MCS\ version 1.1 random generator, the default algorithm is the so-called "Mersenne Twister", by Makoto Matsumoto and Takuji Nishimura. See \verb+http://www.math.keio.ac.jp/~matumoto/emt.html+ for original source.
+\index{Monte Carlo method!Random number, Mersenne Twister}
+Eventhough there is the possibility to use the system random generator, as well as the initial \MCS\ version 1.1 random generator, the default algorithm is the so-called "Mersenne Twister", by Makoto Matsumoto and Takuji Nishimura. See \verb+http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html+ for original source.
 
-It is considered today to be by far the best random generator, which means that both its period is extremely large, and cross-correlations are negligible.
+It is considered today to be by far the best random generator, which means that both its period is extremely large $2^{19937}-1$, and cross-correlations are negligible, i.e distributions are homogeneous and independent up to 623 dimensions. It is also extremely fast.

@@ -665,14 +665,15 @@ is difficult to understand the flow of the simulation. We thus recommand the usa
 \index{Keyword!ENHANCE}
 \label{s:instrdefs-extend-enhance}
 
-The following method applies when the incoming neutron event distribution is considered to be representative of the real beam, but neutrons are lost afterwards (with low efficiency processes, absorption, etc). Then, one may think that it's a pity to have so few events reaching the 'interesting' part of the instrument (usually close to the end of the instrument description).
+The following method applies when the incoming neutron event distribution is considered to be representative of the real beam, but neutrons are lost in the course of propagation (with low efficiency processes, absorption, etc). Then, one may think that it's a pity to have so few events reaching the 'interesting' part of the instrument (usually close to the end of the instrument description).
 If some components make extensive use of random numbers (MC choices), they shuffle this way the distributions, so that identical incoming events will not produce the same outgoing event. In this case, you may use the \verb+ENHANCE+ keyword with the syntax
 
 \begin{quote}
-  \texttt{ENHANCE} ${n}$ \texttt{COMPONENT} $\textit{name} = \textit{comp}(\ldots)$
+  \texttt{ENHANCE} ${r}$ \texttt{COMPONENT} $\textit{name} = \textit{comp}(\ldots)$
 \end{quote}
-where the optional number $n$ specifies the number of repetitions for each event. Default is 10.
-Each neutron event reaching component {\it name} will be repeated $n$ times with a weight divided by $n$, so that in practice the number of events for the remaining part of the simulation (down to the END), will potentially have more statistics. This is only true if following components (and preferably component {\it name}) use random numbers. You may use this method as many times as you wish in the same instrument, e.g. at the monochromator and sample position. This keyword can also be used within a GROUP. The efficiency is roughtly $n$ to the number of occurences in the instrument, so that enhancing two components with the default $n=10$ will produce at the end an enhancement effect of 100 in the number of events. The execution time will usually get very slightly longer.
+
+where the optional number $r$ specifies the number of repetitions for each event. Default is $r=10$.
+Each neutron event reaching component {\it name} will be repeated $r$ times with a weight divided by $r$, so that in practice the number of events for the remaining part of the simulation (down to the END), will potentially have more statistics. This is only true if following components (and preferably component {\it name}) use random numbers. You may use this method as many times as you wish in the same instrument, e.g. at the monochromator and sample position. This keyword can also be used within a GROUP. The efficiency is roughtly $r$ raised to the number of occurences in the instrument, so that enhancing two components with the default $r=10$ will produce at the end an enhancement effect of 100 in the number of events. The execution time will usually get very slightly longer. This technique is known as the \emph{stratified sampling} (see Appendix \ref{s:MCtechniques}).
 
 \section{Writing component definitions}
 \label{s:compdefs}
