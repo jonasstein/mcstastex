@@ -129,7 +129,7 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{- COMPONENT} & & \\
       \texttt{DEFINITION} & C & Defines component parameters that are constants (like C \#define). \\
       \texttt{END} & I,C & Ends the instrument or component definition. \\
-      \texttt{ENHANCE} & I & Enhance incoming statistics by event repetition. \\
+      \texttt{SPLIT} & I & Enhance incoming statistics by event repetition. \\
       \texttt{EXTEND} & I & Extends the TRACE section of a component in an instrument definition. \\
       \texttt{FINALLY} & I,C & Embeds C code to execute when simulation ends (also executes the SAVE section). \\
       \texttt{GROUP} & I & Defines an exclusive group of components. \\
@@ -480,7 +480,7 @@ In this section, we describe some additional ways to build instruments using gro
 As a summary, the nearly complete grammar definition for component instances within the instrument TRACE section is:
 
 \begin{verbatim}
-{ENHANCE} COMPONENT name = comp(parameters) {WHEN condition}
+{SPLIT} COMPONENT name = comp(parameters) {WHEN condition}
   AT (...) [RELATIVE [reference|PREVIOUS] | ABSOLUTE]
   {ROTATED {RELATIVE [reference|PREVIOUS] | ABSOLUTE} }
   {GROUP group_name}
@@ -661,15 +661,15 @@ We would like to emphasize the potential errors originating from such
 jumps. Indeed, imbricating many jumps may lead to situations were it
 is difficult to understand the flow of the simulation. We thus recommand the usage of JUMPs only for experienced and cautious users.\index{Bugs}
 
-\subsection{Enhancing statistics reaching components - ENHANCE}
-\index{Keyword!ENHANCE}
+\subsection{Enhancing statistics reaching components - SPLIT}
+\index{Keyword!SPLIT}
 \label{s:instrdefs-extend-enhance}
 
 The following method applies when the incoming neutron event distribution is considered to be representative of the real beam, but neutrons are lost in the course of propagation (with low efficiency processes, absorption, etc). Then, one may think that it's a pity to have so few events reaching the 'interesting' part of the instrument (usually close to the end of the instrument description).
-If some components make extensive use of random numbers (MC choices), they shuffle this way the distributions, so that identical incoming events will not produce the same outgoing event. In this case, you may use the \verb+ENHANCE+ keyword with the syntax
+If some components make extensive use of random numbers (MC choices), they shuffle this way the distributions, so that identical incoming events will not produce the same outgoing event. In this case, you may use the \verb+SPLIT+ keyword with the syntax
 
 \begin{quote}
-  \texttt{ENHANCE} ${r}$ \texttt{COMPONENT} $\textit{name} = \textit{comp}(\ldots)$
+  \texttt{SPLIT} ${r}$ \texttt{COMPONENT} $\textit{name} = \textit{comp}(\ldots)$
 \end{quote}
 
 where the optional number $r$ specifies the number of repetitions for each event. Default is $r=10$.

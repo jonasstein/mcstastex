@@ -301,13 +301,13 @@ The \MCS\ team recommends these compiler alternatives for the Intel
 \item[\bf A]{\verb+gcc+ which is a very portable, open source, ISO-C
     compatible c compiler, available for most platforms. For Linux it
     is usually part of your distribution, for Windows the \MCS\
-    distribution package includes a version of \verb+gcc+ 
+    distribution package includes a version of \verb+gcc+
     (in the Dev-CPP sub-package), and for Mac OS X \verb+gcc+ is part
     of the Xcode tools package available on the installation medium.}
 \item[\bf B]{\verb+icc+ or the Intel c compiler is available for Linux, Mac
     OS and Windows systems and is a commercial software
     product. Generally, simulations run with the Intel compiler are
-    {\bf a factor of 2 faster} than the identical simulation run using \verb+gcc+. To use \verb+icc+ with \MCS\, set the environment variables 
+    {\bf a factor of 2 faster} than the identical simulation run using \verb+gcc+. To use \verb+icc+ with \MCS\, set the environment variables
     \begin{itemize}
       \item{\verb+MCSTAS_CC=icc+}
       \item{\verb+MCSTAS_CFLAGS="-g -O2 -wd177,266,1011,181"+}
@@ -686,7 +686,7 @@ There are various ways to speed up simulations
 \item Complex components usually take into account additional small effects in a simulation,
       but are much longer to execute. Thus, simple components should be prefered
       whenever possible, at least in the beginning of a simulation project.
-\item The ENHANCE keyword may artificially repeat events reaching specified positions in the
+\item The SPLIT keyword may artificially repeat events reaching specified positions in the
       instrument. This is \emph{very} efficient, but requires to cast random numbers in the course of
       the remaining propogagtion (e.g. at samples, crystals, ...). See section \ref{s:instrdefs-extend-enhance} for details.
 \end{itemize}
@@ -1748,7 +1748,7 @@ Multi-threading is under experimentation. It has been implemented when using \\\
 
 The method is based on a parallel execution of threads. This introduces quite large overhead and dramatically reduces efficiency. We thus do NOT recommand to use it. Further developments are under way.
 
-%%% Local Variables: 
+%%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "manual"
-%%% End: 
+%%% End:
