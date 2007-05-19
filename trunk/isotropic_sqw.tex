@@ -256,8 +256,8 @@ As indicated in the previous section, the Isotropic\_Sqw component is not as acc
     \hline
 Parameter & type & meaning \\
     \hline
-Sqw\_coh   & string              & Coherent scattering data file name. Use 0 or "" to disable  \\
-Sqw\_inc   & string              & Incoherent scattering data file name. Use 0 or "" to scatter isotropically (Vanadium like)  \\
+Sqw\_coh   & string              & Coherent scattering data file name. Use 0, NULL or "" to disable  \\
+Sqw\_inc   & string              & Incoherent scattering data file name. Use 0, NULL or "" to scatter isotropically (Vanadium like)  \\
 sigma\_coh & [barns]      & Coherent scattering cross-section. -1 to disable \\
 sigma\_inc & [barns]      & Incoherent scattering cross-section. -1 to disable \\
 sigma\_abs & [barns]      & Absorption cross-section. -1 to disable  \\
@@ -272,8 +272,9 @@ radius\_i & [m] & sphere geometry if radius\_i=0  \\
 thickness& [m] & thickness of hollow shape  \\
     \hline
 auto\_qw  & boolean & Automatically optimise probability tables during simulation  \\
+auto\_norm& scalar  & Normalize $S(q,\omega)$ when -1, use raw data when 0, multiply $S$ by given value when positive \\
 interpolate & boolean & Smooth $S(q,\omega)$ table (recommended) \\
-order     & integer & Limit multiple scattering up to given order. 0 means no limitations  \\
+order     & integer & Limit multiple scattering up to given order. 0 means all orders  \\
 concentric& boolean & Enables to 'enter' inside concentric hollow geometries  \\
     \hline
     \end{tabular}
