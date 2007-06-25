@@ -3,13 +3,17 @@
 \index{Diffraction}
 \label{powder}
 
-\component{Powder\_N}{System}{$r$, $h$, $\sigma_{\rm abs}$,
-  $\sigma_{\rm inc}$, $V_0$, $f_{\rm pack}$, filename, format, DW}{}{validation in progress}
+\component{Powder\_N}{System}{$radius$, $radius_i$, $h$, $xwidth$, $yheight$, $zthick$,  $xwidth_i$, $yheight_i$, $zthick_i$ $\sigma_{\rm abs}$,
+  $\sigma_{\rm inc}$, $V_0$, $f_{\rm pack}$, reflections, format, DW, concentic, and more}{}{}
 
 The powder diffraction component {\bf PowderN} models a powder sample
 with background coming only from incoherent scattering and no
-multiple scattering. The description of the powder comes from a
-file in one of the standard output formats LAZY, FULLPROF, or CRYSTALLOGRAPHICA.
+multiple scattering. At the users choice, a given percentage of the incoming
+events may be transmitted (attenuated) to model the direct beam. The component can also
+assume \emph{concentric} shape, i.e. be used for describing sample environment (cryostat,
+sample container etc.). 
+
+The description of the powder comes from a file in one of the standard output formats LAZY, FULLPROF, or CRYSTALLOGRAPHICA.
 
 A usage example of this component can be found in the \verb+Neutron site/Tutorial/templateDIFF+ instrument from the \verb+mcgui+.
 
@@ -58,7 +62,9 @@ Further details on file formats are available in the \verb+mcdoc+ page
 of the component.
 
 \subsection{Geometry and physical properties}
-The sample has the shape of a solid cylinder, radius $r$ and height $h$.
+The sample has the shape of a solid cylinder, radius $r$ and height $h$ or a box-shaped
+sample of size $xwidth$x$yheight$x$zthick$. At the users choice, an inner 'hollow' can be
+specified.
 The absorption and incoherent cross sections are given by
 $\sigma_c^a$ $\sigma_i,c^s$.
 
