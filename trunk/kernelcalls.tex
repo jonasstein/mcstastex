@@ -62,14 +62,14 @@ the neutron rays which have negative propagation times are removed automatically
 \item {\bf PROP\_Z0}. Propagates the neutron to the $z=0$ plane,
   by adjusting $(x,y,z)$ and $t$ accordingly from knowledge of the
   neutron velocity $(vx,vy,vz)$.
-  If the propagation time is negative, the neutron ray is absorbed.
+  If the propagation time is negative, the neutron ray is absorbed, except if a \verb+ALLOW_BACKPROP;+ preceeds it.
 
   For components that are centered along the $z$-axis,
   use the \verb+_intersect+ functions to determine intersection time(s),
   and then a \verb+PROP_DT+ call.
 \item {\bf PROP\_DT}$(dt)$. Propagates the neutron through the
   time interval $dt$, adjusting $(x,y,z)$ and $t$ accordingly
-  from knowledge of the neutron velocity.
+  from knowledge of the neutron velocity. This macro automatically calls PROP\_GRAV\_DT when the \verb+--gravitation+ option has been set for the whole simulation.
 \item {\bf PROP\_GRAV\_DT}$(dt,Ax,Ay,Az)$. Like {\bf PROP\_DT}, but it also
   includes gravity using the acceleration $(Ax,Ay,Az)$. In addition
   to adjusting $(x,y,z)$ and $t$, also $(vx,vy,vz)$ is modified.
@@ -268,7 +268,7 @@ Details about using these functions are given in the \MCS\ User Manual.
   distribution centered around 0 and with $\sigma=1$. The algorithm used to
   sample the normal distribution is explained in Ref.~\cite[ch.7]{num_rep}.
 \item {\bf randpm1}(). Returns a random number distributed uniformly between -1 and 1.
-\item {\bf randtriangle}(). Returns a random number from a triangular distribution between -1 and 1. 
+\item {\bf randtriangle}(). Returns a random number from a triangular distribution between -1 and 1.
 \item {\bf randvec\_target\_circle}(\&$v_x$, \&$v_y$, \&$v_z$, \&$d\Omega$,
   aim$_x$, aim$_y$, aim$_z$, $r_f$). Generates a random vector $(v_x, v_y,
   v_z)$, of the same length as (aim$_x$, aim$_y$, aim$_z$), which is
@@ -297,7 +297,7 @@ Details about using these functions are given in the \MCS\ User Manual.
   The \verb+read_table-lib+ provides functionalities for reading text
   (and binary) data files. To use this library,
   add a \verb+%include "read_table-lib"+ in your component definition
-  DECLARE or SHARE section. Tables are structures of type $t_{\rm Table}$
+  DECLARE or SHARE section. Tables are structures of type \verb+t_Table+
   (see \verb+read_table-lib.h+ file for details):
 \begin{verbatim}
     /* t_Table structure (most important members) */
@@ -342,8 +342,12 @@ Available functions to read \emph{a single} vector/matrix are:
 \item {\bf Table\_Index}($Table, m, n$) reads the $Table[m][n]$ element.
 \item {\bf Table\_Value}($Table, x, n$) looks for the closest $x$
   value in the first column (index 0), and extracts in this row the
-  $n$-th element (starting from 0). The first column is thus the 'x' axis for the data. It does not contain any interpolation method.
+  $n$-th element (starting from 0). The first column is thus the 'x' axis for the data.
 \item {\bf Table\_Free}(\&$Table$) free allocated memory blocks.
+\item *$Table$ = {\bf Table\_Read\_Array}($filename$, &$blocks$) extracts all numerical blocks of $filename$ into a returned Table array. The number of read blocks is returned in the $blocks$ integer.
+\item {\bf Table\_Free\_Array}(&$Table$) Free the Table array.
+\item {\bf Table\_Info\_Array}(&$Table$) Gives information about the Table array.
+\item {\bf Table_Value2d}($Table$, $X$, $Y$) Uses 2D linear interpolation on a Table, from (X,Y) coordinates and returns the corresponding value.
 \end{itemize}
 
 Available functions to read \emph{an array} of vectors/matrices in a \emph{text} file are:

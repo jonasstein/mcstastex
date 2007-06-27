@@ -122,35 +122,33 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \hline
       \texttt{ABSOLUTE} & I & Indicates that the AT and ROTATED keywords are in the absolute coordinate system. \\
       \texttt{AT} & I & Indicates the position of a component in an instrument definition. \\
-      \texttt{COPY}& I,C & copy/duplicate an instance or a component definition with parameters. \\
-      \texttt{DECLARE} & I,C & Declares C internal instrument or component variables. \\
-      \texttt{DEFINE} & I,C & Starts an instrument or component definition. \\
-      \texttt{- INSTRUMENT} & & (each associated parameter may have default values) \\
-      \texttt{- COMPONENT} & & \\
-      \texttt{DEFINITION} & C & Defines component parameters that are constants (like C \#define). \\
+      \texttt{COPY}& I,C & copy/duplicate an instance or a component definition. \\
+      \texttt{DECLARE} & I,C & Declares C internal variables. \\
+      \texttt{DEFINE} & I,C & Starts an INSTRUMENT or COMPONENT definition. \\
+      \texttt{DEFINITION} & C & Defines component parameters that are constants (\#define). \\
       \texttt{END} & I,C & Ends the instrument or component definition. \\
       \texttt{SPLIT} & I & Enhance incoming statistics by event repetition. \\
-      \texttt{EXTEND} & I & Extends the TRACE section of a component in an instrument definition. \\
-      \texttt{FINALLY} & I,C & Embeds C code to execute when simulation ends (also executes the SAVE section). \\
+      \texttt{EXTEND} & I & Extends a component TRACE section (plug-in). \\
+      \texttt{FINALLY} & I,C & Embeds C code to execute when simulation ends. \\
       \texttt{GROUP} & I & Defines an exclusive group of components. \\
       \texttt{\%include} & I,C & Imports an instrument part, a component or a piece of C code (when within embedded C). \\
       \texttt{JUMP} & I & Iterative (loops) and conditional jumps. \\
       \texttt{INITIALIZE} & I,C & Embeds C code to be executed when starting. \\
       \texttt{ITERATE} & I & Defines iteration counter for JUMP. \\
-      \texttt{MCDISPLAY} & C & Embeds C code to display a geometric  representation of a component. \\
+      \texttt{MCDISPLAY} & C & Embeds C code to display component geometry. \\
       \texttt{NEXUS} & I & Defines NeXus output type (4,5,XML,compression). \\
       \texttt{OUTPUT} & C & Defines internal variables to be public and protected symbols (usually all global variables and functions of DECLARE).\\
-      \texttt{PARAMETERS} & C & Defines a class of component parameter. \\
+      \texttt{PARAMETERS} & C & Defines a class of component parameter (DEFINITION, SETTING,STATE). \\
       \texttt{POLARISATION} & C & Defines neutron polarisation coordinates. \\
       \texttt{PREVIOUS} & C & Refers to a previous component position/orientation.\\
       \texttt{RELATIVE} & I & Indicates that the AT and ROTATED keywords are relative to an other component. \\
       \texttt{ROTATED} & I & Indicates the orientation of a component in an instrument definition. \\
       \texttt{SAVE} & I,C & Embedded C code to execute when saving data. \\
       \texttt{SETTING} & C & Defines component parameters that are
-      variables (double, int, char*). \\
-      \texttt{SHARE} & C & Declares global functions and variables to be used by all components. \\
+      variables. \\
+      \texttt{SHARE} & C & Declares global functions and variables to be shared. \\
       \texttt{STATE} & C & Defines neutron state coordinates. \\
-      \texttt{TRACE} & I,C & Lists the components or embedded C code to execute during simulation. \\
+      \texttt{TRACE} & I,C & Defines the instrument as a the component sequence. \\
       \texttt{WHEN}  & I & Condition for component activation and JUMP.\\
       \hline
     \end{tabular}
@@ -216,7 +214,7 @@ web-page~\cite{mcstas_webpage} and in the \texttt{example} directory.
 
 As a summary, the usual grammar for instrument descriptions is
 \begin{verbatim}
-DEFINE name(parameters)
+DEFINE INSTRUMENT name(parameters)
 DECLARE C_code
 INITIALIZE C_code {NEXUS}
 TRACE components
@@ -263,7 +261,7 @@ For example
 \begin{quote}
   \texttt{DEFINE INSTRUMENT test(d1= 1, string s2="hello")}
 \end{quote}
-Here \verb+d1+ and \verb+d2+ are an optional parameters and if no
+Here \verb+d1+ and \verb+d2+ are optional parameters and if no
 value are given explicitly, ``1'' and ``hello'' will be used.
 
 Optional parameters can greatly increase the convenience for users of
@@ -295,7 +293,7 @@ component definition or a part of an instrument. Variables defined here are glob
   \verb|%}|
 \end{quote} \index{Embedded C code}
 This gives code that is executed when the simulation starts. This section is
-optional. Instrument setting parameters (e.g. doing tests or automatic settings) may be modified in this section.
+optional. Instrument setting parameters may be modified in this section (e.g. doing tests or automatic settings).
 
 \subsection{The \texttt{NEXUS} extension}
 \index{Keyword!NEXUS} \index{Tools!NeXus} \index{Tools!HDF} \index{Data formats}
@@ -310,7 +308,7 @@ The default NeXus format is NeXus 5 with compression. However, that format may b
   \verb|%{| \\
   \hbox to 3em{}\ldots C initializations. \ldots \\
   \verb|%}|
-  \verb+NEXUS ["4"|"5"|"XML"|"compress"|"zip"]}+
+  \verb+NEXUS {"4"|"5"|"XML"|"compress"|"zip"}+
 \end{quote}
 
 It is possible to set the type of NeXus file with a string argument, containing words "4", "5" or "XML". Optionally, if the string also contains the \verb+compress+ or \verb+zip+ word, the NeXus file will use compression for Data Sets. We recommend the syntax \verb+NEXUS "5 compress"+ which is the default.
@@ -433,7 +431,7 @@ For experienced users, we recommand as well the usage of the \texttt{WHEN} and \
   \hbox to 3em{}\ldots C code to execute each time a temporary save is required \ldots \\
   \verb|%}|
 \end{quote} \index{Signal handler!USR2 signal}
-This gives code that will be executed when the simulation is requested to save data, for instance when receiving a USR2 signal (on Unix systems), or using the \verb+Progress_bar+ component with intermediate savings. This section is optional.
+This gives code that will be executed when the simulation is requested to save data, for instance when receiving a USR2 signal (on Unix systems), or using the \verb+Progress_bar+ component with intermediate savings. It is also executed when the simulation ends. This section is optional.
 
 \subsection{The \texttt{FINALLY} section}
 \index{Keyword!FINALLY}
@@ -488,10 +486,20 @@ As a summary, the nearly complete grammar definition for component instances wit
   {JUMP [reference|PREVIOUS|MYSELF|NEXT] [ITERATE number_of_times | WHEN condition] }
 \end{verbatim}
 
-\subsection{Groups and component extensions - GROUP}
+\subsection{Groups and component extensions - GROUP - EXTEND}
 \index{Keyword!GROUP}
 \index{Keyword!EXTEND}
 \label{s:instrdefs-extend-group}
+
+It is sometimes desirable to slighlty modify an existing component of the \MCS\ library. One would usually make a copy of the component, and extend the code of its \texttt{TRACE} section. \MCS\ provides an easy way to change the behaviour of existing components in an instrument definition without duplicating files, using the \texttt{EXTEND} modifier \index{Keyword!EXTEND}
+\begin{quote}
+  \texttt{EXTEND} \\
+  \verb|%{| \\
+  \hbox to 3em{}\ldots C code executed after the component TRACE section \ldots \\
+  \verb|%}|
+\end{quote} \index{Embedded C code}
+The embeded C code is appended to the component \texttt{TRACE} section, and all its internal variables (as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters) may be used. To use instrument parameters, you should copy them into global variables in the DECLARE instrument section, and refer to these latter.
+This component declaration modifier is of course optional. You will find numerous usage examples, and in particular in the Sources section of the Component manual.
 
 In some peculiar configurations it is neccesary to position one or
 more groups of components, nested, in parallel, or overlapping. One
@@ -525,9 +533,10 @@ Within a \texttt{GROUP}, \emph{all} \texttt{EXTEND} sections of the group are ex
   \hbox to 1em{} \texttt{GROUP} \textit{GroupName}
 \end{quote}
 Components \emph{name1} and \emph{name2} are at the same position. If the first one intercepts the neutron (and has a SCATTER within its \texttt{TRACE} section), the SCATTERED variable becomes true, the code extension will result in printing "I scatter", and the second component will be skipped.
-Thus, we recommand to make use of the SCATTER keyword each time a component 'uses' the neutron (scatters, detects, \ldots) within component definitions (see section \ref{s:compdefs}).
+Thus, we recommand to make use of the SCATTER keyword each time a component 'uses' the neutron (scatters, detects, \ldots) within component definitions (see section \ref{s:compdefs}). Also, the components to be grouped should be consecutive in the TRACE section of the instrument, and the GROUPed section should not contain components which are not part of the group.
 
-A usage example of the GROUP keyword can be found in the \verb+Neutron site/ILL/ILL_H15_IN6+ instrument from the \verb+mcgui+, to model 3 monochromators.
+A usage example of the GROUP keyword can be found in the \\
+\verb+Neutron site/ILL/ILL_H15_IN6+ instrument from the \verb+mcgui+, to model 3 monochromators.
 
 \subsection{Duplication of component instances - COPY}
 \index{Keyword!COPY}
@@ -590,7 +599,8 @@ One of the most useful features of the extended \MCS\ syntax is the conditional 
   \texttt{COMPONENT} $\textit{name} = \textit{comp}(p_1 = e_1, p_2 = e_2, \ldots)$
   \texttt{WHEN} {\it condition}
 \end{quote}
-The condition has the same scope as the EXTEND modifier, i.e. may use component internal variables as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters. It is evaluated before the component TRACE section.
+The condition has the same scope as the EXTEND modifier, i.e. may use component internal variables as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters. To use instrument parameters, you should copy them into global variables in the DECLARE instrument section, and refer to these latter.
+It is evaluated before the component TRACE section.
 
 Usage examples could be to have specific monitors only sensitive to selected processes, or to have components which are only present under given circonstances (e.g. removable guide or radial collimator), or to select a sample among a set of choices.
 
@@ -610,7 +620,8 @@ The WHEN keyword only applies to the TRACE section of instruments/components. Ot
 
 Also, the \verb+WHEN+ keyword is a condition for \verb+GROUP+. This means that when the \verb+WHEN+ is false, the component instance is not active in the \verb+GROUP+ it belongs to.\index{Bugs}
 
-A usage example of the WHEN keyword can be found in the \verb+Neutron site/ILL/ILL_TOF_Env+ instrument from the \verb+mcgui+, to monitor neutron depending on their fate.
+A usage example of the WHEN keyword can be found in the \\
+\verb+Neutron site/ILL/ILL_TOF_Env+ instrument from the \verb+mcgui+, to monitor neutron depending on their fate.
 
 \subsection{Component loops and non sequential propagation - JUMP}
 \index{Keyword!JUMP}
@@ -679,7 +690,8 @@ If some components make extensive use of random numbers (MC choices), they shuff
 where the optional number $r$ specifies the number of repetitions for each event. Default is $r=10$.
 Each neutron event reaching component {\it name} will be repeated $r$ times with a weight divided by $r$, so that in practice the number of events for the remaining part of the simulation (down to the END), will potentially have more statistics. This is only true if following components (and preferably component {\it name}) use random numbers. You may use this method as many times as you wish in the same instrument, e.g. at the monochromator and sample position. This keyword can also be used within a GROUP. The efficiency is roughtly $r$ raised to the number of occurences in the instrument, so that enhancing two components with the default $r=10$ will produce at the end an enhancement effect of 100 in the number of events. The execution time will usually get very slightly longer. This technique is known as the \emph{stratified sampling} (see Appendix \ref{s:MCtechniques}).
 
-A usage example of the SPLIT keyword can be found in the \verb+Neutron site/ILL/ILL_H15_IN6+ instrument from the \verb+mcgui+, to enhance statistics for neutrons scattering on monochromators and sample.
+A usage example of the SPLIT keyword can be found in the \\
+\verb+Neutron site/ILL/ILL_H15_IN6+ instrument from the \verb+mcgui+, to enhance statistics for neutrons scattering on monochromators and sample.
 
 \section{Writing component definitions}
 \label{s:compdefs}
@@ -727,7 +739,7 @@ component.
 \index{Keyword!DEFINITION PARAMETERS}
 \index{Keyword!SETTING PARAMETERS}
 This declares the definition and setting parameters of the component.
-The parameters can be
+These parameters can be
 accessed from all sections of the component (see below),
 as well as in \verb+EXTEND+ sections of the instrument definition (see section~\ref{s:instrdefs}).
 \index{Parameters!Setting}
@@ -953,8 +965,8 @@ special macro \texttt{SCATTER} should be called. This does not affect the
 results of the simulation in any way, but it allows the front-end
 programs to visualize the scattering events properly, and to handle
 component \texttt{GROUP}s in an instrument definition (see
-section~\ref{s:trace}). The \texttt{SCATTER} macro should be called with
-the state parameters set to the proper values for the scattering event.
+section~\ref{s:trace}). It basically increments the SCATTERED counter. The \texttt{SCATTER} macro should be called with
+the state parameters set to the proper values for the scattering event., so that neutron events are displayed correctly.
 For an example of \texttt{SCATTER}, see the optics/Guide
 component. \index{Library!Run-time!SCATTER}
 
@@ -970,7 +982,7 @@ component. \index{Library!Run-time!SCATTER}
   \hbox to 3em{}\ldots C code to execute in order to save data \ldots \\
   \verb|%}|
 \end{quote}
-This gives code that will be executed when the simulation is requested to save data, for instance when receiving a USR2 signal (on Unix systems, see section~\ref{s:run-sim}), or when triggered by the \texttt{Progress\_bar(flag\_save=1)} component.
+This gives code that will be executed when the simulation ends, or is requested to save data, for instance when receiving a USR2 signal (on Unix systems, see section~\ref{s:run-sim}), or when triggered by the \texttt{Progress\_bar(flag\_save=1)} component.
 This might be used by monitors and detectors in order to write results.
 An extension depending on the selected output format (see table~\ref{t:formatoptions} and section~\ref{s:run-sim}) is automatically appended to file names, if these latter do not contain extension.
 
@@ -1119,7 +1131,7 @@ Users may want to have additional information than the default one written by th
   \texttt{DETECTOR\_CUSTOM\_HEADER({\it t})}
 \end{quote}
 
-defines a string to be written during the next \verb+DETECTOR\_OUT*+ call, as a field {\it custom}. This string may additionally use the symbol \verb+%PRE+ which is replaced by the format specific comment character, e.g. '\#' for McStas/PGPLOT, '\%' for Octave/Matlab, '\\' for Scilab and ';' for IDL, and ' ' for other formats. The argument {\it t} to the macro may be a static string, e.g. {\it "My own additional information"}, or the name of a {\it character array variable} containing the meta data. After the detector/monitor file being written, the custom meta data output is unactivated. This way, each monitor file may have its own meta data definition by repeating the DETECTOR\_CUSTOM\_HEADER call. You may either do that inside the component SAVE section, or within an instrument description in an EXTEND code preceeding the monitor (e.g. following an Arm component).
+defines a string to be written during the next \verb+DETECTOR\_OUT*+ call, as a field {\it custom}. This string may additionally use the symbol \verb+%PRE+ which is replaced by the format specific comment character, e.g. '\#' for McStas/PGPLOT, '\%' for Octave/Matlab, '\verb+//+' for Scilab and ';' for IDL, and ' ' for other formats. The argument {\it t} to the macro may be a static string, e.g. {\it "My own additional information"}, or the name of a {\it character array variable} containing the meta data. After the detector/monitor file being written, the custom meta data output is unactivated. This way, each monitor file may have its own meta data definition by repeating the DETECTOR\_CUSTOM\_HEADER call. You may either do that inside the component SAVE section, or within an instrument description in an EXTEND code preceeding the monitor (e.g. following an Arm component).
 
 \subsection{The \texttt{FINALLY} section}
 \label{s:comp-finally}
@@ -1133,7 +1145,7 @@ defines a string to be written during the next \verb+DETECTOR\_OUT*+ call, as a 
 \end{quote}
 This gives code that will be executed when the simulation has
 ended. This might be used to free memory and print out final results from components, \textit{e.g}.\ the
-simulated intensity in a detector.
+simulated intensity in a detector. This section also triggers the SAVE section to be executed.
 
 \subsection{The \texttt{MCDISPLAY} section}
 \label{s:comp-mcdisplay}

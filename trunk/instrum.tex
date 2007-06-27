@@ -19,14 +19,14 @@ These instrument files are included in the \MCS\ distribution
 in the \verb+examples/+ directory.
 Most of the instrument examples there-in may be executed automatically throught the \MCS\ self-test procedure (see section~\ref{s:testing}).
 The list of instrument examples has been extended considerably, see
-the ``Neutron Site'' menu in mcgui (See page \ref{p:neutronsite}). 
+the ``Neutron Site'' menu in mcgui (See page \ref{p:neutronsite}).
 
 \section{A quick tour of instrument examples}
 \label{s:quick-tour-instr}
 
 \subsection{Neutron site: Brookhaven}
 
-The former Brookhaven reactor hosted the H8 triple-axis spectrometer. This latter was modelled in order to cross-check the NISP, Vitess, Restrax, McStas and IDEAS neutron propagation Monte Carlo codes. Results were published in Neutron News.
+The former Brookhaven reactor hosted the H8 triple-axis spectrometer. This latter was modelled in order to cross-check the NISP, Vitess, Restrax, McStas and IDEAS neutron propagation Monte Carlo codes. Results were published in {\it Neutron News} {\bf 13} (No. 4), 24-29 (2002).
 
 \subsection{Neutron site: Tools}
 
@@ -38,9 +38,9 @@ Cold and thermal guide models are given in the ILL neutron site. Descriptions ar
 
 Additionally, the \verb+IN12+ triple-axis instrument has been detailed, in its year 2005 configuration. It is located at the end of the H15 cold guide. sample is a Vanadium rod.
 
-The \verb+IN6+ instrument is an hybrid time-of-flight with 3 monochromators and a Fermi chopper. Sample is an isotropic scatterer (liquid). It makes use of the SPLIT keyword to enhance statistics. 
+The \verb+IN6+ instrument is an hybrid time-of-flight with 3 monochromators and a Fermi chopper. Sample is an isotropic scatterer (liquid). It makes use of the SPLIT keyword to enhance statistics.
 
-The \verb+ILL_TOF_Env+ example is a simple neutron pulse (e.g. from a chopper system coming out of IN5, IN4 or IN5) illuminating a sample, with a container around and a cylinder sphaped sample environment.
+The \verb+ILL_TOF_Env+ example is a simple neutron pulse (e.g. from a chopper system coming out of IN5, IN4 or IN5) illuminating a sample, with a container around and a cylinder shaped sample environment.
 
 \subsection{Neutron site: tests}
 
@@ -65,17 +65,17 @@ A typical diffractometer including a powder sample and a Rescal-type triple-axis
 \section{A test instrument for the component V\_sample}
 \label{s:V-instr}
 This is one of many test instruments written with the
-purpose of testing the individual components. We have picked 
+purpose of testing the individual components. We have picked
 this instrument both to present an
 example test instrument and because it despite its simplicity
 has produced quite non-trivial results.
 
-The instrument consists of a narrow source, 
+The instrument consists of a narrow source,
 a 60' collimator, a V-sample shaped as a hollow cylinder
 with height 15 mm, inner diameter 16 mm, and outer diameter 24 mm
-at a distance of 1 m from the source. 
+at a distance of 1 m from the source.
 The sample is in turn surrounded by an unphysical $4\pi$-PSD
-monitor with $50 \times 100$ pixels and a radius of $10^{6}$ m. 
+monitor with $50 \times 100$ pixels and a radius of $10^{6}$ m.
 The set-up is shown in figure~\ref{f:V-instr}.
 
 \begin{figure}
@@ -94,7 +94,7 @@ V\_sample.}
 \subsection{Scattering from the V-sample test instrument}
 \label{s:vanadium-result}
 
-In figure \ref{f:V-results}, we present the radial distribution 
+In figure \ref{f:V-results}, we present the radial distribution
 of the scatting from an evenly illuminated V-sample,
 as seen by a spherical PSD.
 It is interesting to note that the variation in the
@@ -118,22 +118,22 @@ of anisotropic attenuation of the beam in the cylindrical sample.
 With this instrument definition, we have tried to create
 a very detailed model of the conventional cold-source
 triple-axis spectrometer TAS1 at the now closed neutron source DR3 of
-Ris\o\ National Laboratory. 
-Except for the cold source itself, all components 
+Ris\o\ National Laboratory.
+Except for the cold source itself, all components
 used have quite realistic properties. Furthermore, the overall
 geometry of the instrument has been adapted from
 the detailed technical drawings of the real spectrometer.
 The TAS 1 simulation was the first detailed work
-performed with the \MCS\ package. 
+performed with the \MCS\ package.
 For further details see reference~\cite{tas1_report}.
 
-At the spectrometer, the channel from the cold source 
+At the spectrometer, the channel from the cold source
 to the monochromator is asymmetric, since the first
 part of the channel is shared with other instruments.
 In the instrument definition, this is represented by
 three slits.
 For the cold source, we use a flat energy
-distribution (component {\bf Source\_flat}) 
+distribution (component {\bf Source\_flat})
 focusing on the third slit.
 
 The real monochromator consist of seven blades, vertically focusing on
@@ -153,7 +153,7 @@ first order neutrons.  In the instrument definition, we have adapted the
 angle corresponding to 5.0~meV in order to test the simulations against
 measurements performed on the spectrometer.
 
-The width of the exit channel from the monochromator may 
+The width of the exit channel from the monochromator may
 be narrowed down from initially 40~mm
 to 20~mm by an insert piece. In the simulations, we have chosen
 the 20~mm option and modeled the channel with two slits to match
@@ -168,8 +168,8 @@ Two slits, one before and one after the sample,
 are in the instrument definition set to the opening values which
 were used in the experiments.
 
-The analyser of the spectrometer is flat and made from 
-pyrolytic graphite. It is placed between an entry and 
+The analyser of the spectrometer is flat and made from
+pyrolytic graphite. It is placed between an entry and
 an exit channel, the latter leading to a single detector.
 All this has been copied into the instrument definition.
 
@@ -182,7 +182,7 @@ on these three positions, respectively.
 An illustration of the TAS1 instrument
 is shown in figure~\ref{f:TAS1}.
 Test results and data from the real spectrometer are shown
-in Appendix~\ref{data:TAS1}. 
+in Appendix~\ref{data:TAS1}.
 
 \begin{figure}
   \begin{center}
@@ -201,15 +201,15 @@ standard experiment from TAS1. The measurement series
 constitutes a complete alignment of the spectrometer,
 using the direct beam and scattering from V and Al$_2$O$_3$
 samples at an incoming energy of 20.0~meV, using the second order
-scattering from the monochromator. 
+scattering from the monochromator.
 
 In these simulations, we have tried to reproduce
 every alignment scan with respect to position and width
 of the peaks, whereas we have not tried to compare
-absolute intensities. Below, we show a few comparisons 
-of the simulations and the measurements. 
+absolute intensities. Below, we show a few comparisons
+of the simulations and the measurements.
 
-Figure \ref{f:2t_direct} shows a scan of 
+Figure \ref{f:2t_direct} shows a scan of
 $2\theta_m$ on the collimated direct beam in two-axis mode.
 A \hbox{1 mm} slit is placed on the sample position.
 Both the measured width and non-Gaussian peak shape
@@ -221,21 +221,21 @@ are well reproduced by the \MCS\ simulations.
   \end{center}
 \caption{TAS1: Scans of $2\theta_s$ in the direct beam with 1 mm slit on the
   sample position.
-"$\times$": measurements, "o": simulations, scaled to the same intensity  
+"$\times$": measurements, "o": simulations, scaled to the same intensity
 Collimations: open-30'-open-open.}
 \label{f:2t_direct}
 \end{figure}
 
-In contrast, a simulated $2\theta_a$ scan in triple-axis 
+In contrast, a simulated $2\theta_a$ scan in triple-axis
 mode on a V-sample showed a surprising offset from 0 degrees.
 However, a simulation with a PSD
 on the sample position showed that the beam center was 1.5~mm
 off from the center of the sample, and this was important
 since the beam was no wider than the sample itself.
 A subsequent centering of the beam resulted in a nice
-agreement between simulation and measurements. 
+agreement between simulation and measurements.
 For a comparison on a slightly different instrument
-(analyser-detector collimator inserted), 
+(analyser-detector collimator inserted),
 see Figure~\ref{f:v_2ta_zero}.
 
 %\begin{figure}
@@ -269,7 +269,7 @@ the agreement between simulation and experiment is excellent.
   \end{center}
 \caption{TAS1: $2\theta_s$ scans on Al$_2$O$_3$ in two-axis, focusing mode.
 Collimations: open-30'-28'-67'.
-"$\times$": measurements, "o": simulations.  
+"$\times$": measurements, "o": simulations.
 A constant background is added to the simulated data.}
 \label{f:al2o3}
 \end{figure}
@@ -290,7 +290,7 @@ Collimations: open-30'-28'-67'.
 
 
 \section{The time-of-flight spectrometer PRISMA}
-\label{s:PRISMA} 
+\label{s:PRISMA}
 
 In order to test the time-of-flight aspect of \MCS, we have
 in collaboration with Mark Hagen, now at SNS, written a simple
@@ -298,7 +298,7 @@ simulation of a time-of-flight instrument loosely based on the ISIS
 spectrometer PRISMA. The simulation was used to investigate the effect
 of using a RITA-style analyser instead of the normal PRISMA backend.
 
-We have used the simple time-of-flight source {\bf Tof\_source}. 
+We have used the simple time-of-flight source {\bf Tof\_source}.
 The neutrons pass through a
 beam channel and scatter off from a vanadium sample, pass through
 a collimator on to the analyser.
@@ -309,13 +309,13 @@ analysers we have placed a PSD and a time-of-flight detector.
 To illustrate some of the things that can be done in a simulation as
 opposed to a real-life experiment, this example instrument further
 discriminates between
-the scattering off each individual analyser crystal 
+the scattering off each individual analyser crystal
 when the neutron hits the detector. The
-analyser component is modified so that a global variable 
-\verb+neu_color+ registers which 
+analyser component is modified so that a global variable
+\verb+neu_color+ registers which
 crystal scatters the neutron ray. The detector component
 is then modified to construct seven different time-of-flight histograms,
-one for each crystal (see the source code for the instrument  
+one for each crystal (see the source code for the instrument
 for details). One way to think of this is that
 the analyser blades paint a color on each neutron which is then
 observed in the detector.

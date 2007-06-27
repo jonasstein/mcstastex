@@ -17,10 +17,11 @@ Of course, we can not garranty that the software is bullet proof, but we do our 
   ISIS plus inspiration from the VitESS and NISP packages. As this is
   the first release with polarisation support, the methods and
   algorithms implemented will certainly bed developed further. Hence,
-  documentation of the functionality has been placed in Appendix
-  \ref{c:polarization} to this manual. Polarisation users: Please give
+  documentation of the functionality has been placed in the Appendix
+  % \ref{c:polarization}
+  of the Component manual. Polarisation users: Please give
   us feedback for further development! Items marked by {\bf(p)} below
-  relate to the new polarisation support. 
+  relate to the new polarisation support.
 \item New keywords for the meta language improves support for e.g. description of sample enviroments.
 \item A method for automatic optimisation has been implemented, e.g.~for achieving maximum flux at the sample position (any quantity measured by a McStas monitor can be optimised) as a function of simulation parameters.
 \item Bugfixes in many different areas.
@@ -49,7 +50,7 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
 \index{Library!Run-time}
 
 \begin{itemize}
-\item Optmisation support in mcrun/mcgui using Perl::Amoeba (se description above)
+\item Optmisation support in mcrun/mcgui using Perl::Amoeba (see description above)
 \item \verb+POSIX+ threading on multi-core processors (BEWARE, performance is generally better using MPI)
 \end{itemize}
 
@@ -70,10 +71,10 @@ the {\it Component Overview} of the {\it User Manual}.
 \item Pol\_simpleBfield.comp - Numerical precession in analytical B-fields {\bf(p)}
 \item 3 Polarisation monitors - MeanPolLambda\_monitor.comp, PolLambda\_monitor.comp
     Pol\_monitor.comp {\bf(p)}
-\item PSD\_Detector.comp - Physical detector - comes with many gas lookup tables 
+\item PSD\_Detector.comp - Physical detector - comes with many gas lookup tables
     (Contrib: Thorwald van Vuure, ILL)
 \item Virtual\_mcnp\_*.comp - MCNP event file handeling
-    (Contrib: Chama Hennane, ENSIMAG and Emmanuel Farhi, ILL) 
+    (Contrib: Chama Hennane, ENSIMAG and Emmanuel Farhi, ILL)
 \item Source\_multi\_surfaces.comp - Source comp with multiple surface areas with individual
     spectrums (Contrib: Ludovic Giller, EPFL and Uwe Filges, PSI)
 \item multi\_pipe.comp - Defines a 'grid' of slits (focusing device)
@@ -94,7 +95,7 @@ the {\it Component Overview} of the {\it User Manual}.
 \label{s:new-features:documentation}
 \begin{itemize}
 \item Manual and component manual slightly updated according to
-  adding/modification of components and functionality. 
+  adding/modification of components and functionality.
 \item New appendix on the polarisation features. {\bf(p)}
 \end{itemize}
 
@@ -102,10 +103,10 @@ the {\it Component Overview} of the {\it User Manual}.
 \label{s:new-features:tools}
 \index{Tools}
 \index{Installing}
-\subsection{New tools} 
+\subsection{New tools}
 \begin{itemize}
 \item New 'merge/convert' tool mcformat: Convert between McStas output formats and merge cluster
-    node datasets into one dataset.
+    node datasets into one dataset. Does not handle merging of raw event files.
 \item TOF mode for mcdisplay (Statistical chopper acceptance diagrams generated from the simulated
     neutron rays. Currently only supported on Unix systems with PGPLOT.)
 \end{itemize}
@@ -119,7 +120,7 @@ Details about the installation and the available tools are given in chapter \ref
 
 \section{Future extensions}
 \label{s:future}
-The following features are planned for the oncoming releases of \MCS\ 
+The following features are planned for the oncoming releases of \MCS\
 (not an ordered list):
 \begin{itemize}
 \item Increased validation and testing.
