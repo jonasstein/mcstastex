@@ -6,9 +6,9 @@
 
 The component \textbf{Res\_sample} scatters neutron rays isotropically
 in direction and uniformly in energy.
-Regardless of the state of the incoming neutron ray, 
+Regardless of the state of the incoming neutron ray,
 all directions and energies for the scattered ray have the same probability,
-within specified intervals. 
+within specified intervals.
 
 The component is meant
 for computation of the resolution function, but may also be used
@@ -18,7 +18,7 @@ together with \textbf{Res\_monitor}, described in
 section~\ref{s:res_monitor}.
 
 The shape of {\rm Res\_sample} is either a hollow cylinder
-or a rectangular box. 
+or a rectangular box.
 The hollow cylinder shape is
 specified with the inner and outer radius, $r_{\rm i}$ and $r_{\rm o}$,
 respectively, and the height, $h$.
@@ -42,11 +42,11 @@ the shape is instead a box of dimensions $x_w$, $y_h$, and $z_t$.
 %  \end{center}
 %\end{figure}
 %
-The component only propagates neutron rays that are scattered; 
+The component only propagates neutron rays that are scattered;
 other rays are absorbed. The scattering probability is proportional to the neutron
 flight path length inside the sample, to make a true volume weighting
 of the sample. The reason for this is that the resolution
-function of an instrument is independent of any sample properties 
+function of an instrument is independent of any sample properties
 such as scattering and absorbtion cross sections but will in general
 depend on sample size and shape.
 
@@ -54,12 +54,12 @@ The point of scattering inside the sample is chosen uniformly
 along the neutron flight path inside the sample, and the scattered
 neutron ray is given a random energy and direction. This energy is selected in
 the interval $[E_0-\Delta E; E_0+\Delta E]$ which hence must be
-chosen large enough to cover all interesting neutron energies. 
+chosen large enough to cover all interesting neutron energies.
 Similarly, the scattered
 direction is chosen in a user-specified range,
 either within a sphere of radius $r_{\rm foc}$, within a rectangular
 target with measures $(x_{\rm focus}, y_{\rm focus})$
-or in the specified angular range. This target is positioned at the $x_{target}$, $y_{target}$, $z_{target}$ point in space, or using the target\_index for wich e.g. 1 is the further component, -1 is the previous, etc...
+or in the specified angular range. This target is positioned at the $x_{target}$, $y_{target}$, $z_{target}$ point in space, or using the target\_index for which e.g. 1 is the further component, -1 is the previous, etc...
 
 A special feature, used when computing resolution functions, is that the
 component stores complete information about the scattering event in the

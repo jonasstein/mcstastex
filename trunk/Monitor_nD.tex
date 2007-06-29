@@ -8,7 +8,7 @@ The component {\bf Monitor\_nD} is a general Monitor that may output any
 set of physical parameters regarding the passing neutrons. The
 generated files are either a set of 1D signals ([Intensity] {\it vs.}
 [Variable]), or a single 2D signal ([Intensity] {\it vs.} [Variable 1]
-{\it vs.} [Variable 1]), and possibly a simple long list of the selected
+{\it vs.} [Variable 1]), and possibly a simple long list of selected
 physical parameters for each neutron.
 
 The input parameters for {\bf Monitor\_nD} are its dimensions $x_{\rm
@@ -31,13 +31,13 @@ The monitor shape can be selected among six geometries:
 \begin{enumerate}
 \item{({\it square}) The default geometry is flat rectangular in ($xy$)
     plane with dimensions $x_{\rm min}, x_{\rm max}, y_{\rm min}$,
-    $y_{\rm max}$.}
-\item{({\it box})A rectangular box with dimensions $x_{width}, y_{height}, z_{thick}$.}
+    $y_{\rm max}$, or $x_{width}, y_{height}$.}
+\item{({\it box}) A rectangular box with dimensions $x_{width}, y_{height}, z_{thick}$.}
 \item{({\it disk}) When choosing this geometry, the detector is a flat
     disk in ($xy$) plane. The radius is then
     \begin{equation}
       \mbox{radius} = \max ( \mbox{abs } [ x_{\rm min}, x_{\rm max}, y_{\rm
-        min}, y_{\rm max} ] ).
+        min}, y_{\rm max}, x_{width}/2, y_{height}/2 ] ).
     \end{equation}
     }
 \item{({\it sphere}) The detector is a sphere with the same radius as
@@ -45,11 +45,11 @@ The monitor shape can be selected among six geometries:
 \item{({\it cylinder}) The detector is a cylinder with revolution axis
     along $y$ (vertical). The radius in ($xz$) plane is
     \begin{equation}
-      \mbox{radius} =  \max ( \mbox{abs } [ x_{\rm min}, x_{\rm max} ] ),
+      \mbox{radius} =  \max ( \mbox{abs } [ x_{\rm min}, x_{\rm max}, x_{width}/2 ] ),
     \end{equation}
     and the height along $y$ is
     \begin{equation}
-      \mbox{height} =  | y_{\rm max} - y_{\rm max} |.
+      \mbox{height} =  | y_{\rm max} - y_{\rm max} | {\rm or} y_{height}.
     \end{equation}
     }
 \item{({\it banana}) The same as the cylinder, but without the top/bottom caps, and on a restricted angular range. The angular range is specified using a \verb+theta+ variable limit specification in the \verb+options+.}
@@ -122,7 +122,7 @@ signal.
 
 \subsection{The output files}
 
-By default, the file names will be the component name, followed by
+By default, the file names will be the component name, followed by a time stamp and
 automatic extensions showing what was monitored (such as
 \texttt{MyMonitor.x}). You can also set the filename in {\it options}
 with the {\it file} keyword followed by the file name that you want. The
@@ -158,7 +158,7 @@ memory and generate huge files.
 
 \subsection{Monitor equivalences}
 
-In the following table, we show how the Monitor\_nD may substitute any other \MCS\ monitor.
+In the following table \ref{t:monitor-nd-equiv}, we show how the Monitor\_nD may substitute any other \MCS\ monitor.
 
 \begin{table}
   \begin{center}
@@ -237,7 +237,7 @@ will monitor all theses neutron variables in one long list, one row per neutron 
 \label{s:monnd:user}
 \index{Monitors!Custom monitoring (user variables, Monitor\_nD)}
 
-There are two ways to monitor any quantity with Monitor\_nD. This may be e.g. the number of neutron bounces in a guide, or the wavevector and energy transfert at a sample. The only requirement is to define the \verb+user1+ (and optionally \verb+user2+) variables of a given Monitor\_nD instance.
+There are two ways to monitor any quantity with Monitor\_nD. This may be e.g. the number of neutron bounces in a guide, or the wavevector and energy transfer at a sample. The only requirement is to define the \verb+user1+ (and optionally \verb+user2+) variables of a given Monitor\_nD instance.
 
 \subsubsection{Setting directly the user variables (simple)}
 
@@ -294,7 +294,7 @@ COMPONENT UserMonitor = Monitor_nD(options="auto user1")
 (...)
 \end{verbatim}
 \end{enumerate}
-Setting the user variable values may either make use of the neutron parameters (x,y,z, vx,vy,vz, t, sx,sy,sz, p), access the internal variables of the component that sets the user variables (in this example, those from the \verb+blah+ instance), access any component OUTPUT parameter \index{Keyword!OUTPUT PARAMETERS} using the \verb+MC_GETPAR+ C macro(see chapter \ref{c:kernelcalls}), or simply use a global instrument variable.
+Setting the user variable values may either make use of the neutron parameters (x,y,z, vx,vy,vz, t, sx,sy,sz, p), access the internal variables of the component that sets the user variables (in this example, those from the \verb+blah+ instance), access any component OUTPUT parameter \index{Keyword!OUTPUT PARAMETERS} using the \verb+MC_GETPAR+ C macro(see chapter \ref{c:kernelcalls}), or simply use a global instrument variable. Instrument parameters can not be used directly.
 \index{Library!Run-time!MC\_GETPAR}
 
 \subsubsection{Example: Number of neutron bounces in a guide}

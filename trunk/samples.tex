@@ -17,7 +17,7 @@ performs both incoherent scattering and absorption.
 
 An important component class is elastic Bragg scattering from an ideal powder.
 The component {\bf PowderN} models a powder scatterer with reflections
-given in an input file.
+given in an input file. To scatter on a single Bragg peak, the {\bf Powder1} component may be used.
 The component includes absorption, incoherent scattering, direct beam 
 transmission and can assume \emph{concentric} shape, i.e. can be used 
 for modelling sample enviroments.
@@ -35,7 +35,7 @@ This component also allows anisotropic mosaicity
 and $\Delta d/d$ lattice space variation.
 
 Isotropic small-angle scattering is simulated in {\bf Sans\_Spheres},
-which models scattering from a collection of hard spheres.
+which models scattering from a collection of hard spheres (dilute colloids).
 
 Inelastic scattering from a dispersion is exemplified by
 the component {\bf Phonon\_simple}, which models
@@ -59,21 +59,23 @@ Thus it may handle most samples except single crystals.
     Sample        & \multicolumn{2}{c|}{Coherent} & \multicolumn{2}{c|}{Incoherent} &&\\
     Process       & Elastic & Inelastic & Elastic & Inelastic & Absorption & Multi. Scatt.\\
     \hline
-    Phonon\_simple&         & X         &         &           & X & \\
-    Isotropic\_Sqw&  X      & X         & X       & X         & X & X \\
-    PowderN       &  N lines&           & X       &           & X & \\
-    Sans\_spheres &  colloid&           &         &           & X & \\
-    Single\_crystal& X      &           & X       &           & X & X \\
-    V\_sample     &         &           & X       &           & X & \\
+    Phonon\_simple&         & X         &         &           & 1 & \\
+    Isotropic\_Sqw&  X      & X         & X       & X         & 2 & X \\
+    Powder1       &  1 line &           & X       &           & 1 & \\
+    PowderN       &  N lines&           & X       &           & 1 & \\
+    Sans\_spheres &  colloid&           &         &           & 1 & \\
+    Single\_crystal& X      &           & X       &           & 2 & X \\
+    V\_sample     &         &           & X       & QE broad. & 1 & \\
+    Inelastic\_Incoherent & & QE        & X       & QE        & 1 & \\
     \hline
     \end{tabular}
-    \caption{Processes implemented in sample components}
+    \caption{Processes implemented in sample components. Absorption: 1=single only, 2=with secondary}
     \label{t:sample-process}
   }
   \end{center}
 \end{table}
 \subsection{Neutron scattering notation}
-In sample component, we use the notation common for neutron scattering,
+In sample components, we use the notation common for neutron scattering,
 where the wave vector transfer is denoted the {\em scattering vector}
 \begin{equation} \label{eq:q-transfer}
 {\bf q} \equiv {\bf k}_{\rm i} - {\bf k}_{\rm f} .

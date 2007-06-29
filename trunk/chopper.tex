@@ -18,8 +18,8 @@ the neutrons can pass.
 
 Component {\bf DiskChopper} is an infinately thin, absorbing disc of
 radius $R$ with $n$ slit openings of height $h$ and angular width
-$\theta_0$. The slits are symmetrically disposed on the disc . If
-unset, the slit height $h$ will extend to the centre of the disc ($h=R$). 
+$\theta_0$. The slits are symmetrically disposed on the disc. If
+unset, the slit height $h$ will extend to the centre of the disc ($h=R$).
 
 The {\bf DiskChopper} is self-centering, meaning that the centre of
 the slit openings will automatically be positioned at the centre of
@@ -31,11 +31,11 @@ Optionally, each slit can have a central, absorbing insert - a
 \emph{beamstop} of angular width $\theta_1$. For more exotic chopper
 definitions, use the \texttt{GROUP} keyword, see below for an example.
 
-The direction of rotation can be controlled, 
-which allows to simulate e.g. counter-rotating choppers. 
-The phase or time-delay $t_0$ (in seconds) is defined by the time 
+The direction of rotation can be controlled,
+which allows to simulate e.g. counter-rotating choppers.
+The phase or time-delay $t_0$ (in seconds) is defined by the time
 where the first of the $n$ slits is positioned at the top. As an
-alternative, an angular phase can be given using the $\phi_0$ parameter. 
+alternative, an angular phase can be given using the $\phi_0$ parameter.
 
 By default, neutrons hitting outside the physical extent of the disc
 are absorbed. This behaviour can be overruled by setting parameter
@@ -45,7 +45,7 @@ $abs\_out=0$.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.8\linewidth]{figures/DiskChopper.eps}
-\caption{Sketch of a disc chopper with geometry parameters} 
+\caption{Sketch of a disc chopper with geometry parameters}
 \label{f:chopper1}
 \end{figure}
 
@@ -92,6 +92,6 @@ figure \ref{f:chopper2}
 \begin{figure}[ht]
 \includegraphics[width=0.4\linewidth]{figures/DiskChopperGroup.ps}
 \includegraphics[width=0.4\linewidth]{figures/DiskChopperPSD.eps}
-\caption{\texttt{mcdisplay} rendering and monitor output from a DiskChopper \texttt{GROUP}} 
+\caption{\texttt{mcdisplay} rendering and monitor output from a DiskChopper \texttt{GROUP}}
 \label{f:chopper2}
 \end{figure}

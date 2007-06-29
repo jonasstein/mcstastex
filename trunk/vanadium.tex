@@ -9,7 +9,7 @@ A sample with incoherent scattering, e.g. vanadium, is frequently used for
 calibration purposes, as this gives an isotropic, elastically scattered beam.
 
 The component {\bf V\_sample}
-has {\em only} absorption and incoherent scattering.
+has {\em only} absorption and incoherent elastic scattering.
 For the sample geometry, we default use a
 hollow cylinder (which has the solid cylinder as a limiting case).
 The sample dimensions are: Inner radius $r_{\rm i}$,
@@ -56,10 +56,11 @@ $w_{\rm focus}$, $h_{\rm focus}$, or uniformly in angular space
 (in a small-angle approximation),
 using $w_{\rm foc, angle}$, $h_{\rm foc, angle}$.
 The focusing location can be picked to be a downstream component by
-specifying \verb+target_index+.
+specifying \\
+\verb+target_index+.
 
 When calculating the neutron path length within
-the cylinder, the kernel function
+the cylinder, the kernel function \\
 \verb+cylinder_intersect+
 is used twice, once for the outer radius and once
 for the inner radius.

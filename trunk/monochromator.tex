@@ -25,22 +25,26 @@ The {\bf Single\_crystal} component may be used to study more complex monochroma
 \section{Phase space transformer - moving monochromator}
 \index{Optics!phase space transformer}
 
-Eventhough there exist a few attempts to write dedicated phase space transformer components, there exist an elegant way to put a monochromator into move, by mean of the EXTEND keyword. If you define a SPEED parameter for the instrument, the idea is to change the coordinate system before the monochromator, and restore it afterwards, as follow in the TRACE section:
+Eventhough there exist a few attempts to write dedicated phase space transformer components, there is an elegant way to put a monochromator into move, by mean of the EXTEND keyword. If you define a SPEED parameter for the instrument, the idea is to change the coordinate system before the monochromator, and restore it afterwards, as follow in the TRACE section:
 \begin{verbatim}
-COMPONENT Arm()
+DEFINE INSTRUMENT PST(SPEED=200, ...)
+(...)
+TRACE
+(...)
+COMPONENT Mono_PST_on=Arm()
 AT ...
 EXTEND %{
-  vx = vx + SPEED; // monochromator moves transversaly by 1000 m/s
+  vx = vx + SPEED; // monochromator moves transversaly by SPPED m/s
 %}
 
-COMPONENT  Monochromator(...)
+COMPONENT  Mono=Monochromator(...)
 AT (0,0,0) RELATIVE PREVIOUS
 
-COMPONENT Arm
+COMPONENT Mono_PST_off=Arm
 AT (0,0,0) RELATIVE PREVIOUS
 EXTEND  %{
   vz = vz - SPEED; // puts back neutron in static coordinate frame
 %}
 \end{verbatim}
 This solution does not contain acceleration, but is far enough for most
-studies, and it is very simple.
+studies, and it is very simple. In the latter example, the instance \verb+Mono_PST_on+ should itself be rotated to reflect according to a Bragg law.

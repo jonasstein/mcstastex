@@ -21,7 +21,9 @@ The component treats coherent and incoherent neutron scattering and may be used 
 The structure and dynamics of isotropic samples can be characterised by the dynamic structure factor $S(q,\omega)$, which determines the interaction between neutrons and the sample and therefore can be used as a probability distribution of $\omega$-energy and $q$-momentum transfers. It handles coherent and incoherent processes, both for elastic and inelastic interactions.
 The main input for the component is $S(q,\omega)$ tables, or powder structure files.
 
-Usage examples of this component can be found in the \verb+Neutron site/tests/Test_Isotropic_Sqw+, the \verb+Neutron site/ILL/ILL_H15_IN6+ and the \verb+ILL_TOF_Env+ instruments from the \verb+mcgui+.
+Usage examples of this component can be found in the \\
+\verb+Neutron site/tests/Test_Isotropic_Sqw+, the \\
+\verb+Neutron site/ILL/ILL_H15_IN6+ and the \verb+ILL_TOF_Env+ instruments from the \verb+mcgui+.
 
 \subsection{Neutron interaction with matter - overview}
 
@@ -120,7 +122,7 @@ In practice, the knowledge of the dynamic structure factor is defined over a lim
 This means that in order to correctly estimate the total intensity and multiple scattering, the knowledge of $S(q,\omega)$ must be wider (at least twice in $q$, as stated previously) than the measurable range in the corresponding experiment.
 As a side effect, a self consistent iterative method for finding the true scattering law from the measurement itself is not theorically feasible, except for providing crude approximations.
 However, that measured dynamic structure factor may be used to estimate the multiple scattering for a further measurement using longer wavelength neutrons.
-Extrapolating the scattering law beyond the accessible measurement ranges might improve substantially the accuracy of the method, but this discussion is beyond the scope of this paper.
+In that case, extrapolating the scattering law beyond the accessible measurement ranges might improve substantially the accuracy of the method, but this discussion is beyond the scope of this paper.
 
 Consequently, limiting the $q$ integration in Eq. \ref{eq:iqSqw} to the maximum momentum transfer for elastic processes $2 k_i$, we write the total scattering cross section as
 \begin{equation}
@@ -218,19 +220,19 @@ When doing diffraction, and neglecting inelastic contribution as first approxima
 \end{eqnarray}
 with $V_0 = 1/\rho$ being the volume of a lattice unit cell. Then we come to the formal equivalence, in the powder case \cite{squires} (integration over Debye-Scherrer cones):
 \begin{eqnarray}\label{eq:sq-F2}
-S_{coh}(q) = \frac{4 \pi \rho}{\sigma_{coh}} \frac{z(q)}{q} |F_q|^2 {\rm\ in\ a\ powder.}
+S_{coh}(q) = \frac{\pi \rho}{2\sigma_{coh}} \frac{z(q)}{q} |F_q|^2 {\rm\ in\ a\ powder.}
 \end{eqnarray}
 for each lattice Bragg peak wave vector $q$.
-The normalisation rule Eq. (\ref{eq:sq-nomr1}) can not usually be applied for powders, as the $S(q)$ is a set of Dirac peaks for which the $\int q^2 S(q) dq$ is difficult to compute, and $S(q)$ does not converge to unity for large $q$.
+The normalisation rule Eq. (\ref{eq:sq-nomr1}) can not usually be applied for powders, as the $S(q)$ is a set of Dirac peaks for which the $\int q^2 S(q) dq$ is difficult to compute, and $S(q)$ does not converge to unity for large $q$. Each $F^2$ Dirac contribution may be broaden when specifiying a diffraction peak width.
 
-Of course, the component PowderN (see section \ref{powder}) can handle powder samples more efficiently (faster, better accuracy), but does not take into account multiple scattering.
+Of course, the component PowderN (see section \ref{powder}) can handle powder samples efficiently (faster, better accuracy), but does not take into account multiple scattering, nor secondary extinction (which is significant for materials with large absorption cross sections). On the other side, the current Isotropic\_Sqw component assumes a powder packing factor of 1 (massive sample). To change into a lower packing factor, use a lower powder density.
 
 \subsubsection{Important remarks and limitations}
 
 Since the choice of the interaction type, we know that the neutron \emph{must} scatter, with an appropriate $\vec k_f$ outgoing wave vector. If any of the choices in the method fails:
 \begin{enumerate}
-\item the roots $k_f^+$ and $k_f^-$ are imaginary, which means that conservation laws can not be satisfied and for instance the selected energy transfer is higher than the incoming neutron energy
-\item the radius of the target circle $R$ is imaginary
+\item the two roots $k_f^+$ and $k_f^-$ are imaginary, which means that conservation laws can not be satisfied and for instance the selected energy transfer is higher than the incoming neutron energy
+\item the radius of the target circle is imaginary, that is $|cos(\theta)| > 1$.
 \end{enumerate}
 then a new $(q, \omega)$ set is drawn, and the process is iterated until success or - at last - removal of the neutron event. These latter absorptions are then reported at the end of the simulation, as it never occurs in reality - neutrons that scatter do find a suitable $(q, \omega)$ set.\index{Removed neutron events}
 
@@ -245,9 +247,9 @@ The best settings are:
 
 Focusing the $q$ and $\omega$ range (e.g. with 'auto\_qw=1'), to the one being able to scatter the incoming beam, when using the component does improve significantly the speed of the computation. Additionally, if you restrict the scattering to the first order only (parameter 'order=1'), then you may specify the angular vertical extension $d\phi$ of the scattering area to gain optimised focusing. This option does not apply when handling multiple scattering (which emits in $4\pi$ many times before exiting the sample).
 
-A bilinear interpolation for the $q,\omega$ determination is recommended to improve the accuracy of the scattered intensity, but it may be unactivated when setting parameter \verb+interpolate=0+. This will often result in a discrete $q,\omega$ sampling.
+A bilinear interpolation for the $q,\omega$ determination is used to improve the accuracy on the scattered intensity, but it may be unactivated when setting parameter \verb+interpolate=0+. This will often result in a discrete $q,\omega$ sampling.
 
-As indicated in the previous section, the Isotropic\_Sqw component is not as accurate as PowderN for powders scattering for single scattering.
+As indicated in the previous section, the Isotropic\_Sqw component is not as efficient as PowderN for powder single scattering, but handles scattering processes in a more accurate way (secondary extinction, multiple scattering).
 
 \subsection{The implementation}
 
@@ -275,7 +277,7 @@ thickness& [m] & thickness of hollow shape  \\
     \hline
 auto\_qw  & boolean & Automatically optimise probability tables during simulation  \\
 auto\_norm& scalar  & Normalize $S(q,\omega)$ when -1, use raw data when 0, multiply $S$ by given value when positive \\
-interpolate & boolean & Smooth $S(q,\omega)$ table (recommended) \\
+%interpolate & boolean & Smooth $S(q,\omega)$ table (recommended) \\
 order     & integer & Limit multiple scattering up to given order. 0 means all orders  \\
 concentric& boolean & Enables to 'enter' inside concentric hollow geometries  \\
     \hline
@@ -299,23 +301,23 @@ The geometry for the component may be box, cylinder and sphere shaped, either fi
 \end{itemize}
 The AT position corresponds to the centre of the sample.
 
-Hollow shapes are particularly useful to model complex sample environments. Refer to section below for more details on this topic.
+Hollow shapes are particularly useful to model complex sample environments. Refer to the dedicated section below for more details on this topic.
 
 \subsubsection{Dynamical structure factor}
 
 The material behaviour is specified through the total scattering cross-sections $\sigma_{coh}$, $\sigma_{inc}$, $\sigma_{abs}$, and the $S(q, \omega)$ data files.
 
-If you are lucky enough to have access to separated coherent and incoherent contributions (e.g. from material simulation), simply set Sqw\_coh and Sqw\_inc paremeter to the files names. If on the other hand you have access to a global data set containing incoherent scattering as well (e.g. the result of a previous experiment), use Sqw\_coh parameter, set the $\sigma_{coh}$ parameter to the sum of both contributions $\sigma_{coh}+\sigma_{inc}$, and set $\sigma_{inc}=-1$. This way we only use one of the two implemented  scattering channels. Such global data sets may originate from previous experiments, as far as you have applied all known corrections (multiple scattering, geometry, ...).
+If you are lucky enough to have access to separated coherent and incoherent contributions (e.g. from material simulation), simply set Sqw\_coh and Sqw\_inc parameter to the files names. If on the other hand you have access to a global data set containing incoherent scattering as well (e.g. the result of a previous experiment), use Sqw\_coh parameter, set the $\sigma_{coh}$ parameter to the sum of both contributions $\sigma_{coh}+\sigma_{inc}$, and set $\sigma_{inc}=-1$. This way we only use one of the two implemented  scattering channels. Such global data sets may originate from previous experiments, as far as you have applied all known corrections (multiple scattering, geometry, ...).
 
 In any case, the accuracy of the $S(q, \omega)$ data limits the $q$ and $\omega$ resolution of the simulation, eventhough a bilinear interpolation is performed in order to smooth binning. The sampling of data files should then be as thin as possible.
 
 If the Sqw\_inc parameter is left unset but the $\sigma_{inc}$ is \emph{not} zero, an isotropic incoherent elastic scattering is used, just like the V\_sample component (see section \ref{s:v_sample}).
 
-Anyway, as explained below, it is also possible to simulate the elastic scattering from a powder file (see below). Moreover, as there are two process channels (coherent and incoherent), it is possible to simulate a mixture of two powders, with fractions proportional to $\sigma_{coh}$ and $\sigma_{inc}$.
+Anyway, as explained below, it is also possible to simulate the elastic scattering from a powder file (see below).
 
 \subsubsection{File formats: $S(q,\omega)$ inelastic scattering}
 
-The format of the data files is free text, consisting of three numerical block, separated by empty lines or comments, in the following order
+The format of the data files is free text, consisting of three numerical blocks, separated by empty lines or comments, in the following order
 \begin{enumerate}
 \item A vector of length $m$ containing wavevector $q$ values, in \AA$^{-1}$.
 \item A vector of length $n$ containing energy $\omega$ values, in meV.
@@ -407,9 +409,9 @@ The only restriction is that neutrons that scatter (in $4\pi$) can not come back
 \subsection{Validation}
 For constant incoherent scattering mode, V\_sample, PowderN, Single\_crystal and Isotropic\_Sqw produce equivalent results, eventhough the two later are more accurate (geometry, multiple scattering). Execution times are equivalent.
 
-Compared with the PowderN component, the $S(q)$ method is twice slower in computation time (but often brings more statistics), and intensity is usually within 20 \%. The PowderN component is intrinsically more accurate as each Bragg peak is handled separately as an exact Dirac peak, with optional $\Delta q$ spreading. In Isotropic\_Sqw, an approximated $S(q)$ table is built from the $F^2$ data, and is coarser.
+Compared with the PowderN component, the $S(q)$ method is twice slower in computation time, and intensity is usually lower by typically 20 \% (depending on scattering cross sections), the difference arising from multiple scattering and secondary extinction (not handled in PowderN). The PowderN component is intrinsically more accurate in $q$ as each Bragg peak is handled separately as an exact Dirac peak, with optional $\Delta q$ spreading. In Isotropic\_Sqw, an approximated $S(q)$ table is built from the $F^2$ data, and is coarser. Still, differences in the diffraction pattern are limited.
 
-The Isotropic\_Sqw component has been benchmarked against real experiment for liquid Rubidium (Copley 1974), and the agreement is excellent.
+The Isotropic\_Sqw component has been benchmarked against real experiment for liquid Rubidium (Copley, 1974) and liquid Cesium (Bodensteiner  and Dorner, 1989), and the agreement is excellent.
 
 The \verb+Test_Isotropic_Sqw+ test/example instrument exists in the distribution for this component.
 

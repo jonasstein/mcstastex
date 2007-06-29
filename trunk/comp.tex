@@ -6,13 +6,13 @@ This \MCS\ Component Manual consists of the following major parts:
 \begin{itemize}
 \item An introduction to the use of Monte Carlo methods in \MCS .
 \item A thorough description of system components,
-with one chapter per major category: Sources, optics (two chapters),
+with one chapter per major category: Sources, optics,
 monochromators, samples, monitors, and other components.
 \item The \MCS\ library functions and definitions
   that aid in the writing of simulations and components in
   Appendix~\ref{c:kernelcalls}.
-\item A detailed explanation of the use of random numbers
-   in Appendix~\ref{s:random}.
+%\item A detailed explanation of the use of random numbers
+%   in Appendix~\ref{s:random}.
 \item An explanation of the \MCS\ terminology in Appendix~\ref{s:terminology}.
 \end{itemize}
 Additionally, you may refer to the list of example instruments
@@ -70,7 +70,7 @@ the \MCS\ spin vector
 (totally polarized beam). Further, all three cartesian components of
 the spin vector are present simultaneously, although this is physically
 not permitted by quantum mechanics.
-Presently, no official \MCS\ component utilize the neutron spin.
+For further details about polarization handling, you may refer to the Appendix~\ref{c:polarization}.
 
 \section{Component coordinate system}
 All mentioning of component geometry refer to
@@ -270,7 +270,7 @@ The component 'Selector' showed no dependence on the distance between guide and 
 That was different with the Fermi chopper components. The component 'Chopper\_Fermi', which has been part of the \MCS\ distribution for a long time, gave wrong results and was removed from the package. The new 'Vitess\_ChopperFermi' (transferred from the VITESS package) showed mainly correct behaviour. Little bugs were corrected after the first tests. At the moment, there is only the problem left that it underestimates the influence of a shadowing cylinder. With the contributed 'FermiChopper' component, there were also minor problems, which are all corrected in the meantime.
 
 For the guides, several trajectories through different kinds of guides (straight, convergent, divergent) were calculated analytically and positions, directions and losses of reflections compared to the values calculated in the components. This was done for 'Guide' and 'Guide\_gravity'; in the latter case calculations were performed with and without gravity. Additionally a cross-check against the VITESS guide module was performed. Waviness, chamfers and channels were not checked.
-After correction of a bug in 'Guide\_gravity', both components worked perfectly (within the conditions tested.)
+After correction of a bug in 'Guide\_gravity', both components worked perfectly (within the conditions tested).
 
 'Source\_gen' was cross-checked against the VITESS source module for the case of 3 Maxwellians describing the moderator characteristic and typical sizes the guide and its distance to the moderator. It showed the same line shape as a functions of wavelength and divergence and the same absolute values.
 

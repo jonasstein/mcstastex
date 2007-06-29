@@ -344,18 +344,15 @@ Available functions to read \emph{a single} vector/matrix are:
   value in the first column (index 0), and extracts in this row the
   $n$-th element (starting from 0). The first column is thus the 'x' axis for the data.
 \item {\bf Table\_Free}(\&$Table$) free allocated memory blocks.
-\item *$Table$ = {\bf Table\_Read\_Array}($filename$, &$blocks$) extracts all numerical blocks of $filename$ into a returned Table array. The number of read blocks is returned in the $blocks$ integer.
-\item {\bf Table\_Free\_Array}(&$Table$) Free the Table array.
-\item {\bf Table\_Info\_Array}(&$Table$) Gives information about the Table array.
-\item {\bf Table_Value2d}($Table$, $X$, $Y$) Uses 2D linear interpolation on a Table, from (X,Y) coordinates and returns the corresponding value.
+\item {\bf Table\_Value2d}($Table$, $X$, $Y$) Uses 2D linear interpolation on a Table, from (X,Y) coordinates and returns the corresponding value.
 \end{itemize}
 
 Available functions to read \emph{an array} of vectors/matrices in a \emph{text} file are:
 \begin{itemize}
 \item {\bf Table\_Read\_Array}($File$, \&$n$) read and split $file$
-into as many blocks as necessary and return a $t_{\rm Table}$ array.
+into as many blocks as necessary and return a \verb+t_Table+ array.
 Each block contains a single vector/matrix. This only works for text files.
-The number of blocks in put into $n$.
+The number of blocks is put into $n$.
 \item {\bf Table\_Free\_Array}(\&$Table$) free the $Table$ array.
 \item {\bf Table\_Info\_Array}(\&$Table$) display information about all data blocks.
 \end{itemize}
