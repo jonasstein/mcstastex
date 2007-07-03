@@ -18,8 +18,8 @@ performs both incoherent scattering and absorption.
 An important component class is elastic Bragg scattering from an ideal powder.
 The component {\bf PowderN} models a powder scatterer with reflections
 given in an input file. To scatter on a single Bragg peak, the {\bf Powder1} component may be used.
-The component includes absorption, incoherent scattering, direct beam 
-transmission and can assume \emph{concentric} shape, i.e. can be used 
+The component includes absorption, incoherent scattering, direct beam
+transmission and can assume \emph{concentric} shape, i.e. can be used
 for modelling sample enviroments.
 
 Next type is Bragg scattering from single crystals.
@@ -66,7 +66,7 @@ Thus it may handle most samples except single crystals.
     Sans\_spheres &  colloid&           &         &           & 1 & \\
     Single\_crystal& X      &           & X       &           & 2 & X \\
     V\_sample     &         &           & X       & QE broad. & 1 & \\
-    Inelastic\_Incoherent & & QE        & X       & QE        & 1 & \\
+    Tunneling\_sample &     & X         & X       & QE broad. & 1 & \\
     \hline
     \end{tabular}
     \caption{Processes implemented in sample components. Absorption: 1=single only, 2=with secondary}
