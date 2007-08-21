@@ -192,7 +192,7 @@ Additionally, if a ``\verb+%include+'' statement is found \emph{within} an embed
 current directory and any user-specified search directories) as a C library, just like the usual ``\verb+#include+'' \emph{but only once}. For instance, if many components require to read data from a file, they may all ask for ``\verb+%include "read_table-lib"+'' \index{Library!read\_table-lib (Read\_Table)} without duplicating the code of this library. If the file has no extension, both \verb+.h+ and \verb+.c+ files will be searched and included, otherwise, only the specified file will be imported. The \MCS\ 'run-time' shared
 library is included by default (equivalent to ``\verb+%include "mcstas-r"+'' in the \texttt{DECLARE} section). \index{Library!Run-time}
 For an
-example of \texttt{\%include}, see the monitors/Monitor\_nD component.
+example of \texttt{\%include}, see the monitors/Monitor\_nD component. See also section \ref{s:instrdefs-extend} for insertion of full instruments in instruments (instrument catenation).
 
 If the instrument description compilation fails, check that the
 keywords syntax is correct, that no semi-colon \verb+;+ sign is
@@ -488,6 +488,24 @@ As a summary, the nearly complete grammar definition for component instances wit
   {JUMP [reference|PREVIOUS|MYSELF|NEXT] [ITERATE number_of_times | WHEN condition] }
 \end{verbatim}
 
+\subsection{Embedding instruments in instruments TRACE}
+\index{Keyword!\%include}
+The \texttt{\%include} insertion mechanism may be used within the TRACE section, in order to catenate instruments together. This way, each DECLARE, INITIALIZE, SAVE, and FINALLY C blocks, as well as instrument parameters from each part are catenated. The TRACE section is made of inserted COMPONENTS from each part. In principle, it then possible to write an instrument as:
+\begin{verbatim}
+DEFINE catenated()
+TRACE
+
+%include "part1.instr"
+%include "part2.instr"
+
+END
+\end{verbatim}
+where each inserted instrument is a valid full instrument. In order to avoid some components to be duplicated - e.g. Sources from each part - a special syntax in the TRACE section
+\begin{verbatim}
+INSTRUMENT COMPONENT a=...
+\end{verbatim}
+marks the component {\it a} as removable when inserted. In principle, inserted instruments may themselves use \texttt{\%include}.
+
 \subsection{Groups and component extensions - GROUP - EXTEND}
 \index{Keyword!GROUP}
 \index{Keyword!EXTEND}
@@ -690,7 +708,7 @@ If some components make extensive use of random numbers (MC choices), they shuff
 \end{quote}
 
 where the optional number $r$ specifies the number of repetitions for each event. Default is $r=10$.
-Each neutron event reaching component {\it name} will be repeated $r$ times with a weight divided by $r$, so that in practice the number of events for the remaining part of the simulation (down to the END), will potentially have more statistics. This is only true if following components (and preferably component {\it name}) use random numbers. You may use this method as many times as you wish in the same instrument, e.g. at the monochromator and sample position. This keyword can also be used within a GROUP. The efficiency is roughtly $r$ raised to the number of occurences in the instrument, so that enhancing two components with the default $r=10$ will produce at the end an enhancement effect of 100 in the number of events. The execution time will usually get very slightly longer. This technique is known as the \emph{stratified sampling} (see Appendix \ref{s:MCtechniques}).
+Each neutron event reaching component {\it name} will be repeated $r$ times with a weight divided by $r$, so that in practice the number of events for the remaining part of the simulation (down to the END), will potentially have more statistics. This is only true if following components (and preferably component {\it name}) use random numbers. You may use this method as many times as you wish in the same instrument, e.g. at the monochromator and sample position. This keyword can also be used within a GROUP. The efficiency is roughtly $r$ raised to the number of occurences in the instrument, so that enhancing two components with the default $r=10$ will produce at the end an enhancement effect of 100 in the number of events. The execution time will usually get slightly longer. This technique is known as the \emph{stratified sampling} (see Appendix \ref{s:MCtechniques}). If the instrument makes use of global variables - e.g. in conjunction with a WHEN or User Variable monitoring (see Monitor\_nD) - you should take care that these variables are set properly for each SPLIT loop, which usually means that they must be reset inside the SPLITed section and assigned/used further on. \index{Bugs}
 
 A usage example of the SPLIT keyword can be found in the \\
 \verb+Neutron site/ILL/ILL_H15_IN6+ instrument from the \verb+mcgui+, to enhance statistics for neutrons scattering on monochromators and sample.
