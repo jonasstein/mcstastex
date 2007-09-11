@@ -1413,6 +1413,8 @@ To analyze simulation results, one uses the same tools as for analyzing
 experimental data, \textit{i.e}. programs such as IDL, Matlab and Scilab.
 The output files from simulations are usually simple text files containing headers and data blocks. If data blocks are empty they may be accessed refering to an external file indicated in the header. This file may also be a binary file (except with the original \MCS /PGPLOT format), which does not contain any header (except if simulation is launched with \verb|+a| option), but are in turn smaller in size and faster to import.
 
+Each data file contains informations about the simulation, the instrument, the parameters used, and of course the signal, the estimated error on the signal, and the number of events used in each bin. Additionally, all data files indicate their first (mean value) and second moment (half width) in the 'statistics' field.
+
 In order for the user to choose the data format, we recommend to set it using the \verb+--format=FORMAT+ or alternatively {\it via} the MCSTAS\_FORMAT environment variable, which will also make the front-end programs able to import and plot data and instrument consistently (see Section \ref{s:run-sim}). The available format list is shown in Table~\ref{t:formatoptions}. \index{Environment variable!MCSTAS\_FORMAT}
 
 Note that the neutron event counts in detectors are typically not very
