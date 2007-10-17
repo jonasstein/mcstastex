@@ -27,7 +27,7 @@ As the usage of this component enables to monitor virtually anything, and thus t
 
 \subsection{The Monitor\_nD geometry}
 
-The monitor shape can be selected among six geometries:
+The monitor shape can be selected among seven geometries:
 \begin{enumerate}
 \item{({\it square}) The default geometry is flat rectangular in ($xy$)
     plane with dimensions $x_{\rm min}, x_{\rm max}, y_{\rm min}$,
@@ -53,6 +53,7 @@ The monitor shape can be selected among six geometries:
     \end{equation}
     }
 \item{({\it banana}) The same as the cylinder, but without the top/bottom caps, and on a restricted angular range. The angular range is specified using a \verb+theta+ variable limit specification in the \verb+options+.}
+\item{({\it previous}) The detector has the shape of the previous component. This may be a surface or a volume. In this case, the neutron is detected on previous component, and there is not neutron propagation.}
 \end{enumerate}
 
 By default, the monitor is flat, rectangular. Of course, you can choose
@@ -65,6 +66,8 @@ with the {\it incoming} option.
 
 At last, the {\it slit} or {\it absorb} option will ask the component to
 absorb the neutrons that do not intersect the monitor. The {\it exclusive} option word removes neutrons which are similarly outside the monitor limits (that may be other than geometrical).
+
+The {\it parallel} option keyword is of common use in the case where the {\bf Monitor\_nD} is superposed with other components. It ensures that neutrons are detected independently of other geometrical constrains. This is generally the case when you need e.g. to place more than one monitor at the same place.
 
 \subsection{The neutron parameters that can be monitored}
 
