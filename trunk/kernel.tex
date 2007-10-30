@@ -576,7 +576,8 @@ If you would like to change only some of the parameters in the instance copy, yo
 \begin{quote}
   \texttt{COMPONENT} name = \texttt{COPY}(instance\_name)(par1=0, par2=1)
 \end{quote}
-which will override the original instance parameter values. The EXTEND, GROUP, JUMP and WHEN keywords, if defined for the copied instance, will override the original setting.
+which will override the original instance parameter values. This possibility to override parameters is very useful incase of describing e.g. sample environments using the Isotropic\_Sqw and PowderN components, which allow \emph{concentric} geometry (first instance must have \verb+concentric = 1+ and the second \verb+concentric = 0+). In case EXTEND, GROUP, JUMP and WHEN keywords are defined for the copied instance, these will override the settings from the copied instance.
+ 
 
 In the case where there are many duplicated components all originating from the same instance, there is a mechanism for automating copied instance names:
 \begin{quote}
