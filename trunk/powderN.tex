@@ -1,6 +1,8 @@
 \section{PowderN: A general powder sample}
 \index{Samples!Powder, multiple diffraction line}
 \index{Diffraction}
+\index{Sample environments}
+\index{Concentric components}
 \label{powder}
 
 \component{Powder\_N}{System}{$radius$, $radius_i$, $h$, $xwidth$, $yheight$, $zthick$,  $xwidth_i$, $yheight_i$, $zthick_i$ $\sigma_{\rm abs}$,
@@ -62,18 +64,44 @@ header with lines e.g.:
 Further details on file formats are available in the \verb+mcdoc+ page
 of the component.
 
-\subsection{Geometry and physical properties}
+\subsection{Geometry, physical properties, concentricity}
 The sample has the shape of a solid cylinder, radius $r$ and height $h$ or a box-shaped
-sample of size $xwidth$x$yheight$x$zthick$. At the users choice, an inner 'hollow' can be
-specified.
-The absorption and incoherent cross sections are given by
-$\sigma_c^a$ and $\sigma_i^s$.
+sample of size $xwidth$ x $yheight$ x $zthick$. At the users choice, an inner 'hollow' can be
+specified using the parameters $radius_i$, $width_i$ etc. 
+
+
+As the Isotropic\_Sqw component~\ref{s:isotropic-sqw}, PowderN assumes \emph{concentric} shape, i.e.
+can contain other components inside the inner hollow. To allow this, two almost identical copies
+of the PowderN components must be set up \emph{around} the internal component(s), for example:
+
+
+\begin{verbatim}
+COMPONENT Cryo = PowderN(reflections="Al.laz", radius = 0.01, radius_i = 0.009,
+                          concentric = 1)
+AT (0,0,0) RELATIVE Somewhere
+
+COMPONENT Sample = some_other_component(with geometry FULLY enclosed in the hollow)
+AT (0,0,0) RELATIVE Somewhere
+
+COMPONENT Cryo2 = COPY(Cryo)(concentric = 0)
+AT (0,0,0) RELATIVE Somewhere
+\end{verbatim}
+
+As outlined, the first instance of PowderN \emph{must} have \verb+concentric = 1+ and the instance \emph{must}
+have \verb+concentric = 0+. Furthermore, the component(s) inside the hollow \emph{must} have a geometry which can
+be fully contained inside the hollow.
+
+
+In addition to the coherent scattering specified in the \verb+reflections+ file, absorption- and incoherent 
+cross sections can be given using the input parameters $\sigma_c^a$ and $\sigma_i^s$.
+
 
 The Bragg scattering from the powder,
 $\sigma_c^s$ is calculated from the input file, with the parameters
 $Q$, $|F(Q)|^2$, and $j$ for the scattering vector, structure factor, and
 multiplicity, respectively. The volume of the unit cell is denoted $V_0$,
 while the sample packing factor is $f_{\rm pack}$.
+
 
 %Further, the incoherent scattering is only taken into account
 %by the attenuation of the beam, given by (\ref{e:attenu})
