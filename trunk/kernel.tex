@@ -558,6 +558,8 @@ Thus, we recommand to make use of the SCATTER keyword each time a component 'use
 A usage example of the GROUP keyword can be found in the \\
 \verb+Neutron site/ILL/ILL_H15_IN6+ instrument from the \verb+mcgui+, to model 3 monochromators.
 
+Combining EXTEND, GROUP and WHEN can result in unexpected behaviour. Please read the related warning at the end of section \ref{s:instrdefs-extend-when}.
+
 \subsection{Duplication of component instances - COPY}
 \index{Keyword!COPY}
 \label{s:instrdefs-extend-copy}
@@ -637,12 +639,16 @@ COMPONENT MyMon = Monitor(...) WHEN (flag==1)
   AT ...
 \end{verbatim}
 
-The WHEN keyword only applies to the TRACE section of instruments/components. Other sections (INITIALIZE, SAVE, MCDISPLAY, FINALLY) are exectuted independently of the condition. As a side effetc, the 3D view of the instrument (mcdisplay) will show all components as if all conditions were true.
+The WHEN keyword only applies to the TRACE section and related EXTEND blocks of instruments/components. Other sections (INITIALIZE, SAVE, MCDISPLAY, FINALLY) are exectuted independently of the condition. As a side effetc, the 3D view of the instrument (mcdisplay) will show all components as if all conditions were true.
 
 Also, the \verb+WHEN+ keyword is a condition for \verb+GROUP+. This means that when the \verb+WHEN+ is false, the component instance is not active in the \verb+GROUP+ it belongs to.\index{Bugs}
 
 A usage example of the WHEN keyword can be found in the \\
 \verb+Neutron site/ILL/ILL_TOF_Env+ instrument from the \verb+mcgui+, to monitor neutron depending on their fate.
+
+
+WARNING: Combining WHEN, EXTEND and GROUP can result in unexpeceted behaviour, please use with caution! Let for instance a GROUP of components all have the same WHEN condition, i.e. if the WHEN condition is false, none of the elements SCATTER, meaning that all neutrons will be ABSORBed. As a solution to this problem, we propose to include an EXTENDed Arm component in the GROUP, but with the opposite WHEN condition and a SCATTER keyword in the EXTEND section. This means that when none of the other GROUP elements are present, the Arm will be present and SCATTER.
+
 
 \subsection{Component loops and non sequential propagation - JUMP}
 \index{Keyword!JUMP}
