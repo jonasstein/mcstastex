@@ -299,7 +299,7 @@ optional. Instrument setting parameters may be modified in this section (e.g. do
 \index{Keyword!NEXUS} \index{Tools!NeXus} \index{Tools!HDF} \index{Data formats}
 \label{s:nexus}
 
-The NeXus format~\cite{nexus_webpage} requires to link the simulation to additional libraries (HDF and NeXus) which must have been pre-installed. Preferably, \MCS\ should have been installed with the \verb+./configure --with-nexus+ on Unix/Linux systems. To activate the NeXus output, the compilation of the instrument must be done with flag \verb+-DHAVE_LIBNEXUS -lNeXus+. The resulting executable is no longer portable.
+The NeXus format~\cite{nexus_webpage} requires to link the simulation to additional libraries (HDF and NeXus) which must have been pre-installed. Preferably, \MCS\ should have been installed with the \verb+./configure --with-nexus+ on Unix/Linux systems. To activate the NeXus output, the compilation of the instrument must be done with flag \verb+-DUSE_NEXUS -lNeXus+. The resulting executable is no longer portable.
 
 The default NeXus format is NeXus 5 with compression. However, that format may be changed with the optional keyword \verb+NEXUS+ to follow the INITIALIZE section, namely:
 

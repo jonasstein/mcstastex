@@ -29,8 +29,8 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
 \index{Library!Run-time}
 
 \begin{itemize}
-\item The threading mechanism for parallelisation has been removed from McStas since it caused too many problems. For 
-  parallelisation on single machines (e.g. modern dual-core processors) or clusters, MPI (MPICH) is the recommended solution.
+\item The threading mechanism for parallelisation has been drastically improved with OpenMP and now compares to the MPI efficiency. This is the simplest method for 
+  parallelisation on single machines (e.g. modern dual-core processors), while MPI is best on clusters.
   The McStas team members routinely run developer machines and clusters using MPI.
 \end{itemize}
 

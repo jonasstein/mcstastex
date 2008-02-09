@@ -549,8 +549,8 @@ When choosing the HTML format, the simulation results are saved as a web page, w
       \texttt{--mpi={\it NB\_CPU}}
         & This option will distribute the simulation over NB\_CPU node (requires MPI to be installed). Performances are ideal.\\
       \hline
-      \texttt{--threads={\it NB\_CPU}}
-        & This option will distribute the simulation over NB\_CPU threads (requires multi threading to be available). Performances are low.\\
+      \texttt{--threads}
+        & This option will distribute the simulation over threads on multi-core/cpu machines (requires OpenMP multi threading to be available). Performances are good.\\
       \hline
       \texttt{--machines={\it MACHINES}}
         & Specify a list of distant machines/nodes to be used for MPI and grid clustering. Default is to use local SMP cluster.\\
@@ -705,7 +705,7 @@ The user is adviced to be cautious when interpreting the optimization results.
 
 \subsubsection{Using the Simplex method}
 
-The \MCS\ package comes with a Simplex optimization method to find best instrument parameters in order to maximize all or some specified monitor integrated values. It uses the Downhill Simpex Method in Multidimensions~\cite{neldermead,NumRecip} which is a geometric optimization method somewhat similar to genetic algorithms. It is not as fast as the gradient method, but is much more robust.
+The \MCS\ package comes with a Simplex optimization method to find best instrument parameters in order to maximize all or some specified monitor integrated values. It uses the Downhill Simpex Method in Multidimensions~\cite{neldermead,NumRecip} which is a geometric optimization method somewhat similar to genetic algorithms. It is not as fast as the gradient method, but is much more robust. It is well suited for problems with up to about 10-20 parameters to optimize. Higher dimensionalities are not guarantied to converge to a meaningfull solution.
 
 When using \verb+mcrun+ (section \ref{s:mcrun}), the optimization mode is set by using the
 \verb+--optim+ option or a list of monitors to maximize with as many
@@ -1393,11 +1393,11 @@ to simply translate one file format to the other. This works only for text files
 \index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!Octave} \index{Tools!IDL} \index{Data formats}
 \index{Grid computing}
 
-If you have been running a \MCS\ simulation with a given text format output, but finally plan to look at the results with an other plotter (e.g. you ran simulation with PGPLOT output and want to view it using Matlab), you may use
+If you have been running a \MCS\ simulation with a given text format output, but finally plan to look at the results with an other plotter (e.g. you ran a simulation with PGPLOT output and want to view it using Matlab), you may use
 \begin{quote}
   \texttt{mcformat {\it file | dir} -d {\it target\_dir} --format=TARGET\_FORMAT}
 \end{quote}
-to translate files into format FORMAT. When given a directory, the translation works recursively. The conversion works only for text files. Some problems may be found when translating from HTML/VRML data files, or from binary files.\index{Tools!VRML/OpenGL}
+to translate files into format TARGET\_FORMAT. When given a directory, the translation works recursively. The conversion works only for text files. Some problems may be found when translating from HTML/VRML data files, or from binary files.\index{Tools!VRML/OpenGL}
 
 The \verb+--merge+ option may be used to merge similar files, e.g. obtained from grid systems, just as if a longer run was achieved.
 
@@ -1529,7 +1529,7 @@ The NeXus format~\cite{nexus_webpage} is a platform independent HDF binary data 
 \begin{enumerate}
 \item the HDF and NeXus libraries must have been installed
 \item the \MCS\ installation should be done with NeXus bindings, e.g. on Unix/Linux systems \verb+configure --with-nexus; make; make install+.
-\item  the compilation of instruments must be done with the \verb+-DHAVELIB_NEXUS -lNeXus+ flag (see Section \ref{s:nexus}). This is automated with the \verb+mcrun+ tool (Section \ref{s:mcrun}).
+\item  the compilation of instruments must be done with the \verb+-DHUSE_NEXUS -lNeXus+ flag (see Section \ref{s:nexus}). This is automated with the \verb+mcrun+ tool (Section \ref{s:mcrun}).
 \end{enumerate}
 All results are saved in a single file, containing 'groups' of data. To view such files, install and use HDFView (or alternatively HDFExplorer). This Java viewer can show content of all detectors, including metadata (attributes). Basic detector images may also be generated.
 
@@ -1547,14 +1547,12 @@ Parallelizing a computation is in general possible when dependencies between
 \MCS\ provides three methods in order to distribute computations on many computers.
 \begin{itemize}
 \item when scanning instrument parameters (using \texttt{mcrun --multi -N}),
-  it is possible to distribute each scan step on a list of computers.
+  it is possible to distribute each scan step on a list of computers (see section \ref{s:ssh-grid}).
 \item when using an homogeneous computer cluster, each simulation (including scan
-  steps) may be computed in parallel using MPI (using \texttt{mcrun
-    --mpi=Nb\_Nodes}). We highly recommend this method which shows
-  excellent performance (but requires the user to install MPI).
-\item when using SMP machines (multi processor machines) \MCS\ may
+  steps) may be computed in parallel using MPI. We recommend this method on clusters (see section \ref{s:mpi}).
+\item when using SMP machines (multi core/processor machines) \MCS\ may
   distribute the simulations among CPU's using multi-threading
-  mechanism. Even though most systems now support multi-threading (i.e. do not require specific installation), the performance gain is very limited compared to MPI.
+  mechanism, using the \verb+OpenMP+ library. We recommend this method on multicore/cpu machines (see section \ref{s:openmp}).
 \end{itemize}
 
 Last but not least, you may run simulations manually on a number of machines.
@@ -1567,7 +1565,7 @@ Once the distributed simulation has been completed, you may merge their results 
   \begin{enumerate}
   \item{A set of unix machines of the same architecture (binary compatible). All
       machines should have the same \MCS\ distribution installed.}
-  \item{ \texttt{ssh} access from the master node (where McStas is
+  \item{ \texttt{ssh} access from the master node (where \MCS\ is
       installed) to the slaves through e.g. DSA keys \emph{without} a
       password. These keys should be generated using the command
       \texttt{ssh-keygen}. Run \emph{e.g.} \texttt{ssh-keygen -t dsa} on
@@ -1592,7 +1590,7 @@ Once the distributed simulation has been completed, you may merge their results 
   {\bf does not} work on Windows.
 
 \subsection{Parallel computing (MPI)}
-
+\label{s:mpi}
 When computing $N$ neutron rays with
 $p$ computers, each computer will simulate $\frac{N}{p}$
 neutrons. As a result there will be $p \cdot \frac{N}{p} = N$
@@ -1606,8 +1604,8 @@ neutrons simulated. As a result, \MCS\ generates two kinds of data sets:
   is performed using the final $p_0$, $p_1$, and $p_2$ arrays (see Section \ref{s:staterror}).
 \item event lists: the merge of events is done by concatenation
 \end{itemize}
-The MPI support requires that MPICH (recommended), or alternatively LAM-MPI, is installed on a set of nodes.
-This usually also requires properly setup \texttt{ssh} connections and keys as indicated in the ssh grid system (Section \ref{s:ssh-grid}).
+The MPI support requires that MPICH (recommended), or alternatively LAM-MPI or OpenMPI, is installed on a set of nodes.
+This usually also requires properly setup \texttt{ssh} connections and keys as indicated in the ssh grid system (Section \ref{s:ssh-grid}). Some OpenMPI implementations do not recognize multi-cores as separate nodes. In this case, you should use MPICH, or the OpenMP threading mechanism (see section \ref{s:mpi}).
 
 There are 3 methods for using MPI
 \begin{itemize}
@@ -1667,8 +1665,9 @@ of MPI. Two new options have been added:
 \item \verb'--machines=<file>': defines a text file where the
   nodes which are to be used for parallel computation are listed; by
   default, \verb'mcrun' will look at \verb'$HOME/.mcstas-hosts' and
-  \verb'MCSTAS/tools/perl/mcstas-hosts'. When used on a single SMP machine (multi-cpu), this option may be omitted.
+  \verb'MCSTAS/tools/perl/mcstas-hosts'. When used on a single SMP machine (multi-core/cpu), this option may be omitted.
 \end{itemize}
+When available, the MPI option will show up in the \verb+mcgui+ Run dialog. Specify the number of nodes required.
 
 Suppose you have four machines named \verb'node1' to \verb'node4'.
 A typical machine list file, \verb'machines.list' looks like :
@@ -1733,31 +1732,39 @@ fusion of the computations. For instance, spreading a computation
 implies either an \verb'rsh' or and \verb'ssh' session to be opened on
 every node.
 
+Larger tests have shown that the speedup is proportional to the number of nodes, and there is no significant overhead up to at least 100 nodes. The efficiency of \MCS\ w.r.t. parallel computing is thus close to ideal.
+
+It is possible to use the MPI and OpenMP threading together with command \verb+mcrun --mpi --threads ...+ on multi-core clusters (see below).
+c
 \subsection{McStas/MPI Bugs and limitations}\index{Bugs}
 
 \begin{itemize}
 \item Signals are \emph{not} supported while simulating with MPI (since
   asynchroneous events cannot be easily transmitted to all nodes).
-\item Some header of output files might contain minor errors
+\item Some header of output files might contain minor errors.
 \item The computation split does not take into account the speed or the
   load of nodes: the overall time of a distributed computation is
   forced by the slowest node; for optimal performance, the ``cluster''
-  should be homogeneous
+  should be homogeneous.
 \item Forcing the random seed while spreading the computation doesn't
   work since every node will use identical seeds and will then
-  generate identical pseudo-random values
+  generate identical pseudo-random values.
 \item MPI must be correctly configured: if using \verb'ssh', you
   have to set ssh keys to avoid use of passwords; if
-  using \verb'rsh', you have to set a \verb'.rhosts' file
+  using \verb'rsh', you have to set a \verb'.rhosts' file.
+  On non-local accounts, this procedure may fail and ssh always require passwords.
 \item When reading external data files during the TRACE (specially virtual sources) all nodes might access the same data, potentially producing wrong results. We do not recommend using MPI when reading virtual sources.
-\item \MCS\ with MPI support was demonstrated to run efficiently up to 10 machines. Above this value, communication issues between nodes may arise, depending on the architecture and network capabilities, particularly when running scans of parameters.\index{Bugs}
+\item \MCS\ with MPI support was demonstrated to run efficiently up to 100 machines. Above this value, communication issues between nodes may arise, depending on the architecture and network capabilities, particularly when running scans of parameters.\index{Bugs}
+\item OpenMPI sometimes does not count multi-cores as separate nodes. We then recommend to use the OpenMP threading mechanism on these systems (see below).
 \end{itemize}
 
 \subsection{Parallel computing (multi-threading)}
+\label{s:openmp}
+Multi-threading using OpenMP is very efficient on multi-core machines. This parallelization does not require any special configuration except a recent C compiler version (gcc 4.2, icc/icpc, pgcc, xlc) to be specified at \MCS\ install/configuration with option e.g. \verb+--with-cc=gcc-4.2+. The number of nodes is set automatically to the number of local cores/cpu. 
 
-Multi-threading is under experimentation. It has been implemented when using \\\verb+mcrun -c --threads=NB_CPU ...+.
+To benefit from this mode, use \verb+mcrun --threads ...+. When available, the option will show up in the \verb+mcgui+ Run dialog, and eventually force re-compilation of the instrument if needed. 
 
-The method is based on a parallel execution of threads. This introduces quite large overhead and dramatically reduces efficiency. Thus, we do NOT recommend using it. Further developments are under way.
+It is possible to use the MPI and OpenMP together with command \verb+mcrun --mpi --threads ...+ to benefit entirely from multi-core/cpu clusters. 
 
 %%% Local Variables:
 %%% mode: latex
