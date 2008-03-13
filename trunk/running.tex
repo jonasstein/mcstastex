@@ -1543,12 +1543,28 @@ Parallelizing a computation is in general possible when dependencies between
   ideal since each neutron ray can be simulated without interfering with
   other simulated neutron rays. Therefore each neutron ray can be simulated
   independently on a set of computers.
+  
+When computing $N$ neutron rays with
+$p$ computers, each computer will simulate $\frac{N}{p}$
+neutrons. As a result there will be $p \cdot \frac{N}{p} = N$
+neutrons simulated. As a result, \MCS\ generates two kinds of data sets:
+\begin{itemize}
+\item intensity measurements, internally represented by three
+  values $(p_0, p_1, p_2)$ where $p_0$, $p_1$, $p_2$ are
+  additive. Therefore the final value of $p_0$ is the sum of all
+  local value of  $p_0$ computed on each node. The same rule applies
+  for $p_1$ and $p_2$. The evaluation of the intensity errors $\sigma$
+  is performed using the final $p_0$, $p_1$, and $p_2$ arrays (see Section \ref{s:staterror}).
+\item event lists: the merge of events is done by concatenation
+\end{itemize}
 
 \MCS\ provides three methods in order to distribute computations on many computers.
 \begin{itemize}
 \item when using a set of nodes (grid, cluster or multi-cores), it is possible to distribute simulations on a 
   list of computers and multi-core machines (see section \ref{s:ssh-grid}). Results are automatically 
-  merged after completion. This method is very efficient, and only requires SSH to be installed/configured.
+  merged after completion. 
+  This method is very efficient, and only requires SSH server to be installed/configured on slave machines. 
+  In order to use an heterogeneous system, a C compiler should be optionally installed on slave machines.
 \item when using an homogeneous computer cluster, each simulation (including scan
   steps) may be computed in parallel using MPI. We recommend this method on clusters (see section \ref{s:mpi}).
 \item when using SMP machines (multi core/processor machines) \MCS\ may
@@ -1564,9 +1580,94 @@ All of these methods can be used, when available, from \texttt{mcgui}.
 \subsection{Distribute mcrun simulations on grids, multi-cores and clusters (SSH grid)}
 \label{s:ssh-grid}
   This method distributes simulations on a set of machines using \emph{ssh}
-  connections. To use this option you will need
+  connections, using a command such as \verb+mcrun --grid=4 ...+. 
+  Each of the scan steps is split and executed on distant slave machines, sending the executable
+  with \emph{scp}, executing single simulations, and then retrieving individual
+  results on the master machine. These are then merged using \texttt{mcformat}. 
+  
+  The \verb'mcrun' script has been adapted to use transparently SSH grids. The syntax is:
+\begin{itemize}
+\item \verb'--grid=<number>': tells \verb'mcrun' to use the grid over \verb'<number>' nodes.
+\item \verb'--machines=<file>': defines a text file where the
+  nodes which are to be used for parallel computation are listed; by
+  default, \verb'mcrun' will look at \verb'$HOME/.mcstas-hosts' and
+  \verb'MCSTAS/tools/perl/mcstas-hosts'. When used on a single SMP machine 
+  (multi-core/cpu), this option may be omitted.
+\item \verb'--force-compile': this option is required on heterogeneous systems. 
+  The C code is sent to all slaves and simulation is compiled on each node before 
+  starting computation. The default is to send directly the executatble from the 
+  master node, which only works on homogeneous systems.
+  computation. 
+\end{itemize}
+  
+  This method shows similar efficiency as MPI, but without MPI installation. It is 
+  especially suited on multi-core machines, but may also be used on any set of distant 
+  machines (grids), as well as clusters. For Windows master machines,
+  we recommend the installation of the PuTTY SSH client.
+  
+\subsubsection{Requirements and limitation (SSH grids)}
+
   \begin{enumerate}
-  \item{A set of unix machines of the same architecture (binary compatible).}
+  \item{A master machine with an SSH client, and \MCS\ installation.}
+  \item{A set of machines (homogeneous or heterogeneous) with SSH servers.}
+  \item{On heterogeneous grids, a C compiler must also be installed on all slave nodes.}
+  \item{\texttt{ssh} access from the master node (where \MCS\ is
+      installed) to the slaves through e.g. DSA keys \emph{without} a
+      password. These keys should be generated using the command
+      \texttt{ssh-keygen}. Run \emph{e.g.} \texttt{ssh-keygen -t dsa} on
+      master node, enter no passphrase and add resulting
+      \texttt{.ssh/id\_dsa.pub} to \texttt{.ssh/authorized\_keys}
+      on all the slave nodes. The key generation and registering mechanism 
+      may be done automatically for the local machine from the 
+      \emph{Help menu/Install DSA key} item of \verb+mcgui+.}
+  \item{The machine names listed in the file \texttt{.mcstas-hosts} in
+      your home directory or in the \texttt{MCSTAS/tools/perl/mcstas-hosts} on
+      the master node, one node per line. The \verb'--machines=<file>' option
+      enables to specify the hosts file to use. If it does not exist, only 
+      the current machine will be used (for multi-processor/core machines).}
+  \item{Without ssh keys, passwords will be prompted many times. To avoid this, 
+      we recommend to use only the local machine (for multi-cores/cpu), i.e. do
+      not use a machine hosts file.}
+  \item{If your simulation/instrument requires data files (Powders, Sqw, source 
+      description, ...), these must be copied at the same level as the instrument 
+      definition. They are sent to all slave nodes before starting each computation.
+      Take care to limit as much as possible the required data file volume in order
+      to avoid large data transfers.}
+  \item Interupting or sending Signals may fail during computations. However, 
+  simulation scans can be interrupted as soon as the on-going computation 
+  step ends.
+  \item With heterogeneous systems, we recommend to use the \verb+mcrun --force-compile+ 
+    command rather than McGUI, which may skip the required simulation compilation
+    on slaves.
+  \end{enumerate}
+
+\subsection{Parallel computing (MPI)}
+\label{s:mpi}
+The MPI support requires that MPICH (recommended), or alternatively LAM-MPI or 
+  OpenMPI, is installed on a set of nodes. This usually also requires properly 
+  setup \texttt{ssh} connections and keys as indicated in the ssh grid system 
+  (Section \ref{s:ssh-grid}). Some OpenMPI implementations do not recognize 
+  multi-cores as separate nodes. In this case, you should use MPICH, or the SSH grid.
+
+There are 3 methods for using MPI
+\begin{itemize}
+\item Basic usage requires to compile and run the simulation by hand (mpicc, mpirun). 
+  This should be used when running LAM-MPI.
+\item A much simpler way is to use \verb+mcrun -c --mpi=NB_CPU ...+ which will 
+  recompile and run MPICH.
+\item The McGUI interface supports MPICH from within the Run Dialog.
+\end{itemize}
+
+The MPI support is especially suited on clusters. As an alternative, the SSH grid 
+presented above (section \ref{s:ssh-grid}) is very flexible and requires lighter 
+configuration.
+
+\subsubsection{Requirements and limitation (MPI)}
+
+To use MPI you will need
+  \begin{enumerate}
+  \item{A master machine with an SSH client/server, and \MCS\ installation.}
+  \item{A set of unix machines of the same architecture (binary compatible) with SSH servers.}
   \item{ \texttt{ssh} access from the master node (where \MCS\ is
       installed) to the slaves through e.g. DSA keys \emph{without} a
       password. These keys should be generated using the command
@@ -1584,48 +1685,16 @@ All of these methods can be used, when available, from \texttt{mcgui}.
   \item{Without ssh keys, passwords will be prompted many times. To avoid this, 
       we recommend to use only the local machine (for multi-cores/cpu), i.e. do
       not use a machine hosts file.}
-  \item{Execute \texttt{mcrun} or \texttt{mcgui} as normally, appending \texttt{--multi=NB} or
-      \texttt{--grid=NB} will split each simulation onto $NB$ nodes across the machines in
-      \texttt{.mcstas-hosts $+$ localhost}.}
+  \item Signals are \emph{not} supported while simulating with MPI (since
+    asynchroneous events cannot be easily transmitted to all nodes). This
+    means it is not possible to cancel an on-going computation. However, 
+    simulation scans can be interrupted as soon as the on-going computation 
+    step ends.
+  \item MPI must be correctly configured: if using \verb'ssh', you
+    have to set ssh keys to avoid use of passwords; if
+    using \verb'rsh', you have to set a \verb'.rhosts' file.
+    On non-local accounts, this procedure may fail and ssh always require passwords.
   \end{enumerate}
-  Each of the scan steps is executed on distant machines, sending the executable
-  with \emph{scp}, executing single simulations, and then retrieving individual
-  results on the master machine. These are then merged. As nodes execute completely
-  separated simulations, it is not possible to send messages or interrupt on-going
-  computations. However, when peforming simulation scans, it is possible to stop the scan
-  as soon as the on-going computation step ends.
-
-  This method shows similar efficiency as MPI, but without MPI installation. It is 
-  especially suited on multi-core machines, but may also be used on any set of distant 
-  machines (grids), as well as clusters. For Windows users,
-  we recommend the installation of the PuTTY SSH client.
-
-\subsection{Parallel computing (MPI)}
-\label{s:mpi}
-When computing $N$ neutron rays with
-$p$ computers, each computer will simulate $\frac{N}{p}$
-neutrons. As a result there will be $p \cdot \frac{N}{p} = N$
-neutrons simulated. As a result, \MCS\ generates two kinds of data sets:
-\begin{itemize}
-\item intensity measurements, internally represented by three
-  values $(p_0, p_1, p_2)$ where $p_0$, $p_1$, $p_2$ are
-  additive. Therefore the final value of $p_0$ is the sum of all
-  local value of  $p_0$ computed on each node. The same rule applies
-  for $p_1$ and $p_2$. The evaluation of the intensity errors $\sigma$
-  is performed using the final $p_0$, $p_1$, and $p_2$ arrays (see Section \ref{s:staterror}).
-\item event lists: the merge of events is done by concatenation
-\end{itemize}
-The MPI support requires that MPICH (recommended), or alternatively LAM-MPI or OpenMPI, is installed on a set of nodes.
-This usually also requires properly setup \texttt{ssh} connections and keys as indicated in the ssh grid system (Section \ref{s:ssh-grid}). Some OpenMPI implementations do not recognize multi-cores as separate nodes. In this case, you should use MPICH, or the SSH grid.
-
-There are 3 methods for using MPI
-\begin{itemize}
-\item Basic usage requires to compile and run the simulation by hand (mpicc, mpirun). This should be used when running LAM-MPI.
-\item A much simpler way is to use \verb+mcrun -c --mpi=NB_CPU ...+ which will recompile and run MPICH.
-\item The McGUI interface supports MPICH from within the Run Dialog.
-\end{itemize}
-
-The MPI support is especially suited on clusters. As an alternative, the SSH grid presented above (section \ref{s:ssh-grid}) is very flexible and requires no configuration.
 
 \subsubsection{MPI Basic usage}
 
@@ -1651,21 +1720,6 @@ wrapper of your MPI implementation (\verb'mpirun' for mpich or lammpi) :
 If you don't want to spread the simulation, run it as usual :
 \begin{verbatim}
   ./sim.mpi <instrument parameters>
-\end{verbatim}
-
-If you want to disable MPI support (for example if you do not have MPI
-installed), just compile the C-source file generated by \verb'mcstas'
-  without \verb'mpicc' and without the \verb'-DUSE_MPI' flag :
-\begin{verbatim}
-  # generate a C-source file [sim.c]
-  mcstas sim.instr
-
-  # generate an executable without MPI support [sim.no_mpi]
-  cc -o sim.no_mpi sim.c
-
-  # execute on a single computer
-  ./sim.no_mpi <instrument parameters>
-  ...
 \end{verbatim}
 
 \subsection{McRun script with MPI support (mpich)}
@@ -1749,14 +1803,9 @@ Larger tests have shown that the speedup is the number of nodes,
 and there is no significant overhead up to at least 100 nodes. The efficiency 
 of \MCS\ w.r.t. MPI parallel computing is thus close to ideal.
 
-\subsection{McStas/MPI Bugs and limitations}\index{Bugs}
+\subsection{MPI and Grid Bugs and limitations}\index{Bugs}
 
 \begin{itemize}
-\item Signals are \emph{not} supported while simulating with MPI (since
-  asynchroneous events cannot be easily transmitted to all nodes). This
-  means it is not possible to cancel an on-going computation. However, 
-  simulation scans can be interrupted as soon as the on-going computation 
-  step ends.
 \item Some header of output files might contain minor errors.
 \item The computation split does not take into account the speed or the
   load of nodes: the overall time of a distributed computation is
@@ -1765,14 +1814,9 @@ of \MCS\ w.r.t. MPI parallel computing is thus close to ideal.
 \item Forcing the random seed while spreading the computation doesn't
   work since every node will use identical seeds and will then
   generate identical pseudo-random values.
-\item MPI must be correctly configured: if using \verb'ssh', you
-  have to set ssh keys to avoid use of passwords; if
-  using \verb'rsh', you have to set a \verb'.rhosts' file.
-  On non-local accounts, this procedure may fail and ssh always require passwords.
 \item When reading external data files during the TRACE (specially virtual sources) 
   all nodes might access the same data, potentially producing wrong results. We do 
-  NOT recommend using MPI when reading virtual sources.
-\item \MCS\ with MPI support was demonstrated to run efficiently up to 100 machines. 
+  NOT recommend using MPI/Grid when reading virtual sources.
 \end{itemize}
 
 \subsection{Parallel computing (multi-threading)}
