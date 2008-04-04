@@ -673,7 +673,7 @@ data before ending. Most errors appear when using a newly written component, in 
 There are various ways to speed up simulations
 \begin{itemize}
 \item Optimize the compilation of the instrument, as explained in section~\ref{s:compile}.
-\item Execute the simulation in parallel on a computer grid or a cluster (with MPI
+\item Execute the simulation in parallel on a computer grid or a cluster (with MPI or ssh grid
 ) as explained in section~\ref{s:run-mpi}.
 \item Divide simulation into parts using a file for saving or generating neutron
       events. In this way, a guide may be simulated only once, saving the neutron events
@@ -1603,7 +1603,10 @@ All of these methods can be used, when available, from \texttt{mcgui}.
   This method shows similar efficiency as MPI, but without MPI installation. It is 
   especially suited on multi-core machines, but may also be used on any set of distant 
   machines (grids), as well as clusters. For Windows master machines,
-  we recommend the installation of the PuTTY SSH client.
+  we recommend the installation of the PuTTY SSH client. The overhead is proportional to
+  the number of nodes and the amount of data files to transfer per simulation. It is 
+  usually larger that the pure MPI method. We thus recommend to launch long runs on fewer nodes
+  rather than many short runs on many nodes.
   
 \subsubsection{Requirements and limitation (SSH grids)}
 
@@ -1628,7 +1631,7 @@ All of these methods can be used, when available, from \texttt{mcgui}.
   \item{Without ssh keys, passwords will be prompted many times. To avoid this, 
       we recommend to use only the local machine (for multi-cores/cpu), i.e. do
       not use a machine hosts file.}
-  \item{If your simulation/instrument requires data files (Powders, Sqw, source 
+  \item{If your simulation/instrument requires \emph{data files} (Powders, Sqw, source 
       description, ...), these must be copied at the same level as the instrument 
       definition. They are sent to all slave nodes before starting each computation.
       Take care to limit as much as possible the required data file volume in order
