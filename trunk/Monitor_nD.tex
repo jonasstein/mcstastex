@@ -96,7 +96,7 @@ and position. Some can have more than one name (e.g. \texttt{energy} or
 as well as two other special variables
 \begin{verbatim}
     user user1            will monitor the [Mon_Name]_Vars.UserVariable{1|2}
-    user2                 to be assigned in an other component (see below)
+    user2 user3           to be assigned in an other component (see below)
 \end{verbatim}
 
 To tell the component what you want to monitor, just add the variable
@@ -240,7 +240,7 @@ will monitor all theses neutron variables in one long list, one row per neutron 
 \label{s:monnd:user}
 \index{Monitors!Custom monitoring (user variables, Monitor\_nD)}
 
-There are two ways to monitor any quantity with Monitor\_nD. This may be e.g. the number of neutron bounces in a guide, or the wavevector and energy transfer at a sample. The only requirement is to define the \verb+user1+ (and optionally \verb+user2+) variables of a given Monitor\_nD instance.
+There are two ways to monitor any quantity with Monitor\_nD. This may be e.g. the number of neutron bounces in a guide, or the wavevector and energy transfer at a sample. The only requirement is to define the \verb+user1+ (and optionally \verb+user2,user3+) variables of a given Monitor\_nD instance.
 
 \subsubsection{Setting directly the user variables (simple)}
 
@@ -252,8 +252,8 @@ COMPONENT UserMonitor = Monitor_nD(
   user1    = log(t), username1="Log(time)",
   options  ="auto user1")
 \end{verbatim}
-The values to assign to \verb+user2+ and \verb+user2+ must be global instrument variables, or a component output variables as in \verb+user1=MC_GETPAR(some_comp, outpar)+.
-Similarly, the \verb+user2+ and \verb+username2+ parameters may be used to control the second user variable, to produce eventually 2D user variable correlation data.
+The values to assign to \verb+user2+ and \verb+user3+ must be global instrument variables, or a component output variables as in \verb+user1=MC_GETPAR(some_comp, outpar)+.
+Similarly, the \verb+user2,user3+ and \verb+username2,username3+ parameters may be used to control the second and third user variable, to produce eventually 2D/3D user variable correlation data and custom event lists.
 
 \subsubsection{Setting indirectly the user variables (only for professionals)}
 
@@ -277,7 +277,7 @@ INITIALIZE
   MONND_USER_TITLE(UserMonitor, 1, "Log(time)");
 %}
 \end{verbatim}
-The value '1' could be '2' for the \verb+user2+ variable.
+The value '1' could be '2' or '3' for the \verb+user2,user3+ variable.
 \item Set the user variable value in a TRACE component EXTEND block:\index{Keyword!EXTEND}
 \begin{verbatim}
 TRACE
@@ -322,8 +322,8 @@ EXTEND
 %{
   if (SCATTERED) nbounces += GVars.N_reflection[0];
 %}
-(... many guide instances, copy/paste and change names ...)
-COMPONENT GuideN = Guide_gravity(...) AT (...) RELATIVE PREVIOUS
+(... many guide instances, copy/paste and change names automatically ...)
+COMPONENT COPY(Guide1) = COPY(Guide1) AT (...) RELATIVE PREVIOUS
 EXTEND
 %{
   if (SCATTERED) nbounces += GVars.N_reflection[0];
