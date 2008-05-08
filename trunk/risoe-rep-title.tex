@@ -24,7 +24,7 @@
  \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax}
 \def\@maketitle{\newpage \baselineskip 30dd \mbox{}
  \marginpar{{\frtnbf \hfill \llap{\mbox{\reportnum \reportlan\qquad\qquad}}}}
- \par\noindent\mbox{\includegraphics[width=0.27\textwidth]{figures/risoe-logo.eps}} \par
+ \par\noindent\mbox{\includegraphics[height=1.5cm]{figures/risoe-logo.eps}\hspace{2mm}\includegraphics[height=1.5cm]{figures/DTU_logo.ps}} \par
  \vskip 1.5cm
  {\twfvbf \noindent \@title \par} \vskip 20dd \baselineskip 16dd
  {\frtnbf\noindent\@author \par} 
@@ -33,14 +33,14 @@
      \includegraphics[width=0.95\textwidth]{figures/frontpage.ps}
    \end{flushright}
    \par \vfill \baselineskip 12dd
- \frtnbf\noindent Ris{\o} National Laboratory, Roskilde, Denmark \par
+ \frtnbf\noindent Ris{\o} DTU, Roskilde, Denmark \par
  \vskip 4dd \noindent\ifcase\month\or
  January\or February\or March\or April\or May\or June\or
  July\or August\or September\or October\or November\or December\fi
  \space\number\year }
 
 \let\reportlan=\relax
-\def\month{7}                   % Released in November 2005
+\def\month{5}                   % Released in November 2005
 % Need to match front page line breaking.
 \title{User~and~Programmers~Guide~to~\rlap{the}\\ % Avoid overfull message.
  Neutron~Ray-Tracing~Package\\
