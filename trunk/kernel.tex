@@ -490,6 +490,7 @@ As a summary, the nearly complete grammar definition for component instances wit
 
 \subsection{Embedding instruments in instruments TRACE}
 \index{Keyword!\%include}
+\label{s:instrdefs-include-instr}
 The \texttt{\%include} insertion mechanism may be used within the TRACE section, in order to catenate instruments together. This way, each DECLARE, INITIALIZE, SAVE, and FINALLY C blocks, as well as instrument parameters from each part are catenated. The TRACE section is made of inserted COMPONENTS from each part. In principle, it then possible to write an instrument as:
 \begin{verbatim}
 DEFINE catenated()
