@@ -15,7 +15,7 @@ but also for accurate monochromator descriptions.
 The component is currently under further review. The current documentation is outdated, especially with respect to the model of crystal mosaicity.
 
 The input parameters for the component are \textit{xwidth},
-\textit{yheight}, and \textit{zthick} to define the dimensions of the
+\textit{yheight}, and \textit{zdepth} to define the dimensions of the
 crystal in meters (area is centered); \textit{delta\_d\_d} to give the
 value of $\Delta d/d$ (no unit);
 $(\textit{ax}, \textit{ay}, \textit{az})$, $(\textit{bx}, \textit{by},
@@ -512,7 +512,7 @@ Example data \verb+*.lau+ files are given in directory \verb+MCSTAS/data+.
 
 These files contain an extensive self-documented header defining most the sample parameters, so that only the file name and mosaicity should be given to the component:
 \begin{verbatim}
-  Single_crystal(xwidth=0.01, yheight=0.01, zthick=0.01,
+  Single_crystal(xwidth=0.01, yheight=0.01, zdepth=0.01,
     mosaic = 5, reflections="YBaCuO.lau")
 \end{verbatim}
 

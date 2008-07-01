@@ -7,7 +7,7 @@
 \index{Concentric components}
 \index{Multiple scattering}
 
-\component{Isotropic\_Sqw}{V. Hugouvieux, E. Farhi}{Sqw$\_{coh}$, $\sigma_{coh}$, Sqw$\_{inc}$, $\sigma_{inc}, V_\rho, \sigma_{abs}, T$,$x_{width},y_{height},z_{thick},r_o, r_i$, thickness}{$q_{min}, q_{max}, \omega_{min}, \omega_{max}, d\phi$, order}{validated (Vanadium, l-Rb, PowderN more accurate for powders) }
+\component{Isotropic\_Sqw}{V. Hugouvieux, E. Farhi}{Sqw$\_{coh}$, $\sigma_{coh}$, Sqw$\_{inc}$, $\sigma_{inc}, V_\rho, \sigma_{abs}, T$,$x_{width},y_{height},z_{depth},r$, thickness}{$q_{min}, q_{max}, \omega_{min}, \omega_{max}, d\phi$, order}{validated (Vanadium, l-Rb, PowderN more accurate for powders) }
 
 \begin{figure}
   \begin{center}
@@ -271,7 +271,7 @@ T          & [K]          & Temperature. 0 disables detailed balance \\
     \hline
 xwidth   & [m] & \\
 yheight  & [m] & dimensions of a box shaped geometry \\
-zthick   & [m] & \\
+zdepth   & [m] & \\
 radius\_o & [m] & dimensions of a cylinder shaped geometry  \\
 radius\_i & [m] & sphere geometry if radius\_i=0  \\
 thickness& [m] & thickness of hollow shape  \\
@@ -293,12 +293,12 @@ concentric& boolean & Enables to 'enter' inside concentric hollow geometries  \\
 
 The geometry for the component may be box, cylinder and sphere shaped, either filled or hollow. Relevant parameters for this purpose are as follow:
 \begin{itemize}
-\item {\bf box}: dimensions are $x_{width} \times y_{height} \times z_{thick}$.
+\item {\bf box}: dimensions are $x_{width} \times y_{height} \times z_{depth}$.
 \item {\bf box, hollow}: \emph{idem}, and the side wall thickness is set with $thickness$.
-\item {\bf cylinder}: dimensions are $r_o$ for the radius and $y_{height}$ for the height.
-\item {\bf cylinder, hollow}: \emph{idem}, and hollow part is set with either $r_i$ internal radius, or $thickness$.
-\item {\bf sphere}: dimension is $r_o$ for the radius.
-\item {\bf sphere, hollow}: \emph{idem}, and hollow part is set with either $r_i$ internal radius, or $thickness$.
+\item {\bf cylinder}: dimensions are $r$ for the radius and $y_{height}$ for the height.
+\item {\bf cylinder, hollow}: \emph{idem}, and hollow part is set with $thickness$.
+\item {\bf sphere}: dimension is $r$ for the radius.
+\item {\bf sphere, hollow}: \emph{idem}, and hollow part is set with $thickness$.
 \end{itemize}
 The AT position corresponds to the centre of the sample.
 
@@ -389,17 +389,17 @@ Such files can only handle elastic scattering. A list of common powder definitio
 The component has been designed in a way which enables to describe complex imbricated set-ups, i.e. what you need to simulate sample environments. To do so, one has first to use hollow shapes, then keep in mind that each surrounding geometry should be first declared before the central position (usually the sample) with the \verb+concentric=1+ parameter, but also duplicated (with an other instance name) at a symmetric position with regards to the centre as in the example (shown in Fig. \ref{f:isotropic-sqw}):
 \begin{verbatim}
 COMPONENT s_in=Isotropic_Sqw(
-  thickness=0.001, radius_o=0.02, yheight=0.015,
+  thickness=0.001, radius=0.02, yheight=0.015,
   Sqw_coh="Al.laz", concentric=1)
 AT (0,0,1) RELATIVE a
 
 COMPONENT sample=Isotropic_Sqw(
-  xwidth=0.01, yheight=0.01, zthick=0.01,
+  xwidth=0.01, yheight=0.01, zdepth=0.01,
   Sqw_coh="Rb_liq_coh.sqw")
 AT (0,0,1) RELATIVE a
 
 COMPONENT s_out=Isotropic_Sqw(
-  thickness=0.001, radius_o=0.02, yheight=0.015,
+  thickness=0.001, radius=0.02, yheight=0.015,
   Sqw_coh="Al.laz")
 AT (0,0,1) RELATIVE a
 \end{verbatim}

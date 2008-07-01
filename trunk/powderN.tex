@@ -5,8 +5,8 @@
 \index{Concentric components}
 \label{powder}
 
-\component{Powder\_N}{System}{$radius$, $radius_i$, $h$, $xwidth$, $yheight$, $zthick$,  $xwidth_i$, $yheight_i$, $zthick_i$ $\sigma_{\rm abs}$,
-  $\sigma_{\rm inc}$, $V_0$, $f_{\rm pack}$, reflections, format, DW, concentic, and more}{}{}
+\component{Powder\_N}{System}{$radius$, $thickness$, $h$, $xwidth$, $yheight$, $zdepth$, $\sigma_{\rm abs}$,
+  $\sigma_{\rm inc}$, $Vc$, $f_{\rm pack}$, reflections, format, DW, concentic, and more}{}{}
 
 The powder diffraction component {\bf PowderN} models a powder sample
 with background coming only from incoherent scattering and no
@@ -66,8 +66,8 @@ of the component.
 
 \subsection{Geometry, physical properties, concentricity}
 The sample has the shape of a solid cylinder, radius $r$ and height $h$ or a box-shaped
-sample of size $xwidth$ x $yheight$ x $zthick$. At the users choice, an inner 'hollow' can be
-specified using the parameters $radius_i$, $width_i$ etc. 
+sample of size $xwidth$ x $yheight$ x $zdepth$. At the users choice, an inner 'hollow' can be
+specified using the parameter $thickness$. 
 
 
 As the Isotropic\_Sqw component~\ref{s:isotropic-sqw}, PowderN assumes \emph{concentric} shape, i.e.
@@ -76,7 +76,7 @@ of the PowderN components must be set up \emph{around} the internal component(s)
 
 
 \begin{verbatim}
-COMPONENT Cryo = PowderN(reflections="Al.laz", radius = 0.01, radius_i = 0.009,
+COMPONENT Cryo = PowderN(reflections="Al.laz", radius = 0.01, thickness = 0.001,
                           concentric = 1)
 AT (0,0,0) RELATIVE Somewhere
 
@@ -99,7 +99,7 @@ cross sections can be given using the input parameters $\sigma_c^a$ and $\sigma_
 The Bragg scattering from the powder,
 $\sigma_c^s$ is calculated from the input file, with the parameters
 $Q$, $|F(Q)|^2$, and $j$ for the scattering vector, structure factor, and
-multiplicity, respectively. The volume of the unit cell is denoted $V_0$,
+multiplicity, respectively. The volume of the unit cell is denoted $Vc$,
 while the sample packing factor is $f_{\rm pack}$.
 
 
