@@ -55,8 +55,8 @@ This section gives an ultra-brief overview of how to use \MCS\ once it
 has been properly installed. It is intended for those who do not read
 manuals if they can avoid it. For details on the different steps, see
 the following sections. This section uses the
-\verb+vanadium_example.instr+ file supplied in the \verb+examples/+
-directory of the \MCS\ distribution. %, see appendix~\ref{a:vanadium_example.instr}.
+\verb+Samples_vanadium.instr+ file supplied in the \verb+examples/+
+directory of the \MCS\ distribution. %, see appendix~\ref{a:Samples_vanadium.instr}.
 
 To start the graphical user interface of McStas, run the command
 \verb+mcgui+ (\verb+mcgui.pl+ on Windows). This will open a window
@@ -71,7 +71,7 @@ see figure~\ref{fig:mcgui}. \index{Tools!mcgui}
 \end{figure}
 \label{p:neutronsite}
 To load an instrument, select ``Tutorial'' from the ``Neutron site''
-menu and open the file \verb+vanadium_example+. Next, check that the current plotting backend setting
+menu and open the file \verb+Samples_vanadium+. Next, check that the current plotting backend setting
 (select ``Choose backend'' from the ``Simulation'' menu) corresponds
 to your system setup. The default setting can be adjusted as explained in Chapter \ref{installing}
 \begin{itemize}
@@ -393,7 +393,7 @@ full list can be obtained using the \verb+--help+ option:
 The values of instrument parameters may be specified as arguments using
 the syntax \textit{name}\verb+=+\textit{val}. For example
 \begin{verbatim}
-    ./vanadium_example.out ROT=90
+    ./Samples_vanadium.out ROT=90
 \end{verbatim}
 \index{Parameters!Instruments}
 The number of neutron histories to simulate may be set using the
@@ -431,12 +431,12 @@ more detail in section~\ref{s:analyze}. It may be chosen either with \verb+--for
 The available format list is obtained using the \verb+name.out --help+ option, and shown in Table~\ref{t:formatoptions}. \index{Tools!PGPLOT} \index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!VRML/OpenGL} \index{Tools!HTML} \index{Data formats}
 \MCS\ can presently generate many formats, including the original \MCS /PGPLOT and the Scilab and Matlab formats. All formats, except the \MCS /PGPLOT, may eventually support binary files, which are much smaller and faster to import, but are platform dependent. The simulation data file extensions are appended automatically, depending on the format, if the file names do not contain any. Binary files are particularly recommended for the IDL format (e.g. \verb+--format=IDL_binary+), and the Matlab and Scilab format when handling large detectors (e.g. more than 50x50 bins). For example:
 \begin{verbatim}
-    ./vanadium_example.out ROT=90 --format="Scilab_binary"
+    ./Samples_vanadium.out ROT=90 --format="Scilab_binary"
 \end{verbatim}
 or more generally (for bash/Bourne shell users)
 \begin{verbatim}
     export MCSTAS_FORMAT="Matlab"
-    ./vanadium_example.out ROT=90
+    ./Samples_vanadium.out ROT=90
 \end{verbatim}
 
 It is also possible to create and read \textit{Vitess}, \textit{MCNP/PTRAC} and \textit{Tripoli4/batch}
@@ -1135,12 +1135,12 @@ the simulation, as explained above. The \verb+-h+ option will list valid options
 The drawing back-end program may be selected among PGPLOT, VRML, Matlab and Scilab using either the -p{\it PLOTTER} option or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT}
 For instance, calling
 \begin{quote}
-  \verb+mcdisplay -pScilab ./vanadium_example.out ROT=90+
+  \verb+mcdisplay -pScilab ./Samples_vanadium.out ROT=90+
 \end{quote}
 or (\verb+csh+/\verb+tcsh+ syntax)
 \begin{quote}
   \verb+setenv MCSTAS_FORMAT Scilab+\\
-  \verb+mcdisplay ./vanadium_example.out ROT=90+
+  \verb+mcdisplay ./Samples_vanadium.out ROT=90+
 \end{quote}
 will output graphics using Scilab.
 The \verb+mcdisplay+ front-end can also be run from the \verb+mcgui+ front-end.
