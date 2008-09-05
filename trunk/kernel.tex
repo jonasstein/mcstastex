@@ -1358,7 +1358,7 @@ This mechanism may lighten the component code, but a special care should be take
 
 %From version 1.3,
 McStas includes a facility called McDoc to help maintain good documentation of
-components and instruments. In the component source code, comments may be
+components and instruments. In the source code, comments may be
 written that follow a particular format understood by McDoc. The McDoc facility
 will read these comments and automatically produce output documentation in
 various forms. By using the source code itself as the source of documentation,
@@ -1393,9 +1393,9 @@ in the existing components and instruments. Below, a few
 notes are listed on the requirements for the comment headers:
 
 The comment syntax uses \verb+%IDENTIFICATION+, \verb+%DESCRIPTION+,
-\verb+%PARAMETERS+, \verb+%LINKS+, and \verb+%END+
+\verb+%PARAMETERS+, \verb+%EXAMPLE:+, \verb+%LINKS+, and \verb+%END+
 keywords to mark different sections of the documentation. Keywords may
-be abbreviated, \textit{e.g.} as \verb+%IDENT+ or \verb+%I+.
+be abbreviated (except for \verb+%EXAMPLE:+), \textit{e.g.} as \verb+%IDENT+ or \verb+%I+.
 
 Additionally, optional keys \verb+%VALIDATION+ and \verb+%BUGS+ may be found to list validation status and possible bugs in the component.
 
@@ -1425,6 +1425,11 @@ Additionally, optional keys \verb+%VALIDATION+ and \verb+%BUGS+ may be found to 
   section). In the generated web documentation pages, the text is set in
   \verb+<PRE>+\ldots\verb+</PRE>+, so that the line breaks in the source
   will be obeyed.
+\item The \verb+%EXAMPLE:+
+  lines in instrument headers indicate an example parameter set or command that may be
+  run to test the instrument. A following \verb+Detector: <name>_I=<value>+
+  indicates what value should be obtained for a given monitor. More than one example 
+  line may be specified in instruments.
 \item Any number of \verb+%LINK+
   sections may be given; each one contains HTML code that will be put in
   a list item in the link section of the description web page. This
