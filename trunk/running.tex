@@ -830,6 +830,24 @@ The {\bf File} menu has the following features:
   compilations and simulations into a file.
 \item[File/Clear output] erases all text in the window showing output of
   compilations and simulations.
+  \item[File/Preferences] Opens the choose backend dialog shown in
+  figure~\ref{fig:mcgui-choose}. Several settings can be chosen here:
+\begin{itemize}
+  \item Selection of  the desired (PGPLOT|Scilab|Matlab|HTML/VRML) output
+    format and possibility to save 'binary files' when
+  applicable (improved disk I/O).
+  \item One- or three-pane view of your instrument in trace mode when
+    using PGPLOT.
+  \item Clustering option (None|MPI|ssh)
+  \item Choice of editor to use when editing instrument files.
+  \item Automatic quotation of strings when inserting in the built-in
+    editor.
+  \item Possibility to \emph{not} optimize when compiling the
+    generated c-code. This is very handy when setting up an instrument model, which requires regular compilations.
+  \item Adjustment of final precision when doing parameter optimization.
+\end{itemize}
+To save the chosen settings for your next \MCS\ run, use Save
+Configuration in the File menu.
 \item[File/Save configuration] saves user settings from Configuration
   options and Run dialogue to disk.
 \item[File/Quit] exits the graphical user interface front-end.
@@ -848,24 +866,6 @@ The {\bf File} menu has the following features:
   further below.
 \item[Simulation/Plot results] plots (using \verb+mcplot+) the results of the
   last simulation run or spawns a load dialogue to load a set of results.
-\item[Simulation/Configuration options] Opens the choose backend dialog shown in
-  figure~\ref{fig:mcgui-choose}. Several settings can be chosen here:
-\begin{itemize}
-  \item Selection of  the desired (PGPLOT|Scilab|Matlab|HTML/VRML) output
-    format and possibility to save 'binary files' when
-  applicable (improved disk I/O).
-  \item One- or three-pane view of your instrument in trace mode when
-    using PGPLOT.
-  \item Clustering option (None|MPI|ssh)
-  \item Choice of editor to use when editing instrument files.
-  \item Automatic quotation of strings when inserting in the built-in
-    editor.
-  \item Possibility to \emph{not} optimize when compiling the
-    generated c-code. This is very handy when setting up an instrument model, which requires regular compilations.
-  \item Adjustment of final precision when doing parameter optimization.
-\end{itemize}
-To save the chosen settings for your next \MCS\ run, use Save
-Configuration in the File menu.
 \end{description}
 
 
@@ -1573,9 +1573,6 @@ neutrons simulated. As a result, \MCS\ generates two kinds of data sets:
   In order to use an heterogeneous system, a C compiler should be optionally installed on slave machines.
 \item when using an homogeneous computer cluster, each simulation (including scan
   steps) may be computed in parallel using MPI. We recommend this method on clusters (see section \ref{s:mpi}).
-\item when using SMP machines (multi core/processor machines) \MCS\ may
-  distribute the simulations among CPU's using multi-threading
-  mechanism, using the \verb+OpenMP+ library. This method is NOT very efficient (see section \ref{s:openmp}).
 \end{itemize}
 
 Last but not least, you may run simulations manually on a number of machines.
@@ -1783,34 +1780,24 @@ and merge operations.
   \end{itemize}
 \end{itemize}
 
-Here is a table showing some comparison between MPI and non-MPI
-simulations. The cluster is built with 2 bi-xeon 2GHz machines,
-resulting in 4 processors.
-\begin{center}
-  \begin{tabular}{|c|c|l|}
-    \hline
-    \# processors p & duration T (seconds)& notes \\
-    \hline
-    1 & 622 & without MPI support \\
-    1 & 630 & with MPI support, run without MPI \\
-    1 & 620 & with MPI support, run with MPI \\
-    \hline
-    2 & 316 & Overhead 6 seconds, $T_{p=1}/2 = 310$\\
-    3 & 210 & Overhead 3 seconds, $T_{p=1}/3 = 207$\\
-    4 & 158 & Overhead 3 seconds, $T_{p=1}/4 = 155$\\
-    \hline
-  \end{tabular}
-\end{center}
-
-The results consistently show that there is a very small overhead
-when computing using MPI. This overhead comes from the spread and the
+The efficiency of \MCS\ using MPI has been tested on large clusters, up to 500 nodes.
+The computation time decreases in the same proportion as the number of nodes, 
+showing an ideal efficiency. However, a small overhead may appear depending on the cluster 
+internal network load, which may be estimated at most of about 10-20 s. 
+This overhead comes from the spread and the
 fusion of the computations. For instance, spreading a computation
-implies either an \verb'rsh' or and \verb'ssh' session to be opened on
+implies often an \verb'rsh' or and \verb'ssh' session to be opened on
 every node.
+To reach the best efficiency, the computation time should not be lower than 30 seconds,
+or the overhead time may become significant compared to total time.
 
-Larger tests have shown that the speedup is the number of nodes, 
-and there is no significant overhead up to at least 100 nodes. The efficiency 
-of \MCS\ w.r.t. MPI parallel computing is thus close to ideal.
+\begin{figure}[htb!]
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{figures/mpi_efficiency.eps}
+  \end{center}
+\caption{McStas/MPI execution time as a function of computing nodes, with {\it templateTOF} instrument and 1e8 initial neutron events. Tests performed on Lonestar@TACC (US Teragrid, 2008).}
+\label{fig:mpi_efficiency}
+\end{figure}
 
 \subsection{MPI and Grid Bugs and limitations}\index{Bugs}
 
@@ -1820,24 +1807,9 @@ of \MCS\ w.r.t. MPI parallel computing is thus close to ideal.
   load of nodes: the overall time of a distributed computation is
   forced by the slowest node; for optimal performance, the ``cluster''
   should be homogeneous.
-\item Forcing the random seed while spreading the computation doesn't
-  work since every node will use identical seeds and will then
-  generate identical pseudo-random values.
-\item When reading external data files during the TRACE (specially virtual sources) 
-  all nodes might access the same data, potentially producing wrong results. We do 
-  NOT recommend using MPI/Grid when reading virtual sources.
+\item Interacting with a running simulation (USR1 and USR2 signals) is disabled 
+  with MPI.
 \end{itemize}
-
-\subsection{Parallel computing (multi-threading)}
-\label{s:openmp}
-Multi-threading using OpenMP applies on multi-core machines. This parallelization does not require any 
-special configuration except a recent C compiler version (gcc 4.2, icc/icpc, pgcc, xlc) to be 
-specified at \MCS\ install/configuration with option e.g. \verb+--with-cc=gcc-4.2+. 
-The number of nodes is set automatically to the number of local cores/cpu. To benefit from this mode, 
-use \verb+mcrun --threads ...+. When available, the option will show up 
-in the \verb+mcgui+ Run dialog, and eventually force re-compilation of the instrument if needed. 
-
-This method is NOT very efficient, due to the complexity of simulations which make it difficult to avoid memory race conditions\footnote{The Pth and POSIX threads libraries show even worse efficiency}. We rather recommend to use SSH grid or MPI mechanism. 
 
 %%% Local Variables:
 %%% mode: latex
