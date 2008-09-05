@@ -47,10 +47,6 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
 \item Mac OS X 10.5 Leopard is shipped with built-in support for MPI (OpenMPI). No need to install extra packages.
 \item Use of 'virtual sources' is now supported on MPI clusters. (If running on N nodes, all neutron events will be processed
      on each of the N nodes - implicit repetition N times of the source contents.)
-\item The threading mechanism for parallelisation has been drastically improved with OpenMP and now compares to the MPI efficiency. This is the simplest method for 
-  parallelisation on single machines (e.g. modern dual-core processors), while MPI is best on clusters.
-  The McStas team members routinely run developer machines and
-  clusters using MPI.
 \item Much improved gridding support (via ssh). Ready for heterogenous systems, e.g. mixed operating systems and hardware
      types! (Requires -c compile flag for mcrun or equivalent setting in mcgui.) The only requirement is ssh client on the machine 
      where the grid run is started, plus ssh daemon and c-compiler (e.g. gcc or simply cc) on the remote machines. Files in the 
