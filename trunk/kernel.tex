@@ -554,7 +554,7 @@ Within a \texttt{GROUP}, \emph{all} \texttt{EXTEND} sections of the group are ex
   \hbox to 1em{} \texttt{GROUP} \textit{GroupName}
 \end{quote}
 Components \emph{name1} and \emph{name2} are at the same position. If the first one intercepts the neutron (and has a SCATTER within its \texttt{TRACE} section), the SCATTERED variable becomes true, the code extension will result in printing "I scatter", and the second component will be skipped.
-Thus, we recommand to make use of the SCATTER keyword each time a component 'uses' the neutron (scatters, detects, \ldots) within component definitions (see section \ref{s:compdefs}). Also, the components to be grouped should be consecutive in the TRACE section of the instrument, and the GROUPed section should not contain components which are not part of the group.
+Thus, we recommend to make use of the SCATTER keyword each time a component 'uses' the neutron (scatters, detects, \ldots) within component definitions (see section \ref{s:compdefs}). Also, the components to be grouped should be consecutive in the TRACE section of the instrument, and the GROUPed section should not contain components which are not part of the group.
 
 A usage example of the GROUP keyword can be found in the \\
 \verb+Neutron site/ILL/ILL_H15_IN6+ instrument from the \verb+mcgui+, to model 3 monochromators.
