@@ -11,7 +11,7 @@
 # mcstas-1.7-manual.ps.gz and mcstas-1.7-manual.pdf
 
 # Create a link to the tutorial pics:
-ln -sf ../mcstas/lib/doc/tutorial/pics .
+ln -sf ../../McCode/trunk/doc/tutorial/pics .
 # First latex run:
 latex manual
 # Bibtex:
