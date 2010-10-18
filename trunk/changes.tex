@@ -1,9 +1,9 @@
 % Emacs settings: -*-mode: latex; TeX-master: "manual.tex"; -*-
 
-\chapter{New features in \MCS\ \version\ }
+\chapter{New features in \MCX\ \version\ }
 \label{c:changes}
 
-This version of \MCS\ implements both new features, as well as many bug corrections. Bugs are reported and traced using the \MCS\ Bugzilla system \cite{mczilla_webpage}. We will not present here an extensive list of corrections, and we let the reader refer to this bug reporting service for details. Only important changes are indicated here.
+This is the first version of \MCX\. As such it implements new features. Bugs are reported and traced using the \MCX\ Trac system \cite{mczilla_webpage}. We will not present here an extensive list of corrections, and we let the reader refer to this bug reporting service for details. Only important changes are indicated here.
 
 Of course, we can not guarantee that the software is bullet proof, but we do our best to correct bugs, when they are reported.\index{Bugs}
 
@@ -18,93 +18,69 @@ Of course, we can not guarantee that the software is bullet proof, but we do our
 
 The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and program). See the dedicated chapter in the {\it User manual} for more details.
 
-\begin{itemize}
-\item New \verb+%include INSTR+ keyword, mechanism to include one instrument in another. Useful for independent
-     build-up of e.g. primary and secondary spectrometer. Or to easily see the effect of moving an instrument
-     to a different beamport or facility. Please consult the relevant
-     documentation in Section \ref{s:instrdefs-include-instr} 
-     before using this feature!
-\item When applying the \verb+WHEN+ keyword, an applied \verb+EXTEND %{ %}+ block will only be active if the \verb+WHEN+
-     returns 'true'.
-\end{itemize}
 
 \section{Run-time}
 \label{s:new-features:run-time}
 \index{Library!Run-time}
 
-\begin{itemize}
-\item Fix of a limiting case focusing problem reported to neutron-mc by George Apostolopoulos.
-      (See http://mailman.risoe.dk/pipermail/neutron-mc/2007q4/002915.html)
-\end{itemize}
-
-\section{Parallelisation}
-\label{s:new-features:parallelisation}
-\index{Library!parallelisation}
-
-\begin{itemize}
-\item Improved stability of MPI simulations by addition of an 'MPI barrier' (reduces probability of nodes beeing 'out of sync'.
-\item On Windows, an 'mpicc.bat' script has been added for easier setup of McStas with gcc and MPI (We recommend MPICH).
-\item Mac OS X 10.5 Leopard is shipped with built-in support for MPI (OpenMPI). No need to install extra packages.
-\item Use of 'virtual sources' is now supported on MPI clusters. (If running on N nodes, all neutron events will be processed
-     on each of the N nodes - implicit repetition N times of the source contents.)
-\item Much improved gridding support (via ssh). Ready for heterogenous systems, e.g. mixed operating systems and hardware
-     types! (Requires -c compile flag for mcrun or equivalent setting in mcgui.) The only requirement is ssh client on the machine 
-     where the grid run is started, plus ssh daemon and c-compiler (e.g. gcc or simply cc) on the remote machines. Files in the 
-     current dir are transparently copied back and forth, causes a substantial network traffic in some cases. Output data from the 
-     nodes are automatically merged using mcformat. Just as efficient as MPI without any library dependencies at all. Make use 
-     of all processer cores in your machine, simply choose to 'grid'. Windows 'client' host OK, we autodetect ssh and scp binaries
-     from the Putty package.
-\end{itemize}
 
 \section{Components and Library}
 \label{s:new-features:components}
 \index{Components} \index{Library!Components}
-We here list the new and updated components (found in the \MCS\ \verb+lib+ directory)
-which are detailed in the {\it Component manual}, also mentioned in
-the {\it Component Overview} of the {\it User Manual}.
-\subsection{General}
-\begin{itemize}
-\item When using the Virtual\_input type components, \-\-ncount is always set to an integer multiplum 
-     (repeat\_count) of the number of events in the file. See also
-     related remark about MPI below.
-\item Most monitors now allow to 'not propagate' the neutron, i.e. not influence the beam. Parameter name
-     is '\verb+restore_neutron+'. For \verb+Monitor_nD.comp+ the equivalent
-     parameter is named 'parallel'.
-\end{itemize}
+We here list the new and updated components (found in the \MCX\ \verb+lib+ directory)
+which are detailed in the {\it Component manual}. For an overview see the {\it Component Overview} of the {\it User Manual}(This Document).
+%\subsection{General}
 \subsection{New components}
-\begin{itemize}
-\item \verb+MirrorElli.comp+, elliptical mirror. Contributed by Sylvain Desert, LLB.
-\item \verb+MirrorPara.comp+, parabolic mirror. Contributed by Sylvain Desert, LLB.
-\end{itemize}
+
+\subsubsection*{Sources}  
+All sources include focussed sampling for optimized calculations
+\begin{description}
+\item[Source\_pt] Point source
+\item[Source\_flat] Flat surface uniform source
+\item[Source\_div] Flat surface uniform source with divergence distribution
+\item[Source\_gaussian] Gaussian crossection source approximating a Bending Magnet
+\end{description}
+\subsubsection*{Samples}
+\begin{description}
+\item[Saxs\_spheres] Hard spheres in dilute solution
+\item[Powder\_N] General Powder diffraction component
+\end{description}
+\subsubsection*{Optics}
+\begin{description}
+\item[Lens\_simple] Thin lens approximation of a compund refractive lens (CRL) of any material
+\item[Lens\_parab] Parabolic CRL of any material
+\item[SLit.comp] Perfectly absorbing aperture
+\item[Slit\_N.comp] Multiple absorbing apertures (i.e. gratings)
+\item[Mirror\_elliptic] Elliptical shape mirror
+\item[Mirror\_parabolic] Parabolic shape mirror
+\item[Mirror\_curved] Cylidrical mirror
+\end{description}
+\subsubsection*{Miscellaneous}
+\begin{description}
+\item[Arm] Coordinate transformation
+\item[Progress\_bar] Display progress of simulation
+\end{description}
+\subsubsection*{Monitors}
+\begin{description}
+\item[E\_monitor] Int. vs. X-ray energy
+\item[L\_monitor] Int. vs. X-ray wavelength
+\item[PSD\_monitor] Int. spatial coordinates
+\item[\verb+PSD\_monitor\_4P+] Int. vs. latitude and longitude
+\end{description}
+
 \subsection{Updated components}
-\begin{itemize}
-\item \verb+Single_crystal.comp+ validation still ongoing, but has progressed: The algorithm seems OK, but is to some
-     extent not in sync with the documentation. New option to specify reciprocal space vectors directly.
-     (before only real space definitions were possible)
-\end{itemize}
+
 \subsection{New example instruments}
+
+
 \begin{itemize}
-\item \verb+ILL_H25_IN22_sample.instr+ (CRG instrument @ ILL) by E. Farhi / P. Willendrup
-\item \verb+ILL_H25_IN22_resolution.instr+ (CRG instrument @ ILL) by E. Farhi / P. Willendrup
-\item \verb+Incoherent_Test.instr+, instrument to compare incoherent scattering from the different sample comps
-     (V\_samle, PowderN, Single\_crystal, Isotropic\_sqw). More instruments of this type planned (compare
-     guides etc.), by P. Willendrup / E. Knudsen / A. Daoud-Aladine (ISIS)
-\item \verb+FocalisationMirrors.instr+,  test instrument for
-  MirrorElli and MirrorPara, by  Sylvain Desert, LLB
-\item \verb+PSI_DMC.instr+, Powder Diffractometer at PSI, by L. Keller / U. Filges / P. Willendrup
-\end{itemize}
-\subsection{Datafiles}
-\begin{itemize}
-\item 'Bugfix', some of the provided .laz files did not have proper unit for |F2|.
+\item \verb+SAXSLAB_SAXS.instr+ The SAXLAB (formerly JJ-Xray Systems) saxs-machine situated at Faculty of Life-Sciences, Univeristy of Copenhagen. 
+\item \verb+ESRF_ID11.instr+ Model of the 3DXRD-microsope at ID11, ESRF
+\item \verb+Be_BM.instr+ A model beamline to explore the idea of a "pink"-beam beamline using CRLs\cite{vaughan_10}.
 \end{itemize}
 
-\section{Documentation}
-\label{s:new-features:documentation}
-\begin{itemize}
-\item Manual and component manual slightly updated according to
-  adding/modification of components and functionality.
-\item New appendix on the polarisation features. {\bf(p)}
-\end{itemize}
+%\section{Documentation}
+%\label{s:new-features:documentation}
 
 \section{Tools, installation}
 \label{s:new-features:tools}
@@ -121,28 +97,21 @@ the {\it Component Overview} of the {\it User Manual}.
   \item When running parameter optimisations, a logfile (default name is "mcoptim\_XXXX.dat" where XXXX is a
      pseudo-random string) is created during the optimisation, updated at each optim step.
   \item We now provide syntax-highlighting setup files for vim and gedit editors.
-  \item Rudimentary support for GNUPLOT when plotting with mcplot. Data file format is standard McStas/PGPLOT.
 \end{itemize}
 \subsection{Platform support}
 \begin{itemize}
 \item Mac OS X 10.3 Panther (ppc), 10.4 Tiger (pcc/intel), 10.5 Leopard (ppc/intel)
 \item Windows XP,  Windows Vista (Now with a recent perl version; 5.10 plus various fixes). New feature on Windows:
      Simulations \emph{always} run in the background, freeing mcgui for other work.
-\item "Any" Linux - reference platforms are Ubuntu 8.04 (and earlier) and Debian 4.0 (and earlier). We have also tested 
+\item "Any" Linux - reference platforms are Ubuntu 10.04 (and earlier) and Debian 4.0 (and earlier). We have also tested 
   Fedora 8, OpenSuSE 10.3 and CentOS 4 releases recently.
-\item FreeBSD (FreeBSD release 6.3 and its cousin DesktopBSD 1.6 recently tested)
-\item SUN Solaris 10 (Intel tested, Sparc probably OK)
+\item BSD (FreeBSD release 8.1 and Dragonfly BSD release 2.0, tested)
+\item Oracle OpenSolaris 10 (Intel tested, Sparc probably OK)
 \item Plus probably any UNIX/POSIX type environment with a bit of effort...
 \end{itemize}
 Details about the installation and the available tools are given in chapter \ref{installing}.
 
-\subsection{Various}
-\begin{itemize}
-\item  A number of minor bugs ironed out, both in components, runtime code and tools.
-\item From release 1.12, McStas is GPL 2 only. The debate on the internet about the future GPL 3 license suggests that this license 
-     might have implications on the 'derived work', hence have implications on what and how our users use their McStas simulations
-     for. To protect user freedom, we will stick with GPL 2.     
-\end{itemize}
+%\subsection{Various}
 
 \subsection{Warnings}
 {\bf WARNING:} The 'dash' shell which is used as /bin/sh on some Linux system (Including Ubuntu 7.04) makes the 'Cancel' and 'Update' 
@@ -152,28 +121,28 @@ buttons fail in mcgui. Solutions are:
 \item[b)] If you run another Linux with /bin/sh beeing dash, please install bash and manually change the /bin/sh link to point at bash.
 \end{itemize}
 
-\section{Future extensions}
-\label{s:future}
-The following features are planned for the oncoming releases of \MCS\
-(not an ordered list):
-\begin{itemize}
-\item Increased validation and testing.
-\item Extend test cases to all (most) components. One instrument
-  pr. component. (Probably not in \verb+examples/+.
-\item Updates to mcresplot to support the Matlab and Scilab backends.
-\item Global changes of components relating to polarisation
-  visualisation.
-\item Visualisation of neutron spins in magnetic fields for all
-  graphical backends.
-\item \emph{Array} \verb+AT+ specifiers for components, i.e. \\
-  \verb+COMPONENT MyComp=Comp(...)+\\\verb+AT([Xarray],[Yarray],[Zarray])+ and\\
-  \verb+AT Positions('filename')+
-\item Gui support for array AT specifiers.
-\item More complete polarisation support including numerically defined
-  magnetic fields and advanced sample components.
-\item Perl or python plotting alternative to PGPLOT.
-\item Larger variety of sample components.
-\end{itemize}
+%\section{Future extensions}
+%\label{s:future}
+%The following features are planned for the oncoming releases of \MCS\
+%(not an ordered list):
+%\begin{itemize}
+%\item Increased validation and testing.
+%\item Extend test cases to all (most) components. One instrument
+%  pr. component. (Probably not in \verb+examples/+.
+%\item Updates to mcresplot to support the Matlab and Scilab backends.
+%\item Global changes of components relating to polarisation
+%  visualisation.
+%\item Visualisation of neutron spins in magnetic fields for all
+%  graphical backends.
+%\item \emph{Array} \verb+AT+ specifiers for components, i.e. \\
+%  \verb+COMPONENT MyComp=Comp(...)+\\\verb+AT([Xarray],[Yarray],[Zarray])+ and\\
+%  \verb+AT Positions('filename')+
+%\item Gui support for array AT specifiers.
+%\item More complete polarisation support including numerically defined
+%  magnetic fields and advanced sample components.
+%\item Perl or python plotting alternative to PGPLOT.
+%\item Larger variety of sample components.
+%\end{itemize}
 
 
 
