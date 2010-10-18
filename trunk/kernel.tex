@@ -393,7 +393,7 @@ $\phi_x$ (in degrees) around the $x$ axis, then $\phi_y$ around the $y$ axis, an
 $\phi_z$ around the $z$ axis. Rotation may also be specified using
 \texttt{ABSOLUTE} rather than \texttt{RELATIVE}. If no rotation is
 specified, the default is $(0,0,0)$ using the same relative or absolute
-specification used in the \texttt{AT} modifier. We \emph{highly} recommend to apply all rotations of an instrument description on Arm class components only, acting as goniometers, and position the optics on top of these. This usually makes it much easier to orient pieces of the instrument, and avoid positioning errors.
+specification used in the \texttt{AT} modifier. We \emph{highly} recommand to apply all rotations of an instrument description on Arm class components only, acting as goniometers, and position the optics on top of these. This usually makes it much easier to orient pieces of the instrument, and avoid positioning errors.
 
 The \emph{position} of
 a component is actually the origin of its local coordinate
@@ -421,7 +421,7 @@ simulation, for instance this usually happens after a monochromator,
 as the non-reflected beam is indeed lost. A special warning appears
 when no neutron ray has reached some part of the simulation. This is usually the sign of either overlapping components or a very low intensity. \index{Removed neutron events}
 
-For experienced users, we recommend as well the usage of the \texttt{WHEN} and \texttt{EXTEND} keywords, as well as other syntax extensions presented in section \ref{s:instrdefs-extend} below.
+For experienced users, we recommand as well the usage of the \texttt{WHEN} and \texttt{EXTEND} keywords, as well as other syntax extensions presented in section \ref{s:instrdefs-extend} below.
 
 \subsection{The \texttt{SAVE} section}
 \index{Keyword!SAVE}
@@ -519,7 +519,7 @@ It is sometimes desirable to slighlty modify an existing component of the \MCS\ 
   \hbox to 3em{}\ldots C code executed after the component TRACE section \ldots \\
   \verb|%}|
 \end{quote} \index{Embedded C code}
-The embeded C code is appended to the component \texttt{TRACE} section, and all its internal variables (as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters) may be used. To use instrument parameters, you should copy them into global variables in the DECLARE instrument section, and refer to them later.
+The embeded C code is appended to the component \texttt{TRACE} section, and all its internal variables (as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters) may be used. To use instrument parameters, you should copy them into global variables in the DECLARE instrument section, and refer to these latter.
 This component declaration modifier is of course optional. You will find numerous usage examples, and in particular in the Sources section of the Component manual.
 
 In some peculiar configurations it is neccesary to position one or
@@ -590,7 +590,7 @@ will catenate a unique number to {\it root\_name}, avoiding name
 conflicts. As a side effect, refering to this component instance (for
 e.g. further positioning) is not straight forward as the name is
 determined by \MCS\ and does not depend completely on the user's
-choice, even though the PREVIOUS keyword may still be used. We thus recommend to use this naming mechanism only for components which should not be refered to in the instrument.
+choice, even though the PREVIOUS keyword may still be used. We thus recommand to use this naming mechanism only for components which should not be refered to in the instrument.
 
 This automatic naming may be used anywhere in the TRACE section of the instrument, so that all components which do not need further refering may be labeled as COPY(Origin).
 
@@ -698,11 +698,11 @@ COMPONENT CG_Out = Arm() AT (0,0,L/n) RELATIVE PREVIOUS
 
 Similarly to the \texttt{WHEN} modifier (see section \ref{s:instrdefs-extend-when}), \texttt{JUMP} only applies within the TRACE section of the instrument definition. Other sections (INITIALIZE, SAVE, MCDISPLAY, FINALLY) are exectuted independently of the jump. As a side effetc, the 3D view of the instrument (mcdisplay) will show components as if there was no jump. This means that in the following example, the very long guide 3D view only shows a single guide element.
 
-It is \emph{not} recommended to use the \verb+JUMP+ inside \verb+GROUP+s, as the JUMP condition/counter applies to the component instance within its group.
+It is \emph{not} recommanded to use the \verb+JUMP+ inside \verb+GROUP+s, as the JUMP condition/counter applies to the component instance within its group.
 
 We would like to emphasize the potential errors originating from such
 jumps. Indeed, imbricating many jumps may lead to situations were it
-is difficult to understand the flow of the simulation. We thus recommend the usage of JUMPs only for experienced and cautious users.\index{Bugs}
+is difficult to understand the flow of the simulation. We thus recommand the usage of JUMPs only for experienced and cautious users.\index{Bugs}
 
 \subsection{Enhancing statistics reaching components - SPLIT}
 \index{Keyword!SPLIT}
@@ -814,7 +814,7 @@ by the component itself, rather than being passed as input. This could
 for example be a count of neutrons in a detector or a constant that is
 precomputed to speed up computation.
 
-Using \texttt{OUTPUT PARAMETERS} is \emph{highly recommended} for
+Using \texttt{OUTPUT PARAMETERS} is \emph{highly recommanded} for
 \texttt{DECLARE} and internal/global component variables and functions
 in order to prevent that instances of the same component use the same variable names. Moreover (see section \ref{s:comp-declare} below), these may be accessed from any other instrument part (e.g. using the \verb+MC_GETPAR+ C macro).
 On the other hand, the variables from the SHARE sections should \emph{not}
