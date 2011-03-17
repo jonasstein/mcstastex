@@ -1,0 +1,27 @@
+\section{Source\_flat: A flat surface emitting photons with a spectrum either uniform, gaussian or generated from a datafile}
+\label{spurce-flat}
+\index{Sources!Flat surface source}
+\component{Source\_flat}{System}{$d$,$w$,$h$}{$r$,$x_{width}$,$y_{height}$,$d$, $\lambda_0$,${\rm d}\lambda$, $spectrum_file$, $incoherent$,$phase$}
+
+A simple source model, with a flat surface emitting photons. The surface in the
+$xy$-plane is specified as a rectangle with dimensions
+$x_{width}$\times$y_{height}$ m, or as a circle w radius,$r$. 
+The initial xray position is chosen randomly in the source surface, and its
+wavevector is chosen randomly in the defining aperture with heihgt $h$ and
+width $w$ placed at $(0,0,dist)$. Please note that this aperture is merely a
+virtual aperture used to reduce the sampling space. This has a few
+implications: Other components may be placed without reference to the aperture,
+but if the aperture does not fill the full acceptance window of the subsqeuent
+components your simulations will be biased. The aperture is there to provide efficient sampling.
+
+If a $spectrum\_file$ is not supplied, the xray
+is given a weight which is the total wavelength-integrated intensity downscaled
+by the
+solid subtended by the definning aperture.
+
+If a $spectrum\_file$ \emph{is} supplied, a slightly different strategy is adopted. In case the
+wavelength/energy range implied by the datafile is sampled unformly and each ray is assigned
+a weight corresponding to the intensity indicated by linear interpolation between datapoints
+at that wavelength. This implies an oversampling of weak parts of the intensity spectrum.
+
+Currently only completely coherent or fully incoherent beams are supported. If a phase:
