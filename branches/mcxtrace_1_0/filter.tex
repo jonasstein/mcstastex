@@ -10,14 +10,15 @@ Neccessary paramters are nominal density and a parametrization of mu as a functi
 The model is very simple: Firstly the X-ray is traced to find intersection points between ray and filter (0 or 2).
 If no intersection is found the xray is left untouched and nothing further happens.
 Assuming the ray intersects the filter: Secondly, the path length d$l$ within the filter is computed.
-Thirdly a $\mu = f(\lambda,\mathrm{material})$ is computed by interpolating in a datafile, and the xray weight is adjusted according to $p=p\exp(-\mathrm{d}l*\mu)$. The xray is left at the point where it exits the filter block (the 2\nd ntersection).
+Thirdly a $\mu = f(\lambda,\mathrm{material})$ is computed by interpolating in a datafile, and the xray weight is adjusted according to $p=p\exp(-\mathrm{d}l*\mu)$. The xray is left at the point where it exits the filter block (the $2\nd$ ntersection).
 
 Some example data files are distributed with \MCX\ in the
 \verb+MCSTAS/data+ directory as \verb+*.txt+ files. These tables have been extracted from the NIST x-ray database.
 To generate other datafiles see below-
 from the same source a simple shell script: \verb+MCSTAS/data/get_xray_db_data+ is also distributed with \MCX
-Running this script will connect to the NIST webiste and download a \verb+.html+ file. This output must now be modified such that \verb+html+-tags
-are removed and all header lines begin with #.
+Running this script will connect to the NIST webiste and download a
+\verb+.html+ file. This output must now be modified such that \verb+html+-tags
+are removed and all header lines begin with $\#$
 
 \subsection{Example}
 \label{getNISTdata}
@@ -27,7 +28,7 @@ The distributed tables have been extracted from the NIST x-ray database. To ease
 from the same source a simple shell script: \verb+MCSTAS/data/get_xray_db_data+ is also distributed with \MCX
 
 Running this script will connect to the NIST webiste and download a \verb+.html+ file. This output must now be modified wuch that \verb+html+-tags
-are removed and all header lines begin with #.
+are removed and all header lines begin with $\#$.
 
 \begin {verbatim}
  /usr/local/lib/mcxtrace/data/get_xray_db_data 3 ouput.html
@@ -77,9 +78,9 @@ up a more streamlined way of doing this.
     \hline
     File name & Description \\
     \hline
-    Be.txt       & Beryllium filter block
-    Si.txt     & Silica filter block
-    Al.txt & Aluminium.txt
+    Be.txt & Beryllium filter block\\
+    Si.txt & Silica filter block\\
+    Al.txt & Aluminium.txt\\
     \hline
     \end{tabular}
     \caption{Some material data file to be used with the Filter component}
