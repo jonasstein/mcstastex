@@ -193,7 +193,7 @@ equals the actual physical properties we like to model.
 
 Let us follow up on the simple example of transmission.
 The probability of transmitting the real x-ray is $P$, but we make
-the Monte Carlo choice of transmitting the x-ray ray each time:
+the Monte Carlo choice of transmitting the x-ray every time:
 $f_{\rm MC}=1$. This must be reflected on the choice of weight multiplier
 $\pi_j$ given by the master equation
 %In the ``real'' semi-classical world, there is a distribution
@@ -253,34 +253,57 @@ we cut x-rays rays that should have reached the final detector.
 \begin{center}
 \includegraphics[width=.8\textwidth]{figures/focusing}
 \end{center}
-\caption{Illustration of the effect of direction focusing in \MCS\
+\caption{Illustration of the effect of direction focusing in \MCX\
   . Weights of x-rays emitted into a certain solid angle are
   scaled down by the full unit sphere area.}
 \label{fig:focusing}
 \end{figure}
 
-\section{Adaptive and Stratified sampling}
-\index{Monte Carlo method!Adaptive sampling}
+\section{Stratified sampling}
+%\index{Monte Carlo method!Adaptive sampling}
 \index{Monte Carlo method!Stratified sampling}
-Another strategy to improve sampling in simulations
-is \emph{adaptive importance sampling} (also called variance reduction technique), % \cite{importance},
-where \MCS\ during the simulations will determine
-the most interesting directions and gradually change
-the focusing according to that.
-Implementation of this idea is
-found in the {\bf Source\_adapt} and {\bf Source\_Optimizer} components.
+%Another strategy to improve sampling in simulations
+%is \emph{adaptive importance sampling} (also called the variance reduction technique), % \cite{importance},
+%where \MCX\ during the simulations will determine
+%the most interesting directions and gradually change
+%the focusing according to that.
+%Implementation of this idea is
+%found in the {\bf Source\_adapt} and {\bf Source\_Optimizer} components.
 %, described in section~\ref{s:Source_adapt}.
 
-An other class of efficiency improvement technique is the so-called \emph{stratified sampling}. It consists in partitioning the event distributions in representative sub-spaces, which are then all sampled individualy. The advantage is that we are then sure that each sub-space is well represented in the final integrals. This means that instead of shooting $N$ events, we define $D$ partitions and shoot $r=N/D$ events in each partition. In conjunction with adaptive sampling, we may define partitions so that they represent 'interesting' distributions, e.g. from events scattered on a monochromator or a sample. The sum of partitions should equal the total space integrated by the Monte Carlo method, and each partition must be sampled randomly.
+One particular efficiency improvement technique is the so-called
+\emph{stratified sampling}. It consists in partitioning the event distributions
+in representative sub-spaces, which are then all sampled individualy. The
+advantage is that we are then sure that each sub-space is well represented in
+the final integrals. This means that instead of shooting $N$ events, we define
+$D$ partitions and shoot $r=N/D$ events in each partition. We may define partitions so that they represent
+'interesting' distributions, e.g. from events scattered on a monochromator or a
+sample. The sum of partitions should equal the total space integrated by the
+Monte Carlo method, and each partition must be sampled randomly.
 
-In the case of \MCS, the stratified sampling is used when repeating events, such as in the Virtual sources (Virtual\_input, Vitess\_input, Virtual\_mcnp\_input, Virtual\_tripoli4\_input) and when using the SPLIT keyword in the TRACE section on instrument descriptions. We emphasize here that the number of repetitions $r$ should not exceed the dimensionality of the Monte Carlo integration space (which is $d=10$ for x-ray events) and the dimensionality of the partition spaces, i.e. the number of random generators following the stratified sampling location in the instrument.
+In the case of \MCX, the stratified sampling is used when repeating events, i.e. when using the SPLIT
+keyword in the TRACE section on instrument descriptions. We emphasize here that
+the number of repetitions $r$ should not exceed the dimensionality of the Monte
+Carlo integration space (which is $d=10$ for x-ray events) and the
+dimensionality of the partition spaces, i.e. the number of random generators
+following the stratified sampling location in the instrument.
 
 \section{Accuracy of Monte Carlo simulations}
 \index{Monte Carlo method!Accuracy}
 
-When running a Monte Carlo, the meaningfull quantities are obtained by integrating random events into a single value (e.g. flux), or onto an histogram grid. The theory \cite{James80} shows that the accuracy of these estimates is a function of the space dimension $d$ and the number of events $N$. For large numbers $N$, the central limit theorem provides an estimate of the relative error as $1/\sqrt{N}$. However, the exact expression depends on the random distributions.
+When running a Monte Carlo, the meaningful quantities are obtained by
+integrating random events into a single value (e.g. flux), or onto an histogram
+grid. The theory \cite{James80} shows that the accuracy of these estimates is a
+function of the space dimension $d$ and the number of events $N$. For large
+numbers $N$, the central limit theorem provides an estimate of the relative
+error as $1/\sqrt{N}$. However, the exact expression depends on the random
+distributions.
 
-\MCS\ uses a space with $d=10$ parameters to describe x-rays (position, velocity, spin, time). We show in Table \ref{t:mc_accuracy} a rough estimate of the accurarcy on integrals as a function of the number of records reaching the integration point. This stands both for integrated flux, as well as for histogram bins - for which the number of events per bin should be used for $N$.
+\MCS\ uses a space with $d=10$ parameters to describe x-rays (position,
+velocity, spin, time). We show in Table \ref{t:mc_accuracy} a rough estimate of
+the accurarcy on integrals as a function of the number of records reaching the
+integration point. This stands both for integrated flux, as well as for
+histogram bins - for which the number of events per bin should be used for $N$.
 
 \begin{table}
   \begin{center}

@@ -2,9 +2,9 @@
 
 \chapter{About the component library}
 \label{c:components}
-This \MCS\ Component Manual consists of the following major parts:
+This \MCX\ Component Manual consists of the following major parts:
 \begin{itemize}
-\item An introduction to the use of Monte Carlo methods in \MCS .
+\item An introduction to the use of Monte Carlo methods in \MCX .
 \item A thorough description of system components,
 with one chapter per major category: Sources, optics,
 monochromators, samples, monitors, and other components.
@@ -13,15 +13,15 @@ monochromators, samples, monitors, and other components.
   Appendix~\ref{c:kernelcalls}.
 %\item A detailed explanation of the use of random numbers
 %   in Appendix~\ref{s:random}.
-\item An explanation of the \MCS\ terminology in Appendix~\ref{s:terminology}.
+\item An explanation of the \MCX\ terminology in Appendix~\ref{s:terminology}.
 \end{itemize}
 Additionally, you may refer to the list of example instruments
-from the library in the \MCS\ User Manual.
+from the library in the \MCX\ User Manual.
 
 \section{Authorship}
 The component library is
-maintained by the \MCS\ system group. A number of basic components
-``belongs'' the \MCS\ system, and are supported and tested by the \MCS\
+maintained by the \MCX\ system group. A number of basic components
+``belongs'' the \MCX\ system, and are supported and tested by the \MCX\
 team.
 
 Other components are contributed
@@ -30,11 +30,11 @@ they contribute as well as in this manual.
 \MCS\ users are encouraged to send their
 contributions to us for inclusion in future releases.
 
-Some contributed components have later been taken over
-for further development by the \MCS\ system
-group, with permission from the original authors.
-The original authors will still appear both in the component code and in the
-\MCS\ manual.
+%Some contributed components have later been taken over
+%for further development by the \MCX\ system
+%group, with permission from the original authors.
+%The original authors will still appear both in the component code and in the
+%\MCS\ manual.
 
 \section{Symbols for neutron scattering and simulation}
 In the description of the theory behind the component functionality
@@ -63,14 +63,6 @@ an interaction with the component in question.
 %\frac{\hbar^2}{2 m_{\rm n}} \left( k_{\rm i}^2 - k_{\rm f}^2 \right).
 %\end{equation}
 
-The spin of the neutron is given a special treatment. Despite
-the fact that each physical neutron has a well defined spin value,
-the \MCS\ spin vector
-{\bf s} can have any length between zero (unpolarized beam) and unity
-(totally polarized beam). Further, all three cartesian components of
-the spin vector are present simultaneously, although this is physically
-not permitted by quantum mechanics.
-For further details about polarization handling, you may refer to the Appendix~\ref{c:polarization}.
 
 \section{Component coordinate system}
 All mentioning of component geometry refer to
@@ -83,31 +75,35 @@ Most components 'position' (as specified in the instrument description
 with the \verb+AT+ keyword) corresponds to their input side at the nominal
 beam position.
 However, a few components are radial and thus positioned in their centre.
-\index{Symbols}\index{Coordinates system}
+\index{Symbols}\index{Coordinate system}
 
-Components are usually not designed to overlap.
-This may lead to loss of neutron rays.
+Components are not necessarily designed to overlap.
+This may lead to loss of rays.
 Warnings will be issued during simulation if sections of the instrument
-are not reached by any neutron rays, or if neutrons are removed.
+are not reached by any xrays, or if a significant number of xrays are removed.
 This is usually the sign of either overlapping components
-or a very low intensity.\index{Removed neutron events}
+or a very low intensity.\index{Removed xray events}
 
 \section{About data files}\index{Data files}\index{Library!read\_table-lib (Read\_Table)}
 Some components require external data files,
 e.g. lattice crystallographic definitions for Laue and powder pattern diffraction,
 $S(q,\omega)$ tables for inelastic scattering,
-neutron events files for virtual sources,
-transmission and reflectivity files, etc.
+absoprtion and reflectivity files, etc.
 
-Such files distributed with \MCS\ are located in the
-\verb+data+ sub-directory of the \verb+MCSTAS+ library.
-Components that make use of the \MCS\ file system,
+Such files distributed with \MCX\ are located in the
+\verb+data+ sub-directory of the \verb+MCXTRACE+ library.
+Components that make use of the \MCX\ file system,
 including the \verb+read-table+ library (see section \ref{s:read-table})
-may access all \MCS\ data files without making local copies.
+may access all \MCX\ data files without making local copies.
 Of course, you are welcome to define your own data files,
-and eventually contribute to \MCS\ if you find them useful.
+and eventually contribute to \MCX\ if you find them useful.
 
-File extensions are not compulsory but help in identifying relevant files per application. We list powder and liquid data files from the \MCS\ library in Tables \ref{t:powders-data} and \ref{t:liquids-data}. These files contain an extensive header describing physical properties with references, and are specially suited for the PowderN (see \ref{powder}) and Isotropic\_Sqw components (see \ref{s:isotropic-sqw}).
+File extensions are not compulsory but help in identifying relevant files per
+application. We list powder and liquid data files from the \MCS\ library in
+Tables \ref{t:powders-data} and \ref{t:liquids-data}. These files contain an
+extensive header describing physical properties with references, and are
+specially suited for the PowderN (see \ref{powder}) and Isotropic\_Sqw
+components (see \ref{s:isotropic-sqw}).
 
 \begin{table}
   \begin{center}
