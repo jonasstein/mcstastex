@@ -106,13 +106,53 @@ See section \ref{sources-seealso} for details.
 
 \input{source_lab}
 
+\newpage
 
+%\input{moderator}
+%\input{ISISdoc.tex}
+%\newpage
+
+%\input{Source_adapt}
+
+%\input{Adapt_check}
+
+%\newpage
+%\input{Source_Optimizer}
+
+%\input{Monitor_Optimizer}
+
+%\newpage
+%\section{Other sources components: contributed pulsed sources, virtual sources (event files)}
+%\label{sources-seealso}
 \section{Other sources components: virtual sources (event files)}
 \label{sources-seealso}
+
+%There are many other source definitions in \MCS .
+
+%Detailed pulsed source components are available for new facilities
+%in a number of contributed components:
+%\begin{itemize}
+%\item SNS ({\bf contrib/SNS\_source}),
+%\item ISIS ({\bf contrib/ISIS\_moderator}) see section \ref{isis-moderator},
+%\item ESS-project ({\bf ESS\_moderator\_long} and {\bf  ESS\_moderator\_short}).
+%\end{itemize}
+
+%When no analytical model (e.g. a Maxwellian distribution) exits,
+%one may have access to measurements, estimated flux distributions,
+%event files, and - better - to MCNP/Triploli4 neutron event records.
+%The following components are then useful:
+
+%\begin{itemize}
+%\item{{\bf misc/Virtual\_input} can read a \MCS\ event file
+%(in text or binary format), often bringing an order-of-magnitude speed-up.
+%See section \ref{virtual_input}.}
+%\item{{\bf contrib/Virtual\_tripoli4\_input} does the same, but from event files (text format) obtained from the \emph{Tripoli4} \cite{tripoli_webpage} reactor simulation program. Such files are usually huge.\index{Tripoli}}
+%\item{{\bf contrib/Virtual\_mcnp\_input} can read MCNP "PTRAC" event files (text format) obtained from the \emph{MCNP} \cite{mcnp_webpage} reactor simulation program. Such files are usually huge.\index{MCNP}}
+%\item{{\bf misc/Vitess\_input} can read \emph{Vitess} \cite{vitess_webpage} neutron event binary files.\index{Vitess}}
+%\item{{\bf optics/Filter\_gen} reads a 1D distribution from a file, and may either modify or set the flux according to it. See section \ref{filter-gen}.}
+%\end{itemize}
+
 \begin{itemize}
-\item{{\bf misc/Virtual\_input} can read a \MCS\ event file
+\item{{\bf misc/Virtual\_input} can read a \MCX\ event file
 (in text or binary format), often bringing an order-of-magnitude speed-up.
 See section \ref{virtual_input}.}
-\end{itemize}
-
-

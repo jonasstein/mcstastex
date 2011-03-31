@@ -11,7 +11,7 @@
 # mcstas-1.7-manual.ps.gz and mcstas-1.7-manual.pdf
 
 # Create a link to the tutorial pics:
-ln -sf ../../McCode/trunk/doc/tutorial/pics .
+# ln -sf ../../McCode/trunk/doc/tutorial/pics .
 # First latex run:
 latex manual
 # Bibtex:
@@ -33,18 +33,18 @@ whichdvipdf=`which dvipdf`
 if [ -e "$whichdvipdf" ] ;
 then
   echo "Generate User manual PDF file using dvipdf (better quality than ps2pdf)"
-  dvipdf manual.dvi mcstas-$1-manual.pdf
+  dvipdf manual.dvi mcxtrace-$1-manual.pdf
   echo "Generate Component manual PDF file using dvipdf (better quality than ps2pdf)"
-  dvipdf Component_manual.dvi mcstas-$1-components.pdf
+  dvipdf Component_manual.dvi mcxtrace-$1-components.pdf
 else
   echo "Generate manuals PS files using dvips"
   # Create .ps and .pdf files
-  dvips -o mcstas-$1-manual.ps manual.dvi
-  dvips -o mcstas-$1-components.ps Component_manual.dvi
+  dvips -o mcxtrace-$1-manual.ps manual.dvi
+  dvips -o mcxtrace-$1-components.ps Component_manual.dvi
   echo "Generate User manual PDF files using ps2pdf"
-  ps2pdf mcstas-$1-manual.ps
+  ps2pdf mcxtrace-$1-manual.ps
   echo "Generate Component manual PDF files using ps2pdf"
-  ps2pdf mcstas-$1-components.ps
+  ps2pdf mcxtrace-$1-components.ps
   # gzip the .ps. Skipped as we now use PDF only
   #gzip mcstas-$1-manual.ps
   #gzip mcstas-$1-components.ps

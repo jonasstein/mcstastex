@@ -24,13 +24,15 @@
  \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax}
 \def\@maketitle{\newpage \baselineskip 30dd \mbox{}
  \marginpar{{\frtnbf \hfill \llap{\mbox{\reportnum \reportlan\qquad\qquad}}}}
- \par\noindent\mbox{\includegraphics[height=1.5cm]{figures/risoe-logo.eps}\hspace{2mm}\includegraphics[height=1.5cm]{figures/DTU_logo.ps}} \par
+% \par\noindent\mbox{\includegraphics[height=1.5cm]{figures/risoe-logo.eps}\hspace{2mm}\includegraphics[height=1.5cm]{figures/DTU_logo.ps}} \par
+ \par\noindent\mbox{\includegraphics[height=2.5cm]{figures/ku-nbi-logo.eps}\hspace{2cm}\includegraphics[height=1cm]{figures/risoe-logo.eps}\hspace{2cm}\includegraphics[height=2.5cm]{figures/DTU_logo.ps}} \par
  \vskip 1.5cm
  {\twfvbf \noindent \@title \par} \vskip 20dd \baselineskip 16dd
  {\frtnbf\noindent\@author \par} 
- \vskip 0.5cm
+ \vskip 3.0cm
  \begin{center}
-     \includegraphics[width=\textwidth]{figures/sqw.eps}
+%     \includegraphics[width=\textwidth]{figures/sqw.eps}
+     \includegraphics[width=8cm]{figures/mcxtrace-logo.eps}
    \end{center}
    \par \vfill \baselineskip 12dd
  \frtnbf\noindent Ris{\o} DTU, Roskilde, Denmark \par
@@ -40,11 +42,11 @@
  \space\number\year }
 
 \let\reportlan=\relax
-\def\month{5}                   % Released in November 2005
+\def\month{3}                   % Released in November 2005
 % Need to match front page line breaking.
 \title{Component~Manual~for~\rlap{the}\\ % Avoid overfull message.
- X-Ray-Tracing~Package\\
+ X-ray-Tracing~Package\\
  \MCX, Version \version\ }
-\author{Peter Kj\ae r Willendrup, Erik Knudsen, Kim Lefmann and\\Emmanuel Farhi}
+\author{Erik Knudsen, Andrea Prodi, Peter Kj\ae r Willendrup and \\Kim Lefmann}
 \maketitle
 \endgroup
