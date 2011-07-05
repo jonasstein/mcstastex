@@ -84,7 +84,7 @@ typeset_doc(){
 #  rm *.ps *.ps.gz
 #fi
 #
-version="1.0_rc2"
+version=$1
 package=mcxtrace
 
 typeset_doc manual 
