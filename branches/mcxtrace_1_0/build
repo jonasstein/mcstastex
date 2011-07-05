@@ -12,44 +12,82 @@
 
 # Create a link to the tutorial pics:
 # ln -sf ../../McCode/trunk/doc/tutorial/pics .
-# First latex run:
-latex manual
-# Bibtex:
-bibtex manual
-# Index
-makeindex manual
-# Repeat latex runs:
-latex manual
-latex manual
 
-# latex the Component_manual
-latex Component_manual
-bibtex Component_manual
-makeindex Component_manual
-latex Component_manual
-latex Component_manual
+#this is the worker function
+#basically 5 steps
+#1. run latex
+#2. run bibtex to generate citation references
+#3. run makeindex
+#4. run latex twice to get references typeset correctly
+#5. generate pdfs by either dvipdf or dvips and ps2pdf
 
-whichdvipdf=`which dvipdf`
-if [ -e "$whichdvipdf" ] ;
-then
-  echo "Generate User manual PDF file using dvipdf (better quality than ps2pdf)"
-  dvipdf manual.dvi mcxtrace-$1-manual.pdf
-  echo "Generate Component manual PDF file using dvipdf (better quality than ps2pdf)"
-  dvipdf Component_manual.dvi mcxtrace-$1-components.pdf
-else
-  echo "Generate manuals PS files using dvips"
-  # Create .ps and .pdf files
-  dvips -o mcxtrace-$1-manual.ps manual.dvi
-  dvips -o mcxtrace-$1-components.ps Component_manual.dvi
-  echo "Generate User manual PDF files using ps2pdf"
-  ps2pdf mcxtrace-$1-manual.ps
-  echo "Generate Component manual PDF files using ps2pdf"
-  ps2pdf mcxtrace-$1-components.ps
-  # gzip the .ps. Skipped as we now use PDF only
-  #gzip mcstas-$1-manual.ps
-  #gzip mcstas-$1-components.ps
-  rm *.ps *.ps.gz
-fi
+typeset_doc(){
+        name=$1
+        latex $name
+        bibtex $name
+        makeindex $name
+        latex $name
+        latex $name
+        #now generate the pdf
+        #is dvipdf available - if so use that
+        whichdvipdf=`which dvipdf`
+        if [ -e "$whichdvipdf" ]; 
+        then
+               echo "Generate PDF file using dvipdf (better quality than ps2pdf)"
+               dvipdf $name.dvi $package-$version-$name.pdf
+        else
+          echo "Generate PS files using dvips"
+          # Create .ps and .pdf files
+          dvips -o $package-$version-$name.ps $name.dvi
+          echo "Generate files using ps2pdf"
+          ps2pdf $package-$version-$name.ps
+        fi
+      }
 
+
+## First latex run:
+#latex manual
+## Bibtex:
+#bibtex manual
+## Index
+#makeindex manual
+## Repeat latex runs:
+#latex manual
+#latex manual
+#
+## latex the Component_manual
+#latex Component_manual
+#bibtex Component_manual
+#makeindex Component_manual
+#latex Component_manual
+#latex Component_manual
+#
+#whichdvipdf=`which dvipdf`
+#if [ -e "$whichdvipdf" ] ;
+#then
+#  echo "Generate User manual PDF file using dvipdf (better quality than ps2pdf)"
+#  dvipdf manual.dvi mcxtrace-$1-manual.pdf
+#  echo "Generate Component manual PDF file using dvipdf (better quality than ps2pdf)"
+#  dvipdf Component_manual.dvi mcxtrace-$1-components.pdf
+#else
+#  echo "Generate manuals PS files using dvips"
+#  # Create .ps and .pdf files
+#  dvips -o mcxtrace-$1-manual.ps manual.dvi
+#  dvips -o mcxtrace-$1-components.ps Component_manual.dvi
+#  echo "Generate User manual PDF files using ps2pdf"
+#  ps2pdf mcxtrace-$1-manual.ps
+#  echo "Generate Component manual PDF files using ps2pdf"
+#  ps2pdf mcxtrace-$1-components.ps
+#  # gzip the .ps. Skipped as we now use PDF only
+#  #gzip mcstas-$1-manual.ps
+#  #gzip mcstas-$1-components.ps
+#  rm *.ps *.ps.gz
+#fi
+#
+version="1.0_rc2"
+package=mcxtrace
+
+typeset_doc manual 
+typeset_doc Component_manual
 # clear LaTeX temporary files but keep ps, dvi, pdf
 rm -f *.aux *.bbl *.blg *.idx *.ilg *.ind *.log *.toc
