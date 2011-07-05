@@ -8,7 +8,7 @@ This \MCX\ Component Manual consists of the following major parts:
 \item A thorough description of system components,
 with one chapter per major category: Sources, optics,
 monochromators, samples, monitors, and other components.
-\item The \MCS\ library functions and definitions
+\item The \MCX\ library functions and definitions
   that aid in the writing of simulations and components in
   Appendix~\ref{c:kernelcalls}.
 %\item A detailed explanation of the use of random numbers
@@ -27,14 +27,14 @@ team.
 Other components are contributed
 by specific authors, who are listed in the code for each component
 they contribute as well as in this manual.
-\MCS\ users are encouraged to send their
+\MCX\ users are encouraged to send their
 contributions to us for inclusion in future releases.
 
 %Some contributed components have later been taken over
 %for further development by the \MCX\ system
 %group, with permission from the original authors.
 %The original authors will still appear both in the component code and in the
-%\MCS\ manual.
+%\MCX\ manual.
 
 \section{Symbols for neutron scattering and simulation}
 In the description of the theory behind the component functionality
@@ -99,7 +99,7 @@ Of course, you are welcome to define your own data files,
 and eventually contribute to \MCX\ if you find them useful.
 
 File extensions are not compulsory but help in identifying relevant files per
-application. We list powder and liquid data files from the \MCS\ library in
+application. We list powder and liquid data files from the \MCX\ library in
 Tables \ref{t:powders-data} and \ref{t:liquids-data}. These files contain an
 extensive header describing physical properties with references, and are
 specially suited for the PowderN (see \ref{powder}) and Isotropic\_Sqw
@@ -125,7 +125,7 @@ components (see \ref{s:isotropic-sqw}).
        Data: [q] [$\omega$] [$S(q,\omega)$]\\
       \hline
     \end{tabular}
-    \caption{Data files of the \MCS\ library.}
+    \caption{Data files of the \MCX\ library.}
     \label{t:comp-data}
     \index{Library!Components!data}
     }
@@ -189,7 +189,7 @@ Zn.laz             & 4.054     & 0.077    &1.11      &692.68    &3700&\\
 Zr.laz             & 6.44      & 0.02     &0.185     &2128      &3800&\\
       \hline
     \end{tabular}\end{small}
-    \caption{Powders of the \MCS\ library \cite{icsd_ill,ILLblue}. Low $c$ and high $\sigma_{abs}$ materials are highlighted. Files are given in LAZY format, but may exist as well in Crystallographica {\it .lau} format as well.}
+    \caption{Powders of the \MCX\ library \cite{icsd_ill,ILLblue}. Low $c$ and high $\sigma_{abs}$ materials are highlighted. Files are given in LAZY format, but may exist as well in Crystallographica {\it .lau} format as well.}
     \label{t:powders-data}
     \index{Library!Components!data}
     }
@@ -214,18 +214,18 @@ Rb\_liq\_coh.sqw and Rb\_liq\_inc.sqw & 6.32      & 0.5      &0.38      &312.46 
 Rb\_liq\_tot.sqw                      & 6.32      & 0.5      &0.38      &312.46    &{\bf 1300}  & Measured \\
       \hline
     \end{tabular}\end{small}
-    \caption{Liquids of the \MCS\ library \cite{icsd_ill,ILLblue}. Low $c$ and high $\sigma_{abs}$ materials are highlighted.}
+    \caption{Liquids of the \MCX\ library \cite{icsd_ill,ILLblue}. Low $c$ and high $\sigma_{abs}$ materials are highlighted.}
     \label{t:liquids-data}
     \index{Library!Components!data}
     }
   \end{center}
 \end{table}
 
-\MCS\ itself generates both simulation and monitor data files, which structure is explained in the User Manual (see end of chapter 'Running \MCS\ ').
+\MCX\ itself generates both simulation and monitor data files, which structure is explained in the User Manual (see end of chapter 'Running \MCX\ ').
 
 \section{Component source code}
-Source code for all components may be found in the \verb+MCSTAS+ library
-subdirectory of the McStas installation;
+Source code for all components may be found in the \verb+MCXTAS+ library
+subdirectory of the McXtrace installation;
 the default is \verb+/usr/local/lib/mcstas/+
 on Unix-like systems and \verb+C:\mcstas\lib+ on Windows systems, but it may be
 changed using the \verb+MCSTAS+ environment variable.
@@ -234,13 +234,13 @@ changed using the \verb+MCSTAS+ environment variable.
 In case users only require to add new features, preserving the existing features of a component, 
 using the \verb+EXTEND+ keyword\index{Keyword!EXTEND} in the instrument description file is recommended. For larger modification of a component, it is advised to make a copy
 of the component file into the working directory.
-A component file in the local directory will in \MCS\ take precedence over
+A component file in the local directory will in \MCX\ take precedence over
 a library component of the same name.
 
 \section{Documentation}
 As a complement to this Component Manual, we encourage users to use
 the \verb+mcdoc+ front-end which enables to display both the
-catalog of the \MCS\ library, e.g using: \index{Tools!mcdoc}
+catalog of the \MCX\ library, e.g using: \index{Tools!mcdoc}
 \begin{quote}
   \verb|mcdoc|
 \end{quote}
@@ -256,23 +256,23 @@ the {\it file.comp} component, using your
 BROWSER\index{Environment variable!BROWSER} setting, or as text if unset.
 The \verb+--help+ option will display the command help, as usual.
 
-An overview of the component library is also given at the \MCS\ home page \cite{mcstas_webpage} and in the User Manual \cite{mcstasmanual}.
+An overview of the component library is also given at the \MCX\ home page \cite{mcstas_webpage} and in the User Manual \cite{mcstasmanual}.
 
-\section{Component validation}
-
-Some components were checked for release 1.9: the Fermi choppers, the velocity selectors, 2 of the guide components and Source\_gen. The results are sumarized in a talk available online (\verb+http://www.ill.fr/tas/mcstas/doc/ValMcStas.pdf+).
-
-Velocity selector and Fermi chopper were treated as black boxes and the resulting line shapes cross-checked against analytical functions for some cases.
-The component 'Selector' showed no dependence on the distance between guide and selector axe. This is corrected at the moment. Apart from that the component yielded correct results.
-That was different with the Fermi chopper components. The component 'Chopper\_Fermi', which has been part of the \MCS\ distribution for a long time, gave wrong results and was removed from the package. The new 'Vitess\_ChopperFermi' (transferred from the VITESS package) showed mainly correct behaviour. Little bugs were corrected after the first tests. At the moment, there is only the problem left that it underestimates the influence of a shadowing cylinder. With the contributed 'FermiChopper' component, there were also minor problems, which are all corrected in the meantime.
-
-For the guides, several trajectories through different kinds of guides (straight, convergent, divergent) were calculated analytically and positions, directions and losses of reflections compared to the values calculated in the components. This was done for 'Guide' and 'Guide\_gravity'; in the latter case calculations were performed with and without gravity. Additionally a cross-check against the VITESS guide module was performed. Waviness, chamfers and channels were not checked.
-After correction of a bug in 'Guide\_gravity', both components worked perfectly (within the conditions tested).
-
-'Source\_gen' was cross-checked against the VITESS source module for the case of 3 Maxwellians describing the moderator characteristic and typical sizes the guide and its distance to the moderator. It showed the same line shape as a functions of wavelength and divergence and the same absolute values.
-
+%\section{Component validation}
+%
+%Some components were checked for release 1.9: the Fermi choppers, the velocity selectors, 2 of the guide components and Source\_gen. The results are sumarized in a talk available online (\verb+http://www.ill.fr/tas/mcstas/doc/ValMcStas.pdf+).
+%
+%Velocity selector and Fermi chopper were treated as black boxes and the resulting line shapes cross-checked against analytical functions for some cases.
+%The component 'Selector' showed no dependence on the distance between guide and selector axe. This is corrected at the moment. Apart from that the component yielded correct results.
+%That was different with the Fermi chopper components. The component 'Chopper\_Fermi', which has been part of the \MCX\ distribution for a long time, gave wrong results and was removed from the package. The new 'Vitess\_ChopperFermi' (transferred from the VITESS package) showed mainly correct behaviour. Little bugs were corrected after the first tests. At the moment, there is only the problem left that it underestimates the influence of a shadowing cylinder. With the contributed 'FermiChopper' component, there were also minor problems, which are all corrected in the meantime.
+%
+%For the guides, several trajectories through different kinds of guides (straight, convergent, divergent) were calculated analytically and positions, directions and losses of reflections compared to the values calculated in the components. This was done for 'Guide' and 'Guide\_gravity'; in the latter case calculations were performed with and without gravity. Additionally a cross-check against the VITESS guide module was performed. Waviness, chamfers and channels were not checked.
+%After correction of a bug in 'Guide\_gravity', both components worked perfectly (within the conditions tested).
+%
+%'Source\_gen' was cross-checked against the VITESS source module for the case of 3 Maxwellians describing the moderator characteristic and typical sizes the guide and its distance to the moderator. It showed the same line shape as a functions of wavelength and divergence and the same absolute values.
+%
 \section{Disclaimer, bugs}\index{Bugs}
 
-We would like to emphasize that the usage of both the \MCS\ software, as well as its components are the responsability of the users. Indeed, obtaining accurate and reliable results requires a substantial work when writing instrument descriptions. This also means that users should read carefully both the documentation from the manuals \cite{mcstasmanual} and from the component itself (using \verb+mcdoc+ {\it comp}) before reporting errors. Most anomalous results often originate from a wrong usage of some part of the package.
+We would like to emphasize that the usage of both the \MCX\ software, as well as its components are the responsability of the users. Indeed, obtaining accurate and reliable results requires a substantial work when writing instrument descriptions. This also means that users should read carefully both the documentation from the manuals \cite{mcstasmanual} and from the component itself (using \verb+mcdoc+ {\it comp}) before reporting errors. Most anomalous results often originate from a wrong usage of some part of the package.
 
 Anyway, if you find that either the documentation is not clear, or the behavior of the simulation is undoubtedly anomalous, you should report this to us at \verb+mcstas@risoe.dk+ and refer to our special bug/request reporting service \cite{mczilla_webpage}.
