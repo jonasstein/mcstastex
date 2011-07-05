@@ -17,12 +17,12 @@ sample container etc.).
 
 The description of the powder comes from a file in one of the standard output formats LAZY, FULLPROF, or CRYSTALLOGRAPHICA.
 
-A usage example of this component can be found in the \\
-\verb+Neutron site/Tutorial/templateDIFF+ instrument from the \verb+mcgui+.
+%A usage example of this component can be found in the \\
+%\verb+x-ray site/Tutorial/templateDIFF+ instrument from the \verb+mcgui+.
 
 \subsection{Files formats: powder structures}
 
-Data files of type \verb'lau' and \verb'laz' in the \MCS\ distribution data directory are self-documented in their header. A list of common powder definition files is available in Table \ref{t:powders-data} (page \pageref{t:powders-data}). They do not need any additional parameters to be used, as in the example:
+Data files of type \verb'lau' and \verb'laz' in the \MCX\ distribution data directory are self-documented in their header. A list of common powder definition files is available in Table \ref{t:powders-data} (page \pageref{t:powders-data}). They do not need any additional parameters to be used, as in the example:
 \begin{verbatim}
   PowderN(<geometry parameters>, filename="Al.laz")
 \end{verbatim}
@@ -106,7 +106,7 @@ while the sample packing factor is $f_{\rm pack}$.
 %Further, the incoherent scattering is only taken into account
 %by the attenuation of the beam, given by (\ref{e:attenu})
 %and $\sigma_c^a$.
-%The incoherently scattered neutrons are not
+%The incoherently scattered x-rays are not
 %propagated through to the detector, but rather not generated at all.
 
 Focusing is performed by only scattering into one angular
@@ -146,10 +146,10 @@ crystallites oriented to fulfill the Bragg condition
 n \lambda = 2 d \sin \theta ,
 \end{equation}
 where $n$ is the order of the scattering (an integer), $\lambda$
-is the neutron wavelength, $d$ is the lattice spacing of the sample,
+is the x-ray wavelength, $d$ is the lattice spacing of the sample,
 and $2 \theta$ is the scattering angle, see figure \ref{coneFig}.
 As all crystal orientations
-are realised in a powder sample, the neutrons are scattered within a
+are realised in a powder sample, the x-rays are scattered within a
 {\em Debye-Scherrer cone} of opening angle $4 \theta$ \cite{bacon}.
 
 \begin{figure}
@@ -167,7 +167,7 @@ Equation (\ref{Bragg}) may be cast into the form
 |{\bf Q}| = 2 |{\bf k}| \sin \theta ,
 \end{equation}
 where {\bf Q} is a vector of the reciprocal lattice, and {\bf k} is
-the wave vector of the neutron. It is seen that only
+the wave vector of the x-ray. It is seen that only
 reciprocal vectors fulfilling $|{\bf Q}| < 2 |{\bf k}|$
 contribute to the scattering.
 For a complete treatment of the powder sample, one needs to take
@@ -212,7 +212,7 @@ A cut though the Debye-Scherrer cone perpendicular to its axis
 is a circle. At the distance $r$ from the sample, the radius of this
 circle is $r \sin(2\theta)$. Thus, the detector (in a small angle
 approximation) counts a fraction $h / (2 \pi r \sin(2 \theta))$
-of the scattered neutrons, giving a resulting count intensity:
+of the scattered x-rays, giving a resulting count intensity:
 \begin{equation}
 I = \Psi \sigma_{\rm cone,Q} \frac{h}{2 \pi r \sin(2\theta)} ,
 \end{equation}
@@ -221,8 +221,8 @@ where $\Psi$ is the flux at the sample position.
 For clarity we repeat the meaning and unit of the symbols:
 %
 \begin{quote}\begin{tabular}{ccl}
-$\Psi$ & s$^{-1}$m$^{-2}$ & Incoming intensity of neutrons \\
-$I$    & s$^{-1}$ & Detected intensity of neutrons \\
+$\Psi$ & s$^{-1}$m$^{-2}$ & Incoming intensity of x-rays \\
+$I$    & s$^{-1}$ & Detected intensity of x-rays \\
 $h$    & m        & Height of detector \\
 $r$    & m        & Distance from sample to detector \\
 $f$    & 1        & Packing factor of the powder \\
@@ -253,7 +253,7 @@ where $\mu_{\rm inc}^s$ represents the incoherent scattering.
 \subsection{Algorithm}
 The algorithm of {\bf PowderN} can be summarized as
 \begin{itemize}
-\item Check if the neutron ray intersects the sample (otherwise ignore
+\item Check if the x-ray intersects the sample (otherwise ignore
 the following).
 \item Calculate the attenuation coefficients for scattering and absorption.
 \item Perform Monte Carlo choices to determine the scattering position,

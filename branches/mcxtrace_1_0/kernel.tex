@@ -204,10 +204,11 @@ The purpose of the instrument definition is to specify a sequence of
 components, along with their position and parameters, which together
 make up an instrument. Each component is given its own local coordinate
 system, the position and orientation of which may be specified by its
-translation and rotation relative to another component. An example is
-given in section~\ref{s:Samples_vanadium.instr} and some additional
-examples of instrument definitions can be found on the McStas
-web-page~\cite{mcstas_webpage} and in the \texttt{example} directory.
+translation and rotation relative to another component. 
+%An example is
+%given in section~\ref{s:Samples_vanadium.instr} and some additional
+Examples of instrument definitions can be found in the \texttt{example} directory of your 
+McXtrace installation. Further examples may be found as they are built on the McXtrace web-page~\cite{mcxtrace_webpage}.
 
 As a summary, the usual grammar for instrument descriptions is
 \begin{verbatim}
@@ -310,7 +311,7 @@ The default NeXus format is NeXus 5 with compression. However, that format may b
 
 It is possible to set the type of NeXus file with a string argument, containing words "4", "5" or "XML". Optionally, if the string also contains the \verb+compress+ or \verb+zip+ word, the NeXus file will use compression for Data Sets. We recommend the syntax \verb+NEXUS "5 compress"+ which is the default.
 
-You may choose the name of the output file with the \verb+-f filename+ option from the instrument executable or \verb+mcrun+ (see Sections \ref{s:run-sim}, \ref{s:mcrun} and Table \ref{f:simoptions2}).
+You may choose the name of the output file with the \verb+-f filename+ option from the instrument executable or \verb+mxrun+ (see Sections \ref{s:run-sim}, \ref{s:mxrun} and Table \ref{f:simoptions2}).
 
 Then, the output format is chosen as usual with the \verb+--format=NeXus+ option when launching the simulation. All output files are stored in the output {\it filename}, as well as the instrument description itself. Other formats are still available. When run on a distributed system (e.g. MPI), detectors are gathered, but list of events (see e.g. component Virtual\_output) are stored as one data set per node.
 
@@ -460,11 +461,11 @@ The end of the instrument definition must be explicitly marked using the keyword
   \texttt{END}
 \end{quote}
 
-\subsection{Code for the instrument \texttt{vanadium\_example.instr}}
-\label{s:Samples_vanadium.instr}
-A commented instrument definition taken from the \texttt{examples} directory is
-here shown as an example of the use of \MCX .
- \smallverbatimfile{../../McCode/trunk/nlib/examples/Samples_vanadium.instr}
+%\subsection{Code for the instrument \texttt{vanadium\_example.instr}}
+%\label{s:Samples_vanadium.instr}
+%A commented instrument definition taken from the \texttt{examples} directory is
+%here shown as an example of the use of \MCX .
+% \smallverbatimfile{../../McCode/trunk/nlib/examples/Samples_vanadium.instr}
 
 
 
@@ -729,7 +730,7 @@ the component.  The calculation of the effect of the component on the
 x-ray is performed by a block of embedded C code.
 One example of a component definition is given in section~\ref{s:slit}, and all
 component definitions can be found on the McStas
-web-page~\cite{mcstas_webpage} and described in the \MCX\ component manual.
+web-page~\cite{mcxtrace_webpage} and described in the \MCX\ component manual.
 
 There exists a large number of functions and constants available in
 order to write efficient components. See appendix~\ref{c:kernelcalls}
