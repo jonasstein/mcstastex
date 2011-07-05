@@ -3,7 +3,11 @@
 \chapter{New features in \MCX\ \version\ }
 \label{c:changes}
 
-This is the first version of \MCX\. As such it implements new features. Bugs are reported and traced using the \MCX\ Trac system \cite{mczilla_webpage}. We will not present here an extensive list of corrections, and we let the reader refer to this bug reporting service for details. Only important changes are indicated here.
+This is the first version of \MCX. As such it implements new features. Bugs are
+reported and traced using the \MCX\ Trac system \cite{mccode_trac_webpage}
+(shared with its sister project \MCS). We will not present here an extensive
+list of corrections, and we let the reader refer to this bug reporting service
+for details. Only important changes are indicated here.
 
 Of course, we can not guarantee that the software is bullet proof, but we do our best to correct bugs, when they are reported.\index{Bugs}
 
@@ -16,12 +20,12 @@ Of course, we can not guarantee that the software is bullet proof, but we do our
 \label{s:new-features:kernel}
 \index{Kernel}
 
-The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and program). See the dedicated chapter in the {\it User manual} for more details.
-
+The following changes concern the 'Kernel' (i.e. the \MCX\ meta-language and program). See the dedicated chapter in the {\it User manual} for more details.
 
 \section{Run-time}
 \label{s:new-features:run-time}
 \index{Library!Run-time}
+New intersection routines include \verb+ellipsoid_intersect+ and \verb+sphere_intersect+.
 
 
 \section{Components and Library}
@@ -50,10 +54,11 @@ All sources include focussed sampling for optimized calculations
 \item[Lens\_simple] Thin lens approximation of a compund refractive lens (CRL) of any material
 \item[Lens\_parab] Parabolic CRL of any material
 \item[SLit.comp] Perfectly absorbing aperture
-\item[Slit\_N.comp] Multiple absorbing apertures (i.e. gratings)
+\item[Slit\_N.comp] Multiple absorbing apertures (i.e. a transmission grating)
+\item[Multilayer\_elliptic] Elliptical mulitlayer optic.
 \item[Mirror\_elliptic] Elliptical shape mirror
 \item[Mirror\_parabolic] Parabolic shape mirror
-\item[Mirror\_curved] Cylidrical mirror
+\item[Mirror\_curved] Cylindrical mirror
 \end{description}
 \subsubsection*{Miscellaneous}
 \begin{description}
@@ -68,14 +73,13 @@ All sources include focussed sampling for optimized calculations
 \item[PSD\_monitor\_4P] Int. vs. latitude and longitude
 \end{description}
 
-\subsection{Updated components}
 
 \subsection{New example instruments}
 
 
 \begin{itemize}
 \item \verb+SAXSLAB_SAXS.instr+ The SAXLAB (formerly JJ-Xray Systems) saxs-machine situated at Faculty of Life-Sciences, Univeristy of Copenhagen. 
-\item \verb+ESRF_ID11.instr+ Model of the 3DXRD-microsope at ID11, ESRF
+\item \verb+ESRF_ID11.instr+ Model of the 3DXRD-microscope at ID11, ESRF
 \item \verb+Be_BM.instr+ A model beamline to explore the idea of a "pink"-beam beamline using CRLs\cite{vaughan_10}.
 \end{itemize}
 
@@ -86,26 +90,26 @@ All sources include focussed sampling for optimized calculations
 \label{s:new-features:tools}
 \index{Tools}
 \index{Installing}
-\subsection{New tool features}
+\subsection{Selected Tool features}
 \begin{itemize}
-  \item Support for per-user mcstas\_config.perl file, located in \verb+$HOME/.mcstas/+ . This folder is also the default
-     location of the 'host list' for use with MPI or gridding, simply name the file 'hosts'.
-  \item mcgui Save Configuration for saving chosen settings on the 'Configuration options' and 'Run dialogue'.
-  \item Possibilty to run MPI or grid simulations by default from mcgui.
-  \item When scanning parameters, mcrun now terminates with a relevant error message if one or more scan steps
-     failed (intensities explicitly set to 0 in those cases).
-  \item When running parameter optimisations, a logfile (default name is "mcoptim\_XXXX.dat" where XXXX is a
-     pseudo-random string) is created during the optimisation, updated at each optim step.
-  \item We now provide syntax-highlighting setup files for vim and gedit editors.
-\end{itemize}
+%  \item Support for per-user mcxtrace\_config.perl file, located in \verb+$HOME/.mcstas/+ . This folder is also the default
+%     location of the 'host list' for use with MPI or gridding, simply name the file 'hosts'.
+%  \item mxgui Save Configuration for saving chosen settings on the 'Configuration options' and 'Run dialogue'.
+  \item Possibility to run MPI or grid simulations by default from mxgui.
+%  \item When scanning parameters, mxrun now terminates with a relevant error message if one or more scan steps
+%     failed (intensities explicitly set to 0 in those cases).
+%  \item When running parameter optimisations, a logfile (default name is "mcoptim\_XXXX.dat" where XXXX is a
+%     pseudo-random string) is created during the optimisation, updated at each optim step.
+  \item We provide syntax-highlighting setup files for eamcs, vim and gedit editors.
+%\end{itemize}
 \subsection{Platform support}
 \begin{itemize}
 \item Mac OS X 10.3 Panther (ppc), 10.4 Tiger (pcc/intel), 10.5 Leopard (ppc/intel)
-\item Windows XP,  Windows Vista (Now with a recent perl version; 5.10 plus various fixes). New feature on Windows:
+\item Windows 7, Windows XP,  Windows Vista (Now with a recent perl version; 5.10 plus various fixes). New feature on Windows:
      Simulations \emph{always} run in the background, freeing mcgui for other work.
 \item "Any" Linux - reference platforms are Ubuntu 10.04 (and earlier) and Debian 4.0 (and earlier). We have also tested 
   Fedora 8, OpenSuSE 10.3 and CentOS 4 releases recently.
-\item BSD (FreeBSD release 8.1 and Dragonfly BSD release 2.0, tested)
+\item BSD (FreeBSD release 8.0 and Dragonfly BSD release 2.0, tested)
 \item Oracle OpenSolaris 10 (Intel tested, Sparc probably OK)
 \item Plus probably any UNIX/POSIX type environment with a bit of effort...
 \end{itemize}
@@ -123,7 +127,7 @@ buttons fail in mcgui. Solutions are:
 
 %\section{Future extensions}
 %\label{s:future}
-%The following features are planned for the oncoming releases of \MCS\
+%The following features are planned for the oncoming releases of \MCX\
 %(not an ordered list):
 %\begin{itemize}
 %\item Increased validation and testing.
