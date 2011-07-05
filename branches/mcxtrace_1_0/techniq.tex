@@ -42,23 +42,11 @@ physical processes. Integrating these events (absorption, scattering, reflection
 results in an estimation of measurable quantities characterizing the beamline. Moreover, using variance reduction
 (importance sampling) where possible, reduces the computation time and gives better accuracy.
 
-Implementations of the MC mathod for X-ray beamlines alreazdy exist 
-Early implementations of the MC method for x-ray instruments used
-\emph{home-made} computer programs  (see \cite{Copley86,Mildner77}) but, more
-recently, general packages have been designed, providing models for most
-optical components of x-ray spectrometers.
+Implementations of the MC method for X-ray beamlines already exist, most
+notable is probably \emph{SHADOW}, originally developed by the late Franco
+Cerrina and coworkers, now developed further by M. Sanchez Del Rio at the ESRF\cite{SHADOW_esrf_website}.
+Other implementation of the same concept are \emph{Ray}\cite{Ray-website} from BESSY and Xtrace(\cite{Xtrcae-website}).
 
-The most widely-used packages are NISP \cite{Shadow}, ResTrax \cite{Restrax},
-McStas \cite{nn_10_20,mcstas_webpage}, Vitess \cite{Vitess}, and IDEAS
-\cite{IDEAS}, which allow a wide range of x-ray scattering instruments to be
-simulated.
-
-The ray-tracing Monte Carlo method has been used widely for guide studies
-\cite{Copley93,Farhi02,Schanzer04}, instrument optimisation and design
-\cite{Zsigmond04,Lieutenant05}. Most of the time, the conclusions and general
-behaviour of such studies may be obtained using the classical analytical
-approaches, but accurate estimates for the flux, resolution and generally the
-optimum parameter set, benefit considerably from MC methods.
 
 \subsection{Monte Carlo ray tracing simulations}
 Mathematically, the Monte-Carlo method is an application of the law of large numbers \cite{James80,Grimmett92}. Let $f(u)$ be a finite continuous integrable function of parameter $u$ for which an integral estimate is desirable. The discrete statistical mean value of $f$ (computed as a series) in the uniformly sampled interval $a < u < b$ converges to the mathematical mean value of $f$ over the same interval.
@@ -179,7 +167,7 @@ As a consistency check, we note that for all $p_i$ equal, this reduces to
 eq.~(\ref{e:sigI1})
 
 In order to compute the intensities and uncertainties, the detector components
-in \MCS\ will keep track of
+in \MCX\ will keep track of
 $N=\sum_i p_i^0, I=\sum_i p_i^1$, and $M_2 = \sum_i p_i^2$.
 
 \section{Weight factor transformations during a Monte Carlo
@@ -299,9 +287,9 @@ numbers $N$, the central limit theorem provides an estimate of the relative
 error as $1/\sqrt{N}$. However, the exact expression depends on the random
 distributions.
 
-\MCS\ uses a space with $d=10$ parameters to describe x-rays (position,
-velocity, spin, time). We show in Table \ref{t:mc_accuracy} a rough estimate of
-the accurarcy on integrals as a function of the number of records reaching the
+\MCX\ uses a space with $d=11$ parameters to describe x-rays (position,
+wavevector, polarisation, phase, time). We show in Table \ref{t:mc_accuracy} a rough estimate of
+the accuracy on integrals as a function of the number of records reaching the
 integration point. This stands both for integrated flux, as well as for
 histogram bins - for which the number of events per bin should be used for $N$.
 
@@ -319,7 +307,7 @@ histogram bins - for which the number of events per bin should be used for $N$.
     $10^7$ & 0.05 \% \\
     \hline
     \end{tabular}
-    \caption{Accuracy estimate as a function of the number of statistical events used to estimate an integral with \MCS.}
+    \caption{Accuracy estimate as a function of the number of statistical events used to estimate an integral with \MCX.}
     \label{t:mc_accuracy}
   }
   \end{center}
