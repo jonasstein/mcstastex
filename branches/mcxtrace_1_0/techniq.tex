@@ -45,7 +45,7 @@ results in an estimation of measurable quantities characterizing the beamline. M
 Implementations of the MC method for X-ray beamlines already exist, most
 notable is probably \emph{SHADOW}, originally developed by the late Franco
 Cerrina and coworkers, now developed further by M. Sanchez Del Rio at the ESRF\cite{SHADOW_esrf_website}.
-Other implementation of the same concept are \emph{Ray}\cite{Ray-website} from BESSY and Xtrace(\cite{Xtrcae-website}).
+Other implementation of the same concept are \emph{Ray}\cite{Ray-website} from BESSY and Xtrace(\cite{Xtrace-website}).
 
 
 \subsection{Monte Carlo ray tracing simulations}
@@ -92,13 +92,9 @@ Simulation by weight adjustment is performed
 whenever possible. This includes
 \begin{itemize}
 \item Transmission through filters and windows.
-\item Transmission through Soller blade collimators and velocity
-  selectors
- (in the approximation
- which does not take each blade into account).
 \item Reflection from monochromator (and analyser) crystals
  with finite reflectivity and mosaicity.
-\item Reflection from guide walls.
+\item Reflections from mirrors.
 \item Passage of a continuous beam through a chopper.
 \item Scattering from all types of samples.
 \end{itemize}
@@ -107,7 +103,7 @@ whenever possible. This includes
 \label{s:staterror}
 
 In a typical simulation, the result will consist of a
-count of x-rays histories ("rays") with different weights. The
+count of x-ray histories ("rays") with different weights. The
 sum of these weights is an estimate of the mean number of x-rays
 hitting the monitor (or detector) per second in a ``real'' experiment.
 One may write the counting result as
@@ -241,8 +237,7 @@ we cut x-rays rays that should have reached the final detector.
 \begin{center}
 \includegraphics[width=.8\textwidth]{figures/focusing}
 \end{center}
-\caption{Illustration of the effect of direction focusing in \MCX\
-  . Weights of x-rays emitted into a certain solid angle are
+\caption{Illustration of the effect of direction focusing in \MCX. Weights of x-rays emitted into a certain solid angle are
   scaled down by the full unit sphere area.}
 \label{fig:focusing}
 \end{figure}
@@ -287,8 +282,8 @@ numbers $N$, the central limit theorem provides an estimate of the relative
 error as $1/\sqrt{N}$. However, the exact expression depends on the random
 distributions.
 
-\MCX\ uses a space with $d=11$ parameters to describe x-rays (position,
-wavevector, polarisation, phase, time). We show in Table \ref{t:mc_accuracy} a rough estimate of
+\MCX\ uses a space with $d=12$ parameters to describe x-rays (position,
+wavevector, weight, polarisation, phase, time). We show in Table \ref{t:mc_accuracy} a rough estimate of
 the accuracy on integrals as a function of the number of records reaching the
 integration point. This stands both for integrated flux, as well as for
 histogram bins - for which the number of events per bin should be used for $N$.
