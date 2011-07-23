@@ -1,0 +1,15 @@
+\section{An example of an instrument: NSLS-II beamline}
+\label{NSLS-II}
+\index{Instrument examples: NSLS-II}
+
+\instrument{NSLS-II-CHX}{System}{$L$,$L2$,$L3$,$Energy$)
+
+This is an example of a model of a yet to be built coherent hard x-ray (CHX) beamline at National Synchrotron Light Source-II.
+It will be used for studying of dynamics in materials. The conceptual design within McXtrace is based on such components as source, secondary source aperture (SS), vertically focusing CRL followed by horizontally focusing Kinoform lens.
+
+The beamline, as it follows from the name, utilizes partially coherent x-ray radiation, that is yet another challange for ray-tracing method. Nevertheless, the closest approximation was to use the compontent {Source\_gaussian} and neglect diffraction effects from the aperture.
+The source parameters are chosen in accordance with high emittance (\varepsilon=0.99 nm) case.
+The distances $L$, $L2$, and $L3$ correspond to positioning of the secondary source aperture (SS), CRL and Kinoform consequently relatively to the source.
+According to the beamline design, secondary source aperture (SS) can vary in opening, this example shows the case of the widest opening. 
+
+The radiation from the source is cut off by the aperture and it is illuminating the CRL. Due to it's profile of a parabolic cylinder it is focusing only in vertical direction. The kinoform lens, due to it's properties, focuses only in horizontal direction and it is placed just a little bit downstream off the geometrical focus of the CRL. Such positioning of the elements on the optical axis allows to obtain a spot at a sample plane of $8$x$17$ $\mu m$.    
