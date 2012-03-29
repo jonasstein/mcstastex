@@ -138,16 +138,16 @@ as C variable names. The list of these reserved keywords is shown in table~\ref{
       \texttt{MCDISPLAY} & C & Embeds C code to display component geometry. \\
       \texttt{NEXUS} & I & Defines NeXus output type (4,5,XML,compression). \\
       \texttt{OUTPUT} & C & Defines internal variables to be public and protected symbols (usually all global variables and functions of DECLARE).\\
-      \texttt{PARAMETERS} & C & Defines a class of component parameter (DEFINITION, SETTING,STATE). \\
+      \texttt{PARAMETERS} & C & Defines a class of component parameter (DEFINITION, SETTING). \\
       \texttt{POLARISATION} & C & Defines neutron polarisation coordinates. \\
       \texttt{PREVIOUS} & C & Refers to a previous component position/orientation.\\
       \texttt{RELATIVE} & I & Indicates that the AT and ROTATED keywords are relative to an other component. \\
+      \texttt{REMOVABLE} & I & Indicates that this component will be removed when the instrument is inserted into an other one using the \texttt{\%include} keyword.
       \texttt{ROTATED} & I & Indicates the orientation of a component in an instrument definition. \\
       \texttt{SAVE} & I,C & Embedded C code to execute when saving data. \\
       \texttt{SETTING} & C & Defines component parameters that are
       variables. \\
       \texttt{SHARE} & C & Declares global functions and variables to be shared. \\
-      \texttt{STATE} & C & Defines neutron state coordinates. \\
       \texttt{TRACE} & I,C & Defines the instrument as a the component sequence. \\
       \texttt{WHEN}  & I & Condition for component activation and JUMP.\\
       \hline
@@ -503,7 +503,7 @@ END
 \end{verbatim}
 where each inserted instrument is a valid full instrument. In order to avoid some components to be duplicated - e.g. Sources from each part - a special syntax in the TRACE section
 \begin{verbatim}
-INSTRUMENT COMPONENT a=...
+REMOVABLE COMPONENT a=...
 \end{verbatim}
 marks the component {\it a} as removable when inserted. In principle, inserted instruments may themselves use \texttt{\%include}.
 
@@ -626,9 +626,9 @@ One of the most useful features of the extended \MCS\ syntax is the conditional 
 The condition has the same scope as the EXTEND modifier, i.e. may use component internal variables as well as all the \texttt{DECLARE} instrument variables, \emph{except} instrument parameters. To use instrument parameters, you should copy them into global variables in the DECLARE instrument section, and refer to these latter.
 It is evaluated before the component TRACE section.
 
-Usage examples could be to have specific monitors only sensitive to selected processes, or to have components which are only present under given circonstances (e.g. removable guide or radial collimator), or to select a sample among a set of choices.
+Usage examples could be to have specific monitors only sensitive to selected processes, or to have components which are only present under given circumstances (e.g. removable guide or radial collimator), or to select a sample among a set of choices.
 
-In the following example, an EXTEND block sets a condition when a scattering event is encoutered, and the following monitor is then activated.
+In the following example, an EXTEND block sets a condition when a scattering event is encountered, and the following monitor is then activated.
 \begin{verbatim}
 COMPONENT Sample = V_sample(...) AT ...
   EXTEND
@@ -640,7 +640,7 @@ COMPONENT MyMon = Monitor(...) WHEN (flag==1)
   AT ...
 \end{verbatim}
 
-The WHEN keyword only applies to the TRACE section and related EXTEND blocks of instruments/components. Other sections (INITIALIZE, SAVE, MCDISPLAY, FINALLY) are exectuted independently of the condition. As a side effetc, the 3D view of the instrument (mcdisplay) will show all components as if all conditions were true.
+The WHEN keyword only applies to the TRACE section and related EXTEND blocks of instruments/components. Other sections (INITIALIZE, SAVE, MCDISPLAY, FINALLY) are executed independently of the condition. As a side effect, the 3D view of the instrument (mcdisplay) will show all components as if all conditions were true.
 
 Also, the \verb+WHEN+ keyword is a condition for \verb+GROUP+. This means that when the \verb+WHEN+ is false, the component instance is not active in the \verb+GROUP+ it belongs to.\index{Bugs}
 
@@ -648,7 +648,7 @@ A usage example of the WHEN keyword can be found in the \\
 \verb+Neutron site/ILL/ILL_TOF_Env+ instrument from the \verb+mcgui+, to monitor neutron depending on their fate.
 
 
-WARNING: Combining WHEN, EXTEND and GROUP can result in unexpeceted behaviour, please use with caution! Let for instance a GROUP of components all have the same WHEN condition, i.e. if the WHEN condition is false, none of the elements SCATTER, meaning that all neutrons will be ABSORBed. As a solution to this problem, we propose to include an EXTENDed Arm component in the GROUP, but with the opposite WHEN condition and a SCATTER keyword in the EXTEND section. This means that when none of the other GROUP elements are present, the Arm will be present and SCATTER.
+WARNING: Combining WHEN, EXTEND and GROUP can result in unexpected behaviour, please use with caution! Let for instance a GROUP of components all have the same WHEN condition, i.e. if the WHEN condition is false, none of the elements SCATTER, meaning that all neutrons will be ABSORBed. As a solution to this problem, we propose to include an EXTENDed Arm component in the GROUP, but with the opposite WHEN condition and a SCATTER keyword in the EXTEND section. This means that when none of the other GROUP elements are present, the Arm will be present and SCATTER.
 
 
 \subsection{Component loops and non sequential propagation - JUMP}

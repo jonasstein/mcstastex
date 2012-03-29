@@ -165,14 +165,14 @@ The choice of the $(q, \omega)$ wavevector-energy transfer pair could be done ra
 The main idea to implement the scattering from $S(q, \omega)$ is to cast two consecutive Monte Carlo choices, using probability distribution built from the dynamic structure factor.
 We define first the probability $P_{\omega}(\omega)$ as the \emph{unweighted} fraction of modes whose energy lies between $\omega$ and $\omega+d\omega$
 \begin{equation}
-P_{\omega}(\omega) d\omega = \frac{\int_0^{q_{max}} S(q,\omega) dq}{|S|},
+P_{\omega}(\omega) d\omega = \frac{\int_0^{q_{max}} q S(q,\omega) dq}{|S|},
 \end{equation}
 where $|S| = \iint S(q,\omega) dq d\omega$ is the norm of $S(q,\omega)$ in the available dynamical range $q \in [q_{min}, q_{max}]$ and $\omega \in [\omega_{min}, \omega_{max}]$.
 The probability $P_{\omega}(\omega)$ is normalised to unity, $\int P_{\omega}(\omega) d\omega = 1$, and is a probability distribution of mode energies in the material. We then choose randomly an energy transfer $\omega$ from this distribution.
 
 Similarly, in order to focus the wavevector transfer choice, we define the probability distribution of wavevector $P_q(q\mid\omega)$ for the selected energy transfer lying between $\omega$ and $\omega+d\omega$
 \begin{equation}
-P_q(q\mid\omega) = \frac{S(q, \omega)}{S(q)},
+P_q(q\mid\omega) = \frac{q S(q, \omega)}{S(q)},
 \end{equation}
 from which we choose randomly a wavevector transfer $q$, knowing the energy transfer $\omega$.
 These two probability distributions extracted from $S(q,\omega)$ are shown in Fig. \ref{f:isotropic-sqw-proba}, for a model $S(q,\omega)$ function built from the {\it l}-$^4$He elementary excitation (Data from Donnelly).
