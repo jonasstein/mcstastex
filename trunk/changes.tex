@@ -20,7 +20,7 @@ The following changes concern the 'Kernel' (i.e. the \MCS\ meta-language and pro
 
 \begin{itemize}
 \item The \verb+STATE PARAMETERS+ keywords has been removed from components code. We now assume that the neutron state parameters are \verb+x,y,z,vx,vy,vz,sx,sy,sz,t+. \MCS\ 1.X components will need to be adapted by commenting this line.
-\item The \verb+PREVIOUS+ and \verb+MYSELF+ keywords can be used in component instance parameters and positioning (AT/ROTATED) so that one can make use of 'MC_GETPAR(PREVIOUS, parameter)' directly in the TRACE section.
+\item The \verb+PREVIOUS+ and \verb+MYSELF+ keywords can be used in component instance parameters and positioning (AT/ROTATED) so that one can make use of \verb+MC_GETPAR(PREVIOUS, parameter)+ directly in the TRACE section.
 \end{itemize}
 
 \section{Run-time}
@@ -58,7 +58,7 @@ the {\it Component Overview} of the {\it User Manual}. Generally, most component
 \item Updated ILL instrument models: H16 guide, IN22, IN12, D16
 \item New ILL instrument models: IN1, IN8, IN20, D2B, D4, IN5
 \item Added HZB NEAT ToF spectrometer model (E. Farhi, R. Lechner)
-\item Adde ISIS_CRISP which uses new multilayer sample (R. Dalgliesh, ISIS)
+\item Adde ISIS\_CRISP which uses new multilayer sample (R. Dalgliesh, ISIS)
 \item Sort test instruments in various categories
 \item Update of many data files.
 \end{itemize}
