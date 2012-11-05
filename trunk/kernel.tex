@@ -467,7 +467,7 @@ The end of the instrument definition must be explicitly marked using the keyword
 \label{s:Samples_vanadium.instr}
 A commented instrument definition taken from the \texttt{examples} directory is
 here shown as an example of the use of \MCS .
- \smallverbatimfile{../../McCode/trunk/nlib/examples/Samples_vanadium.instr}
+ \smallverbatimfile{McCode/mcstas-comps/examples/Samples_vanadium.instr}
 
 
 
@@ -580,7 +580,7 @@ If you would like to change only some of the parameters in the instance copy, yo
   \texttt{COMPONENT} name = \texttt{COPY}(instance\_name)(par1=0, par2=1)
 \end{quote}
 which will override the original instance parameter values. This possibility to override parameters is very useful incase of describing e.g. sample environments using the Isotropic\_Sqw and PowderN components, which allow \emph{concentric} geometry (first instance must have \verb+concentric = 1+ and the second \verb+concentric = 0+). In case EXTEND, GROUP, JUMP and WHEN keywords are defined for the copied instance, these will override the settings from the copied instance.
- 
+
 
 In the case where there are many duplicated components all originating from the same instance, there is a mechanism for automating copied instance names:
 \begin{quote}
@@ -1299,7 +1299,7 @@ This marks the end of the component definition.
 \label{s:slit}
 A simple example of the component \texttt{Slit} is given.
 
-\smallverbatimfile{../../McCode/trunk/nlib/optics/Slit.comp}
+\smallverbatimfile{McCode/mcstas-comps/optics/Slit.comp}
 
 
 \section{Extending component definitions}
@@ -1428,7 +1428,7 @@ Additionally, optional keys \verb+%VALIDATION+ and \verb+%BUGS+ may be found to 
 \item The \verb+%EXAMPLE:+
   lines in instrument headers indicate an example parameter set or command that may be
   run to test the instrument. A following \verb+Detector: <name>_I=<value>+
-  indicates what value should be obtained for a given monitor. More than one example 
+  indicates what value should be obtained for a given monitor. More than one example
   line may be specified in instruments.
 \item Any number of \verb+%LINK+
   sections may be given; each one contains HTML code that will be put in
