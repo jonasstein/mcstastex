@@ -42,7 +42,7 @@ output formats including IDL, NeXus and XML are available, see section \ref{s:an
 
 \begin{figure}[htb!]
 \begin{center}
-\includegraphics[width=\textwidth]{figures/mcstas_software_png}
+\includegraphics[width=\textwidth]{figures/mcstas_software_png.png}
 \end{center}
 \caption{An illustration of the structure of \MCS\ .}
 \label{fig:structure}
@@ -180,9 +180,9 @@ ISO-C. The output is by default written to a file in the current
 directory with the same name as the instrument file, but with extension
 \verb+.c+ rather than \verb+.instr+. This can be overridden using the
 \verb+-o+ option as follows:
-\begin{verbatim}
+\begin{lstlisting}
     mcstas -o code.c name.instr
-\end{verbatim}
+\end{lstlisting}
 which gives the output in the file \verb+code.c+.
 A single dash `\verb+-+' may be used for both input and output filename
 to represent standard input and standard output, respectively.

@@ -212,14 +212,14 @@ translation and rotation relative to another component.
 % FIXME An example is given in section~\ref{s:Samples_vanadium.instr} and some additional examples of instrument definitions can be found on the McStas web-page~\cite{mcstas_webpage} and in the \texttt{example} directory.
 
 As a summary, the usual grammar for instrument descriptions is
-\begin{verbatim}
+\begin{listing}
 DEFINE INSTRUMENT name(parameters)
 DECLARE C_code
 INITIALIZE C_code {NEXUS}
 TRACE components
 {FINALLY C_code}
 END
-\end{verbatim}
+\end{listing}
 
 
 \subsection{The instrument definition head}
