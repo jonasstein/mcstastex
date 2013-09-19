@@ -25,9 +25,10 @@ entirely in the meta-language.
 
 Apart from the meta-language, \MCS\ also includes a number of C library
 functions and definitions that are useful for neutron ray-tracing
-simulations. The definitions available for component developers are
-listed in appendix~\ref{c:kernelcalls}. The list includes functions
-for
+simulations. 
+% FIXME File not found
+% The definitions available for component developers are listed in appendix~\ref{c:kernelcalls}. 
+The list includes functions for
 \begin{itemize}
 \item Computing the intersection between a flight-path and various
   objects (such as planes, cylinders, boxes and spheres)
@@ -207,10 +208,8 @@ The purpose of the instrument definition is to specify a sequence of
 components, along with their position and parameters, which together
 make up an instrument. Each component is given its own local coordinate
 system, the position and orientation of which may be specified by its
-translation and rotation relative to another component. An example is
-given in section~\ref{s:Samples_vanadium.instr} and some additional
-examples of instrument definitions can be found on the McStas
-web-page~\cite{mcstas_webpage} and in the \texttt{example} directory.
+translation and rotation relative to another component. 
+% FIXME An example is given in section~\ref{s:Samples_vanadium.instr} and some additional examples of instrument definitions can be found on the McStas web-page~\cite{mcstas_webpage} and in the \texttt{example} directory.
 
 As a summary, the usual grammar for instrument descriptions is
 \begin{verbatim}
@@ -467,7 +466,8 @@ The end of the instrument definition must be explicitly marked using the keyword
 \label{s:Samples_vanadium.instr}
 A commented instrument definition taken from the \texttt{examples} directory is
 here shown as an example of the use of \MCS .
- \smallverbatimfile{McCode/mcstas-comps/examples/Samples_vanadium.instr}
+ 
+% FIXME \smallverbatimfile{McCode/mcstas-comps/examples/Samples_vanadium.instr}
 
 
 

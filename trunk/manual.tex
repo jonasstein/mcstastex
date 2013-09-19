@@ -1,13 +1,14 @@
-\documentclass[twoside,notitlepage,11pt]{report}
+\documentclass[twoside,notitlepage,11pt]{scrreprt}
 % Here's a comment again - probably no more testing...
 %\usepackage{a4paper}
 \usepackage{graphicx}
-\usepackage{psfrag}
+%\usepackage{psfrag}
 \usepackage{amsfonts}
 \usepackage{amsbsy}
 \usepackage{verbatimfile}
 \usepackage{fancyhdr}
-\usepackage{pstricks,pst-node}
+%\usepackage[pdf]{pstricks}
+%\usepackage{pst-node}\usepackage{auto-pst-pdf}
 % The next rawfonts package one is used in the ``datablad''.
 \usepackage[only,egtrm]{rawfonts}
 % Handle sorting in reference list
@@ -22,30 +23,9 @@
 
 \def\reportnum{Ris{\o}--R--1416(rev.ed.)(EN)}
 
-%\oddsidemargin 0cm
-%\evensidemargin 0cm
-\addtolength{\hoffset}{-1.4cm}
-\topmargin 0cm
-\textwidth 15cm
-\textheight 22cm
-\addtolength{\footskip}{1.6pt}
-\addtolength{\headheight}{1.6pt}
 
-\pagestyle{fancy}
-\fancyhf{}
-\fancyfoot[LE,RO]{\thepage}
-\fancyfoot[LO,RE]{\reportnum}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
 
-\fancypagestyle{plain}{%
-\fancyhf{}
-\fancyfoot[LE,RO]{\thepage}
-\fancyfoot[RE,LO]{\reportnum}
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}}
-
-\newcommand{\MCS}{{McStas}}
+\newcommand{\MCS}{McStas} %FIXME xspace should be used here!
 \newcommand{\version}{{1.12}}
 \newcommand{\reldate}{{May, 2008}}
 \newcommand{\Ombold}{\mbox{\boldmath $\Omega$}}
@@ -68,25 +48,21 @@
 \begin{document}
 
 %\maketitle
-\input{risoe-rep-title}
+%FIXME \input{risoe-rep-title}
 
 \thispagestyle{empty}
 \include{abstractpage}
 
 \tableofcontents
-%\pagebreak
-%\listoffigures
-%\pagebreak
-%\listoftables
 
-\include{preface}
+%FIXME \include{preface}
 
 \include{intro}
 \include{changes}
 \include{install}
 \include{techniq}
 \include{running}
-\include{kernel}
+%\include{kernel}
 %\include{comp} % now in separate Manual
 \include{comp_abstract}
 \include{instrum}
@@ -110,7 +86,7 @@
 
 \addcontentsline{toc}{chapter}{\protect\numberline{}{Index and keywords}}
 \printindex
-\include{datablad}
+% FIXME \include{datablad}
 
 
 \end{document}
