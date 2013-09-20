@@ -293,10 +293,11 @@ The \MCS team recommends these compiler alternatives for the Intel
     OS and Windows systems and is a commercial software
     product. Generally, simulations run with the Intel compiler are
     {\bf a factor of 2 faster} than the identical simulation run using \verb+gcc+. To use \verb+icc+ with \MCS on Linux or Mac OS X, set the environment variables
-    \begin{itemize}
-      \item{\verb+MCSTAS_CC=icc+}
-      \item{\verb+MCSTAS_CFLAGS="-g -O2 -wd177,266,1011,181"+}
-    \end{itemize}
+\begin{lstlisting}
+MCSTAS_CC=icc
+MCSTAS_CFLAGS="-g -O2 -wd177,266,1011,181"
+\end{lstlisting}
+
     To use \verb+icc+ with MPI on Unix system (see Section \ref{s:run-mpi})
  installations, it seems that \emph{editing}
     the mpicc shell script and setting the CC variable to "\verb+icc+" is the
@@ -316,8 +317,7 @@ Monte Carlo simulations are computationally intensive, and it is
 often desirable to have them run as fast as possible. Some success can
 be obtained by adjusting the compiler optimization
 options. Here are some example platform and compiler combinations that
-have been found to perform well (up-to-date information will be
-available on the \MCS WWW home page~\cite{mcstas_webpage}):
+have been found to perform well:
 \begin{itemize}
 \item Intel x86 (``PC'') with Linux and GCC, using options \verb+gcc -O3+.
 \item Intel x86 with Linux and EGCS (GCC derivate) using
@@ -330,6 +330,7 @@ available on the \MCS WWW home page~\cite{mcstas_webpage}):
   enable the ISO-C standard).
 \item SGI machines running Irix with the options
   \verb|-Ofast -o32 -w|
+\item identify the CPU during compilation and optimize the final program for it\\ \verb+--march=native -O2+
 \end{itemize}
 Optimization flags will typically result in a speed improvement by a factor
 about 3, but the compilation of the instrument may be 5 times slower.
@@ -602,9 +603,9 @@ Once the simulation has started, it is possible, under Unix, Linux and Mac OS X 
 
 \MCS attaches a signal handler to the simulation process. In order to send a signal to the process, the process-id {\it pid} must be known. Users may look at their running processes with the Unix 'ps' command, or alternatively process managers like 'top' and 'gtop'.
 If a {\it file.out} simulation obtained from \MCS is running, the process status command should output a line resembling
-\begin{quote}
+\begin{lstlisting}
   \verb|<user>| {\it 13277} \verb|7140 99 23:52 pts/2    00:00:13 | {\it file.out}\\
-\end{quote}
+\end{lstlisting}
 where \verb+user+ is your Unix login. The {\it pid} is there '13277'.
 
 Once known, it is possible to send one of the signals listed in Table~\ref{t:signals} using the 'kill' unix command (or the functionalities of your process manager), e.g.
@@ -857,9 +858,9 @@ Configuration in the File menu.
 
 \begin{figure}[htb!]
   \begin{center}
-    \includegraphics[width=0.3\textwidth]{figures/choose_backend.eps}
+    \includegraphics[width=0.4\textwidth]{figures/mcgui-config.png}
   \end{center}
-\caption{The ``configuration options'' dialog in \texttt{mcgui}.} 
+\caption{The File/Preferences dialog in \texttt{mcgui}.} 
 \label{fig:mcgui-choose}
 \end{figure}
 
