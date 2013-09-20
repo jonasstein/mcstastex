@@ -7,12 +7,13 @@ to Chapter \ref{s:install} for installation instructions. In case of
 problems regarding installation or usage, the McStas mailing
 list~\cite{mcstas_webpage} or the authors should be contacted.
 
-{\bf Important note for Windows users:} It is a known problem that some of
-the \MCS tools do not support filenames / directories with spaces. %FIXME What about dots?
+{\bf Windows users note:} It is a known problem that some of
+the \MCS tools do not support filenames or directories with spaces. %FIXME What about dots?
 We are working on a more general approach to this problem, which will
 hopefully be solved in a further release. We recommend to use
-ActiveState {\bf Perl 5.10}. (Note that as of \MCS 1.10, all needed
-support tools for Windows are bundled with \MCS in a single installer file.)
+ActiveState {\bf Perl 5.10}. 
+%(Note that as of \MCS 1.10, all needed
+%support tools for Windows are bundled with \MCS in a single installer file.)
 
 To use \MCS, an instrument
 definition file describing the instrument to be simulated must be
@@ -118,7 +119,7 @@ those shown in figures \ref{fig:mcdisp_PGPLOT}-\ref{fig:mcdisp_Matlab}.
 \caption{Left: Output from \texttt{mcdisplay} with PGPLOT backend.
   The left mouse button starts a new neutron ray, the middle button zooms, and
   the right button resets the zoom. The Q key quits the
-  program. Right: The new PGPLOT time-of-flight option. See section \ref{s:mcdisplay} for details.}
+  program. Right: The PGPLOT time-of-flight option. See section \ref{s:mcdisplay} for details.}
 \label{fig:mcdisp_PGPLOT}
 \end{figure}
 \begin{figure}[htb!]
@@ -283,12 +284,12 @@ The \MCS team recommends these compiler alternatives for the Intel
 (and AMD) hardware architectures:
 \begin{itemize}
 \item[\bf A]{\verb+gcc+ which is a very portable, open source, ISO-C
-    compatible c compiler, available for most platforms. For Linux it
+    compatible C compiler, available for most platforms. For Linux it
     is usually part of your distribution, for Windows the \MCS
     distribution package includes a version of \verb+gcc+
     (in the Dev-CPP sub-package), and for Mac OS X \verb+gcc+ is part
     of the Xcode tools package available on the installation medium.}
-\item[\bf B]{\verb+icc+ or the Intel c compiler is available for Linux, Mac
+\item[\bf B]{\verb+icc+ or the Intel C compiler is available for Linux, Mac
     OS and Windows systems and is a commercial software
     product. Generally, simulations run with the Intel compiler are
     {\bf a factor of 2 faster} than the identical simulation run using \verb+gcc+. To use \verb+icc+ with \MCS on Linux or Mac OS X, set the environment variables
@@ -300,7 +301,7 @@ The \MCS team recommends these compiler alternatives for the Intel
  installations, it seems that \emph{editing}
     the mpicc shell script and setting the CC variable to "\verb+icc+" is the
     only requirement!}
-    On Windows, the Intel c compiler is 'icl', not 'icc' and has a dependency for Microsoft Visual C++. If you have both these softwares available, running McStas with the Intel compiler should be possible (currently untested by the McStas developer team).
+    On Windows, the Intel C compiler is 'icl', not 'icc' and has a dependency for Microsoft Visual C++. If you have both these softwares available, running McStas with the Intel compiler should be possible (currently untested by the McStas developer team).
 
 \end{itemize}
 
@@ -1320,11 +1321,12 @@ and PDL must all be properly installed on the system.
 \index{Tools!mcdoc|textbf}
 
 \MCS provides an easy way to generate automatically an HTML help page about a given component or instrument, or the whole \MCS library. \index{Library!Components}
-\begin{quote}
-  \verb|mcdoc|\\
-  \verb|mcdoc| {\it comp|instr}\\
-  \verb|mcdoc --tools|
-\end{quote}
+\begin{lstlisting}
+  mcdoc
+  mcdoc component
+  mcdoc instrument
+  mcdoc --tools
+\end{lstlisting}
 The first example generates an {\it index.html} catalog file using the available components and instruments (both locally, and in the \MCS library). The library catalog of components is opened using the \verb+BROWSER+ environment variable \index{Environment variable!BROWSER} (e.g. netscape, konqueror, nautilus, MSIE, mozilla, \ldots). If the \verb+BROWSER+ is not defined, the help is displayed as text in the current terminal. This latter output may be forced with the \verb+-t+ or \verb+--text+ option.
 
 Alternatively, if a component or instrument {\it comp} is specified as in the second example, it will be searched within the library, and an HTML help will be created for all available components matching {\it comp}.
@@ -1357,7 +1359,7 @@ Let us assume the component \verb+Compo+ shall be translated. The tool first cre
 
 This file is parsed to generate the C file \verb+McStas_Compo.c+. The last step is to compile the C-file and build the executable Vitess module \verb'McStas_compo'. For both steps \MCS is used as for any other instrument. \verb'McStas_compo' has to be moved to the directory 'MODULES' that contains all VITESS executables.
 
-Additionally, a file \verb'McStas_compo.tcl' is created that contains (most of) what is needed to get a GUI window in VITESS. To obtain that, the content of this file has to added into 'vitess.tcl'. To make it accessible within the given GUI structure of VITESS, it is necessary to add the name 'compo' - NO capital letters ! - to one of the folders in 'proc makeModuleSets{}' (beginning of 'vitess.tcl').
+Additionally, a file \verb'McStas_compo.tcl' is created that contains (most of) what is needed to get a GUI window in VITESS. To obtain that, the content of this file has to added into 'vitess.tcl'. To make it accessible within the given GUI structure of VITESS, it is necessary to add the name 'compo' - no capital letters! - to one of the folders in 'proc makeModuleSets{}' (beginning of 'vitess.tcl').
 
 The component Virtual\_input transfers all neutron parameters to the \MCS definition of the co-ordinate system and the units used. (Of course Virtual\_output transfers it back.) This means that 'Compo' works with the McStas definition of co-ordinate system and units, while it is used as a VITESS module. Be careful with axis labeling.
 
@@ -1787,13 +1789,12 @@ or the overhead time may become significant compared to total time.
 \subsection{MPI and Grid Bugs and limitations}\index{Bugs}
 
 \begin{itemize}
-\item Some header of output files might contain minor errors.
+\item Some header of output files might contain minor errors. % What does that mean? FIXME
 \item The computation split does not take into account the speed or the
   load of nodes: the overall time of a distributed computation is
   forced by the slowest node; for optimal performance, the ``cluster''
   should be homogeneous.
-\item Interacting with a running simulation (USR1 and USR2 signals) is disabled 
-  with MPI.
+\item Interacting with a running simulation (USR1 and USR2 signals) is disabled with MPI.
 \end{itemize}
 
 %%% Local Variables:
