@@ -604,7 +604,7 @@ Once the simulation has started, it is possible, under Unix, Linux and Mac OS X 
 \MCS attaches a signal handler to the simulation process. In order to send a signal to the process, the process-id {\it pid} must be known. Users may look at their running processes with the Unix 'ps' command, or alternatively process managers like 'top' and 'gtop'.
 If a {\it file.out} simulation obtained from \MCS is running, the process status command should output a line resembling
 \begin{lstlisting}
-  \verb|<user>| {\it 13277} \verb|7140 99 23:52 pts/2    00:00:13 | {\it file.out}\\
+<user>     13277 7140 99 23:52 pts/2    00:00:13   file.out
 \end{lstlisting}
 where \verb+user+ is your Unix login. The {\it pid} is there '13277'.
 
@@ -1111,9 +1111,9 @@ position or to find out where neutrons are getting lost.
 
 To use the \verb+mcdisplay+ front-end with a simulation, run it as
 follows:
-\begin{quote}
+\begin{lstlisting}
   \verb+mcdisplay sim +{\it args \ldots}
-\end{quote}
+\end{lstlisting}
 where \verb+sim+ is the name of either the instrument source \texttt{{\it sim}.instr} or the simulation program \texttt{{\it sim}.out} generated with
 \MCS, and \textit{args \ldots} are the normal command line arguments for
 the simulation, as explained above. The \verb+-h+ option will list valid options.
@@ -1121,14 +1121,14 @@ the simulation, as explained above. The \verb+-h+ option will list valid options
 \index{Tools!PGPLOT} \index{Tools!Matlab} \index{Tools!Scilab} \index{Tools!VRML/OpenGL}
 The drawing back-end program may be selected among PGPLOT, VRML, Matlab and Scilab using either the -p{\it PLOTTER} option or using the current \verb+MCSTAS_FORMAT+ environment variable. \index{Environment variable!MCSTAS\_FORMAT}
 For instance, calling
-\begin{quote}
-  \verb+mcdisplay -pScilab ./Samples_vanadium.out ROT=90+
-\end{quote}
+\begin{lstlisting}
+mcdisplay -pScilab ./Samples_vanadium.out ROT=90+
+\end{lstlisting}
 or (\verb+csh+/\verb+tcsh+ syntax)
-\begin{quote}
-  \verb+setenv MCSTAS_FORMAT Scilab+\\
-  \verb+mcdisplay ./Samples_vanadium.out ROT=90+
-\end{quote}
+\begin{lstlisting}
+setenv MCSTAS_FORMAT Scilab
+mcdisplay ./Samples_vanadium.out ROT=90
+\end{lstlisting}
 will output graphics using Scilab.
 The \verb+mcdisplay+ front-end can also be run from the \verb+mcgui+ front-end.
 \index{Tools!mcgui}
@@ -1140,9 +1140,9 @@ Examples of plotter appearence for \verb+mcdisplay+ is shown in figures
 This will view the instrument from above. A
 multi-display that shows the instrument from three directions
 simultaneously can be shown using the \verb+--multi+ option:
-\begin{quote}
-  \verb+mcdisplay --multi sim.out +{\it args \ldots}
-\end{quote}
+\begin{lstlisting}
+mcdisplay --multi sim.out <args>
+\end{lstlisting}
 
 Click the left mouse button in the graphics window or hit the space key
 to see the display of successive neutron trajectories. The `P' key saves
@@ -1207,7 +1207,7 @@ When using the \verb+-pVRML+ option, the instrument is shown in Virtual Reality 
 \label{s:mcplot}
 \index{Tools!mcplot|textbf}
 
-The front-end \verb+mcplot+ (mcplot.pl on Windows) is a program that produces
+The frontend \verb+mcplot+ (mcplot.pl on Windows) is a program that produces
 plots of all the monitors in a simulation, and it is thus useful to get
 a quick overview of the simulation results.
 
@@ -1346,17 +1346,18 @@ To use the \verb+mcdoc+ front-end, the program Perl should be available.
 \index{Vitess}
 
 Any \MCS component may be translated for usage with Vitess (starting from Vitess version 2.3). The syntax is simply \index{Library!Components}
-\begin{quote}
-  \texttt{mcstas2vitess {\it Compo.comp\/}}
-\end{quote}
+\begin{lstlisting}
+mcstas2vitess Compo.comp
+\end{lstlisting}
+
 This will create a Vitess module of the given component.
 
 Let us assume the component \verb+Compo+ shall be translated. The tool first creates a small instrument called \verb+McStas_Compo.instr+ consisting of
-\begin{enumerate}
-\item component Vitess\_input
-\item component \verb+Compo+
-\item component Vitess\_output
-\end{enumerate}
+\begin{lstlisting}
+component Vitess\_input
+component Compo
+component Vitess\_output
+\end{lstlisting}
 
 This file is parsed to generate the C file \verb+McStas_Compo.c+. The last step is to compile the C-file and build the executable Vitess module \verb'McStas_compo'. For both steps \MCS is used as for any other instrument. \verb'McStas_compo' has to be moved to the directory 'MODULES' that contains all VITESS executables.
 
@@ -1376,9 +1377,9 @@ To use the \verb+mcstas2vitess+ front-end, the program Perl should be available.
 \index{Tools!Matlab} \index{Tools!Scilab}
 
 If you have been running a \MCS simulation with Scilab output, but finally plan to look at the results with Matlab, or the contrary, you may use
-\begin{quote}
-  \texttt{mcconvert {\it file.{m|sci}\/}}
-\end{quote}
+\begin{lstlisting}
+mcconvert file.{m|sci}
+\end{lstlisting}
 to simply translate one file format to the other. This works only for text files of course. The binary files need not be translated.
 
 \subsection{Translating and merging \MCS results files (all text formats)}
@@ -1388,9 +1389,11 @@ to simply translate one file format to the other. This works only for text files
 \index{Grid computing}
 
 If you have been running a \MCS simulation with a given text format output, but finally plan to look at the results with an other plotter (e.g. you ran a simulation with PGPLOT output and want to view it using Matlab), you may use
-\begin{quote}
-  \texttt{mcformat {\it file | dir} -d {\it target\_dir} --format=TARGET\_FORMAT}
-\end{quote}
+\begin{lstlisting}
+mcformat file | dir -d target dir --format=TARGET_FORMAT
+\end{lstlisting}
+% FIXME that looks strange
+
 to translate files into format TARGET\_FORMAT. When given a directory, the translation works recursively. The conversion works only for text files. Some problems may be found when translating from HTML/VRML data files, or from binary files.\index{Tools!VRML/OpenGL}
 
 The \verb+--merge+ option may be used to merge similar files, e.g. obtained from grid systems, just as if a longer run was achieved.
@@ -1511,7 +1514,7 @@ The latter example accesses the data from the 'monitor1.y\_kz' file written by t
 \subsection{HTML/VRML and XML formats}
 \index{Tools!HTML} \index{Tools!VRML} \index{Data formats}
 
-Both HTML and XML formats are available. The former may be viewed using any web browser (Netscape/Mozilla/Firefox, Internet Explorer, Nautilus, Konqueror) - showing data sets as VRML objects. XML data sets may be browsed for instance using Internet Explorer (Windows and Mac OS) or Firefox, GXMLViewer and KXMLEditor (under Linux).
+Both HTML and XML formats are available. The former may be viewed using any web browser showing data sets as VRML objects. XML data sets may be browsed for instance using Internet Explorer (Windows and Mac OS) or Firefox, GXMLViewer and KXMLEditor (under Linux).
 
 The XML format is NeXus-like, but not fully compatible. However, \MCS may generate genuine NeXus/HDF format (see bellow).
 
@@ -1566,7 +1569,7 @@ neutrons simulated. As a result, \MCS generates two kinds of data sets:
 Last but not least, you may run simulations manually on a number of machines.
 Once the distributed simulation have been completed, you may merge their results using \verb+mcformat+ (see section \ref{s:mcformat}) \index{Tools!mcformat} in order to obtain a set of files just as if it had been executed on a single machine.
 
-All of these methods can be used, when available, from \texttt{mcgui}.
+\texttt{mcgui} supports all of these methods.
 
 \subsection{Distribute mcrun simulations on grids, multi-cores and clusters (SSH grid)}
 \label{s:ssh-grid}
@@ -1694,7 +1697,7 @@ To use MPI you will need
 
 To enable parallel computation, compile McStas output C-source file
 with \verb'mpicc' with the flag \verb'-DUSE_MPI' and run it using the
-wrapper of your MPI implementation (\verb'mpirun' for mpich or lammpi) :
+wrapper of your MPI implementation (\verb'mpirun' for mpich or lammpi):
 \begin{lstlisting}
   # generate a C-source file [sim.c]
   mcstas sim.instr
@@ -1711,7 +1714,7 @@ wrapper of your MPI implementation (\verb'mpirun' for mpich or lammpi) :
   ...
 \end{lstlisting}
 
-If you don't want to spread the simulation, run it as usual :
+If you don't want to spread the simulation, run it as usual:
 \begin{lstlisting}
   ./sim.mpi <instrument parameters>
 \end{lstlisting}
@@ -1762,9 +1765,8 @@ and merge operations.
 \item the split is immediate: constant time cost ${\cal O}(1)$
 \item the merge is at worst linear against the number of computers:
   \begin{itemize}
-  \item linear time cost~: ${\cal O}(p)$ when saving an event list
-  \item logarithmic time cost: ${\cal O}(\log{p})$ when not saving an
-  event list
+  \item linear time cost: ${\cal O}(p)$ when saving an event list
+  \item logarithmic time cost: ${\cal O}(\log{p})$ when not saving an event list
   \end{itemize}
 \end{itemize}
 

@@ -96,14 +96,12 @@ $\left( s_x, s_y, s_z \right)$, and finally the neutron weight $p$ described in 
 \section{Syntaxical conventions}
 \label{s:syntax}
 
-Comments follow the normal C syntax ``\verb+/* ... */+''. C++ style
-comments ``\verb+// ...+'' may also be used.
+Comments follow the normal C syntax 
+\begin{lstlisting}
+/* This is a comment */
+// This is another comment
+\end{lstlisting}
 \index{Comments}
-
-%For backward-compatibility
-%with early versions, comments may also be written as a percentage sign
-%followed by a space (``\verb*+% ...+''), but this is not recommended and
-%will be removed in a future version.
 
 Keywords are not case-sensitive, for example ``\verb+DEFINE+'',
 ``\verb+define+'', and ``\verb+dEfInE+'' are all equivalent. However, by
@@ -183,11 +181,11 @@ Embedded C code is used in several instances in the \MCS
 meta-language. Such code is copied by the \MCS compiler into the
 generated simulation C program. Embedded C code is written by putting it
 between the special symbols \verb|%{| and \verb|%}|, as follows:
-\begin{quote}
-  \verb|%{| \\
-  \hbox to 3em{}\ldots Embedded C code \ldots \\
-  \verb|%}|
-\end{quote} \index{Embedded C code}
+\begin{lstlisting}
+%{
+// Embedded C code
+%}
+\end{lstlisting} \index{Embedded C code}
 The ``\verb|%{|'' and ``\verb|%}|'' must appear on a line by themselves (do not add comments after).
 Additionally, if a ``\verb+%include+'' statement is found \emph{within} an embedded C code block, the specified file will be included from the 'share' directory of the standard component library \index{Library!Components!share} (or from the
 current directory and any user-specified search directories) as a C library, just like the usual ``\verb+#include+'' \emph{but only once}. For instance, if many components require to read data from a file, they may all ask for ``\verb+%include "read_table-lib"+'' \index{Library!read\_table-lib (Read\_Table)} without duplicating the code of this library. If the file has no extension, both \verb+.h+ and \verb+.c+ files will be searched and included, otherwise, only the specified file will be imported. The \MCS 'run-time' shared
@@ -224,9 +222,9 @@ END
 
 \subsection{The instrument definition head}
 
-\begin{quote}
-  \texttt{DEFINE} \texttt{INSTRUMENT} \textit{name} $(a_1, a_2, \ldots)$
-\end{quote} \index{Keyword!DEFINE!INSTRUMENT}
+\begin{lstlisting}
+  DEFINE INSTRUMENT name a_1, a_2, ...
+\end{lstlisting} \index{Keyword!DEFINE!INSTRUMENT}
 This marks the beginning of the definition. It also gives the name of
 the instrument and the list of instrument parameters. Instrument
 parameters describe the configuration of the instrument, and usually
@@ -244,9 +242,9 @@ integer type or \verb+char *+ for the C string type. The name
 \verb+string+ may be used as a synonym for \verb+char *+, and floating
 point parameters may be explicitly declared using the name
 \verb+double+. The following example illustrates all possibilities:
-\begin{quote}
-  \texttt{DEFINE INSTRUMENT test(d1, double d2, int i, char *s1, string s2)}
-\end{quote}
+\begin{lstlisting}
+DEFINE INSTRUMENT test(d1, double d2, int i, char *s1, string s2)
+\end{lstlisting}
 Here \verb+d1+ and \verb+d2+ will be floating point parameters of C type
 \verb+double+, \verb+i+ will be an integer parameter of C type
 \verb+int+, and \verb+s1+ and \verb+s2+ will be string parameters of C
@@ -257,9 +255,9 @@ The parameters of an instrument may be given default values. Parameters with def
 instrument simulation is executed. When executed without any parameter value in the command line (see section~\ref{s:run-sim}), the instrument asks for all parameter values, but pressing the \verb+Return+ key selects the default value (if any). When used with at least one parameter value in the command line, all non specified parameters will have their value set to the default one (if any). A parameter is given a
 default value using the syntax ``\textit{param}\texttt{= }\textit{value}''.
 For example
-\begin{quote}
-  \texttt{DEFINE INSTRUMENT test(d1= 1, string s2="hello")}
-\end{quote}
+\begin{lstlisting}
+DEFINE INSTRUMENT test(d1= 1, string s2="hello")
+\end{lstlisting}
 Here \verb+d1+ and \verb+d2+ are optional parameters and if no
 value are given explicitly, ``1'' and ``hello'' will be used.
 
@@ -270,12 +268,12 @@ instruments for which some parameters are seldom changed or of unclear significa
 \index{Keyword!DECLARE}
 \label{s:declare}
 
-\begin{quote}
-  \texttt{DECLARE} \\
-  \verb|%{| \\
-  \hbox to 3em{}\ldots C declarations of global variables etc. \ldots \\
-  \verb|%}|
-\end{quote} \index{Embedded C code}
+\begin{lstlisting}
+DECLARE
+%{
+// C declarations of global variables ...
+%}
+\end{lstlisting} \index{Embedded C code}
 This gives C declarations that may be referred to in the rest of the
 instrument definition. A typical use is to declare global variables or
 small functions that are used elsewhere in the instrument. The \verb+%include ''file''+ keyword may be used to import a specific
@@ -285,12 +283,12 @@ component definition or a part of an instrument. Variables defined here are glob
 \index{Keyword!INITIALIZE}
 \label{s:initialize}
 
-\begin{quote}
-  \texttt{INITIALIZE} \\
-  \verb|%{| \\
-  \hbox to 3em{}\ldots C initializations. \ldots \\
-  \verb|%}|
-\end{quote} \index{Embedded C code}
+\begin{lstlisting}
+INITIALIZE
+%{
+// C initializations
+%}
+\end{lstlisting}  \index{Embedded C code}
 This gives code that is executed when the simulation starts. This section is
 optional. Instrument setting parameters may be modified in this section (e.g. doing tests or automatic settings).
 
@@ -302,13 +300,13 @@ The NeXus format~\cite{nexus_webpage} requires to link the simulation to additio
 
 The default NeXus format is NeXus 5 with compression. However, that format may be changed with the optional keyword \verb+NEXUS+ to follow the INITIALIZE section, namely:
 
-\begin{quote}
-  \texttt{INITIALIZE} \\
-  \verb|%{| \\
-  \hbox to 3em{}\ldots C initializations. \ldots \\
-  \verb|%}|
-  \verb+NEXUS {"4"|"5"|"XML"|"compress"|"zip"}+
-\end{quote}
+\begin{lstlisting}
+INITIALIZE
+%{|
+// C initializations. 
+%}
+NEXUS {"4"|"5"|"XML"|"compress"|"zip"}
+\end{lstlisting}
 
 It is possible to set the type of NeXus file with a string argument, containing words "4", "5" or "XML". Optionally, if the string also contains the \verb+compress+ or \verb+zip+ word, the NeXus file will use compression for Data Sets. We recommend the syntax \verb+NEXUS "5 compress"+ which is the default.
 
